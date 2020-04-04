@@ -8,14 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
-		C4037A9A24342E1F00150D47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9924342E1F00150D47 /* SceneDelegate.swift */; };
 		C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */; };
-		C4037A9F24342E1F00150D47 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9E24342E1F00150D47 /* ContentView.swift */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
 		C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA324342E2300150D47 /* Preview Assets.xcassets */; };
-		C4037AA724342E2300150D47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA524342E2300150D47 /* LaunchScreen.storyboard */; };
 		C4037AB224342E2300150D47 /* MuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037AB124342E2300150D47 /* MuTests.swift */; };
 		C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* MuUITests.swift */; };
+		C49B344E24391BB400CF3FCD /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344D24391BB400CF3FCD /* MainTabBarController.swift */; };
+		C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */; };
+		C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345124391C4800CF3FCD /* ManageViewController.swift */; };
+		C49B345424391C5400CF3FCD /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345324391C5400CF3FCD /* TodayViewController.swift */; };
+		C49B345624391C6000CF3FCD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345524391C6000CF3FCD /* SettingsViewController.swift */; };
+		C49B345824391D0800CF3FCD /* AnalysisNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345724391D0800CF3FCD /* AnalysisNavigationController.swift */; };
+		C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345924391D1900CF3FCD /* ManageNavigationController.swift */; };
+		C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */; };
+		C49B345E24391D2C00CF3FCD /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */; };
+		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,12 +45,9 @@
 /* Begin PBXFileReference section */
 		C4037A9424342E1F00150D47 /* Mu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037A9724342E1F00150D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C4037A9924342E1F00150D47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mu.xcdatamodel; sourceTree = "<group>"; };
-		C4037A9E24342E1F00150D47 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4037AA324342E2300150D47 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C4037AA624342E2300150D47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4037AAD24342E2300150D47 /* MuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037AB124342E2300150D47 /* MuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuTests.swift; sourceTree = "<group>"; };
@@ -51,6 +55,16 @@
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* MuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C49B344D24391BB400CF3FCD /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
+		C49B345124391C4800CF3FCD /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
+		C49B345324391C5400CF3FCD /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		C49B345524391C6000CF3FCD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C49B345724391D0800CF3FCD /* AnalysisNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisNavigationController.swift; sourceTree = "<group>"; };
+		C49B345924391D1900CF3FCD /* ManageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageNavigationController.swift; sourceTree = "<group>"; };
+		C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNavigationController.swift; sourceTree = "<group>"; };
+		C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
+		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,11 +115,9 @@
 		C4037A9624342E1F00150D47 /* Mu */ = {
 			isa = PBXGroup;
 			children = (
+				C49B344C24391B8000CF3FCD /* main-tab-bar */,
 				C4037A9724342E1F00150D47 /* AppDelegate.swift */,
-				C4037A9924342E1F00150D47 /* SceneDelegate.swift */,
-				C4037A9E24342E1F00150D47 /* ContentView.swift */,
 				C4037AA024342E2300150D47 /* Assets.xcassets */,
-				C4037AA524342E2300150D47 /* LaunchScreen.storyboard */,
 				C4037AA824342E2300150D47 /* Info.plist */,
 				C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */,
 				C4037AA224342E2300150D47 /* Preview Content */,
@@ -134,9 +146,42 @@
 			isa = PBXGroup;
 			children = (
 				C4037ABC24342E2300150D47 /* MuUITests.swift */,
+				C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */,
 				C4037ABE24342E2300150D47 /* Info.plist */,
 			);
 			path = MuUITests;
+			sourceTree = "<group>";
+		};
+		C49B344C24391B8000CF3FCD /* main-tab-bar */ = {
+			isa = PBXGroup;
+			children = (
+				C49B344D24391BB400CF3FCD /* MainTabBarController.swift */,
+				C49B346024391F5900CF3FCD /* main-view-controllers */,
+				C49B345F24391F4F00CF3FCD /* navigation-controllers */,
+			);
+			path = "main-tab-bar";
+			sourceTree = "<group>";
+		};
+		C49B345F24391F4F00CF3FCD /* navigation-controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C49B345724391D0800CF3FCD /* AnalysisNavigationController.swift */,
+				C49B345924391D1900CF3FCD /* ManageNavigationController.swift */,
+				C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */,
+				C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */,
+			);
+			path = "navigation-controllers";
+			sourceTree = "<group>";
+		};
+		C49B346024391F5900CF3FCD /* main-view-controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */,
+				C49B345124391C4800CF3FCD /* ManageViewController.swift */,
+				C49B345324391C5400CF3FCD /* TodayViewController.swift */,
+				C49B345524391C6000CF3FCD /* SettingsViewController.swift */,
+			);
+			path = "main-view-controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,7 +288,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4037AA724342E2300150D47 /* LaunchScreen.storyboard in Resources */,
 				C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */,
 				C4037AA124342E2300150D47 /* Assets.xcassets in Resources */,
 			);
@@ -270,10 +314,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C49B345E24391D2C00CF3FCD /* SettingsNavigationController.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
-				C4037A9A24342E1F00150D47 /* SceneDelegate.swift in Sources */,
-				C4037A9F24342E1F00150D47 /* ContentView.swift in Sources */,
+				C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */,
+				C49B344E24391BB400CF3FCD /* MainTabBarController.swift in Sources */,
+				C49B345424391C5400CF3FCD /* TodayViewController.swift in Sources */,
+				C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */,
+				C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */,
+				C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */,
+				C49B345824391D0800CF3FCD /* AnalysisNavigationController.swift in Sources */,
 				C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */,
+				C49B345624391C6000CF3FCD /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */,
 				C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,17 +359,6 @@
 			targetProxy = C4037AB924342E2300150D47 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		C4037AA524342E2300150D47 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C4037AA624342E2300150D47 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C4037ABF24342E2300150D47 /* Debug */ = {
@@ -370,7 +411,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -424,7 +465,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
