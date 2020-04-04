@@ -22,6 +22,7 @@
 		C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345924391D1900CF3FCD /* ManageNavigationController.swift */; };
 		C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */; };
 		C49B345E24391D2C00CF3FCD /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */; };
+		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		C49B345924391D1900CF3FCD /* ManageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageNavigationController.swift; sourceTree = "<group>"; };
 		C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNavigationController.swift; sourceTree = "<group>"; };
 		C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
+		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				C4037ABC24342E2300150D47 /* MuUITests.swift */,
+				C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */,
 				C4037ABE24342E2300150D47 /* Info.plist */,
 			);
 			path = MuUITests;
@@ -337,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */,
 				C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,7 +411,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -461,7 +465,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

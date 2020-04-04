@@ -2,6 +2,8 @@
 //  MainTabBarController.swift
 //  Mu
 //
+//  This UITabBarController handles the embedding of the application's main UIViewControllers. This expects to be the first controller presented at startup in AppDelegate.swift.
+//
 //  Created by Vincent Young on 4/4/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
