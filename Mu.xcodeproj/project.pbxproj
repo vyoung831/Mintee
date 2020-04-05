@@ -13,6 +13,7 @@
 		C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA324342E2300150D47 /* Preview Assets.xcassets */; };
 		C4037AB224342E2300150D47 /* MuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037AB124342E2300150D47 /* MuTests.swift */; };
 		C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* MuUITests.swift */; };
+		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
 		C49B344E24391BB400CF3FCD /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344D24391BB400CF3FCD /* MainTabBarController.swift */; };
 		C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */; };
 		C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345124391C4800CF3FCD /* ManageViewController.swift */; };
@@ -55,6 +56,7 @@
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* MuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
 		C49B344D24391BB400CF3FCD /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
 		C49B345124391C4800CF3FCD /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				C4037ABC24342E2300150D47 /* MuUITests.swift */,
 				C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */,
+				C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */,
 				C4037ABE24342E2300150D47 /* Info.plist */,
 			);
 			path = MuUITests;
@@ -342,6 +345,7 @@
 			files = (
 				C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */,
 				C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */,
+				C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
