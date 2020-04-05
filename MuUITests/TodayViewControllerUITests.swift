@@ -50,14 +50,30 @@ class TodayViewControllerUITests: XCTestCase {
         app.tabBars.buttons["Today"].tap()
         let todayNavigationBar = app.navigationBars["Today"]
         todayNavigationBar.buttons["Date"].tap()
-        // TO-DO: Assert that SelectDatePopup appears after integrating popup
+        // TO-DO: Assert that SelectDatePopup appears after popups have been integrated
     }
     
     func testTaskCardSelected() {
         let app = XCUIApplication()
         app.tabBars.buttons["Today"].tap()
-        app.collectionViews.children(matching: .cell).element(boundBy: 0).children(matching: .other).element.tap()
+        app.collectionViews.children(matching: .cell).element(boundBy: 0).tap()
         XCTAssert(app.navigationBars["Task Summary"].exists)
+    }
+    
+    func testTaskCardEditButtonPressed() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Today"].tap()
+        let cell = app.collectionViews.children(matching: .cell).element(boundBy: 0)
+        cell.buttons["Edit"].tap()
+        XCTAssert(app.navigationBars["Edit Task"].exists)
+    }
+    
+    func testTaskCardSetButtonPressed() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Today"].tap()
+        let cell = app.collectionViews.children(matching: .cell).element(boundBy: 0)
+        cell.buttons["Set"].tap()
+        // TO-DO: Assert that SetCountPopup appears after popups have been integrated
     }
 
 }
