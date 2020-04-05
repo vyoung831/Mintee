@@ -26,8 +26,8 @@ class TodayViewController: UIViewController {
     let collectionViewMinimumHorizontalSpacing: CGFloat = 20
     
     // collectionView cell sizing
-    let collectionViewItemWidth: CGFloat = 180
-    let collectionViewItemHeight: CGFloat = 240
+    let collectionViewItemWidth: CGFloat = 150
+    let collectionViewItemHeight: CGFloat = 200
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +74,7 @@ class TodayViewController: UIViewController {
         collectionView.backgroundColor = UIColor.white
         
         // Set collectionView's delegate and data source, and register UICollectionViewCells for reuse
-        collectionView.register(UICollectionViewCell.self,forCellWithReuseIdentifier: collectionViewCellReuseIdentifier)
+        collectionView.register(TaskCardCollectionViewCell.self,forCellWithReuseIdentifier: collectionViewCellReuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -109,9 +109,25 @@ extension TodayViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellReuseIdentifier,for: indexPath) as UICollectionViewCell
-        cell.backgroundColor = .black
-        return cell
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellReuseIdentifier,for: indexPath) as? TaskCardCollectionViewCell {
+            
+            cell.backgroundColor = .white
+            
+            // TaskCardCollectionViewCell calls its handleEditButtonPressed closure when its subview editButton is pressed. Set it here
+            cell.handleEditButtonPressed = { [unowned self] in
+                // TO-DO: Present EditTask
+                print("Go to EditTask")
+            }
+            
+            cell.handleSetButtonPressed = { [unowned self] in
+                // TO-DO: Present SetCountPopup
+                print("Go to SetCountPopup")
+            }
+            return cell
+            
+        } else {
+            exit(-1)
+        }
         
     }
     
