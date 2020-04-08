@@ -157,10 +157,15 @@ class TaskCardCollectionViewCell: UICollectionViewCell {
         let completionPercentage: CGFloat = 1/3
         completionMeter = UIView()
         completionMeter.backgroundColor = .green
-        completionMeter.frame = CGRect(x: 0, y: self.contentView.bounds.height * (1 - completionPercentage), width: self.contentView.bounds.width, height: self.contentView.bounds.height * completionPercentage)
         completionMeter.layer.cornerRadius = cornerRadius
         
         self.addSubview(completionMeter)
+        completionMeter.translatesAutoresizingMaskIntoConstraints = false
+        completionMeter.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, multiplier: completionPercentage, constant: 0).isActive = true
+        completionMeter.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
+        completionMeter.rightAnchor.constraint(equalTo: self.contentView.rightAnchor).isActive = true
+        completionMeter.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        
         self.sendSubviewToBack(completionMeter)
         
     }
