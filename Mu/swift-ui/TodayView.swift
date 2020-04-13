@@ -10,7 +10,31 @@ import SwiftUI
 
 struct TodayView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            VStack {
+                Text("Today landing page")
+            }
+            .navigationBarTitle("Today")
+            .navigationBarItems(trailing: HStack(alignment: .center, spacing: 10, content: {
+                
+                Button(action: {
+                    print("Add button pressed")})
+                {
+                    Image(systemName: "plus.circle")
+                }
+                
+                Button(action: {
+                    print("Date button pressed")})
+                {
+                    Image(systemName: "calendar")
+                }
+                
+            })
+                .foregroundColor(.black)
+                .scaleEffect(1.5)
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 20))
+            )
+        }
     }
 }
 

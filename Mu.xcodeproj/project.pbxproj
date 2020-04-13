@@ -13,6 +13,7 @@
 		C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA324342E2300150D47 /* Preview Assets.xcassets */; };
 		C4037AB224342E2300150D47 /* MuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037AB124342E2300150D47 /* MuTests.swift */; };
 		C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* MuUITests.swift */; };
+		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
 		C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
@@ -63,6 +64,7 @@
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* MuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
 		C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
@@ -172,9 +174,18 @@
 			path = MuUITests;
 			sourceTree = "<group>";
 		};
+		C43BD94F2444728C003E68DC /* task-views */ = {
+			isa = PBXGroup;
+			children = (
+				C43BD950244472A4003E68DC /* AddTask.swift */,
+			);
+			path = "task-views";
+			sourceTree = "<group>";
+		};
 		C44C7F85243CA54A00072AD8 /* swift-ui */ = {
 			isa = PBXGroup;
 			children = (
+				C43BD94F2444728C003E68DC /* task-views */,
 				C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */,
 				C46DC967243DEBB20037C74C /* TodayView.swift */,
 				C46DC969243DEC3B0037C74C /* AnalysisView.swift */,
@@ -375,6 +386,7 @@
 				C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */,
 				C49B345824391D0800CF3FCD /* AnalysisNavigationController.swift in Sources */,
 				C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */,
+				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
 				C462C058243A2E8700EBB940 /* TaskCardCollectionViewCell.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
 				C49B345624391C6000CF3FCD /* SettingsViewController.swift in Sources */,
