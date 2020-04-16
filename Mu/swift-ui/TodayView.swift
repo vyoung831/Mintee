@@ -9,30 +9,40 @@
 import SwiftUI
 
 struct TodayView: View {
+    
+    @State var isPresentingAddTask: Bool = false
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: Task.entity(), sortDescriptors: []) var tasks: FetchedResults<Task>
+    
     var body: some View {
         NavigationView {
             VStack {
-                Text("Today landing page")
+                ForEach(tasks,id: \.self) {task in
+                    Text(task.taskName ?? "Unknown task name")
+                }
+                Text(String(tasks.count))
             }
             .navigationBarTitle("Today")
-            .navigationBarItems(trailing: HStack(alignment: .center, spacing: 10, content: {
+            .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
                 
                 Button(action: {
-                    print("Add button pressed")})
-                {
+                    self.isPresentingAddTask = true
+                }, label: {
                     Image(systemName: "plus.circle")
+                        .frame(width: 30, height: 30, alignment: .center)
+                }).sheet(isPresented: $isPresentingAddTask) {
+                    // TO-DO: Don't pass moc environment property after Apple has fixed this bug with modally presented views
+                    AddTask(isBeingPresented: self.$isPresentingAddTask).environment(\.managedObjectContext, self.moc)
                 }
                 
-                Button(action: {
-                    print("Date button pressed")})
-                {
-                    Image(systemName: "calendar")
+                Button(action: {}) {
+                    Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
                 }
                 
             })
                 .foregroundColor(.black)
                 .scaleEffect(1.5)
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 20))
             )
         }
     }
