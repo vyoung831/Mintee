@@ -15,13 +15,26 @@ struct TodayView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: Task.entity(), sortDescriptors: []) var tasks: FetchedResults<Task>
     
+    private func getTagString(task:Task) -> String? {
+        if let tags = task.tags as? Set<Tag> {
+            let tagNames = tags.map({$0.tagName ?? ""})
+            let returnString = tagNames.joined(separator: ",")
+            return returnString
+        }
+        return nil
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
                 ForEach(tasks,id: \.self) {task in
-                    Text(task.taskName ?? "Unknown task name")
+                    VStack {
+                        Text("Task name = " + (task.taskName ?? "Unknown task name"))
+                        Text("Task tags = " + (self.getTagString(task: task) ?? "No tags"))
+                        Text("Task type = " + (task.taskType ?? "No task type"))
+                    }
                 }
-                Text(String(tasks.count))
+                Text("Number of tasks = " + String(tasks.count))
             }
             .navigationBarTitle("Today")
             .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {

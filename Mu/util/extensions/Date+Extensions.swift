@@ -1,5 +1,5 @@
 //
-//  NSDate+Extensions.swift
+//  Date+Extensions.swift
 //  Mu
 //
 //  Created by Vincent Young on 4/15/20.
