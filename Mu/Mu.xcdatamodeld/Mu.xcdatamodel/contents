@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Analysis" representedClassName="Analysis" syncable="YES" codeGenerationType="class">
+    <entity name="Analysis" representedClassName="Analysis" syncable="YES">
         <attribute name="analysisEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="analysisName" optional="YES" attributeType="String"/>
         <attribute name="analysisStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -13,15 +13,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="DayOfMonth" representedClassName="DayOfMonth" syncable="YES" codeGenerationType="class">
+    <entity name="DayOfMonth" representedClassName="DayOfMonth" syncable="YES">
         <attribute name="dayOfMonth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="daysOfMonth" inverseEntity="TaskTargetSet"/>
     </entity>
-    <entity name="DayOfWeek" representedClassName="DayOfWeek" syncable="YES" codeGenerationType="class">
+    <entity name="DayOfWeek" representedClassName="DayOfWeek" syncable="YES">
         <attribute name="dayOfWeek" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="daysOfWeek" inverseEntity="TaskTargetSet"/>
     </entity>
-    <entity name="LegendEntry" representedClassName="LegendEntry" syncable="YES" codeGenerationType="class">
+    <entity name="LegendEntry" representedClassName="LegendEntry" syncable="YES">
         <attribute name="legendEntryColor" optional="YES" attributeType="String"/>
         <attribute name="legendEntryMax" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="legendEntryMaxInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -30,8 +30,8 @@
         <relationship name="analysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analysis" inverseName="legendEntries" inverseEntity="Analysis"/>
         <relationship name="taskSummaryAnalysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskSummaryAnalysis" inverseName="legendEntries" inverseEntity="TaskSummaryAnalysis"/>
     </entity>
-    <entity name="Tag" representedClassName="Tag" syncable="YES" codeGenerationType="class">
-        <attribute name="tagName" optional="YES" attributeType="String"/>
+    <entity name="Tag" representedClassName="Tag" syncable="YES">
+        <attribute name="tagName" attributeType="String" defaultValueString=""/>
         <relationship name="analyses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Analysis" inverseName="tags" inverseEntity="Analysis"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="tags" inverseEntity="Task"/>
         <uniquenessConstraints>
@@ -40,7 +40,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+    <entity name="Task" representedClassName="Task" syncable="YES">
         <attribute name="taskEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="taskName" optional="YES" attributeType="String"/>
         <attribute name="taskStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -55,12 +55,12 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="TaskInstance" representedClassName="TaskInstance" syncable="YES" codeGenerationType="class">
+    <entity name="TaskInstance" representedClassName="TaskInstance" syncable="YES">
         <attribute name="taskInstanceCompletion" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="taskInstanceDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="instances" inverseEntity="Task"/>
     </entity>
-    <entity name="TaskSummaryAnalysis" representedClassName="TaskSummaryAnalysis" syncable="YES" codeGenerationType="class">
+    <entity name="TaskSummaryAnalysis" representedClassName="TaskSummaryAnalysis" syncable="YES">
         <attribute name="taskSummaryAnalysisEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="taskSummaryAnalysisStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="taskSummaryAnalysisType" optional="YES" attributeType="String"/>
@@ -68,7 +68,7 @@
         <relationship name="legendEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LegendEntry" inverseName="taskSummaryAnalysis" inverseEntity="LegendEntry"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="taskSummaryAnalysis" inverseEntity="Task"/>
     </entity>
-    <entity name="TaskTargetSet" representedClassName="TaskTargetSet" syncable="YES" codeGenerationType="class">
+    <entity name="TaskTargetSet" representedClassName="TaskTargetSet" syncable="YES">
         <attribute name="taskTargetSetMax" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="taskTargetSetMaxInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskTargetSetMin" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -79,7 +79,7 @@
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
         <relationship name="weekdaysOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeekdayOfMonth" inverseName="taskTargetSet" inverseEntity="WeekdayOfMonth"/>
     </entity>
-    <entity name="WeekdayOfMonth" representedClassName="WeekdayOfMonth" syncable="YES" codeGenerationType="class">
+    <entity name="WeekdayOfMonth" representedClassName="WeekdayOfMonth" syncable="YES">
         <attribute name="weekdayOfMonth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weekOfMonth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="weekdaysOfMonth" inverseEntity="TaskTargetSet"/>

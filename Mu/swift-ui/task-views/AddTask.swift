@@ -15,13 +15,27 @@ struct AddTask: View {
     var taskTypes: [String] = ["Recurring","Specific"]
     
     @Binding var isBeingPresented: Bool
+    @State var saveFailed: Bool = false
     @State var taskName: String = "Task name"
     @State var tags: [String] = ["Tag1","Tag2"]
-    @State var taskType: String = ""
     @State var startDate: Date = Date(timeIntervalSinceNow: 0)
     @State var endDate: Date = Date(timeIntervalSinceNow: 86400)
     
     @Environment(\.managedObjectContext) var moc
+    
+    private func saveTask() -> Bool {
+        let newTask = Task(context: self.moc)
+        newTask.taskName = self.taskName
+        newTask.taskType = self.taskTypes[0]
+        newTask.processTags(newTagNames: self.tags)
+        do {
+            try self.moc.save()
+            return true
+        } catch {
+            self.moc.delete(newTask)
+            return false
+        }
+    }
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: true, content: {
@@ -29,7 +43,12 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
-                        self.isBeingPresented = false
+                        if self.saveTask() {
+                            self.isBeingPresented = false
+                        } else {
+                            // Display failure message in UI if saveTask() failed
+                            self.saveFailed = true
+                        }
                     }, label: {
                         Text("Save")
                     })
@@ -47,10 +66,16 @@ struct AddTask: View {
                     })
                 }
                 
-                Text("Task name")
-                    .bold()
-                TextField("Task name", text: self.$taskName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                VStack (alignment: .leading, spacing: 5, content: {
+                    Text("Task name")
+                        .bold()
+                    TextField("Task name", text: self.$taskName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    if (self.saveFailed) {
+                        Text("Save failed")
+                            .foregroundColor(.red)
+                    }
+                })
                 
                 HStack {
                     Text("Tags")
@@ -67,21 +92,14 @@ struct AddTask: View {
                 Text("Task Type")
                     .bold()
                 ForEach(taskTypes,id: \.description) { taskType in
-                    Button(action: {
-                        self.taskType = taskType
-                    }, label: {
-                        Text(taskType)
-                            .padding(.all, 5)
-                            .foregroundColor(self.taskType == taskType ? .white : .black)
-                            .background(self.taskType == taskType ? Color.black : Color.white)
-                    })
+                    Text(taskType)
                 }
                 
                 Text("Dates")
                     .bold()
                 ForEach(dates,id: \.description) {date in
                     Text(date +
-                        (date == "Start Date: " ? self.startDate.getMYD() : self.endDate.getMYD())
+                        (self.dates.firstIndex(of: date) == 0 ? self.startDate.getMYD() : self.endDate.getMYD())
                     )
                 }
                 
