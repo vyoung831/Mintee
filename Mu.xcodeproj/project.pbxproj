@@ -43,6 +43,7 @@
 		C48F02552448A5730088227F /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02412448A5730088227F /* TaskTargetSet+CoreDataProperties.swift */; };
 		C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */; };
 		C48F02572448A5730088227F /* Analysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02432448A5730088227F /* Analysis+CoreDataProperties.swift */; };
+		C493848B244F023600735AFD /* TodayCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493848A244F023600735AFD /* TodayCollectionView.swift */; };
 		C49B344E24391BB400CF3FCD /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344D24391BB400CF3FCD /* MainTabBarController.swift */; };
 		C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */; };
 		C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345124391C4800CF3FCD /* ManageViewController.swift */; };
@@ -53,6 +54,7 @@
 		C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */; };
 		C49B345E24391D2C00CF3FCD /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
+		C4E759CF244F4A480039C33B /* TodayCollectionViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E759CE244F4A480039C33B /* TodayCollectionViewRepresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +117,7 @@
 		C48F02412448A5730088227F /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02432448A5730088227F /* Analysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C493848A244F023600735AFD /* TodayCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionView.swift; sourceTree = "<group>"; };
 		C49B344D24391BB400CF3FCD /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
 		C49B345124391C4800CF3FCD /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +128,7 @@
 		C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNavigationController.swift; sourceTree = "<group>"; };
 		C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
 		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
+		C4E759CE244F4A480039C33B /* TodayCollectionViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +179,7 @@
 		C4037A9624342E1F00150D47 /* Mu */ = {
 			isa = PBXGroup;
 			children = (
+				C436D34A24505BFE001ED468 /* collection-views */,
 				C48F022F2448A4700088227F /* core-data */,
 				C466A7A324473A0400EC3E97 /* util */,
 				C44C7F85243CA54A00072AD8 /* swift-ui */,
@@ -218,6 +223,22 @@
 			path = MuUITests;
 			sourceTree = "<group>";
 		};
+		C436D34924505A10001ED468 /* representable */ = {
+			isa = PBXGroup;
+			children = (
+				C4E759CE244F4A480039C33B /* TodayCollectionViewRepresentable.swift */,
+			);
+			path = representable;
+			sourceTree = "<group>";
+		};
+		C436D34A24505BFE001ED468 /* collection-views */ = {
+			isa = PBXGroup;
+			children = (
+				C493848A244F023600735AFD /* TodayCollectionView.swift */,
+			);
+			path = "collection-views";
+			sourceTree = "<group>";
+		};
 		C43BD94F2444728C003E68DC /* task-views */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,6 +250,7 @@
 		C44C7F85243CA54A00072AD8 /* swift-ui */ = {
 			isa = PBXGroup;
 			children = (
+				C436D34924505A10001ED468 /* representable */,
 				C43BD94F2444728C003E68DC /* task-views */,
 				C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */,
 				C46DC967243DEBB20037C74C /* TodayView.swift */,
@@ -469,6 +491,7 @@
 				C43C361E244CBDFC0030403B /* Tag+CoreDataProperties.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C48F024D2448A5730088227F /* DayOfWeek+CoreDataProperties.swift in Sources */,
+				C4E759CF244F4A480039C33B /* TodayCollectionViewRepresentable.swift in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */,
 				C48F02502448A5730088227F /* DayOfMonth+CoreDataClass.swift in Sources */,
 				C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */,
@@ -481,6 +504,7 @@
 				C48F024C2448A5730088227F /* DayOfWeek+CoreDataClass.swift in Sources */,
 				C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */,
 				C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */,
+				C493848B244F023600735AFD /* TodayCollectionView.swift in Sources */,
 				C48F02512448A5730088227F /* DayOfMonth+CoreDataProperties.swift in Sources */,
 				C48F02532448A5730088227F /* WeekdayOfMonth+CoreDataProperties.swift in Sources */,
 				C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */,
