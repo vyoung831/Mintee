@@ -33,7 +33,7 @@ class TodayCollectionView: UICollectionView {
     }
     
     private func setupCollectionView() {
-        self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: taskCardReuseIdentifier)
+        self.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: taskCardReuseIdentifier)
         self.dataSource = self
         self.delegate = self
         
@@ -43,7 +43,6 @@ class TodayCollectionView: UICollectionView {
         collectionViewLayout.minimumInteritemSpacing = minimumInteritemSpacing
         collectionViewLayout.minimumLineSpacing = minimumLineSpacing
         self.collectionViewLayout = collectionViewLayout
-        
         self.backgroundColor = .white
     }
     
@@ -73,14 +72,22 @@ extension TodayCollectionView: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath)
-        cell.backgroundColor = .lightGray
-        if let task = fetchResults?.fetchedObjects?[indexPath.item] {
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
-            label.text = task.taskName
-            cell.contentView.addSubview(label)
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
+            if let task = fetchResults?.fetchedObjects?[indexPath.item] {
+                cell.setTaskName(taskName: task.taskName!)
+                cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
+            }
+            
+            cell.handleEditButtonPressed = {
+                print("Edit button pressed")
+            }
+            cell.handleSetButtonPressed = {
+                print("Set button pressed")
+            }
+            
+            return cell
         }
-        return cell
+        return UICollectionViewCell()
     }
     
 }

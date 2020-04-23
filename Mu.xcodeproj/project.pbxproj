@@ -13,6 +13,7 @@
 		C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA324342E2300150D47 /* Preview Assets.xcassets */; };
 		C4037AB224342E2300150D47 /* MuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037AB124342E2300150D47 /* MuTests.swift */; };
 		C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* MuUITests.swift */; };
+		C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */; };
 		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
 		C43C361E244CBDFC0030403B /* Tag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C361D244CBDFC0030403B /* Tag+CoreDataProperties.swift */; };
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
@@ -87,6 +88,7 @@
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* MuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
 		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
 		C43C361D244CBDFC0030403B /* Tag+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				C493848A244F023600735AFD /* TodayCollectionView.swift */,
+				C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */,
 			);
 			path = "collection-views";
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				C49B345424391C5400CF3FCD /* TodayViewController.swift in Sources */,
 				C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */,
 				C48F024C2448A5730088227F /* DayOfWeek+CoreDataClass.swift in Sources */,
+				C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */,
 				C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */,
 				C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */,
 				C493848B244F023600735AFD /* TodayCollectionView.swift in Sources */,
