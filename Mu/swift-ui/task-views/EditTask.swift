@@ -1,36 +1,33 @@
 //
-//  AddTask.swift
+//  EditTask.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/13/20.
+//  Created by Vincent Young on 4/23/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddTask: View {
+struct EditTask: View {
     
-    let dates: [String] = ["Start Date: ","End Date: "]
+    let dateLabels: [String] = ["Start Date: ","End Date: "]
     let taskTypes: [String] = ["Recurring","Specific"]
     
-    @Binding var isBeingPresented: Bool
+    var task: Task
+    var dismiss: (() -> Void)
     @State var saveFailed: Bool = false
-    @State var taskName: String = ""
-    @State var tags: [String] = ["Tag1","Tag2"]
-    @State var startDate: Date = Date(timeIntervalSinceNow: 0)
-    @State var endDate: Date = Date(timeIntervalSinceNow: 86400)
-    
-    @Environment(\.managedObjectContext) var moc
+    @State var taskName: String
+    @State var tags: [String]
+    @State var startDate: Date
+    @State var endDate: Date
     
     private func saveTask() -> Bool {
-        let newTask = Task(context: self.moc)
-        newTask.taskName = self.taskName
-        newTask.processTags(newTagNames: self.tags)
+        task.taskName = self.taskName
+        task.processTags(newTagNames: self.tags)
         do {
-            try self.moc.save()
+            try task.managedObjectContext?.save()
             return true
         } catch {
-            self.moc.delete(newTask)
             return false
         }
     }
@@ -42,7 +39,7 @@ struct AddTask: View {
                 HStack {
                     Button(action: {
                         if self.saveTask() {
-                            self.isBeingPresented = false
+                            self.dismiss()
                         } else {
                             // Display failure message in UI if saveTask() failed
                             self.saveFailed = true
@@ -52,13 +49,13 @@ struct AddTask: View {
                     })
                     Spacer()
                     
-                    Text("Add Task")
+                    Text("Edit Task")
                         .font(.title)
                         .bold()
                     
                     Spacer()
                     Button(action: {
-                        self.isBeingPresented = false
+                        self.dismiss()
                     }, label: {
                         Text("Cancel")
                     })
@@ -67,7 +64,7 @@ struct AddTask: View {
                 VStack (alignment: .leading, spacing: 5, content: {
                     Text("Task name")
                         .bold()
-                    TextField("Task name", text: self.$taskName)
+                    TextField(task.taskName ?? "", text: self.$taskName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     if (self.saveFailed) {
                         Text("Save failed")
@@ -95,9 +92,9 @@ struct AddTask: View {
                 
                 Text("Dates")
                     .bold()
-                ForEach(dates,id: \.description) {date in
+                ForEach(dateLabels,id: \.description) {date in
                     Text(date +
-                        (self.dates.firstIndex(of: date) == 0 ? self.startDate.getMYD() : self.endDate.getMYD())
+                        (self.dateLabels.firstIndex(of: date) == 0 ? self.startDate.getMYD() : self.endDate.getMYD())
                     )
                 }
                 
@@ -107,11 +104,5 @@ struct AddTask: View {
             })
                 .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15))
         })
-    }
-}
-
-struct AddTask_Previews: PreviewProvider {
-    static var previews: some View {
-        AddTask(isBeingPresented: .constant(true))
     }
 }

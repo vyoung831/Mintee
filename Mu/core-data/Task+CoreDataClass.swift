@@ -34,7 +34,7 @@ public class Task: NSManagedObject {
                         tagDict.updateValue(mocTag, forKey: mocTagName)
                         
                         /*
-                         If the new tags don't contain the tagName of the current Tag, check if this Task's tags contains a relationship to that Tag. It it does, remove the relationship and check that Tag for deletion
+                         If the new tags don't contain the tagName of the current Tag, check if this Task's tags contains a relationship to that Tag. If it does, remove the relationship and check that Tag for deletion
                          */
                         if !newTagNames.contains(mocTagName) && (self.tags?.contains(mocTag) ?? false)  {
                             self.removeFromTags(mocTag)
@@ -48,12 +48,12 @@ public class Task: NSManagedObject {
                 for newTagName in newTagNames {
                     if let existingTag = tagDict[newTagName] {
                         // Tag exists in MOC but isn't related to this Task
-                        existingTag.addToTasks(self)
+                        self.addToTags(existingTag)
                     } else {
                         // Tag doesn't exist in MOC
                         let newTag = Tag(context: moc)
                         newTag.tagName = newTagName
-                        newTag.addToTasks(self)
+                        self.addToTags(newTag)
                     }
                 }
                 
@@ -67,12 +67,12 @@ public class Task: NSManagedObject {
     /**
      - returns: An array of strings representing the tagNames of this Task's tags
      */
-    private func getTagNamesArray() -> [String]? {
+    public func getTagNamesArray() -> [String] {
         if let tags = self.tags as? Set<Tag> {
             let tagNames = tags.map({$0.tagName ?? ""})
             return tagNames
         }
-        return nil
+        return []
     }
     
 }

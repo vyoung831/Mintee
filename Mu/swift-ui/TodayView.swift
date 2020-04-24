@@ -11,6 +11,7 @@ import SwiftUI
 struct TodayView: View {
     
     @State var isPresentingAddTask: Bool = false
+    @State var isPresentingEditTask: Bool = false
     
     @Environment(\.managedObjectContext) var moc
     
@@ -25,29 +26,28 @@ struct TodayView: View {
     
     var body: some View {
         NavigationView {
-            TodayCollectionViewRepresentable()
-            .navigationBarTitle("Today")
-            .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
-                
-                Button(action: {
-                    self.isPresentingAddTask = true
-                }, label: {
-                    Image(systemName: "plus.circle")
-                        .frame(width: 30, height: 30, alignment: .center)
-                }).sheet(isPresented: $isPresentingAddTask) {
-                    // TO-DO: Don't pass moc environment property after Apple has fixed this bug with modally presented views
-                    AddTask(isBeingPresented: self.$isPresentingAddTask).environment(\.managedObjectContext, self.moc)
-                }
-                
-                Button(action: {}) {
-                    Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
-                }
-                
-            })
-                .foregroundColor(.black)
-                .scaleEffect(1.5)
+            TodayCollectionViewControllerRepresentable()
+                .navigationBarTitle("Today")
+                .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
+                    Button(action: {
+                        self.isPresentingAddTask = true
+                    }, label: {
+                        Image(systemName: "plus.circle")
+                            .frame(width: 30, height: 30, alignment: .center)
+                    })
+                    
+                    Button(action: {}) {
+                        Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
+                    }
+                })
+                    .foregroundColor(.black)
+                    .scaleEffect(1.5)
             )
         }
+        .sheet(isPresented: $isPresentingAddTask, content:  {
+            // TO-DO: Don't pass moc environment property after Apple has fixed this bug with modally presented views
+            AddTask(isBeingPresented: self.$isPresentingAddTask).environment(\.managedObjectContext, self.moc)
+        })
     }
 }
 
