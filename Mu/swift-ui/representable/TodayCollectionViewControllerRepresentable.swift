@@ -18,7 +18,7 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
     }
     
     func updateUIViewController(_ uiViewController: TodayCollectionViewController, context: Context) {
-        uiViewController.collectionView.reloadData()
+        
     }
     
 }
