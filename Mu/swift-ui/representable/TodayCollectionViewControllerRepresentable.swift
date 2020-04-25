@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable {
     
@@ -17,7 +18,7 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
     }
     
     func updateUIViewController(_ uiViewController: TodayCollectionViewController, context: Context) {
-        
+        uiViewController.collectionView.reloadData()
     }
     
 }

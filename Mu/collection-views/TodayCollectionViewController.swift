@@ -94,6 +94,7 @@ extension TodayCollectionViewController {
                 cell.handleEditButtonPressed = {
                     let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
                         self.dismiss(animated: true, completion: nil)
+                        self.collectionView.reloadData()
                     })
                     self.present(ethvc, animated: true, completion: nil)
                 }
