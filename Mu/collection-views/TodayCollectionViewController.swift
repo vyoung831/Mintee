@@ -63,7 +63,7 @@ class TodayCollectionViewController: UICollectionViewController {
             do {
                 try fetchedResultsController?.performFetch()
             } catch {
-                print("TodayCollectionViewController was unable to execute NSFetchRequest")
+                print("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
             }
         }
     }

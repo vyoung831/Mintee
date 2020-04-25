@@ -11,18 +11,8 @@ import SwiftUI
 struct TodayView: View {
     
     @State var isPresentingAddTask: Bool = false
-    @State var isPresentingEditTask: Bool = false
     
     @Environment(\.managedObjectContext) var moc
-    
-    private func getTagString(task:Task) -> String? {
-        if let tags = task.tags as? Set<Tag> {
-            let tagNames = tags.map({$0.tagName ?? ""})
-            let returnString = tagNames.joined(separator: ",")
-            return returnString
-        }
-        return nil
-    }
     
     var body: some View {
         NavigationView {
