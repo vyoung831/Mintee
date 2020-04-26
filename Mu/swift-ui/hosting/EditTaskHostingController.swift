@@ -19,7 +19,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     
     init(task: Task, dismiss: @escaping (() -> Void)) {
         // TO-DO: Obtain the Task from the TaskInstance provided by TodayCollectionViewController; then, construct the EditTask View
-        let editTask = EditTask(task: task, dismiss: dismiss, saveFailed: false, taskName: task.taskName!, tags: task.getTagNamesArray(), startDate: Date(timeIntervalSinceNow: 0), endDate: Date(timeIntervalSinceNow: 86400))
+        let editTask = EditTask(task: task, dismiss: dismiss, saveFailed: false, taskName: task.taskName ?? "", tags: task.getTagNamesArray(), startDate: Date(timeIntervalSinceNow: 0), endDate: Date(timeIntervalSinceNow: 86400))
         super.init(rootView: editTask)
     }
     
