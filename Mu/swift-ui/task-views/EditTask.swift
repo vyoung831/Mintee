@@ -23,7 +23,7 @@ struct EditTask: View {
     
     private func saveTask() -> Bool {
         task.taskName = self.taskName
-        task.processTags(newTagNames: self.tags)
+        task.updateTags(newTagNames: self.tags)
         do {
             try task.managedObjectContext?.save()
             return true

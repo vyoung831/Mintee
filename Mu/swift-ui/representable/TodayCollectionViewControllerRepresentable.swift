@@ -11,15 +11,11 @@ import CoreData
 
 struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable {
     
-    @Environment(\.managedObjectContext) var moc
-    
     func makeUIViewController(context: Context) -> TodayCollectionViewController {
-        return TodayCollectionViewController(moc: moc)
+        return TodayCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
-    func updateUIViewController(_ uiViewController: TodayCollectionViewController, context: Context) {
-        
-    }
+    func updateUIViewController(_ uiViewController: TodayCollectionViewController, context: Context) {}
     
 }
 

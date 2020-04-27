@@ -14,7 +14,6 @@ class TodayCollectionViewController: UICollectionViewController {
     // MARK: - Properties
     
     var fetchedResultsController: NSFetchedResultsController<Task>?
-    var moc: NSManagedObjectContext?
     
     // collectionView setup constants
     let taskCardReuseIdentifier = "task-card"
@@ -29,9 +28,8 @@ class TodayCollectionViewController: UICollectionViewController {
         super.init(coder: coder)
     }
     
-    init(moc: NSManagedObjectContext) {
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
-        self.moc = moc
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
         setupCollectionView()
         setupFetchedResults()
     }
@@ -57,14 +55,12 @@ class TodayCollectionViewController: UICollectionViewController {
     private func setupFetchedResults() {
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         fetchRequest.sortDescriptors = []
-        if let managedObjectContext = moc {
-            fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-            fetchedResultsController?.delegate = self
-            do {
-                try fetchedResultsController?.performFetch()
-            } catch {
-                print("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
-            }
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.moc, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController?.delegate = self
+        do {
+            try fetchedResultsController?.performFetch()
+        } catch {
+            print("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
         }
     }
     
@@ -97,7 +93,7 @@ extension TodayCollectionViewController {
                     })
                     self.present(ethvc, animated: true, completion: nil)
                 }
-            
+                
                 cell.handleSetButtonPressed = {
                     // TO-DO: Present SetCountPopup
                     print("Set button pressed")
@@ -113,10 +109,54 @@ extension TodayCollectionViewController {
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension TodayCollectionViewController: NSFetchedResultsControllerDelegate {
+extension TodayCollectionViewController : NSFetchedResultsControllerDelegate {
+    
+    func controller (_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            collectionView.insertSections([sectionIndex])
+        case .delete:
+            collectionView.deleteSections([sectionIndex])
+        default:
+            break
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            if let path = newIndexPath {
+                collectionView.insertItems(at: [path])
+            }
+        case .delete:
+            if let path = indexPath {
+                collectionView.deleteItems(at: [path])
+            }
+        case .update:
+            if let path = indexPath {
+                collectionView.reloadItems(at: [path])
+            }
+        case .move:
+            if let source = indexPath, let target = newIndexPath {
+                let minRow = min(source.row, target.row)
+                let maxRow = max(source.row, target.row)
+                for index in minRow...maxRow {
+                    collectionView.reloadItems(at: [IndexPath.init(row: index, section: source.section)])
+                }
+            }
+        @unknown default:
+            fatalError()
+        }
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // collectionView.beginUpdates()
+    }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.collectionView.reloadData()
+        //  collectionView.endUpdates()
     }
     
 }
+

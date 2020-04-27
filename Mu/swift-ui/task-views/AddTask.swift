@@ -25,7 +25,7 @@ struct AddTask: View {
     private func saveTask() -> Bool {
         let newTask = Task(context: self.moc)
         newTask.taskName = self.taskName
-        newTask.processTags(newTagNames: self.tags)
+        newTask.updateTags(newTagNames: self.tags)
         do {
             try self.moc.save()
             return true
