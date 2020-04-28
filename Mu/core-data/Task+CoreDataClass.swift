@@ -27,30 +27,15 @@ public class Task: NSManagedObject {
         // Remove unrelated tags and check for deletion
         self.removeUnrelatedTags(newTagNames: newTagNames)
         
-        var mocTags = Dictionary<String,Tag>()
-        let tagFetchRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
-        do {
-            // Build dictionary with the MOC's Tags as values and their tagNames as keys
-            for case let existingTag in try CDCoordinator.moc.fetch(tagFetchRequest) {
-                mocTags.updateValue(existingTag, forKey: existingTag.tagName!)
-            }
-            
-            // For each tag passed in, check if it already exists using the MOC tagName dictionary. If it does, add it to the tags relationship. If not, create a new Tag in the MOC and add to tags.
-            for newTagName in newTagNames {
-                if let existingTag = mocTags[newTagName] {
-                    self.addToTags(existingTag)
-                } else {
-                    let newTag = Tag(context: CDCoordinator.moc)
-                    newTag.tagName = newTagName
-                    self.addToTags(newTag)
-                }
-            }
-            
-        } catch { print("Task.updateTags encountered error when fetching Tags") }
+        for newTagName in newTagNames {
+            self.addToTags(Tag.getOrCreateTag(tagName: newTagName))
+        }
+        
     }
     
     /**
-     Takes in an array of tag names to associate with this Task and loops through the existing tags relationship, removing those Tags that are no longer to be associated and checking them for deletion
+     Takes in an array of tag names to associate with this Task and loops through the existing tags relationship
+     Tags that are no longer to be associated are removed and checked for deletion
      - Parameters:
      - newTagNames: Array of tag names to associate with this Task
      */
@@ -58,8 +43,13 @@ public class Task: NSManagedObject {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 
+                guard let tagName = tag.tagName else {
+                    print("Error: tagName found with tagName = nil")
+                    exit(-1)
+                }
+                
                 // If new tags don't contain an existing Tag's tagName, remove it from tags. After, if the Tag has no Tasks left, delete it
-                if !newTagNames.contains(tag.tagName!) {
+                if !newTagNames.contains(tagName) {
                     self.removeFromTags(tag)
                     if tag.tasks?.count == 0 {
                         CDCoordinator.moc.delete(tag)

@@ -190,6 +190,7 @@
 				C48F022F2448A4700088227F /* core-data */,
 				C436D34A24505BFE001ED468 /* collection-views */,
 				C466A7A324473A0400EC3E97 /* util */,
+				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
 				C44C7F85243CA54A00072AD8 /* swift-ui */,
 				C462C055243A254400EBB940 /* today */,
 				C49B344C24391B8000CF3FCD /* main-tab-bar */,
@@ -300,7 +301,6 @@
 			isa = PBXGroup;
 			children = (
 				C466A7A424473A1100EC3E97 /* extensions */,
-				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";

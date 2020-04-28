@@ -16,7 +16,7 @@ struct AddTask: View {
     @Binding var isBeingPresented: Bool
     @State var saveFailed: Bool = false
     @State var taskName: String = ""
-    @State var tags: [String] = ["Tag1","Tag2"]
+    @State var tags: [String] = ["Tag1","Tag4","Tag3"]
     @State var startDate: Date = Date(timeIntervalSinceNow: 0)
     @State var endDate: Date = Date(timeIntervalSinceNow: 86400)
     
