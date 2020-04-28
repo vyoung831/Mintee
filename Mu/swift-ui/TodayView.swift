@@ -36,7 +36,7 @@ struct TodayView: View {
         }
         .sheet(isPresented: $isPresentingAddTask, content:  {
             // TO-DO: Don't pass moc environment property after Apple has fixed this bug with modally presented views
-            AddTask(isBeingPresented: self.$isPresentingAddTask).environment(\.managedObjectContext, self.moc)
+            AddTask(isBeingPresented: self.$isPresentingAddTask)
         })
     }
 }

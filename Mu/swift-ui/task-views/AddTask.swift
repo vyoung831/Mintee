@@ -20,8 +20,6 @@ struct AddTask: View {
     @State var startDate: Date = Date(timeIntervalSinceNow: 0)
     @State var endDate: Date = Date(timeIntervalSinceNow: 86400)
     
-    @Environment(\.managedObjectContext) var moc
-    
     private func saveTask() -> Bool {
         let newTask = Task(context: CDCoordinator.moc)
         newTask.taskName = self.taskName
