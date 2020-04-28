@@ -16,63 +16,81 @@ public class Task: NSManagedObject {
     
     /**
      Takes an array of tag names and adds those as Tags to this Task's tags relationship. Of the tags passed in,
+     - Unrelated Tags are removed and checked for deletion
      - New Tags that don't exist in the MOC are created
      - Existing Tags are added to this task's tags
-     - Tags that were but are no longer to be related are removed and checked for deletion possibility
      - Parameters:
-        - newTagNames: Array of tag names to associate with this Task
+     - newTagNames: Array of tag names to associate with this Task
      */
-    func processTags(newTagNames: [String]) {
-        if let moc = self.managedObjectContext {
-            
-            do {
-                // Build a Dictionary with all of MOC's Tags, using each Tag's tagName as key
-                let mocTags = try moc.fetch(Tag.fetchRequest())
-                var tagDict = Dictionary<String,Tag>()
-                for case let mocTag as Tag in mocTags {
-                    if let mocTagName = mocTag.tagName {
-                        tagDict.updateValue(mocTag, forKey: mocTagName)
-                        
-                        /*
-                         If the new tags don't contain the tagName of the current Tag, check if this Task's tags contains a relationship to that Tag. It it does, remove the relationship and check that Tag for deletion
-                         */
-                        if !newTagNames.contains(mocTagName) && (self.tags?.contains(mocTag) ?? false)  {
-                            self.removeFromTags(mocTag)
-                            if mocTag.tasks?.count == 0 {
-                                moc.delete(mocTag)
-                            }
-                        }
+    public func updateTags(newTagNames: [String]) {
+        
+        // Remove unrelated tags and check for deletion
+        self.removeUnrelatedTags(newTagNames: newTagNames)
+        
+        for newTagName in newTagNames {
+            self.addToTags(Tag.getOrCreateTag(tagName: newTagName))
+        }
+        
+    }
+    
+    /**
+     Takes in an array of tag names to associate with this Task and loops through the existing tags relationship
+     Tags that are no longer to be associated are removed and checked for deletion
+     - Parameters:
+     - newTagNames: Array of tag names to associate with this Task
+     */
+    private func removeUnrelatedTags(newTagNames: [String]) {
+        if let tags = self.tags {
+            for case let tag as Tag in tags {
+                
+                guard let tagName = tag.tagName else {
+                    print("Error: tagName found with tagName = nil")
+                    exit(-1)
+                }
+                
+                // If new tags don't contain an existing Tag's tagName, remove it from tags. After, if the Tag has no Tasks left, delete it
+                if !newTagNames.contains(tagName) {
+                    self.removeFromTags(tag)
+                    if tag.tasks?.count == 0 {
+                        CDCoordinator.moc.delete(tag)
                     }
                 }
                 
-                for newTagName in newTagNames {
-                    if let existingTag = tagDict[newTagName] {
-                        // Tag exists in MOC but isn't related to this Task
-                        existingTag.addToTasks(self)
-                    } else {
-                        // Tag doesn't exist in MOC
-                        let newTag = Tag(context: moc)
-                        newTag.tagName = newTagName
-                        newTag.addToTasks(self)
-                    }
-                }
-                
-            } catch {
-                print("Task.processTags failed")
-                exit(-1)
             }
         }
     }
     
     /**
+     Removes all Tags from this Task's tags relationship and checks each one of them for deletion
+     */
+    private func disassociateTags() {
+        if let tags = self.tags {
+            for case let tag as Tag in tags {
+                self.removeFromTags(tag)
+                if tag.tasks?.count == 0 {
+                    CDCoordinator.moc.delete(tag)
+                }
+            }
+        }
+    }
+    
+    /**
+     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC
+     */
+    func deleteSelf() {
+        disassociateTags()
+        CDCoordinator.moc.delete(self)
+    }
+    
+    /**
      - returns: An array of strings representing the tagNames of this Task's tags
      */
-    private func getTagNamesArray() -> [String]? {
+    public func getTagNamesArray() -> [String] {
         if let tags = self.tags as? Set<Tag> {
             let tagNames = tags.map({$0.tagName ?? ""})
             return tagNames
         }
-        return nil
+        return []
     }
     
 }
