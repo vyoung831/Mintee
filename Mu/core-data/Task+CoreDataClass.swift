@@ -61,6 +61,28 @@ public class Task: NSManagedObject {
     }
     
     /**
+     Removes all Tags from this Task's tags relationship and checks each one of them for deletion
+     */
+    private func disassociateTags() {
+        if let tags = self.tags {
+            for case let tag as Tag in tags {
+                self.removeFromTags(tag)
+                if tag.tasks?.count == 0 {
+                    CDCoordinator.moc.delete(tag)
+                }
+            }
+        }
+    }
+    
+    /**
+     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC
+     */
+    func deleteSelf() {
+        disassociateTags()
+        CDCoordinator.moc.delete(self)
+    }
+    
+    /**
      - returns: An array of strings representing the tagNames of this Task's tags
      */
     public func getTagNamesArray() -> [String] {

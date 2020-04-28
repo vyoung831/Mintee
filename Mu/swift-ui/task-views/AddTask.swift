@@ -23,14 +23,14 @@ struct AddTask: View {
     @Environment(\.managedObjectContext) var moc
     
     private func saveTask() -> Bool {
-        let newTask = Task(context: self.moc)
+        let newTask = Task(context: CDCoordinator.moc)
         newTask.taskName = self.taskName
         newTask.updateTags(newTagNames: self.tags)
         do {
-            try self.moc.save()
+            try CDCoordinator.moc.save()
             return true
         } catch {
-            self.moc.delete(newTask)
+            CDCoordinator.moc.delete(newTask)
             return false
         }
     }

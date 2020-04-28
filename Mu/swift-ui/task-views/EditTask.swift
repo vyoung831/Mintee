@@ -16,6 +16,7 @@ struct EditTask: View {
     var task: Task
     var dismiss: (() -> Void)
     @State var saveFailed: Bool = false
+    @State var deleteFailed: Bool = false
     @State var taskName: String
     @State var tags: [String]
     @State var startDate: Date
@@ -25,7 +26,17 @@ struct EditTask: View {
         task.taskName = self.taskName
         task.updateTags(newTagNames: self.tags)
         do {
-            try task.managedObjectContext?.save()
+            try CDCoordinator.moc.save()
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    private func deleteTask() -> Bool {
+        task.deleteSelf()
+        do {
+            try CDCoordinator.moc.save()
             return true
         } catch {
             return false
@@ -100,6 +111,26 @@ struct EditTask: View {
                 
                 Text("Target Sets")
                     .bold()
+                
+                VStack {
+                    Button(action: {
+                        if self.deleteTask() {
+                            self.dismiss()
+                        } else {
+                            self.deleteFailed = true
+                        }
+                    }, label: {
+                        Text("Delete Task")
+                            .padding(.all, 10)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                    })
+                    
+                    if (self.deleteFailed) {
+                        Text("Delete failed")
+                            .foregroundColor(.red)
+                    }
+                }
                 
             })
                 .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15))
