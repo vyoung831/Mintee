@@ -2,7 +2,7 @@
 //  TaskInstance+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/16/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,8 +17,8 @@ extension TaskInstance {
         return NSFetchRequest<TaskInstance>(entityName: "TaskInstance")
     }
 
-    @NSManaged public var taskInstanceCompletion: Float
-    @NSManaged public var taskInstanceDate: Date?
+    @NSManaged public var completion: Float
+    @NSManaged public var date: Date?
     @NSManaged public var task: Task?
 
 }

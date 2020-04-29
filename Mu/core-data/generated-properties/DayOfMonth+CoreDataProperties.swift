@@ -2,7 +2,7 @@
 //  DayOfMonth+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/16/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,7 +17,7 @@ extension DayOfMonth {
         return NSFetchRequest<DayOfMonth>(entityName: "DayOfMonth")
     }
 
-    @NSManaged public var dayOfMonth: Int16
+    @NSManaged public var day: Int16
     @NSManaged public var taskTargetSet: TaskTargetSet?
 
 }

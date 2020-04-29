@@ -43,7 +43,7 @@ public class Task: NSManagedObject {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 
-                guard let tagName = tag.tagName else {
+                guard let tagName = tag.name else {
                     print("Error: tagName found with tagName = nil")
                     exit(-1)
                 }
@@ -87,7 +87,7 @@ public class Task: NSManagedObject {
      */
     public func getTagNamesArray() -> [String] {
         if let tags = self.tags as? Set<Tag> {
-            let tagNames = tags.map({$0.tagName ?? ""})
+            let tagNames = tags.map({$0.name ?? ""})
             return tagNames
         }
         return []

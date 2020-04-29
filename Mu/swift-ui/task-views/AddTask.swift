@@ -22,7 +22,7 @@ struct AddTask: View {
     
     private func saveTask() -> Bool {
         let newTask = Task(context: CDCoordinator.moc)
-        newTask.taskName = self.taskName
+        newTask.name = self.taskName
         newTask.updateTags(newTagNames: self.tags)
         do {
             try CDCoordinator.moc.save()

@@ -2,7 +2,7 @@
 //  Analysis+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/16/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,9 +17,9 @@ extension Analysis {
         return NSFetchRequest<Analysis>(entityName: "Analysis")
     }
 
-    @NSManaged public var analysisEnd: Date?
-    @NSManaged public var analysisName: String?
-    @NSManaged public var analysisStart: Date?
+    @NSManaged public var endDate: Date?
+    @NSManaged public var name: String?
+    @NSManaged public var startDate: Date?
     @NSManaged public var analysisType: String?
     @NSManaged public var legendEntries: NSSet?
     @NSManaged public var tags: NSSet?

@@ -21,7 +21,7 @@ public class Tag: NSManagedObject {
     private convenience init( tagName : String ) {
         if let entity = NSEntityDescription.entity(forEntityName: "Tag", in: CDCoordinator.moc) {
             self.init(entity: entity, insertInto: CDCoordinator.moc)
-            self.tagName = tagName
+            self.name = tagName
         } else {
             fatalError("Unable to find Entity")
         }
@@ -38,7 +38,7 @@ public class Tag: NSManagedObject {
     static func getOrCreateTag ( tagName : String ) -> Tag {
         // Set up case and diacritic insensitive predicate
         let request = NSFetchRequest<Tag>(entityName: "Tag")
-        request.predicate = NSPredicate(format: "tagName == [cd] %@", tagName)
+        request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
         do {
             let results = try CDCoordinator.moc.fetch(request)
             if let first = results.first {

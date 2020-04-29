@@ -2,7 +2,7 @@
 //  TaskTargetSet+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/16/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,11 +17,11 @@ extension TaskTargetSet {
         return NSFetchRequest<TaskTargetSet>(entityName: "TaskTargetSet")
     }
 
-    @NSManaged public var taskTargetSetMax: Float
-    @NSManaged public var taskTargetSetMaxInclusive: Bool
-    @NSManaged public var taskTargetSetMin: Float
-    @NSManaged public var taskTargetSetMinInclusive: Bool
-    @NSManaged public var taskTargetSetPriority: Int16
+    @NSManaged public var max: Float
+    @NSManaged public var maxInclusive: Bool
+    @NSManaged public var min: Float
+    @NSManaged public var minInclusive: Bool
+    @NSManaged public var priority: Int16
     @NSManaged public var daysOfMonth: NSSet?
     @NSManaged public var daysOfWeek: NSSet?
     @NSManaged public var task: Task?

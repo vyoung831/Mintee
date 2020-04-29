@@ -2,7 +2,7 @@
 //  Task+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/19/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,9 +17,9 @@ extension Task {
         return NSFetchRequest<Task>(entityName: "Task")
     }
 
-    @NSManaged public var taskEnd: Date?
-    @NSManaged public var taskName: String?
-    @NSManaged public var taskStart: Date?
+    @NSManaged public var endDate: Date?
+    @NSManaged public var name: String?
+    @NSManaged public var startDate: Date?
     @NSManaged public var taskType: String?
     @NSManaged public var instances: NSSet?
     @NSManaged public var tags: NSSet?

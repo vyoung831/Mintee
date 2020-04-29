@@ -84,7 +84,7 @@ extension TodayCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
             if let task = fetchedResultsController?.fetchedObjects?[indexPath.item] {
-                cell.setTaskName(taskName: task.taskName ?? "")
+                cell.setTaskName(taskName: task.name ?? "")
                 cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
                 
                 cell.handleEditButtonPressed = {

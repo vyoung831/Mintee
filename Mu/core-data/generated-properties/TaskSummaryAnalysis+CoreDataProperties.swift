@@ -2,7 +2,7 @@
 //  TaskSummaryAnalysis+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/16/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,10 +17,10 @@ extension TaskSummaryAnalysis {
         return NSFetchRequest<TaskSummaryAnalysis>(entityName: "TaskSummaryAnalysis")
     }
 
-    @NSManaged public var taskSummaryAnalysisEnd: Date?
-    @NSManaged public var taskSummaryAnalysisStart: Date?
-    @NSManaged public var taskSummaryAnalysisType: String?
-    @NSManaged public var taskSummaryDateRange: Int16
+    @NSManaged public var endDate: Date?
+    @NSManaged public var startDate: Date?
+    @NSManaged public var analysisType: String?
+    @NSManaged public var dateRange: Int16
     @NSManaged public var legendEntries: NSSet?
     @NSManaged public var task: Task?
 

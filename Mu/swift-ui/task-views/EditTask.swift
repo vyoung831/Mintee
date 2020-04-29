@@ -23,7 +23,7 @@ struct EditTask: View {
     @State var endDate: Date
     
     private func saveTask() -> Bool {
-        task.taskName = self.taskName
+        task.name = self.taskName
         task.updateTags(newTagNames: self.tags)
         do {
             try CDCoordinator.moc.save()
@@ -75,7 +75,7 @@ struct EditTask: View {
                 VStack (alignment: .leading, spacing: 5, content: {
                     Text("Task name")
                         .bold()
-                    TextField(task.taskName ?? "", text: self.$taskName)
+                    TextField(task.name ?? "", text: self.$taskName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     if (self.saveFailed) {
                         Text("Save failed")

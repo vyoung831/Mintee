@@ -2,7 +2,7 @@
 //  Tag+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/19/20.
+//  Created by Vincent Young on 4/29/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,7 +17,7 @@ extension Tag {
         return NSFetchRequest<Tag>(entityName: "Tag")
     }
 
-    @NSManaged public var tagName: String?
+    @NSManaged public var name: String?
     @NSManaged public var analyses: NSSet?
     @NSManaged public var tasks: NSSet?
 
