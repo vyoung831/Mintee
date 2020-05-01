@@ -10,11 +10,14 @@ import SwiftUI
 
 struct EditTask: View {
     
-    let dateLabels: [String] = ["Start Date: ","End Date: "]
+    let startDateLabel: String = "Start Date: "
+    let endDateLabel: String = "End Date: "
     let taskTypes: [String] = ["Recurring","Specific"]
     
     var task: Task
     var dismiss: (() -> Void)
+    @State var isPresentingSelectStartDatePopup: Bool = false
+    @State var isPresentingSelectEndDatePopup: Bool = false
     @State var saveFailed: Bool = false
     @State var deleteFailed: Bool = false
     @State var taskName: String
@@ -47,6 +50,8 @@ struct EditTask: View {
         ScrollView(.vertical, showsIndicators: true, content: {
             VStack(alignment: .leading, spacing: 15, content: {
                 
+                // MARK: - Title and buttons
+                
                 HStack {
                     Button(action: {
                         if self.saveTask() {
@@ -72,6 +77,8 @@ struct EditTask: View {
                     })
                 }
                 
+                // MARK: - Task name text field
+                
                 VStack (alignment: .leading, spacing: 5, content: {
                     Text("Task name")
                         .bold()
@@ -83,36 +90,74 @@ struct EditTask: View {
                     }
                 })
                 
-                HStack {
-                    Text("Tags")
+                // MARK: - Tags
+                Group {
+                    HStack {
+                        Text("Tags")
+                            .bold()
+                        Image(systemName: "plus")
+                    }
+                    ForEach(self.tags,id: \.description) { tag in
+                        Text(tag)
+                            .padding(.all, 8)
+                            .foregroundColor(.white)
+                            .background(Color.black)
+                    }
+                }
+                
+                // MARK: - Task type
+                
+                Group {
+                    Text("Task Type")
                         .bold()
-                    Image(systemName: "plus")
-                }
-                ForEach(self.tags,id: \.description) { tag in
-                    Text(tag)
-                        .padding(.all, 8)
-                        .foregroundColor(.white)
-                        .background(Color.black)
+                    ForEach(taskTypes,id: \.description) { taskType in
+                        Text(taskType)
+                    }
                 }
                 
-                Text("Task Type")
-                    .bold()
-                ForEach(taskTypes,id: \.description) { taskType in
-                    Text(taskType)
+                // MARK: - Dates
+                
+                Group {
+                    Text("Dates")
+                        .bold()
+                    
+                    Button(action: {
+                        self.isPresentingSelectStartDatePopup = true
+                    }, label: {
+                        Text(startDateLabel + self.startDate.getMYD())
+                    }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
+                        SelectDatePopup.init(
+                            isBeingPresented: self.$isPresentingSelectStartDatePopup,
+                            startDate: self.$startDate,
+                            endDate: self.$endDate,
+                            isStartDate: true,
+                            label: "Select Start Date")
+                    })
+                    
+                    Button(action: {
+                        self.isPresentingSelectEndDatePopup = true
+                    }, label: {
+                        Text(endDateLabel + self.endDate.getMYD())
+                    }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
+                        SelectDatePopup.init(
+                            isBeingPresented: self.$isPresentingSelectEndDatePopup,
+                            startDate: self.$startDate,
+                            endDate: self.$endDate,
+                            isStartDate: false,
+                            label: "Select End Date")
+                    })
                 }
                 
-                Text("Dates")
-                    .bold()
-                ForEach(dateLabels,id: \.description) {date in
-                    Text(date +
-                        (self.dateLabels.firstIndex(of: date) == 0 ? self.startDate.getMYD() : self.endDate.getMYD())
-                    )
+                // MARK: - Target sets
+                
+                Group {
+                    Text("Target Sets")
+                        .bold()
                 }
                 
-                Text("Target Sets")
-                    .bold()
+                // MARK: - Task deletion
                 
-                VStack {
+                Group {
                     Button(action: {
                         if self.deleteTask() {
                             self.dismiss()

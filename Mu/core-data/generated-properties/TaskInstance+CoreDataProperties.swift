@@ -18,7 +18,7 @@ extension TaskInstance {
     }
 
     @NSManaged public var completion: Float
-    @NSManaged public var date: Date?
+    @NSManaged public var date: String?
     @NSManaged public var task: Task?
 
 }
