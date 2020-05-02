@@ -28,6 +28,7 @@ struct EditTask: View {
     private func saveTask() -> Bool {
         task.name = self.taskName
         task.updateTags(newTagNames: self.tags)
+        task.updateDates(startDate: startDate.toStoredString(), endDate: endDate.toStoredString())
         do {
             try CDCoordinator.moc.save()
             return true
@@ -124,7 +125,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectStartDatePopup = true
                     }, label: {
-                        Text(startDateLabel + self.startDate.getMYD())
+                        Text(startDateLabel + self.startDate.toMYD())
                     }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectStartDatePopup,
@@ -137,7 +138,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectEndDatePopup = true
                     }, label: {
-                        Text(endDateLabel + self.endDate.getMYD())
+                        Text(endDateLabel + self.endDate.toMYD())
                     }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectEndDatePopup,

@@ -10,7 +10,21 @@ import Foundation
 
 extension Date {
     
-    func getMYD() -> String {
+    /**
+     Returns a string representation of a Date for storing in Core Data
+     */
+    func toStoredString() -> String {
+        let components = Calendar(identifier: .gregorian).dateComponents(in: .current, from: self)
+        if let month = components.month, let day = components.day, let year = components.year {
+            return (String(month) + "/" + String(day) + "/" + String(year))
+        }
+        return ""
+    }
+    
+    /**
+     Returns a String representation of a Date for presenting to user
+     */
+    func toMYD() -> String {
         let dateFormatterPrint = DateFormatter()
         dateFormatterPrint.dateFormat = "MMM dd, yyyy"
         return dateFormatterPrint.string(from: self)

@@ -2,7 +2,7 @@
 //  WeekdayOfMonth+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 4/29/20.
+//  Created by Vincent Young on 5/2/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -17,8 +17,8 @@ extension WeekdayOfMonth {
         return NSFetchRequest<WeekdayOfMonth>(entityName: "WeekdayOfMonth")
     }
 
-    @NSManaged public var weekday: Int16
     @NSManaged public var week: Int16
+    @NSManaged public var weekday: Int16
     @NSManaged public var taskTargetSet: TaskTargetSet?
 
 }

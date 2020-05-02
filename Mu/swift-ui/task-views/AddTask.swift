@@ -27,6 +27,7 @@ struct AddTask: View {
         let newTask = Task(context: CDCoordinator.moc)
         newTask.name = self.taskName
         newTask.updateTags(newTagNames: self.tags)
+        newTask.updateDates(startDate: startDate.toStoredString(), endDate: endDate.toStoredString())
         do {
             try CDCoordinator.moc.save()
             return true
@@ -115,7 +116,7 @@ struct AddTask: View {
                     Button(action: {
                         self.isPresentingSelectStartDatePopup = true
                     }, label: {
-                        Text(startDateLabel + self.startDate.getMYD())
+                        Text(startDateLabel + self.startDate.toMYD())
                     }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectStartDatePopup,
@@ -128,7 +129,7 @@ struct AddTask: View {
                     Button(action: {
                         self.isPresentingSelectEndDatePopup = true
                     }, label: {
-                        Text(endDateLabel + self.endDate.getMYD())
+                        Text(endDateLabel + self.endDate.toMYD())
                     }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectEndDatePopup,
