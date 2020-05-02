@@ -22,7 +22,6 @@
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
 		C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
-		C462C058243A2E8700EBB940 /* TaskCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C057243A2E8700EBB940 /* TaskCardCollectionViewCell.swift */; };
 		C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C466A7A524473A2500EC3E97 /* Date+Extensions.swift */; };
 		C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4697EE124561BEF00B028A2 /* CDCoordinator.swift */; };
 		C46DC968243DEBB20037C74C /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC967243DEBB20037C74C /* TodayView.swift */; };
@@ -40,15 +39,6 @@
 		C48F02542448A5730088227F /* TaskTargetSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02402448A5730088227F /* TaskTargetSet+CoreDataClass.swift */; };
 		C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */; };
 		C48F9762245ADBC3000339E9 /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */; };
-		C49B344E24391BB400CF3FCD /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344D24391BB400CF3FCD /* MainTabBarController.swift */; };
-		C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */; };
-		C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345124391C4800CF3FCD /* ManageViewController.swift */; };
-		C49B345424391C5400CF3FCD /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345324391C5400CF3FCD /* TodayViewController.swift */; };
-		C49B345624391C6000CF3FCD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345524391C6000CF3FCD /* SettingsViewController.swift */; };
-		C49B345824391D0800CF3FCD /* AnalysisNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345724391D0800CF3FCD /* AnalysisNavigationController.swift */; };
-		C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345924391D1900CF3FCD /* ManageNavigationController.swift */; };
-		C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */; };
-		C49B345E24391D2C00CF3FCD /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
 		C4AAFCAA245A2DCE006F75BC /* TaskInstance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AAFCA8245A2DCE006F75BC /* TaskInstance+CoreDataProperties.swift */; };
 		C4D0437D2459892300A75BC9 /* DayOfWeek+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D043692459892300A75BC9 /* DayOfWeek+CoreDataProperties.swift */; };
@@ -101,7 +91,6 @@
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
 		C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
-		C462C057243A2E8700EBB940 /* TaskCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		C466A7A524473A2500EC3E97 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		C4697EE124561BEF00B028A2 /* CDCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCoordinator.swift; sourceTree = "<group>"; };
 		C46DC967243DEBB20037C74C /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
@@ -119,15 +108,6 @@
 		C48F02402448A5730088227F /* TaskTargetSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
-		C49B344D24391BB400CF3FCD /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
-		C49B345124391C4800CF3FCD /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
-		C49B345324391C5400CF3FCD /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		C49B345524391C6000CF3FCD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		C49B345724391D0800CF3FCD /* AnalysisNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisNavigationController.swift; sourceTree = "<group>"; };
-		C49B345924391D1900CF3FCD /* ManageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageNavigationController.swift; sourceTree = "<group>"; };
-		C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNavigationController.swift; sourceTree = "<group>"; };
-		C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
 		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
 		C4AAFCA8245A2DCE006F75BC /* TaskInstance+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskInstance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4D043692459892300A75BC9 /* DayOfWeek+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayOfWeek+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -192,9 +172,7 @@
 				C4037AA224342E2300150D47 /* Preview Content */,
 				C436D34A24505BFE001ED468 /* collection-views */,
 				C48F022F2448A4700088227F /* core-data */,
-				C49B344C24391B8000CF3FCD /* main-tab-bar */,
 				C44C7F85243CA54A00072AD8 /* swift-ui */,
-				C462C055243A254400EBB940 /* today */,
 				C466A7A324473A0400EC3E97 /* util */,
 				C4037AA824342E2300150D47 /* Info.plist */,
 				C4037A9724342E1F00150D47 /* AppDelegate.swift */,
@@ -279,22 +257,6 @@
 			path = "swift-ui";
 			sourceTree = "<group>";
 		};
-		C462C055243A254400EBB940 /* today */ = {
-			isa = PBXGroup;
-			children = (
-				C462C056243A2E4E00EBB940 /* collection-view-cells */,
-			);
-			path = today;
-			sourceTree = "<group>";
-		};
-		C462C056243A2E4E00EBB940 /* collection-view-cells */ = {
-			isa = PBXGroup;
-			children = (
-				C462C057243A2E8700EBB940 /* TaskCardCollectionViewCell.swift */,
-			);
-			path = "collection-view-cells";
-			sourceTree = "<group>";
-		};
 		C466A7A324473A0400EC3E97 /* util */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,38 +289,6 @@
 				C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */,
 			);
 			path = popups;
-			sourceTree = "<group>";
-		};
-		C49B344C24391B8000CF3FCD /* main-tab-bar */ = {
-			isa = PBXGroup;
-			children = (
-				C49B344D24391BB400CF3FCD /* MainTabBarController.swift */,
-				C49B346024391F5900CF3FCD /* main-view-controllers */,
-				C49B345F24391F4F00CF3FCD /* navigation-controllers */,
-			);
-			path = "main-tab-bar";
-			sourceTree = "<group>";
-		};
-		C49B345F24391F4F00CF3FCD /* navigation-controllers */ = {
-			isa = PBXGroup;
-			children = (
-				C49B345724391D0800CF3FCD /* AnalysisNavigationController.swift */,
-				C49B345924391D1900CF3FCD /* ManageNavigationController.swift */,
-				C49B345B24391D2300CF3FCD /* TodayNavigationController.swift */,
-				C49B345D24391D2C00CF3FCD /* SettingsNavigationController.swift */,
-			);
-			path = "navigation-controllers";
-			sourceTree = "<group>";
-		};
-		C49B346024391F5900CF3FCD /* main-view-controllers */ = {
-			isa = PBXGroup;
-			children = (
-				C49B344F24391C3900CF3FCD /* AnalysisViewController.swift */,
-				C49B345124391C4800CF3FCD /* ManageViewController.swift */,
-				C49B345324391C5400CF3FCD /* TodayViewController.swift */,
-				C49B345524391C6000CF3FCD /* SettingsViewController.swift */,
-			);
-			path = "main-view-controllers";
 			sourceTree = "<group>";
 		};
 		C4D04366245988D200A75BC9 /* generated-subclasses */ = {
@@ -543,17 +473,13 @@
 				C4D043872459892300A75BC9 /* TaskTargetSet+CoreDataProperties.swift in Sources */,
 				C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */,
 				C4D0437F2459892300A75BC9 /* LegendEntry+CoreDataProperties.swift in Sources */,
-				C49B345E24391D2C00CF3FCD /* SettingsNavigationController.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */,
 				C48F02502448A5730088227F /* DayOfMonth+CoreDataClass.swift in Sources */,
-				C49B345024391C3900CF3FCD /* AnalysisViewController.swift in Sources */,
 				C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */,
 				C48F02522448A5730088227F /* WeekdayOfMonth+CoreDataClass.swift in Sources */,
-				C49B344E24391BB400CF3FCD /* MainTabBarController.swift in Sources */,
 				C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */,
-				C49B345424391C5400CF3FCD /* TodayViewController.swift in Sources */,
 				C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */,
 				C4D043832459892300A75BC9 /* Tag+CoreDataProperties.swift in Sources */,
 				C4D043892459892300A75BC9 /* Analysis+CoreDataProperties.swift in Sources */,
@@ -561,11 +487,7 @@
 				C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */,
 				C48F024C2448A5730088227F /* DayOfWeek+CoreDataClass.swift in Sources */,
 				C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */,
-				C49B345224391C4800CF3FCD /* ManageViewController.swift in Sources */,
-				C49B345C24391D2300CF3FCD /* TodayNavigationController.swift in Sources */,
 				C41A73ED245207F7007007CB /* EditTaskHostingController.swift in Sources */,
-				C49B345A24391D1900CF3FCD /* ManageNavigationController.swift in Sources */,
-				C49B345824391D0800CF3FCD /* AnalysisNavigationController.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */,
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
 				C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */,
@@ -576,9 +498,7 @@
 				C48F02542448A5730088227F /* TaskTargetSet+CoreDataClass.swift in Sources */,
 				C4D0438D2459892300A75BC9 /* DayOfMonth+CoreDataProperties.swift in Sources */,
 				C4D0438F2459892300A75BC9 /* Task+CoreDataProperties.swift in Sources */,
-				C462C058243A2E8700EBB940 /* TaskCardCollectionViewCell.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
-				C49B345624391C6000CF3FCD /* SettingsViewController.swift in Sources */,
 				C48F02462448A5730088227F /* TaskInstance+CoreDataClass.swift in Sources */,
 				C4D0437D2459892300A75BC9 /* DayOfWeek+CoreDataProperties.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,
