@@ -11,7 +11,7 @@
 import SwiftUI
 
 class EditTaskHostingController: UIHostingController<EditTask> {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -19,8 +19,23 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     
     init(task: Task, dismiss: @escaping (() -> Void)) {
         // TO-DO: Obtain the Task from the TaskInstance provided by TodayCollectionViewController; then, construct the EditTask View
-        let editTask = EditTask(task: task, dismiss: dismiss, taskName: task.name ?? "", tags: task.getTagNamesArray(), startDate: Date(timeIntervalSinceNow: 0), endDate: Date(timeIntervalSinceNow: 86400))
-        super.init(rootView: editTask)
+        if let startDateString = task.startDate, let endDateString = task.endDate {
+            if let startDate = Date.storedStringToDate(storedString: startDateString), let endDate = Date.storedStringToDate(storedString: endDateString) {
+                let editTask = EditTask(task: task,
+                                        dismiss: dismiss,
+                                        taskName: task.name ?? "",
+                                        tags: task.getTagNamesArray(),
+                                        startDate: startDate,
+                                        endDate: endDate)
+                super.init(rootView: editTask)
+            } else {
+                print("Task's start and/or end date was stored in an incompatible format")
+                exit(-1)
+            }
+        } else {
+            print("Nil value found in Task's dates")
+            exit(-1)
+        }
     }
     
     override init?(coder aDecoder: NSCoder, rootView: EditTask) {

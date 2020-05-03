@@ -11,23 +11,30 @@ import Foundation
 extension Date {
     
     /**
-     Returns a string representation of a Date for storing in Core Data
+     Returns a Date object from a String representation. The String representation is expected to be in "yyyy-MM-dd" format
      */
-    func toStoredString() -> String {
-        let components = Calendar(identifier: .gregorian).dateComponents(in: .current, from: self)
-        if let month = components.month, let day = components.day, let year = components.year {
-            return (String(month) + "/" + String(day) + "/" + String(year))
-        }
-        return ""
+    static func storedStringToDate(storedString: String) -> Date? {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df.date(from: storedString)
     }
     
     /**
-     Returns a String representation of a Date for presenting to user
+     Returns a "yyyy-MM-dd" String representation of a Date for storing in Core Data
+     */
+    func toStoredString() -> String {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df.string(from: self)
+    }
+    
+    /**
+     Returns a "MMM dd,yyyy" String representation of a Date for presenting to user
      */
     func toMYD() -> String {
-        let dateFormatterPrint = DateFormatter()
-        dateFormatterPrint.dateFormat = "MMM dd, yyyy"
-        return dateFormatterPrint.string(from: self)
+        let df = DateFormatter()
+        df.dateFormat = "MMM dd, yyyy"
+        return df.string(from: self)
     }
     
 }

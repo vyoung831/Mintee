@@ -14,7 +14,7 @@ import SwiftUI
 @objc(Task)
 public class Task: NSManagedObject {
     
-    // MARK: - Date handling
+    // MARK: - TaskInstance and date handling
     
     /**
      Updates the Task's startDate and endDate. This function does not check the if startDate is before endDate, as it should have been handled before calling this function.

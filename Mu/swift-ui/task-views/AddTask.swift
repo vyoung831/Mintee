@@ -32,7 +32,7 @@ struct AddTask: View {
             try CDCoordinator.moc.save()
             return true
         } catch {
-            CDCoordinator.moc.delete(newTask)
+            CDCoordinator.moc.rollback()
             return false
         }
     }

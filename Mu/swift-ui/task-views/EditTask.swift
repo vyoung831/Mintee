@@ -47,6 +47,8 @@ struct EditTask: View {
         }
     }
     
+    
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: true, content: {
             VStack(alignment: .leading, spacing: 15, content: {
@@ -72,6 +74,7 @@ struct EditTask: View {
                     
                     Spacer()
                     Button(action: {
+                        CDCoordinator.moc.rollback()
                         self.dismiss()
                     }, label: {
                         Text("Cancel")
