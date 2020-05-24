@@ -24,6 +24,7 @@ struct EditTask: View {
     @State var tags: [String]
     @State var startDate: Date
     @State var endDate: Date
+    @State var taskTargetSets: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
         task.name = self.taskName
@@ -47,8 +48,6 @@ struct EditTask: View {
         }
     }
     
-    
-    
     var body: some View {
         ScrollView(.vertical, showsIndicators: true, content: {
             VStack(alignment: .leading, spacing: 15, content: {
@@ -65,7 +64,7 @@ struct EditTask: View {
                         }
                     }, label: {
                         Text("Save")
-                    })
+                    }).disabled(self.taskName == "")
                     Spacer()
                     
                     Text("Edit Task")
@@ -157,6 +156,12 @@ struct EditTask: View {
                 Group {
                     Text("Target Sets")
                         .bold()
+                    VStack {
+                        // TO-DO: Present TTSes by priority
+                        ForEach(0 ..< taskTargetSets.count) { idx in
+                            self.taskTargetSets[idx]
+                        }
+                    }
                 }
                 
                 // MARK: - Task deletion
@@ -182,7 +187,7 @@ struct EditTask: View {
                 }
                 
             })
-                .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15))
+                .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
     }
 }

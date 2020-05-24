@@ -14,6 +14,47 @@ import SwiftUI
 @objc(Task)
 public class Task: NSManagedObject {
     
+    // MARK: - TaskTargetSet handling
+    
+    /**
+     Creates new TaskTargetSets and adds them to the targetSets relationship
+     - parameter taskTargetSetViews: Array of TaskTargetSetViews, ordered in ascending priority
+     */
+    func setNewTaskTargetSets(taskTargetSetViews: [TaskTargetSetView]) {
+        for i in 0 ... taskTargetSetViews.count - 1 {
+            let ttsv = taskTargetSetViews[i]
+            let tts = TaskTargetSet(context: CDCoordinator.moc)
+            
+            // Create instances of DayOfWeek, WeekOfMonth, and DayOfMonth and add them to the TaskTargetSet's relationships
+            if ttsv.selectedDaysOfWeek.count > 0 {
+                
+                for dow in ttsv.selectedDaysOfWeek {
+                    let dayOfWeek = DayOfWeek(context: CDCoordinator.moc)
+                    dayOfWeek.day = SaveFormatter.getWeekdayNumber(weekday: dow)
+                    tts.addToDaysOfWeek(dayOfWeek)
+                }
+                
+                if ttsv.selectedWeeksOfMonth.count > 0 {
+                    for wom in ttsv.selectedWeeksOfMonth {
+                        let weekOfMonth = WeekOfMonth(context: CDCoordinator.moc)
+                        weekOfMonth.week = Int16(wom)
+                        tts.addToWeeksOfMonth(weekOfMonth)
+                    }
+                }
+                
+            } else {
+                for day in ttsv.selectedDaysOfMonth {
+                    let dayOfMonth = DayOfMonth(context: CDCoordinator.moc)
+                    dayOfMonth.day = Int16(day) ?? 0
+                    tts.addToDaysOfMonth(dayOfMonth)
+                }
+            }
+            
+            tts.priority = Int16(i)
+            self.addToTargetSets(tts)
+        }
+    }
+    
     // MARK: - TaskInstance and date handling
     
     /**
@@ -30,8 +71,7 @@ public class Task: NSManagedObject {
     // MARK: - Tag handling
     
     /**
-     - returns:
-       - An array of strings representing the tagNames of this Task's tags
+     - returns: An array of strings representing the tagNames of this Task's tags
      */
     public func getTagNamesArray() -> [String] {
         if let tags = self.tags as? Set<Tag> {
@@ -46,8 +86,7 @@ public class Task: NSManagedObject {
      - Unrelated Tags are removed and checked for deletion
      - New Tags that don't exist in the MOC are created
      - Existing Tags are added to this task's tags
-     - Parameters:
-       - newTagNames: Array of tag names to associate with this Task
+     - parameter newTagNames: Array of tag names to associate with this Task
      */
     public func updateTags(newTagNames: [String]) {
         
@@ -63,8 +102,7 @@ public class Task: NSManagedObject {
     /**
      Takes in an array of tag names to associate with this Task and loops through the existing tags relationship
      Tags that are no longer to be associated are removed and checked for deletion
-     - Parameters:
-       - newTagNames: Array of tag names to associate with this Task
+     - parameter newTagNames: Array of tag names to associate with this Task
      */
     private func removeUnrelatedTags(newTagNames: [String]) {
         if let tags = self.tags {

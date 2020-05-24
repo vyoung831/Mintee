@@ -2,7 +2,7 @@
 //  TaskTargetSet+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 5/2/20.
+//  Created by Vincent Young on 5/18/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -25,7 +25,7 @@ extension TaskTargetSet {
     @NSManaged public var daysOfMonth: NSSet?
     @NSManaged public var daysOfWeek: NSSet?
     @NSManaged public var task: Task?
-    @NSManaged public var weekdaysOfMonth: NSSet?
+    @NSManaged public var weeksOfMonth: NSSet?
 
 }
 
@@ -63,19 +63,19 @@ extension TaskTargetSet {
 
 }
 
-// MARK: Generated accessors for weekdaysOfMonth
+// MARK: Generated accessors for weeksOfMonth
 extension TaskTargetSet {
 
-    @objc(addWeekdaysOfMonthObject:)
-    @NSManaged public func addToWeekdaysOfMonth(_ value: WeekdayOfMonth)
+    @objc(addWeeksOfMonthObject:)
+    @NSManaged public func addToWeeksOfMonth(_ value: WeekOfMonth)
 
-    @objc(removeWeekdaysOfMonthObject:)
-    @NSManaged public func removeFromWeekdaysOfMonth(_ value: WeekdayOfMonth)
+    @objc(removeWeeksOfMonthObject:)
+    @NSManaged public func removeFromWeeksOfMonth(_ value: WeekOfMonth)
 
-    @objc(addWeekdaysOfMonth:)
-    @NSManaged public func addToWeekdaysOfMonth(_ values: NSSet)
+    @objc(addWeeksOfMonth:)
+    @NSManaged public func addToWeeksOfMonth(_ values: NSSet)
 
-    @objc(removeWeekdaysOfMonth:)
-    @NSManaged public func removeFromWeekdaysOfMonth(_ values: NSSet)
+    @objc(removeWeeksOfMonth:)
+    @NSManaged public func removeFromWeeksOfMonth(_ values: NSSet)
 
 }

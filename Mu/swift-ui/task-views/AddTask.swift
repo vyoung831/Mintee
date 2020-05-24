@@ -22,12 +22,14 @@ struct AddTask: View {
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
+    @State var taskTargetSets: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
         let newTask = Task(context: CDCoordinator.moc)
         newTask.name = self.taskName
         newTask.updateTags(newTagNames: self.tags)
         newTask.updateDates(startDate: startDate.toStoredString(), endDate: endDate.toStoredString())
+        newTask.setNewTaskTargetSets(taskTargetSetViews: self.taskTargetSets)
         do {
             try CDCoordinator.moc.save()
             return true
@@ -38,6 +40,7 @@ struct AddTask: View {
     }
     
     var body: some View {
+        
         ScrollView(.vertical, showsIndicators: true, content: {
             VStack(alignment: .leading, spacing: 15, content: {
                 
@@ -53,7 +56,7 @@ struct AddTask: View {
                         }
                     }, label: {
                         Text("Save")
-                    })
+                    }).disabled(self.taskName == "")
                     Spacer()
                     
                     Text("Add Task")
@@ -145,10 +148,15 @@ struct AddTask: View {
                 Group {
                     Text("Target Sets")
                         .bold()
+                    VStack {
+                        // TO-DO: Present TTSes by priority
+                        ForEach(0 ..< taskTargetSets.count) { idx in
+                            self.taskTargetSets[idx]
+                        }
+                    }
                 }
                 
-            })
-                .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15))
+            }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
     }
 }

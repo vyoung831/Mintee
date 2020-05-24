@@ -77,12 +77,11 @@
         <relationship name="daysOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DayOfMonth" inverseName="taskTargetSet" inverseEntity="DayOfMonth"/>
         <relationship name="daysOfWeek" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DayOfWeek" inverseName="taskTargetSet" inverseEntity="DayOfWeek"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
-        <relationship name="weekdaysOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeekdayOfMonth" inverseName="taskTargetSet" inverseEntity="WeekdayOfMonth"/>
+        <relationship name="weeksOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeekOfMonth" inverseName="taskTargetSet" inverseEntity="WeekOfMonth"/>
     </entity>
-    <entity name="WeekdayOfMonth" representedClassName="WeekdayOfMonth" syncable="YES">
+    <entity name="WeekOfMonth" representedClassName="WeekOfMonth" syncable="YES">
         <attribute name="week" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="weekday" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="weekdaysOfMonth" inverseEntity="TaskTargetSet"/>
+        <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="weeksOfMonth" inverseEntity="TaskTargetSet"/>
     </entity>
     <elements>
         <element name="Analysis" positionX="-18" positionY="27" width="128" height="133"/>
@@ -94,6 +93,6 @@
         <element name="TaskInstance" positionX="27" positionY="72" width="128" height="88"/>
         <element name="TaskSummaryAnalysis" positionX="45" positionY="90" width="128" height="133"/>
         <element name="TaskTargetSet" positionX="63" positionY="108" width="128" height="178"/>
-        <element name="WeekdayOfMonth" positionX="18" positionY="63" width="128" height="88"/>
+        <element name="WeekOfMonth" positionX="18" positionY="63" width="128" height="73"/>
     </elements>
 </model>

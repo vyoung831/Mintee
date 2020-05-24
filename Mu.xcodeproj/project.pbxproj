@@ -35,14 +35,15 @@
 		C48F024C2448A5730088227F /* DayOfWeek+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02382448A5730088227F /* DayOfWeek+CoreDataClass.swift */; };
 		C48F024E2448A5730088227F /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F023A2448A5730088227F /* Task+CoreDataClass.swift */; };
 		C48F02502448A5730088227F /* DayOfMonth+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F023C2448A5730088227F /* DayOfMonth+CoreDataClass.swift */; };
-		C48F02522448A5730088227F /* WeekdayOfMonth+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F023E2448A5730088227F /* WeekdayOfMonth+CoreDataClass.swift */; };
-		C48F02542448A5730088227F /* TaskTargetSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02402448A5730088227F /* TaskTargetSet+CoreDataClass.swift */; };
 		C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */; };
 		C48F9762245ADBC3000339E9 /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */; };
+		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
+		C499FFF02473706800ABB64C /* WeekOfMonth+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEE2473706800ABB64C /* WeekOfMonth+CoreDataClass.swift */; };
+		C499FFF12473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEF2473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift */; };
+		C499FFF4247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */; };
+		C499FFF5247371FA00ABB64C /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF3247371FA00ABB64C /* TaskTargetSet+CoreDataProperties.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
-		C4E73FBD245DFD0D007ADD34 /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FA9245DFD0D007ADD34 /* TaskTargetSet+CoreDataProperties.swift */; };
 		C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */; };
-		C4E73FC1245DFD0D007ADD34 /* WeekdayOfMonth+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FAD245DFD0D007ADD34 /* WeekdayOfMonth+CoreDataProperties.swift */; };
 		C4E73FC3245DFD0D007ADD34 /* DayOfMonth+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FAF245DFD0D007ADD34 /* DayOfMonth+CoreDataProperties.swift */; };
 		C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */; };
 		C4E73FC7245DFD0D007ADD34 /* DayOfWeek+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB3245DFD0D007ADD34 /* DayOfWeek+CoreDataProperties.swift */; };
@@ -50,6 +51,7 @@
 		C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */; };
 		C4E73FCD245DFD0D007ADD34 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */; };
 		C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */; };
+		C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,14 +106,15 @@
 		C48F02382448A5730088227F /* DayOfWeek+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayOfWeek+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F023A2448A5730088227F /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F023C2448A5730088227F /* DayOfMonth+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayOfMonth+CoreDataClass.swift"; sourceTree = "<group>"; };
-		C48F023E2448A5730088227F /* WeekdayOfMonth+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekdayOfMonth+CoreDataClass.swift"; sourceTree = "<group>"; };
-		C48F02402448A5730088227F /* TaskTargetSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
+		C499FFEC247364DF00ABB64C /* SaveFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatter.swift; sourceTree = "<group>"; };
+		C499FFEE2473706800ABB64C /* WeekOfMonth+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekOfMonth+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C499FFEF2473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekOfMonth+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C499FFF3247371FA00ABB64C /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
-		C4E73FA9245DFD0D007ADD34 /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C4E73FAD245DFD0D007ADD34 /* WeekdayOfMonth+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekdayOfMonth+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FAF245DFD0D007ADD34 /* DayOfMonth+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayOfMonth+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegendEntry+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FB3245DFD0D007ADD34 /* DayOfWeek+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayOfWeek+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -119,6 +122,7 @@
 		C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskSummaryAnalysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +245,7 @@
 			children = (
 				C43BD950244472A4003E68DC /* AddTask.swift */,
 				C41A73E52451BFD2007007CB /* EditTask.swift */,
+				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
 			);
 			path = "task-views";
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
+				C499FFEC247364DF00ABB64C /* SaveFormatter.swift */,
 				C4D04367245988E900A75BC9 /* generated-properties */,
 				C4D04366245988D200A75BC9 /* generated-subclasses */,
 			);
@@ -302,8 +308,8 @@
 				C48F023A2448A5730088227F /* Task+CoreDataClass.swift */,
 				C48F02322448A5730088227F /* TaskInstance+CoreDataClass.swift */,
 				C48F02302448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift */,
-				C48F02402448A5730088227F /* TaskTargetSet+CoreDataClass.swift */,
-				C48F023E2448A5730088227F /* WeekdayOfMonth+CoreDataClass.swift */,
+				C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */,
+				C499FFEE2473706800ABB64C /* WeekOfMonth+CoreDataClass.swift */,
 			);
 			path = "generated-subclasses";
 			sourceTree = "<group>";
@@ -311,16 +317,16 @@
 		C4D04367245988E900A75BC9 /* generated-properties */ = {
 			isa = PBXGroup;
 			children = (
-				C4E73FA9245DFD0D007ADD34 /* TaskTargetSet+CoreDataProperties.swift */,
 				C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */,
-				C4E73FAD245DFD0D007ADD34 /* WeekdayOfMonth+CoreDataProperties.swift */,
 				C4E73FAF245DFD0D007ADD34 /* DayOfMonth+CoreDataProperties.swift */,
-				C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */,
 				C4E73FB3245DFD0D007ADD34 /* DayOfWeek+CoreDataProperties.swift */,
-				C4E73FB5245DFD0D007ADD34 /* TaskInstance+CoreDataProperties.swift */,
+				C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */,
 				C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */,
 				C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */,
+				C4E73FB5245DFD0D007ADD34 /* TaskInstance+CoreDataProperties.swift */,
 				C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */,
+				C499FFF3247371FA00ABB64C /* TaskTargetSet+CoreDataProperties.swift */,
+				C499FFEF2473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift */,
 			);
 			path = "generated-properties";
 			sourceTree = "<group>";
@@ -469,24 +475,26 @@
 			files = (
 				C48F02482448A5730088227F /* Tag+CoreDataClass.swift in Sources */,
 				C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */,
+				C499FFF4247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift in Sources */,
 				C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */,
+				C499FFF02473706800ABB64C /* WeekOfMonth+CoreDataClass.swift in Sources */,
 				C4E73FC7245DFD0D007ADD34 /* DayOfWeek+CoreDataProperties.swift in Sources */,
 				C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */,
+				C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */,
 				C48F02502448A5730088227F /* DayOfMonth+CoreDataClass.swift in Sources */,
-				C4E73FC1245DFD0D007ADD34 /* WeekdayOfMonth+CoreDataProperties.swift in Sources */,
 				C4E73FC9245DFD0D007ADD34 /* TaskInstance+CoreDataProperties.swift in Sources */,
 				C4E73FCD245DFD0D007ADD34 /* Task+CoreDataProperties.swift in Sources */,
 				C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */,
-				C48F02522448A5730088227F /* WeekdayOfMonth+CoreDataClass.swift in Sources */,
 				C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */,
 				C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */,
 				C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */,
 				C48F024C2448A5730088227F /* DayOfWeek+CoreDataClass.swift in Sources */,
 				C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */,
 				C41A73ED245207F7007007CB /* EditTaskHostingController.swift in Sources */,
+				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */,
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
 				C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */,
@@ -494,11 +502,11 @@
 				C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */,
 				C48F024E2448A5730088227F /* Task+CoreDataClass.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
-				C4E73FBD245DFD0D007ADD34 /* TaskTargetSet+CoreDataProperties.swift in Sources */,
 				C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */,
 				C4E73FC3245DFD0D007ADD34 /* DayOfMonth+CoreDataProperties.swift in Sources */,
-				C48F02542448A5730088227F /* TaskTargetSet+CoreDataClass.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
+				C499FFF5247371FA00ABB64C /* TaskTargetSet+CoreDataProperties.swift in Sources */,
+				C499FFF12473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift in Sources */,
 				C48F02462448A5730088227F /* TaskInstance+CoreDataClass.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,
 				C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */,

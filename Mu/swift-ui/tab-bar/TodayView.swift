@@ -35,8 +35,18 @@ struct TodayView: View {
             )
         }
         .sheet(isPresented: $isPresentingAddTask, content:  {
-            // TO-DO: Don't pass moc environment property after Apple has fixed this bug with modally presented views
-            AddTask(isBeingPresented: self.$isPresentingAddTask)
+            AddTask(isBeingPresented: self.$isPresentingAddTask,
+                    taskTargetSets: [TaskTargetSetView(target: "AT target",
+                                                       selectedDaysOfWeek: ["M","W","R"],
+                                                       selectedWeeksOfMonth: [],
+                                                       selectedDaysOfMonth: []),
+                                     TaskTargetSetView(target: "AT target",
+                                                       selectedDaysOfWeek: [],
+                                                       selectedWeeksOfMonth: [],
+                                                       selectedDaysOfMonth: [String(Int.random(in: 1 ... 31)),
+                                                                             String(Int.random(in: 1 ... 31)),
+                                                                             String(Int.random(in: 1 ... 31))])
+            ])
         })
     }
 }
