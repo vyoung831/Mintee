@@ -2,7 +2,7 @@
 //  TaskInstance+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 5/2/20.
+//  Created by Vincent Young on 5/27/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //

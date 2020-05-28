@@ -14,31 +14,31 @@ import CoreData
 public class TaskTargetSet: NSManagedObject {
     
     /**
-     - returns: an array of Int16, representing the day value of each DayOfWeek in this object's daysOfWeek relationship
+     - returns: A Set of Int16, representing the day value of each DayOfWeek in this object's daysOfWeek relationship
      */
-    func getDaysOfWeek() -> [Int16] {
+    func getDaysOfWeek() -> Set<Int16> {
         if let dows = self.daysOfWeek?.allObjects as? [DayOfWeek] {
-            return dows.map{ $0.day }
+            return Set(dows.map{ $0.day })
         }
         return []
     }
     
     /**
-    - returns: an array of Int16, representing the week value of each WeekOfMonth in this object's weeksOfMonth relationship
+    - returns: A Set of Int16, representing the week value of each WeekOfMonth in this object's weeksOfMonth relationship
     */
-    func getWeeksOfMonth() -> [Int16] {
+    func getWeeksOfMonth() -> Set<Int16> {
         if let woms = self.weeksOfMonth?.allObjects as? [WeekOfMonth] {
-            return woms.map{ $0.week }
+            return Set(woms.map{ $0.week })
         }
         return []
     }
     
     /**
-    - returns: an array of Int16, representing the day value of each DayOfMonth in this object's daysOfMonth relationship
+    - returns: A Set of Int16, representing the day value of each DayOfMonth in this object's daysOfMonth relationship
     */
-    func getDaysOfMonth() -> [Int16] {
+    func getDaysOfMonth() -> Set<Int16> {
         if let doms = self.daysOfMonth?.allObjects as? [DayOfMonth] {
-            return doms.map{ $0.day }
+            return Set(doms.map{ $0.day })
         }
         return []
     }

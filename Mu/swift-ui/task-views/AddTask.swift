@@ -25,11 +25,13 @@ struct AddTask: View {
     @State var taskTargetSets: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
-        let newTask = Task(context: CDCoordinator.moc)
-        newTask.name = self.taskName
-        newTask.updateTags(newTagNames: self.tags)
-        newTask.updateDates(startDate: startDate.toStoredString(), endDate: endDate.toStoredString())
-        newTask.setNewTaskTargetSets(taskTargetSetViews: self.taskTargetSets)
+        let newTask = Task(entity: Task.entity(),
+                           insertInto: CDCoordinator.moc,
+                           name: self.taskName,
+                           tags: self.tags,
+                           startDate: self.startDate,
+                           endDate: self.endDate,
+                           taskTargetSetViews: self.taskTargetSets)
         do {
             try CDCoordinator.moc.save()
             return true

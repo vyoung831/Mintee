@@ -35,7 +35,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         
         // TO-DO: Obtain the Task from the TaskInstance provided by TodayCollectionViewController; then, construct the EditTask View
         if let startDateString = task.startDate, let endDateString = task.endDate {
-            if let startDate = Date.storedStringToDate(storedString: startDateString), let endDate = Date.storedStringToDate(storedString: endDateString) {
+            if let startDate = SaveFormatter.storedStringToDate(startDateString), let endDate = SaveFormatter.storedStringToDate(endDateString) {
                 let editTask = EditTask(task: task,
                                         dismiss: dismiss,
                                         taskName: task.name ?? "",

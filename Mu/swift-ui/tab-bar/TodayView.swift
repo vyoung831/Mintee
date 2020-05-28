@@ -41,11 +41,16 @@ struct TodayView: View {
                                                        selectedWeeksOfMonth: [],
                                                        selectedDaysOfMonth: []),
                                      TaskTargetSetView(target: "AT target",
+                                                       selectedDaysOfWeek: ["T","U"],
+                                                       selectedWeeksOfMonth: [1,3],
+                                                       selectedDaysOfMonth: []),
+                                     TaskTargetSetView(target: "AT target",
                                                        selectedDaysOfWeek: [],
                                                        selectedWeeksOfMonth: [],
                                                        selectedDaysOfMonth: [String(Int.random(in: 1 ... 31)),
                                                                              String(Int.random(in: 1 ... 31)),
                                                                              String(Int.random(in: 1 ... 31))])
+                                     
             ])
         })
     }

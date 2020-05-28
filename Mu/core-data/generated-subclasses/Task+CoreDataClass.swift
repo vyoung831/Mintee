@@ -14,14 +14,53 @@ import SwiftUI
 @objc(Task)
 public class Task: NSManagedObject {
     
+    // MARK: - Initializers
+    
+    convenience init(entity: NSEntityDescription,
+                     insertInto context: NSManagedObjectContext?,
+                     name: String,
+                     tags: [String],
+                     startDate: Date,
+                     endDate: Date,
+                     taskTargetSetViews: [TaskTargetSetView]) {
+        self.init(entity: entity, insertInto: context)
+        self.name = name
+        updateTags(newTagNames: tags)
+        updateDates(startDate: startDate, endDate: endDate)
+        setNewDatesAndTaskTargetSets(startDate: startDate,
+                                     endDate: endDate,
+                                     taskTargetSetViews: taskTargetSetViews)
+    }
+    
+    
+    // MARK: - Date handling
+    
+    /**
+     Converts start and end dates to save format and stores them to this Task
+     - parameter startDate: Start date of type Date
+     - parameter endDate: End date of type Date
+     */
+    func updateDates(startDate: Date, endDate: Date) {
+        self.startDate = SaveFormatter.dateToStoredString(startDate)
+        self.endDate = SaveFormatter.dateToStoredString(endDate)
+    }
+    
     // MARK: - TaskTargetSet handling
     
     /**
-     Creates new TaskTargetSets and adds them to the targetSets relationship
+     Sets startDate and endDate for this task, as well as generates TaskTargetSets and TaskInstances to add to targetSets and instances, respectively.
+     This function does not check if startDate is before endDate; it should have been handled by the view calling this function.
+     - parameter startDate: new startDate to set for Task
+     - parameter endDate: new endDate to set for Task
      - parameter taskTargetSetViews: Array of TaskTargetSetViews, ordered in ascending priority
      */
-    func setNewTaskTargetSets(taskTargetSetViews: [TaskTargetSetView]) {
+    private func setNewDatesAndTaskTargetSets(startDate: Date, endDate: Date, taskTargetSetViews: [TaskTargetSetView]) {
+        
+        updateDates(startDate: startDate, endDate: endDate)
+        
+        // Loop through the array of TaskTargetSetView and create TaskTargetSet for each
         for i in 0 ... taskTargetSetViews.count - 1 {
+            
             let ttsv = taskTargetSetViews[i]
             let tts = TaskTargetSet(context: CDCoordinator.moc)
             
@@ -53,19 +92,72 @@ public class Task: NSManagedObject {
             tts.priority = Int16(i)
             self.addToTargetSets(tts)
         }
+        generateNewTaskInstances(startDate: startDate, endDate: endDate, taskTargetSetViews: taskTargetSetViews)
     }
     
-    // MARK: - TaskInstance and date handling
+    // MARK: - TaskInstance handling
     
     /**
-     Updates the Task's startDate and endDate. This function does not check the if startDate is before endDate, as it should have been handled before calling this function.
-     - Parameters:
-       - startDate: new startDate to set for Task
-       - endDate: new endDate to set for Task
+     Generates TaskInstances for a newTask.
+     - parameter startDate: New Task's startDate
+     - parameter endDate: New Task's startDate
+     - parameter taskTargetSetViews: Array of TaskTargetSetViews, ordered in ascending priority
      */
-    public func updateDates(startDate: String, endDate: String) {
-        self.startDate = startDate
-        self.endDate = endDate
+    private func generateNewTaskInstances(startDate: Date, endDate: Date, taskTargetSetViews: [TaskTargetSetView]) {
+        
+        // To cut down on unwrapping, create an array of TaskTargetSetRepresentations, mapped from taskTargetSetViews
+        let reps = taskTargetSetViews.map({ targetSetView in
+            // Days of month nil coalesced to 0. Should never be a String that can't be converted to Int
+            TaskTargetSetRepresentation(daysOfWeek: Set(targetSetView.selectedDaysOfWeek.map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
+                                        weeksOfMonth: Set(targetSetView.selectedWeeksOfMonth.map{ Int16($0) }),
+                                        daysOfMonth: Set(targetSetView.selectedDaysOfMonth.map{ Int16($0) ?? 0 }))
+        })
+        
+        // Loop through each of the days from startDate to endDate and generate TaskInstances where necessary
+        var dateCounter = startDate
+        var matched = false
+        while dateCounter.lessThanOrEqualToDate(endDate) {
+            
+            /*
+             Loop through the array of TaskTargetSetRepresentations (already sorted by priority).
+             If one of the representations's selected days/weekdays/weeks intersects with current dateCounter, a TaskInstance is created and added to instances.
+             Since this is for new Tasks, prior task existence is not checked.
+             */
+            for targetSetRep in reps {
+                switch targetSetRep.type{
+                case .dow:
+                    if targetSetRep.checkDayOfWeek(weekday: Calendar.current.component(.weekday, from: dateCounter)) {
+                        addInstance(date: dateCounter)
+                        matched = true
+                    }; break
+                case .wom:
+                    if targetSetRep.checkWeekdayOfMonth(day: Calendar.current.component(.day, from: dateCounter),
+                                                        weekday: Calendar.current.component(.weekday, from: dateCounter)) {
+                        addInstance(date: dateCounter)
+                        matched = true
+                    }; break
+                case .dom:
+                    if targetSetRep.checkDayOfMonth(day: Calendar.current.component(.day, from: dateCounter)) {
+                        addInstance(date: dateCounter)
+                        matched = true
+                    }; break
+                }
+                // If a TaskTargetSetRepresentation matched with the current dateCounter, exit and check the next day
+                if matched { matched = false ; break }
+            }
+            // Increment day
+            dateCounter = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter)!
+        }
+    }
+    
+    /**
+     Creates a TaskInstance with the date provided and adds to instances
+     - parameter date: Date to be converted to String and saved to the TaskInstance
+     */
+    private func addInstance(date: Date) {
+        addToInstances(TaskInstance(entity: TaskInstance.entity(),
+                                    insertInto: CDCoordinator.moc,
+                                    date: SaveFormatter.dateToStoredString(date)))
     }
     
     // MARK: - Tag handling

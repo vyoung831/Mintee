@@ -102,14 +102,14 @@ struct BubbleRows: View {
     
     /**
      Calculates the radius of a bubble, given the width of the View containing the bubbles.
+     Taking into account the minimum bubble spacing, this function first finds the cumulative width available to the bubbles, then calculates the width of each bubble and returns the minimum of that value or the maximum bubble radius
      - parameter totalWidth: The total width of the View containing the bubbles
      - returns: Bubble radius
      */
     private func getBubbleRadius(totalWidth: CGFloat) -> CGFloat {
         let bubblesCumulativeWidth = totalWidth - (CGFloat(bubblesPerRow)-1)*minimumInterBubbleSpacing
         let fullBubbleRadius = (bubblesCumulativeWidth/CGFloat(bubblesPerRow))/2
-        let trueBubbleRadius = min(fullBubbleRadius, maxBubbleRadius)
-        return trueBubbleRadius
+        return min(fullBubbleRadius, maxBubbleRadius)
     }
     
     /**

@@ -29,7 +29,7 @@ struct EditTask: View {
     private func saveTask() -> Bool {
         task.name = self.taskName
         task.updateTags(newTagNames: self.tags)
-        task.updateDates(startDate: startDate.toStoredString(), endDate: endDate.toStoredString())
+        task.updateDates(startDate: self.startDate, endDate: self.endDate)
         do {
             try CDCoordinator.moc.save()
             return true
