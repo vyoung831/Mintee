@@ -58,6 +58,7 @@
     <entity name="TaskInstance" representedClassName="TaskInstance" syncable="YES">
         <attribute name="completion" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="String"/>
+        <relationship name="targetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="instances" inverseEntity="TaskTargetSet"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="instances" inverseEntity="Task"/>
     </entity>
     <entity name="TaskSummaryAnalysis" representedClassName="TaskSummaryAnalysis" syncable="YES">
@@ -76,6 +77,7 @@
         <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="daysOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DayOfMonth" inverseName="taskTargetSet" inverseEntity="DayOfMonth"/>
         <relationship name="daysOfWeek" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DayOfWeek" inverseName="taskTargetSet" inverseEntity="DayOfWeek"/>
+        <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskInstance" inverseName="targetSet" inverseEntity="TaskInstance"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
         <relationship name="weeksOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeekOfMonth" inverseName="taskTargetSet" inverseEntity="WeekOfMonth"/>
     </entity>
@@ -90,9 +92,9 @@
         <element name="LegendEntry" positionX="0" positionY="45" width="128" height="148"/>
         <element name="Tag" positionX="0" positionY="45" width="128" height="88"/>
         <element name="Task" positionX="-36" positionY="9" width="128" height="163"/>
-        <element name="TaskInstance" positionX="27" positionY="72" width="128" height="88"/>
+        <element name="TaskInstance" positionX="27" positionY="72" width="128" height="103"/>
         <element name="TaskSummaryAnalysis" positionX="45" positionY="90" width="128" height="133"/>
-        <element name="TaskTargetSet" positionX="63" positionY="108" width="128" height="178"/>
+        <element name="TaskTargetSet" positionX="63" positionY="108" width="128" height="193"/>
         <element name="WeekOfMonth" positionX="18" positionY="63" width="128" height="73"/>
     </elements>
 </model>

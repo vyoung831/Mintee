@@ -2,7 +2,7 @@
 //  TaskInstance+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 5/27/20.
+//  Created by Vincent Young on 5/30/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -20,5 +20,6 @@ extension TaskInstance {
     @NSManaged public var completion: Float
     @NSManaged public var date: String?
     @NSManaged public var task: Task?
+    @NSManaged public var targetSet: TaskTargetSet?
 
 }

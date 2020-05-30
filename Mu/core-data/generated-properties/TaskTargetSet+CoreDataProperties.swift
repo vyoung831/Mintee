@@ -2,7 +2,7 @@
 //  TaskTargetSet+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 5/18/20.
+//  Created by Vincent Young on 5/30/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -26,6 +26,7 @@ extension TaskTargetSet {
     @NSManaged public var daysOfWeek: NSSet?
     @NSManaged public var task: Task?
     @NSManaged public var weeksOfMonth: NSSet?
+    @NSManaged public var instances: NSSet?
 
 }
 
@@ -77,5 +78,22 @@ extension TaskTargetSet {
 
     @objc(removeWeeksOfMonth:)
     @NSManaged public func removeFromWeeksOfMonth(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for instances
+extension TaskTargetSet {
+
+    @objc(addInstancesObject:)
+    @NSManaged public func addToInstances(_ value: TaskInstance)
+
+    @objc(removeInstancesObject:)
+    @NSManaged public func removeFromInstances(_ value: TaskInstance)
+
+    @objc(addInstances:)
+    @NSManaged public func addToInstances(_ values: NSSet)
+
+    @objc(removeInstances:)
+    @NSManaged public func removeFromInstances(_ values: NSSet)
 
 }
