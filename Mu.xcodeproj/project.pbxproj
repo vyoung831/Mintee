@@ -23,6 +23,7 @@
 		C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
 		C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C466A7A524473A2500EC3E97 /* Date+Extensions.swift */; };
+		C46826CF2482EA5B006670A8 /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46826CD2482EA5B006670A8 /* TaskTargetSet+CoreDataProperties.swift */; };
 		C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4697EE124561BEF00B028A2 /* CDCoordinator.swift */; };
 		C46C4668247D3335001431B8 /* TaskTargetSetRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C4667247D3335001431B8 /* TaskTargetSetRepresentation.swift */; };
 		C46C466B247DFC83001431B8 /* TaskInstance+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C4669247DFC83001431B8 /* TaskInstance+CoreDataClass.swift */; };
@@ -30,8 +31,8 @@
 		C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC969243DEC3B0037C74C /* AnalysisView.swift */; };
 		C46DC96C243DEC420037C74C /* ManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96B243DEC420037C74C /* ManageView.swift */; };
 		C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96D243DEC480037C74C /* SettingsView.swift */; };
-		C47389912482C78100462134 /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C473898D2482C78100462134 /* TaskTargetSet+CoreDataProperties.swift */; };
 		C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */; };
+		C47389992482CCB400462134 /* DayPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47389982482CCB400462134 /* DayPattern.swift */; };
 		C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02302448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift */; };
 		C48F02482448A5730088227F /* Tag+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02342448A5730088227F /* Tag+CoreDataClass.swift */; };
 		C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02362448A5730088227F /* LegendEntry+CoreDataClass.swift */; };
@@ -95,6 +96,7 @@
 		C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
 		C466A7A524473A2500EC3E97 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		C46826CD2482EA5B006670A8 /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4697EE124561BEF00B028A2 /* CDCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCoordinator.swift; sourceTree = "<group>"; };
 		C46C4667247D3335001431B8 /* TaskTargetSetRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetRepresentation.swift; sourceTree = "<group>"; };
 		C46C4669247DFC83001431B8 /* TaskInstance+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskInstance+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -102,8 +104,8 @@
 		C46DC969243DEC3B0037C74C /* AnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
 		C46DC96B243DEC420037C74C /* ManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageView.swift; sourceTree = "<group>"; };
 		C46DC96D243DEC480037C74C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		C473898D2482C78100462134 /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskInstance+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C47389982482CCB400462134 /* DayPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPattern.swift; sourceTree = "<group>"; };
 		C48F02302448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskSummaryAnalysis+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02342448A5730088227F /* Tag+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02362448A5730088227F /* LegendEntry+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegendEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -281,11 +283,20 @@
 			path = extensions;
 			sourceTree = "<group>";
 		};
+		C46826D02482EC0B006670A8 /* transformable */ = {
+			isa = PBXGroup;
+			children = (
+				C47389982482CCB400462134 /* DayPattern.swift */,
+			);
+			path = transformable;
+			sourceTree = "<group>";
+		};
 		C48F022F2448A4700088227F /* core-data */ = {
 			isa = PBXGroup;
 			children = (
 				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
 				C499FFEC247364DF00ABB64C /* SaveFormatter.swift */,
+				C46826D02482EC0B006670A8 /* transformable */,
 				C4D04367245988E900A75BC9 /* generated-properties */,
 				C4D04366245988D200A75BC9 /* generated-subclasses */,
 			);
@@ -328,7 +339,7 @@
 				C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */,
 				C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */,
 				C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */,
-				C473898D2482C78100462134 /* TaskTargetSet+CoreDataProperties.swift */,
+				C46826CD2482EA5B006670A8 /* TaskTargetSet+CoreDataProperties.swift */,
 				C499FFEF2473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift */,
 			);
 			path = "generated-properties";
@@ -477,6 +488,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C48F02482448A5730088227F /* Tag+CoreDataClass.swift in Sources */,
+				C47389992482CCB400462134 /* DayPattern.swift in Sources */,
 				C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */,
 				C499FFF4247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift in Sources */,
 				C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */,
@@ -501,6 +513,7 @@
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */,
 				C46C4668247D3335001431B8 /* TaskTargetSetRepresentation.swift in Sources */,
+				C46826CF2482EA5B006670A8 /* TaskTargetSet+CoreDataProperties.swift in Sources */,
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
 				C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */,
 				C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */,
@@ -510,7 +523,6 @@
 				C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */,
 				C4E73FC3245DFD0D007ADD34 /* DayOfMonth+CoreDataProperties.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
-				C47389912482C78100462134 /* TaskTargetSet+CoreDataProperties.swift in Sources */,
 				C499FFF12473706800ABB64C /* WeekOfMonth+CoreDataProperties.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,
 				C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */,

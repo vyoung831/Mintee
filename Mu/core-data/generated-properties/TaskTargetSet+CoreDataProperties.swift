@@ -22,11 +22,12 @@ extension TaskTargetSet {
     @NSManaged public var min: Float
     @NSManaged public var minInclusive: Bool
     @NSManaged public var priority: Int16
+    @NSManaged public var pattern: NSObject?
     @NSManaged public var daysOfMonth: NSSet?
     @NSManaged public var daysOfWeek: NSSet?
+    @NSManaged public var instances: NSSet?
     @NSManaged public var task: Task?
     @NSManaged public var weeksOfMonth: NSSet?
-    @NSManaged public var instances: NSSet?
 
 }
 
@@ -64,23 +65,6 @@ extension TaskTargetSet {
 
 }
 
-// MARK: Generated accessors for weeksOfMonth
-extension TaskTargetSet {
-
-    @objc(addWeeksOfMonthObject:)
-    @NSManaged public func addToWeeksOfMonth(_ value: WeekOfMonth)
-
-    @objc(removeWeeksOfMonthObject:)
-    @NSManaged public func removeFromWeeksOfMonth(_ value: WeekOfMonth)
-
-    @objc(addWeeksOfMonth:)
-    @NSManaged public func addToWeeksOfMonth(_ values: NSSet)
-
-    @objc(removeWeeksOfMonth:)
-    @NSManaged public func removeFromWeeksOfMonth(_ values: NSSet)
-
-}
-
 // MARK: Generated accessors for instances
 extension TaskTargetSet {
 
@@ -95,5 +79,22 @@ extension TaskTargetSet {
 
     @objc(removeInstances:)
     @NSManaged public func removeFromInstances(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for weeksOfMonth
+extension TaskTargetSet {
+
+    @objc(addWeeksOfMonthObject:)
+    @NSManaged public func addToWeeksOfMonth(_ value: WeekOfMonth)
+
+    @objc(removeWeeksOfMonthObject:)
+    @NSManaged public func removeFromWeeksOfMonth(_ value: WeekOfMonth)
+
+    @objc(addWeeksOfMonth:)
+    @NSManaged public func addToWeeksOfMonth(_ values: NSSet)
+
+    @objc(removeWeeksOfMonth:)
+    @NSManaged public func removeFromWeeksOfMonth(_ values: NSSet)
 
 }
