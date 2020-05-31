@@ -47,7 +47,7 @@ class TodayCollectionViewController: UICollectionViewController {
         collectionViewLayout.minimumInteritemSpacing = self.minimumInteritemSpacing
         collectionViewLayout.minimumLineSpacing = self.minimumLineSpacing
         collectionView.collectionViewLayout = collectionViewLayout
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = UIColor(named: "today-collection-view-background")
     }
     
     // MARK: - NSFetchedResultsController setup

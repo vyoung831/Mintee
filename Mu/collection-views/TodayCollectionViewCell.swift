@@ -88,6 +88,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = cornerRadius
         self.layer.borderColor = borderColor
         self.layer.borderWidth = CGFloat(borderWidth)
+        self.backgroundColor = .white
         setupSubviews()
     }
     
@@ -122,6 +123,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
         status.rightAnchor.constraint(equalTo: self.contentView.layoutMarginsGuide.rightAnchor).isActive = true
         
         // Task name label
+        taskName.textColor = .black
         taskName.lineBreakMode = NSLineBreakMode.byTruncatingTail
         taskName.textAlignment = NSTextAlignment.left
         self.contentView.addSubview(taskName)
