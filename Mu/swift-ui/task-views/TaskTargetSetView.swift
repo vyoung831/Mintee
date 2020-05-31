@@ -16,6 +16,7 @@ struct TaskTargetSetView: View {
     let vStackMargin: CGFloat = 5
     let cornerRadius: CGFloat = 20
     let borderWidth: CGFloat = 3
+    let buttonsSpacing: CGFloat = 20
     let bubblesPerRow: Int = 7
     
     var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
@@ -40,11 +41,50 @@ struct TaskTargetSetView: View {
     var selectedWeeksOfMonth: [Int]
     var selectedDaysOfMonth: [String]
     
+    // MARK: - Closures
+    
+    var delete: () -> () = {}
+    
     // MARK: - View
     
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
+            
+            // MARK: - Buttons
+            
+            Group {
+                HStack(alignment: .center, spacing: buttonsSpacing) {
+                    Button(action: {
+                        print("Edit button pressed")
+                    }, label: {
+                        Text("Edit")
+                    })
+                    
+                    Button(action: {
+                        print("Up button pressed")
+                    }, label: {
+                        Image(systemName: "arrow.up")
+                        .foregroundColor(Color("default-panel-icon-colors"))
+                    })
+                    
+                    Button(action: {
+                        print("Down button pressed")
+                    }, label: {
+                        Image(systemName: "arrow.down")
+                        .foregroundColor(Color("default-panel-icon-colors"))
+                    })
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        self.delete()
+                    }, label: {
+                        Image(systemName: "trash")
+                        .foregroundColor(Color("default-panel-icon-colors"))
+                    })
+                }
+            }
             
             // MARK: - Bubbles
             
@@ -151,7 +191,7 @@ struct BubbleRows: View {
          */
         GeometryReader { gr in
             VStack(alignment: .leading, spacing: self.rowSpacing) {
-                ForEach(0 ..< self.bubbles.count) { row in
+                ForEach(0 ..< self.bubbles.count, id: \.self) { row in
                     
                     // Calculate the HStack spacing now that GeometryReader has the available width
                     HStack(alignment: .center, spacing: self.getHStackSpacing(totalWidth: gr.size.width)) {

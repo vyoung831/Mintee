@@ -24,7 +24,7 @@ struct EditTask: View {
     @State var tags: [String]
     @State var startDate: Date
     @State var endDate: Date
-    @State var taskTargetSets: [TaskTargetSetView] = []
+    @State var taskTargetSetViews: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
         task.name = self.taskName
@@ -158,8 +158,12 @@ struct EditTask: View {
                         .bold()
                     VStack {
                         // TO-DO: Present TTSes by priority
-                        ForEach(0 ..< taskTargetSets.count) { idx in
-                            self.taskTargetSets[idx]
+                        ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
+                            TaskTargetSetView(target: String(idx),
+                                              selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
+                                              selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
+                                              selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
+                                              delete: { self.taskTargetSetViews.remove(at: idx) })
                         }
                     }
                 }

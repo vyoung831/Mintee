@@ -52,7 +52,6 @@ struct TodayView: View {
                                                            selectedDaysOfMonth: [String(Int.random(in: 1 ... 31)),
                                                                                  String(Int.random(in: 1 ... 31)),
                                                                                  String(Int.random(in: 1 ... 31))])
-                                     
             ])
         })
     }

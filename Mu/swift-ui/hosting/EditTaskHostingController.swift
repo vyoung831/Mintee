@@ -42,7 +42,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                                     tags: task.getTagNamesArray(),
                                     startDate: SaveFormatter.storedStringToDate(startDateString),
                                     endDate: SaveFormatter.storedStringToDate(endDateString),
-                                    taskTargetSets: ttsvArray)
+                                    taskTargetSetViews: ttsvArray)
             super.init(rootView: editTask)
         } else {
             print("Nil value found in Task's dates")

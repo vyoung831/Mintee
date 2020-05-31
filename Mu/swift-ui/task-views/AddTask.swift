@@ -169,8 +169,12 @@ struct AddTask: View {
                         .bold()
                     VStack {
                         // TO-DO: Present TTSes by priority
-                        ForEach(0 ..< taskTargetSetViews.count) { idx in
-                            self.taskTargetSetViews[idx]
+                        ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
+                            TaskTargetSetView(target: String(idx),
+                                              selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
+                                              selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
+                                              selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
+                                              delete: { self.taskTargetSetViews.remove(at: idx) })
                         }
                     }
                 }
