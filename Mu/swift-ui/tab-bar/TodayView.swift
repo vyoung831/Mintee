@@ -24,10 +24,12 @@ struct TodayView: View {
                     }, label: {
                         Image(systemName: "plus.circle")
                             .frame(width: 30, height: 30, alignment: .center)
+                            .foregroundColor(Color("default-panel-icon-colors"))
                     })
                     
                     Button(action: {}) {
                         Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
+                        .foregroundColor(Color("default-panel-icon-colors"))
                     }
                 })
                     .foregroundColor(.black)
