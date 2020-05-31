@@ -13,14 +13,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="DayOfMonth" representedClassName="DayOfMonth" syncable="YES">
-        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="daysOfMonth" inverseEntity="TaskTargetSet"/>
-    </entity>
-    <entity name="DayOfWeek" representedClassName="DayOfWeek" syncable="YES">
-        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="daysOfWeek" inverseEntity="TaskTargetSet"/>
-    </entity>
     <entity name="LegendEntry" representedClassName="LegendEntry" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
         <attribute name="max" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -76,26 +68,16 @@
         <attribute name="minInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="pattern" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="daysOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DayOfMonth" inverseName="taskTargetSet" inverseEntity="DayOfMonth"/>
-        <relationship name="daysOfWeek" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DayOfWeek" inverseName="taskTargetSet" inverseEntity="DayOfWeek"/>
         <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskInstance" inverseName="targetSet" inverseEntity="TaskInstance"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
-        <relationship name="weeksOfMonth" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeekOfMonth" inverseName="taskTargetSet" inverseEntity="WeekOfMonth"/>
-    </entity>
-    <entity name="WeekOfMonth" representedClassName="WeekOfMonth" syncable="YES">
-        <attribute name="week" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="taskTargetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="weeksOfMonth" inverseEntity="TaskTargetSet"/>
     </entity>
     <elements>
         <element name="Analysis" positionX="-18" positionY="27" width="128" height="133"/>
-        <element name="DayOfMonth" positionX="-9" positionY="36" width="128" height="73"/>
-        <element name="DayOfWeek" positionX="9" positionY="54" width="128" height="73"/>
         <element name="LegendEntry" positionX="0" positionY="45" width="128" height="148"/>
         <element name="Tag" positionX="0" positionY="45" width="128" height="88"/>
         <element name="Task" positionX="-36" positionY="9" width="128" height="163"/>
         <element name="TaskInstance" positionX="27" positionY="72" width="128" height="103"/>
         <element name="TaskSummaryAnalysis" positionX="45" positionY="90" width="128" height="133"/>
-        <element name="TaskTargetSet" positionX="63" positionY="108" width="128" height="208"/>
-        <element name="WeekOfMonth" positionX="18" positionY="63" width="128" height="73"/>
+        <element name="TaskTargetSet" positionX="63" positionY="108" width="128" height="163"/>
     </elements>
 </model>

@@ -69,10 +69,14 @@ class SaveFormatter {
     /**
      Returns a Date object from a String representation. The String representation is expected to be in "yyyy-MM-dd" format
      */
-    static func storedStringToDate(_ storedString: String) -> Date? {
+    static func storedStringToDate(_ storedString: String) -> Date {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
-        return df.date(from: storedString)
+        if let date = df.date(from: storedString) { return date }
+        else {
+            print("SaveFormatter could not convert a stored date string to Date")
+            exit(-1)
+        }
     }
     
     /**

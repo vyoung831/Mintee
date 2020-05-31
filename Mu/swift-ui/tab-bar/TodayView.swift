@@ -36,20 +36,20 @@ struct TodayView: View {
         }
         .sheet(isPresented: $isPresentingAddTask, content:  {
             AddTask(isBeingPresented: self.$isPresentingAddTask,
-                    taskTargetSets: [TaskTargetSetView(target: "AT target",
-                                                       selectedDaysOfWeek: ["M","W","R"],
-                                                       selectedWeeksOfMonth: [],
-                                                       selectedDaysOfMonth: []),
-                                     TaskTargetSetView(target: "AT target",
-                                                       selectedDaysOfWeek: ["T","U"],
-                                                       selectedWeeksOfMonth: [1,3],
-                                                       selectedDaysOfMonth: []),
-                                     TaskTargetSetView(target: "AT target",
-                                                       selectedDaysOfWeek: [],
-                                                       selectedWeeksOfMonth: [],
-                                                       selectedDaysOfMonth: [String(Int.random(in: 1 ... 31)),
-                                                                             String(Int.random(in: 1 ... 31)),
-                                                                             String(Int.random(in: 1 ... 31))])
+                    taskTargetSetViews: [TaskTargetSetView(target: "AT target",
+                                                           selectedDaysOfWeek: ["M","W","R"],
+                                                           selectedWeeksOfMonth: [],
+                                                           selectedDaysOfMonth: []),
+                                         TaskTargetSetView(target: "AT target",
+                                                           selectedDaysOfWeek: ["T","U"],
+                                                           selectedWeeksOfMonth: [1,3],
+                                                           selectedDaysOfMonth: []),
+                                         TaskTargetSetView(target: "AT target",
+                                                           selectedDaysOfWeek: [],
+                                                           selectedWeeksOfMonth: [],
+                                                           selectedDaysOfMonth: [String(Int.random(in: 1 ... 31)),
+                                                                                 String(Int.random(in: 1 ... 31)),
+                                                                                 String(Int.random(in: 1 ... 31))])
                                      
             ])
         })

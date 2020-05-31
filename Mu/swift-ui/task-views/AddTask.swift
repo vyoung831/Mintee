@@ -22,16 +22,33 @@ struct AddTask: View {
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
-    @State var taskTargetSets: [TaskTargetSetView] = []
+    @State var taskTargetSetViews: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
+        
+        var taskTargetSets: [TaskTargetSet] = []
+        for i in 0 ..< taskTargetSetViews.count {
+            let ttsv = taskTargetSetViews[i]
+            let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
+                                    insertInto: CDCoordinator.moc,
+                                    min: 0,
+                                    max: Float(Int.random(in: 1...100)),
+                                    minInclusive: true,
+                                    maxInclusive: true,
+                                    priority: Int16(i),
+                                    pattern: DayPattern(dow: ttsv.selectedDaysOfWeek.map{ SaveFormatter.getWeekdayNumber(weekday: $0) },
+                                                        wom: ttsv.selectedWeeksOfMonth.map{ Int16($0) },
+                                                        dom: ttsv.selectedDaysOfMonth.map{ Int16($0) ?? 0 }))
+            taskTargetSets.append(tts)
+        }
+        
         let newTask = Task(entity: Task.entity(),
                            insertInto: CDCoordinator.moc,
                            name: self.taskName,
                            tags: self.tags,
                            startDate: self.startDate,
                            endDate: self.endDate,
-                           taskTargetSetViews: self.taskTargetSets)
+                           targetSets: taskTargetSets)
         do {
             try CDCoordinator.moc.save()
             return true
@@ -152,8 +169,8 @@ struct AddTask: View {
                         .bold()
                     VStack {
                         // TO-DO: Present TTSes by priority
-                        ForEach(0 ..< taskTargetSets.count) { idx in
-                            self.taskTargetSets[idx]
+                        ForEach(0 ..< taskTargetSetViews.count) { idx in
+                            self.taskTargetSetViews[idx]
                         }
                     }
                 }

@@ -22,142 +22,12 @@ public class Task: NSManagedObject {
                      tags: [String],
                      startDate: Date,
                      endDate: Date,
-                     taskTargetSetViews: [TaskTargetSetView]) {
+                     targetSets: [TaskTargetSet]) {
         self.init(entity: entity, insertInto: context)
         self.name = name
         updateTags(newTagNames: tags)
         updateDates(startDate: startDate, endDate: endDate)
-        setNewDatesAndTaskTargetSets(startDate: startDate,
-                                     endDate: endDate,
-                                     taskTargetSetViews: taskTargetSetViews)
-    }
-    
-    
-    // MARK: - Date handling
-    
-    /**
-     Converts start and end dates to save format and stores them to this Task
-     - parameter startDate: Start date of type Date
-     - parameter endDate: End date of type Date
-     */
-    func updateDates(startDate: Date, endDate: Date) {
-        self.startDate = SaveFormatter.dateToStoredString(startDate)
-        self.endDate = SaveFormatter.dateToStoredString(endDate)
-    }
-    
-    // MARK: - TaskTargetSet handling
-    
-    /**
-     Sets startDate and endDate for this task, as well as generates TaskTargetSets and TaskInstances to add to targetSets and instances, respectively.
-     This function does not check if startDate is before endDate; it should have been handled by the view calling this function.
-     - parameter startDate: new startDate to set for Task
-     - parameter endDate: new endDate to set for Task
-     - parameter taskTargetSetViews: Array of TaskTargetSetViews, ordered in ascending priority
-     */
-    private func setNewDatesAndTaskTargetSets(startDate: Date, endDate: Date, taskTargetSetViews: [TaskTargetSetView]) {
-        
-        updateDates(startDate: startDate, endDate: endDate)
-        
-        // Loop through the array of TaskTargetSetView and create TaskTargetSet for each
-        for i in 0 ... taskTargetSetViews.count - 1 {
-            
-            let ttsv = taskTargetSetViews[i]
-            let tts = TaskTargetSet(context: CDCoordinator.moc)
-            
-            // Create instances of DayOfWeek, WeekOfMonth, and DayOfMonth and add them to the TaskTargetSet's relationships
-            if ttsv.selectedDaysOfWeek.count > 0 {
-                
-                for dow in ttsv.selectedDaysOfWeek {
-                    let dayOfWeek = DayOfWeek(context: CDCoordinator.moc)
-                    dayOfWeek.day = SaveFormatter.getWeekdayNumber(weekday: dow)
-                    tts.addToDaysOfWeek(dayOfWeek)
-                }
-                
-                if ttsv.selectedWeeksOfMonth.count > 0 {
-                    for wom in ttsv.selectedWeeksOfMonth {
-                        let weekOfMonth = WeekOfMonth(context: CDCoordinator.moc)
-                        weekOfMonth.week = Int16(wom)
-                        tts.addToWeeksOfMonth(weekOfMonth)
-                    }
-                }
-                
-            } else {
-                for day in ttsv.selectedDaysOfMonth {
-                    let dayOfMonth = DayOfMonth(context: CDCoordinator.moc)
-                    dayOfMonth.day = Int16(day) ?? 0
-                    tts.addToDaysOfMonth(dayOfMonth)
-                }
-            }
-            
-            tts.priority = Int16(i)
-            self.addToTargetSets(tts)
-        }
-        generateNewTaskInstances(startDate: startDate, endDate: endDate, taskTargetSetViews: taskTargetSetViews)
-    }
-    
-    // MARK: - TaskInstance handling
-    
-    /**
-     Generates TaskInstances for a newTask.
-     - parameter startDate: New Task's startDate
-     - parameter endDate: New Task's startDate
-     - parameter taskTargetSetViews: Array of TaskTargetSetViews, ordered in ascending priority
-     */
-    private func generateNewTaskInstances(startDate: Date, endDate: Date, taskTargetSetViews: [TaskTargetSetView]) {
-        
-        // To cut down on unwrapping, create an array of TaskTargetSetRepresentations, mapped from taskTargetSetViews
-        let reps = taskTargetSetViews.map({ targetSetView in
-            // Days of month nil coalesced to 0. Should never be a String that can't be converted to Int
-            TaskTargetSetRepresentation(daysOfWeek: Set(targetSetView.selectedDaysOfWeek.map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
-                                        weeksOfMonth: Set(targetSetView.selectedWeeksOfMonth.map{ Int16($0) }),
-                                        daysOfMonth: Set(targetSetView.selectedDaysOfMonth.map{ Int16($0) ?? 0 }))
-        })
-        
-        // Loop through each of the days from startDate to endDate and generate TaskInstances where necessary
-        var dateCounter = startDate
-        var matched = false
-        while dateCounter.lessThanOrEqualToDate(endDate) {
-            
-            /*
-             Loop through the array of TaskTargetSetRepresentations (already sorted by priority).
-             If one of the representations's selected days/weekdays/weeks intersects with current dateCounter, a TaskInstance is created and added to instances.
-             Since this is for new Tasks, prior task existence is not checked.
-             */
-            for targetSetRep in reps {
-                switch targetSetRep.type{
-                case .dow:
-                    if targetSetRep.checkDayOfWeek(weekday: Calendar.current.component(.weekday, from: dateCounter)) {
-                        addInstance(date: dateCounter)
-                        matched = true
-                    }; break
-                case .wom:
-                    if targetSetRep.checkWeekdayOfMonth(day: Calendar.current.component(.day, from: dateCounter),
-                                                        weekday: Calendar.current.component(.weekday, from: dateCounter)) {
-                        addInstance(date: dateCounter)
-                        matched = true
-                    }; break
-                case .dom:
-                    if targetSetRep.checkDayOfMonth(day: Calendar.current.component(.day, from: dateCounter)) {
-                        addInstance(date: dateCounter)
-                        matched = true
-                    }; break
-                }
-                // If a TaskTargetSetRepresentation matched with the current dateCounter, exit and check the next day
-                if matched { matched = false ; break }
-            }
-            // Increment day
-            dateCounter = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter)!
-        }
-    }
-    
-    /**
-     Creates a TaskInstance with the date provided and adds to instances
-     - parameter date: Date to be converted to String and saved to the TaskInstance
-     */
-    private func addInstance(date: Date) {
-        addToInstances(TaskInstance(entity: TaskInstance.entity(),
-                                    insertInto: CDCoordinator.moc,
-                                    date: SaveFormatter.dateToStoredString(date)))
+        setNewTargetSets(targetSets: targetSets)
     }
     
     // MARK: - Tag handling
@@ -231,13 +101,94 @@ public class Task: NSManagedObject {
         }
     }
     
+    // MARK: - Date handling
+    
+    /**
+     Converts start and end dates to save format and stores them to this Task.
+     This function does not check if startDate is before endDate; it should have been handled by the caller.
+     - parameter startDate: Start date of type Date
+     - parameter endDate: End date of type Date
+     */
+    func updateDates(startDate: Date, endDate: Date) {
+        self.startDate = SaveFormatter.dateToStoredString(startDate)
+        self.endDate = SaveFormatter.dateToStoredString(endDate)
+    }
+    
+    // MARK: - TaskTargetSet and TaskInstance handling
+    
+    /**
+     Adds TaskTargetSets to this Task and generates TaskInstances, adding those TaskInstances to this Task and the appropriate TaskTargetSet.
+     This function expects startDate and endDate to already be non-nil when called
+    - parameter targetSets: Array of TaskTargetSets to associate with this Task
+    */
+    private func setNewTargetSets(targetSets: [TaskTargetSet]) {
+        
+        self.addToTargetSets(NSSet(array: targetSets))
+        let sortedTargetSets = targetSets.sorted(by: { $0.priority < $1.priority} )
+        
+        guard let sd = self.startDate, let ed = self.endDate else {
+            print("setNewTargetSets was called but startDate and/or endDate were nil")
+            exit(-1)
+        }
+        var dateCounter = SaveFormatter.storedStringToDate(sd)
+        let endDate = SaveFormatter.storedStringToDate(ed)
+        
+        // Loop through each of the days from startDate to endDate and generate TaskInstances where necessary
+        var matched = false
+        while dateCounter.lessThanOrEqualToDate(endDate) {
+            
+            /*
+             Loop through the array of TaskTargetSets (already sorted by priority).
+             If one of the TaskTargetSet's pattern intersects with current dateCounter, a TaskInstance is created, added to instances, and associated with the TaskTargetSet.
+             Since this is for new Tasks, prior task existence is not checked.
+             */
+            for targetSet in sortedTargetSets {
+                
+                let day = Calendar.current.component(.day, from: dateCounter)
+                let weekday = Calendar.current.component(.weekday, from: dateCounter)
+                if targetSet.checkDay(day: Int16(day), weekday: Int16(weekday)) {
+                    
+                    let ti = TaskInstance(context: CDCoordinator.moc)
+                    ti.date = SaveFormatter.dateToStoredString(dateCounter)
+                    
+                    self.addToInstances(ti)
+                    targetSet.addToInstances(ti)
+                    
+                    matched = true
+                }
+                
+                // TaskInstance created; check next date
+                if matched { matched = false; break}
+                
+            }
+            
+            // Increment day
+            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
+                dateCounter = newDate
+            } else {
+                print("An error occurred in setNewTargetSets() when incrementing dateCounter")
+                exit(-1)
+            }
+        }
+    }
+    
     // MARK: - Deletion
     
     /**
-     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC
+     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
+     Also deletes all TaskInstances and TaskTargetSets associated with this Task.
      */
     func deleteSelf() {
         self.removeAllTags()
+        
+        if let targetSets = self.targetSets, let instances = self.instances {
+            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+            for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
+        } else {
+            print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
+            exit(-1)
+        }
+        
         CDCoordinator.moc.delete(self)
     }
     
