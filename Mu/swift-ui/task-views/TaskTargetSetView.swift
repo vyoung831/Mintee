@@ -19,6 +19,12 @@ struct TaskTargetSetView: View {
     let buttonsSpacing: CGFloat = 20
     let bubblesPerRow: Int = 7
     
+    static let weeksOfMonthLabels: [Int:String] = [1: "1st",
+                                                   2: "2nd",
+                                                   3: "3rd",
+                                                   4: "4th",
+                                                   5: "5th"]
+    
     var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
     
     var dividedDaysOfMonth: [[String]] {
@@ -46,6 +52,33 @@ struct TaskTargetSetView: View {
     var moveUp: () -> () = {}
     var moveDown: () -> () = {}
     var delete: () -> () = {}
+    
+    // MARK: - UI functions
+    
+    /**
+     Returns the label to be presented with the TaskTargetSetView
+     - returns: String containing the TaskTargetSetView's calculated label
+     */
+    func getLabel() -> String {
+        if self.selectedDaysOfWeek.count > 0 {
+            if self.selectedWeeksOfMonth.count > 0 {
+                var label: String = ""
+                for idx in 0 ..< selectedWeeksOfMonth.count {
+                    label.append(contentsOf: TaskTargetSetView.weeksOfMonthLabels[selectedWeeksOfMonth[idx]] ?? "")
+                    if idx < selectedWeeksOfMonth.count - 1 {
+                        label.append(",")
+                    }
+                    label.append(" ")
+                }
+                label.append(contentsOf: " of each month")
+                return label
+            } else {
+                return "Every week"
+            }
+        } else {
+            return "Every month"
+        }
+    }
     
     // MARK: - View
     
@@ -99,15 +132,7 @@ struct TaskTargetSetView: View {
             // MARK: - Frequency
             
             Group {
-                if self.selectedDaysOfWeek.count > 0 {
-                    if self.selectedWeeksOfMonth.count > 0 {
-                        Text("Some weeks of the month")
-                    } else {
-                        Text("Some days of the week")
-                    }
-                } else {
-                    Text("Some days of the month")
-                }
+                Text(getLabel())
             }
             
             // MARK: - Target
