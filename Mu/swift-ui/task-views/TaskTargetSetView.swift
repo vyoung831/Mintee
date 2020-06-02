@@ -43,6 +43,8 @@ struct TaskTargetSetView: View {
     
     // MARK: - Closures
     
+    var moveUp: () -> () = {}
+    var moveDown: () -> () = {}
     var delete: () -> () = {}
     
     // MARK: - View
@@ -62,14 +64,14 @@ struct TaskTargetSetView: View {
                     })
                     
                     Button(action: {
-                        print("Up button pressed")
+                        self.moveUp()
                     }, label: {
                         Image(systemName: "arrow.up")
                         .foregroundColor(Color("default-panel-icon-colors"))
                     })
                     
                     Button(action: {
-                        print("Down button pressed")
+                        self.moveDown()
                     }, label: {
                         Image(systemName: "arrow.down")
                         .foregroundColor(Color("default-panel-icon-colors"))

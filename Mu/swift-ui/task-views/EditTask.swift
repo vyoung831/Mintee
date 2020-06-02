@@ -157,13 +157,14 @@ struct EditTask: View {
                     Text("Target Sets")
                         .bold()
                     VStack {
-                        // TO-DO: Present TTSes by priority
-                        ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
+                        ForEach(0 ..< taskTargetSets.count, id: \.self) { idx in
                             TaskTargetSetView(target: String(idx),
-                                              selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
-                                              selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
-                                              selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
-                                              delete: { self.taskTargetSetViews.remove(at: idx) })
+                                              selectedDaysOfWeek: Array(self.taskTargetSets[idx].getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
+                                              selectedWeeksOfMonth: Array(self.taskTargetSets[idx].getWeeksOfMonth().map{Int($0)}),
+                                              selectedDaysOfMonth: Array(self.taskTargetSets[idx].getDaysOfMonth().map{String($0)}),
+                                              moveUp: { if idx > 0 {self.taskTargetSetViews.swapAt(idx, idx - 1)} },
+                                              moveDown: { if idx < self.taskTargetSetViews.count - 1 {self.taskTargetSetViews.swapAt(idx, idx + 1)} },
+                                              delete: { self.taskTargetSets.remove(at: idx) })
                         }
                     }
                 }
