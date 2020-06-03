@@ -18,6 +18,7 @@ struct EditTask: View {
     var dismiss: (() -> Void)
     @State var isPresentingSelectStartDatePopup: Bool = false
     @State var isPresentingSelectEndDatePopup: Bool = false
+    @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var saveFailed: Bool = false
     @State var deleteFailed: Bool = false
     @State var taskName: String
@@ -154,8 +155,22 @@ struct EditTask: View {
                 // MARK: - Target sets
                 
                 Group {
-                    Text("Target Sets")
-                        .bold()
+                    
+                    HStack {
+                        Text("Target Sets")
+                            .bold()
+                        Button(action: {
+                            self.isPresentingAddTaskTargetSetPopup = true
+                        }, label: {
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .frame(width: 30, height: 30, alignment: .center)
+                                .foregroundColor(Color("default-panel-icon-colors"))
+                        }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
+                            AddTaskTargetSetPopup.init(isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)
+                        })
+                    }
+                    
                     VStack {
                         ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
                             TaskTargetSetView(target: String(idx),
