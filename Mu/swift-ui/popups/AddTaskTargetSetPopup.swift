@@ -84,7 +84,7 @@ struct AddTaskTargetSetPopup: View {
                 // MARK: - Bubbles/DayPattern picker
                 
                 Group {
-                    BubbleRows(bubblesPerRow: self.bubblesPerRow, bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek , selectedBubbles: [])
+                    BubbleRows(bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek , selectedBubbles: [])
                 }
                 
                 // MARK: - TaskTargetSet type picker

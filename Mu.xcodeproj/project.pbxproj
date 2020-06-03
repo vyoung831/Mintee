@@ -14,6 +14,7 @@
 		C4037AB224342E2300150D47 /* MuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037AB124342E2300150D47 /* MuTests.swift */; };
 		C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* MuUITests.swift */; };
 		C409257C248664A600E463DA /* AddTaskTargetSetPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */; };
+		C40F6D872487BD74008114E5 /* BubbleRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F6D862487BD74008114E5 /* BubbleRows.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
@@ -81,6 +82,7 @@
 		C4037ABC24342E2300150D47 /* MuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskTargetSetPopup.swift; sourceTree = "<group>"; };
+		C40F6D862487BD74008114E5 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				C43BD950244472A4003E68DC /* AddTask.swift */,
 				C41A73E52451BFD2007007CB /* EditTask.swift */,
 				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
+				C40F6D862487BD74008114E5 /* BubbleRows.swift */,
 			);
 			path = "task-views";
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */,
 				C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */,
 				C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */,
+				C40F6D872487BD74008114E5 /* BubbleRows.swift in Sources */,
 				C48F024E2448A5730088227F /* Task+CoreDataClass.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
 				C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */,
