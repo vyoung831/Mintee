@@ -33,6 +33,7 @@ struct AddTaskTargetSetPopup: View {
     
     let bubblesPerRow: Int = 7
     var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
+    var weeksOfMonth: [[String]] { return [["1st","2nd","3rd","4th","Last"]] }
     var dividedDaysOfMonth: [[String]] {
         var dividedDOM: [[String]] = []
         let daysOfMonth: [String] = ["1","2","3","4","5","6","7","8","9",
@@ -84,7 +85,13 @@ struct AddTaskTargetSetPopup: View {
                 // MARK: - Bubbles/DayPattern picker
                 
                 Group {
+                    
                     BubbleRows(bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek , selectedBubbles: [])
+                    
+                    if self.type == .wom {
+                        BubbleRows(bubblesPerRow: 5, maxBubbleRadius: 35, bubbles: weeksOfMonth, selectedBubbles: weeksOfMonth[0])
+                    }
+                    
                 }
                 
                 // MARK: - TaskTargetSet type picker

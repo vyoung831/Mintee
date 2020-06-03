@@ -13,10 +13,10 @@ struct BubbleRows: View {
     // MARK: - Properties
     
     let rowSpacing: CGFloat = 12
-    let maxBubbleRadius: CGFloat = 28
     let minimumInterBubbleSpacing: CGFloat = 5
-    let bubblesPerRow: Int = 7
     
+    var bubblesPerRow: Int = 7
+    var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
     var selectedBubbles: [String]
     
