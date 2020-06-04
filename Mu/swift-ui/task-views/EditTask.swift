@@ -167,7 +167,8 @@ struct EditTask: View {
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                            AddTaskTargetSetPopup.init(isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)
+                            AddTaskTargetSetPopup.init(ttsViews: self.$taskTargetSetViews,
+                                                       isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)
                         })
                     }
                     

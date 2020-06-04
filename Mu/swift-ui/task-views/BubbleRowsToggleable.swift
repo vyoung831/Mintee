@@ -1,6 +1,10 @@
 //
-//  BubbleRows.swift
+//  BubbleRowsToggleable.swift
 //  Mu
+//
+//  A toggleable version of BubbleRows. This View was separated out into its own because
+//  - It will require a Binding to indicate which bubbles were toggled, whereas BubbleRows simply takes an array of selected bubbles to present, and
+//  - Having AddTask and EditTask use bindings for each TTSV's bubbles would be impractical
 //
 //  Created by Vincent Young on 6/3/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -8,7 +12,7 @@
 
 import SwiftUI
 
-struct BubbleRows: View {
+struct BubbleRowsToggleable: View {
     
     // MARK: - Properties
     
@@ -18,8 +22,8 @@ struct BubbleRows: View {
     var bubblesPerRow: Int = 7
     var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
-    var selectedBubbles: [String]
     
+    @Binding var selectedBubbles: [String]
     @State var grHeight: CGFloat = 0
     
     // MARK: - UI functions
@@ -88,6 +92,13 @@ struct BubbleRows: View {
                                            alignment: .center)
                                 Text(String(bubbleText)).foregroundColor(self.selectedBubbles.contains(bubbleText)
                                     ? .white : Color("default-panel-text-colors") )
+                            }.onTapGesture {
+                                // Add or remove the bubbleText from selectedBubbles
+                                if !self.selectedBubbles.contains(bubbleText) {
+                                    self.selectedBubbles.append(bubbleText)
+                                } else {
+                                    self.selectedBubbles = self.selectedBubbles.filter { $0 != bubbleText }
+                                }
                             }
                         }
                     }

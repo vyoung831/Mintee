@@ -31,6 +31,7 @@ struct AddTaskTargetSetPopup: View {
     let operationWidth: CGFloat = 55
     let operationHeight: CGFloat = 100
     
+    var toggleable: Bool = true
     let bubblesPerRow: Int = 7
     var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
     var weeksOfMonth: [[String]] { return [["1st","2nd","3rd","4th","Last"]] }
@@ -49,6 +50,9 @@ struct AddTaskTargetSetPopup: View {
     
     // MARK: - State variables
     
+    @State var selectedDays: [String] = []
+    @State var selectedWeeks: [String] = []
+    
     @State var type: AddTaskTargetSetPopup.ttsType = .dow
     @State var operatorLow: equalityOperators = .lt
     @State var operatorHigh: equalityOperators = .lt
@@ -57,17 +61,32 @@ struct AddTaskTargetSetPopup: View {
     
     // MARK: - Bindings
     
+    @Binding var ttsViews: [TaskTargetSetView]
     @Binding var isBeingPresented: Bool
+    
+    // MARK: - Functions
+    
+    /**
+     Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
+     */
+    private func save() {
+        let ttsv = TaskTargetSetView(target: "Some target",
+                                     selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDays : [],
+                                     selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks.map{ Int($0) ?? 0 } : [],
+                                     selectedDaysOfMonth: self.type == .dom ? self.selectedDays : [])
+        ttsViews.append(ttsv)
+    }
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: true, content: {
-            VStack(alignment: .center, spacing: 20) {
+            VStack(alignment: .center, spacing: 30) {
                 
                 // MARK: - Title bar
                 
                 Group {
                     HStack {
                         Button(action: {
+                            self.save()
                             self.isBeingPresented = false
                         }, label: { Text("Save") })
                         
@@ -86,22 +105,23 @@ struct AddTaskTargetSetPopup: View {
                 
                 Group {
                     
-                    BubbleRows(bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek , selectedBubbles: [])
+                    BubbleRowsToggleable(maxBubbleRadius: 32,
+                                         bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek,
+                                         selectedBubbles: self.$selectedDays)
                     
                     if self.type == .wom {
-                        BubbleRows(bubblesPerRow: 5, maxBubbleRadius: 35, bubbles: weeksOfMonth, selectedBubbles: weeksOfMonth[0])
+                        BubbleRowsToggleable(bubblesPerRow: 5,
+                                             maxBubbleRadius: 32,
+                                             bubbles: weeksOfMonth,
+                                             selectedBubbles: self.$selectedDays)
                     }
                     
-                }
-                
-                // MARK: - TaskTargetSet type picker
-                
-                Group {
                     Picker(selection: self.$type, label: Text("Type")) {
                         ForEach(ttsType.allCases, id: \.self) { typeLabel in
                             Text(typeLabel.rawValue)
                         }
                     }.frame(height: typePickerHeight)
+                    
                 }
                 
                 // MARK: - Target setter
