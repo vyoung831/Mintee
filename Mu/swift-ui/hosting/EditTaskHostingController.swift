@@ -26,7 +26,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 
                 let ttsv = TaskTargetSetView(target: "ET Target",
                                              selectedDaysOfWeek: tts.getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) },
-                                             selectedWeeksOfMonth: tts.getWeeksOfMonth().map{ Int($0) },
+                                             selectedWeeksOfMonth: tts.getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) },
                                              selectedDaysOfMonth: tts.getDaysOfMonth().map{ String($0) })
                 ttsvArray.append(ttsv)
                 

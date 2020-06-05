@@ -13,9 +13,41 @@ import Foundation
 class SaveFormatter {
     
     /**
-     Returns an Int16 for an instance of DayOfWeek to use
+    Returns an Int16 to append to a DayPattern's wom
+    - parameter weekDay: String used by a view to represent a week of month. Must be one of ["1st","2nd","3rd","4th","Last"]
+    - returns: Int16 to store in DayPattern's wom; "Last" = 5
+    */
+    static func getWeekOfMonthNumber(wom: String) -> Int16 {
+        switch wom {
+        case "1st": return 1
+        case "2nd": return 2
+        case "3rd": return 3
+        case "4th": return 4
+        case "Last": return 5
+        default: exit(-1)
+        }
+    }
+    
+    /**
+    Returns a String from a DayPattern's wom (Int16) for a View to use to represent a week of month
+    - parameter weekDay: Int16 in DayPattern's wom; 5 = "Last"
+    - returns: String for view to use to represent week of month
+    */
+    static func getWeekOfMonthString(wom: Int16) -> String {
+        switch wom {
+        case 1: return "1st"
+        case 2: return "2nd"
+        case 3: return "3rd"
+        case 4: return "4th"
+        case 5: return "Last"
+        default: exit(-1)
+        }
+    }
+    
+    /**
+     Returns an Int16 to append to to a DayPattern's dow
      - parameter weekDay: String used by a view to represent weekday. Must be one of ["M","T","W","R","F","S","U"]
-     - returns: Int16 used by DayOfWeek to store weekday; U=1
+     - returns: Int16 to store in DayPattern's dow; U=1
      */
     static func getWeekdayNumber(weekday: String) -> Int16 {
         switch weekday {
@@ -40,8 +72,8 @@ class SaveFormatter {
     }
     
     /**
-    Returns a String from a saved DayOfWeek's day (Int16) for a View to use
-    - parameter weekDay: Int16 used by DayOfWeek to store weekday; U=1
+    Returns a String from a DayPattern's dow (Int16) for a View to use to represent a day of week
+    - parameter weekDay: Int16 used by DayPattern's dow; U=1
     - returns: String for view to use to represent weekday
     */
     static func getWeekdayString(weekday: Int16) -> String {

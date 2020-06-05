@@ -72,7 +72,7 @@ struct AddTaskTargetSetPopup: View {
     private func save() {
         let ttsv = TaskTargetSetView(target: "Some target",
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDays : [],
-                                     selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks.map{ Int($0) ?? 0 } : [],
+                                     selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : [],
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDays : [])
         ttsViews.append(ttsv)
     }
@@ -113,7 +113,7 @@ struct AddTaskTargetSetPopup: View {
                         BubbleRowsToggleable(bubblesPerRow: 5,
                                              maxBubbleRadius: 32,
                                              bubbles: weeksOfMonth,
-                                             selectedBubbles: self.$selectedDays)
+                                             selectedBubbles: self.$selectedWeeks)
                     }
                     
                     Picker(selection: self.$type, label: Text("Type")) {

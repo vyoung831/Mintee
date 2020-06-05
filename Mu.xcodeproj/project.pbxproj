@@ -241,9 +241,7 @@
 			children = (
 				C43BD950244472A4003E68DC /* AddTask.swift */,
 				C41A73E52451BFD2007007CB /* EditTask.swift */,
-				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
-				C40F6D862487BD74008114E5 /* BubbleRows.swift */,
-				C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */,
+				C48719A224891999004463F4 /* task-target-set-views */,
 			);
 			path = "task-views";
 			sourceTree = "<group>";
@@ -284,6 +282,17 @@
 			path = transformable;
 			sourceTree = "<group>";
 		};
+		C48719A224891999004463F4 /* task-target-set-views */ = {
+			isa = PBXGroup;
+			children = (
+				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
+				C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */,
+				C40F6D862487BD74008114E5 /* BubbleRows.swift */,
+				C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */,
+			);
+			path = "task-target-set-views";
+			sourceTree = "<group>";
+		};
 		C48F022F2448A4700088227F /* core-data */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,7 +309,6 @@
 			isa = PBXGroup;
 			children = (
 				C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */,
-				C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */,
 			);
 			path = popups;
 			sourceTree = "<group>";

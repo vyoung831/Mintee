@@ -19,12 +19,6 @@ struct TaskTargetSetView: View {
     let buttonsSpacing: CGFloat = 20
     let bubblesPerRow: Int = 7
     
-    static let weeksOfMonthLabels: [Int:String] = [1: "1st",
-                                                   2: "2nd",
-                                                   3: "3rd",
-                                                   4: "4th",
-                                                   5: "5th"]
-    
     var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
     
     var dividedDaysOfMonth: [[String]] {
@@ -44,7 +38,7 @@ struct TaskTargetSetView: View {
     
     var target: String
     var selectedDaysOfWeek: [String]
-    var selectedWeeksOfMonth: [Int]
+    var selectedWeeksOfMonth: [String]
     var selectedDaysOfMonth: [String]
     
     // MARK: - Closures
@@ -64,7 +58,7 @@ struct TaskTargetSetView: View {
             if self.selectedWeeksOfMonth.count > 0 {
                 var label: String = ""
                 for idx in 0 ..< selectedWeeksOfMonth.count {
-                    label.append(contentsOf: TaskTargetSetView.weeksOfMonthLabels[selectedWeeksOfMonth[idx]] ?? "")
+                    label.append(contentsOf: selectedWeeksOfMonth[idx])
                     if idx < selectedWeeksOfMonth.count - 1 {
                         label.append(",")
                     }
