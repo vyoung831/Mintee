@@ -144,14 +144,6 @@ struct TaskTargetSetView: View {
     }
 }
 
-struct BubbleRowsHeightKey: PreferenceKey {
-    typealias Value = CGFloat
-    
-    static var defaultValue: CGFloat = CGFloat(0)
-    
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { }
-}
-
 struct TaskTargetSetView_Previews: PreviewProvider {
     static var previews: some View {
         TaskTargetSetView(target: "Preview target",
