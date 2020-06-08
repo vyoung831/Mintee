@@ -22,6 +22,7 @@ struct AddTaskTargetSetPopup: View {
         case lt = "<"
         case lte = "<="
         case eq = "="
+        case na = "N/A"
     }
     
     // MARK: - UI constants and calculated variables
@@ -50,8 +51,9 @@ struct AddTaskTargetSetPopup: View {
     
     // MARK: - State variables
     
-    @State var selectedDays: [String] = []
+    @State var selectedDaysOfWeek: [String] = []
     @State var selectedWeeks: [String] = []
+    @State var selectedDaysOfMonth: [String] = []
     
     @State var type: AddTaskTargetSetPopup.ttsType = .dow
     @State var operatorLow: equalityOperators = .lt
@@ -70,11 +72,31 @@ struct AddTaskTargetSetPopup: View {
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      */
     private func save() {
-        let ttsv = TaskTargetSetView(target: "Some target",
-                                     selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDays : [],
+        let ttsv = TaskTargetSetView(minTarget: operatorHigh == .eq || operatorLow == .na ? nil : valueLow,
+                                     minInclusive: operatorLow.rawValue,
+                                     maxTarget: operatorLow == .eq || operatorHigh == .na ? nil : valueHigh,
+                                     maxInclusive: operatorHigh.rawValue,
+                                     selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : [],
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : [],
-                                     selectedDaysOfMonth: self.type == .dom ? self.selectedDays : [])
+                                     selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : [])
         ttsViews.append(ttsv)
+    }
+    
+    /**
+     - returns: true if the user has selected a non-zero number of dates, depending on the selected ttsType
+     */
+    func validDaysSelected() -> Bool {
+        switch self.type {
+        case .dow:
+            if self.selectedDaysOfWeek.count > 0 { return true }
+            return false
+        case .wom:
+            if self.selectedDaysOfWeek.count > 0 && self.selectedWeeks.count > 0 { return true }
+            return false
+        case .dom:
+            if self.selectedDaysOfMonth.count > 0 { return true }
+            return false
+        }
     }
     
     var body: some View {
@@ -89,7 +111,9 @@ struct AddTaskTargetSetPopup: View {
                             self.save()
                             self.isBeingPresented = false
                         }, label: { Text("Save") })
-                        
+                            .disabled(self.operatorHigh == .na && self.operatorLow == .na)
+                            .disabled(self.operatorHigh == .eq && self.operatorLow == .eq)
+                            .disabled(!validDaysSelected())
                         Spacer()
                         Text("Add Target Set")
                             .font(.title)
@@ -105,10 +129,12 @@ struct AddTaskTargetSetPopup: View {
                 
                 Group {
                     
+                    // Days of week/month
                     BubbleRowsToggleable(maxBubbleRadius: 32,
                                          bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek,
-                                         selectedBubbles: self.$selectedDays)
+                                         selectedBubbles: self.type == ttsType.dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
                     
+                    // Weeks of month
                     if self.type == .wom {
                         BubbleRowsToggleable(bubblesPerRow: 5,
                                              maxBubbleRadius: 32,
@@ -129,9 +155,12 @@ struct AddTaskTargetSetPopup: View {
                 HStack(alignment: .center, spacing: 10) {
                     
                     TextField("Low value", text: self.$valueLow)
+                        .disabled(self.operatorHigh == .eq || self.operatorLow == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
-                        .border(Color.init("default-border-colors"), width: 3)
+                        .foregroundColor(self.operatorHigh == .eq || self.operatorLow == .na ? Color.init("default-disabled-text-colors") : .black )
+                        .border(self.operatorHigh == .eq || self.operatorLow == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
+                        .background(self.operatorHigh == .eq || self.operatorLow == .na ? Color.init("default-disabled-fill-colors") : .clear)
                         .cornerRadius(3)
                     
                     Picker("Low op", selection: self.$operatorLow) {
@@ -151,9 +180,12 @@ struct AddTaskTargetSetPopup: View {
                         .clipped()
                     
                     TextField("High value", text: self.$valueHigh)
+                        .disabled(self.operatorLow == .eq || self.operatorHigh == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
-                        .border(Color.init("default-border-colors"), width: 3)
+                        .foregroundColor(self.operatorLow == .eq || self.operatorHigh == .na ? Color.init("default-disabled-text-colors") : .black )
+                        .border(self.operatorLow == .eq || self.operatorHigh == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
+                        .background(self.operatorLow == .eq || self.operatorHigh == .na ? Color.init("default-disabled-fill-colors") : .clear)
                         .cornerRadius(3)
                     
                 }.labelsHidden()
@@ -161,9 +193,3 @@ struct AddTaskTargetSetPopup: View {
         }).padding(15)
     }
 }
-
-//struct AddTaskTargetSetPopup_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddTaskTargetSetPopup()
-//    }
-//}

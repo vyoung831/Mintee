@@ -36,7 +36,10 @@ struct TaskTargetSetView: View {
     
     // MARK: - Variables
     
-    var target: String
+    var minTarget: String?
+    var minInclusive: String
+    var maxTarget: String?
+    var maxInclusive: String
     var selectedDaysOfWeek: [String]
     var selectedWeeksOfMonth: [String]
     var selectedDaysOfMonth: [String]
@@ -64,7 +67,7 @@ struct TaskTargetSetView: View {
                     }
                     label.append(" ")
                 }
-                label.append(contentsOf: " of each month")
+                label.append(contentsOf: "of each month")
                 return label
             } else {
                 return "Every week"
@@ -72,6 +75,22 @@ struct TaskTargetSetView: View {
         } else {
             return "Every month"
         }
+    }
+    
+    /**
+     Builds the target String to be displayed
+     - returns: String to display as target
+     */
+    func getTarget() -> String {
+        if let min = minTarget, let max = maxTarget {
+            return "\(min) \(minInclusive) Target \(maxInclusive) \(max)"
+        } else if let min = minTarget {
+            return "Target \(minInclusive.replacingOccurrences(of: "<", with: ">")) \(min)"
+        } else if let max = maxTarget {
+            return "Target \(maxInclusive.replacingOccurrences(of: ">", with: "<")) \(max)"
+        }
+        // TO-DO: Send error report
+        return ""
     }
     
     // MARK: - View
@@ -131,7 +150,7 @@ struct TaskTargetSetView: View {
             // MARK: - Target
             
             Group {
-                Text(self.target)
+                Text(getTarget())
             }
             
         }
@@ -141,14 +160,5 @@ struct TaskTargetSetView: View {
         .background( Color("default-panel-colors") )
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
-    }
-}
-
-struct TaskTargetSetView_Previews: PreviewProvider {
-    static var previews: some View {
-        TaskTargetSetView(target: "Preview target",
-                          selectedDaysOfWeek: ["M","W","U"],
-                          selectedWeeksOfMonth: [],
-                          selectedDaysOfMonth: [])
     }
 }
