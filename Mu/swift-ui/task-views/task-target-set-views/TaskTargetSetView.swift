@@ -36,10 +36,13 @@ struct TaskTargetSetView: View {
     
     // MARK: - Variables
     
-    var minTarget: String?
-    var minInclusive: String
-    var maxTarget: String?
-    var maxInclusive: String
+    /*
+     TaskTargetSetView expects minOperator and maxOperator to be nil if a min/max target bound is not be used. Other views/classes such as EditTaskHostingController and AddTaskTargetSetPopup set this View's operators to nil to convey that.
+     */
+    var minTarget: Float
+    var minOperator: String?
+    var maxTarget: Float
+    var maxOperator: String?
     var selectedDaysOfWeek: [String]
     var selectedWeeksOfMonth: [String]
     var selectedDaysOfMonth: [String]
@@ -59,10 +62,11 @@ struct TaskTargetSetView: View {
     func getLabel() -> String {
         if self.selectedDaysOfWeek.count > 0 {
             if self.selectedWeeksOfMonth.count > 0 {
+                let orderedWeeks = selectedWeeksOfMonth.sorted(by: { SaveFormatter.getWeekOfMonthNumber(wom: $0) < SaveFormatter.getWeekOfMonthNumber(wom: $1) })
                 var label: String = ""
-                for idx in 0 ..< selectedWeeksOfMonth.count {
-                    label.append(contentsOf: selectedWeeksOfMonth[idx])
-                    if idx < selectedWeeksOfMonth.count - 1 {
+                for idx in 0 ..< orderedWeeks.count {
+                    label.append(contentsOf: orderedWeeks[idx])
+                    if idx < orderedWeeks.count - 1 {
                         label.append(",")
                     }
                     label.append(" ")
@@ -82,12 +86,12 @@ struct TaskTargetSetView: View {
      - returns: String to display as target
      */
     func getTarget() -> String {
-        if let min = minTarget, let max = maxTarget {
-            return "\(min) \(minInclusive) Target \(maxInclusive) \(max)"
-        } else if let min = minTarget {
-            return "Target \(minInclusive.replacingOccurrences(of: "<", with: ">")) \(min)"
-        } else if let max = maxTarget {
-            return "Target \(maxInclusive.replacingOccurrences(of: ">", with: "<")) \(max)"
+        if let minOp = minOperator, let maxOp = maxOperator {
+            return "\(minTarget.clean) \(minOp) Target \(maxOp) \(maxTarget.clean)"
+        } else if let minOp = minOperator {
+            return "Target \(minOp.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)"
+        } else if let maxOp = maxOperator {
+            return "Target \(maxOp.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)"
         }
         // TO-DO: Send error report
         return ""

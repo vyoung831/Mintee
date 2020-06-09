@@ -2,7 +2,7 @@
 //  TaskTargetSet+CoreDataProperties.swift
 //  Mu
 //
-//  Created by Vincent Young on 5/30/20.
+//  Created by Vincent Young on 6/8/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 //
@@ -18,11 +18,11 @@ extension TaskTargetSet {
     }
 
     @NSManaged public var max: Float
-    @NSManaged public var maxInclusive: Bool
+    @NSManaged public var maxOperator: Int16
     @NSManaged public var min: Float
-    @NSManaged public var minInclusive: Bool
-    @NSManaged public var priority: Int16
+    @NSManaged public var minOperator: Int16
     @NSManaged public var pattern: NSObject?
+    @NSManaged public var priority: Int16
     @NSManaged public var instances: NSSet?
     @NSManaged public var task: Task?
 

@@ -18,12 +18,7 @@ struct AddTaskTargetSetPopup: View {
         case dom = "Days of month"
     }
     
-    enum equalityOperators: String, CaseIterable {
-        case lt = "<"
-        case lte = "<="
-        case eq = "="
-        case na = "N/A"
-    }
+    
     
     // MARK: - UI constants and calculated variables
     
@@ -56,10 +51,10 @@ struct AddTaskTargetSetPopup: View {
     @State var selectedDaysOfMonth: [String] = []
     
     @State var type: AddTaskTargetSetPopup.ttsType = .dow
-    @State var operatorLow: equalityOperators = .lt
-    @State var operatorHigh: equalityOperators = .lt
-    @State var valueLow: String = "0"
-    @State var valueHigh: String = "0"
+    @State var minOperator: SaveFormatter.equalityOperators = .lt
+    @State var maxOperator: SaveFormatter.equalityOperators = .lt
+    @State var minValue: String = "0"
+    @State var maxValue: String = "0"
     
     // MARK: - Bindings
     
@@ -72,10 +67,16 @@ struct AddTaskTargetSetPopup: View {
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      */
     private func save() {
-        let ttsv = TaskTargetSetView(minTarget: operatorHigh == .eq || operatorLow == .na ? nil : valueLow,
-                                     minInclusive: operatorLow.rawValue,
-                                     maxTarget: operatorLow == .eq || operatorHigh == .na ? nil : valueHigh,
-                                     maxInclusive: operatorHigh.rawValue,
+        
+        guard let min = Float(minValue), let max = Float(maxValue) else {
+            // TO-DO: Crash report
+            exit(-1)
+        }
+        
+        let ttsv = TaskTargetSetView(minTarget: min,
+                                     minOperator: maxOperator == .eq || minOperator == .na ? nil : minOperator.rawValue,
+                                     maxTarget: max,
+                                     maxOperator: minOperator == .eq || maxOperator == .na ? nil : maxOperator.rawValue,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : [],
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : [],
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : [])
@@ -111,8 +112,8 @@ struct AddTaskTargetSetPopup: View {
                             self.save()
                             self.isBeingPresented = false
                         }, label: { Text("Save") })
-                            .disabled(self.operatorHigh == .na && self.operatorLow == .na)
-                            .disabled(self.operatorHigh == .eq && self.operatorLow == .eq)
+                            .disabled(self.maxOperator == .na && self.minOperator == .na)
+                            .disabled(self.maxOperator == .eq && self.minOperator == .eq)
                             .disabled(!validDaysSelected())
                         Spacer()
                         Text("Add Target Set")
@@ -154,17 +155,17 @@ struct AddTaskTargetSetPopup: View {
                 
                 HStack(alignment: .center, spacing: 10) {
                     
-                    TextField("Low value", text: self.$valueLow)
-                        .disabled(self.operatorHigh == .eq || self.operatorLow == .na)
+                    TextField("Low value", text: self.$minValue)
+                        .disabled(self.maxOperator == .eq || self.minOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
-                        .foregroundColor(self.operatorHigh == .eq || self.operatorLow == .na ? Color.init("default-disabled-text-colors") : .black )
-                        .border(self.operatorHigh == .eq || self.operatorLow == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
-                        .background(self.operatorHigh == .eq || self.operatorLow == .na ? Color.init("default-disabled-fill-colors") : .clear)
+                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-text-colors") : .black )
+                        .border(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
+                        .background(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-fill-colors") : .clear)
                         .cornerRadius(3)
                     
-                    Picker("Low op", selection: self.$operatorLow) {
-                        ForEach(equalityOperators.allCases, id: \.self) { op in
+                    Picker("Low op", selection: self.$minOperator) {
+                        ForEach(SaveFormatter.equalityOperators.allCases, id: \.self) { op in
                             Text(op.rawValue)
                         }}
                         .frame(width: operationWidth, height: operationHeight)
@@ -172,20 +173,20 @@ struct AddTaskTargetSetPopup: View {
                     
                     Text("Target")
                     
-                    Picker("High op", selection: self.$operatorHigh) {
-                        ForEach(equalityOperators.allCases, id: \.self) { op in
+                    Picker("High op", selection: self.$maxOperator) {
+                        ForEach(SaveFormatter.equalityOperators.allCases, id: \.self) { op in
                             Text(op.rawValue)
                         }}
                         .frame(width: operationWidth, height: operationHeight)
                         .clipped()
                     
-                    TextField("High value", text: self.$valueHigh)
-                        .disabled(self.operatorLow == .eq || self.operatorHigh == .na)
+                    TextField("High value", text: self.$maxValue)
+                        .disabled(self.minOperator == .eq || self.maxOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
-                        .foregroundColor(self.operatorLow == .eq || self.operatorHigh == .na ? Color.init("default-disabled-text-colors") : .black )
-                        .border(self.operatorLow == .eq || self.operatorHigh == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
-                        .background(self.operatorLow == .eq || self.operatorHigh == .na ? Color.init("default-disabled-fill-colors") : .clear)
+                        .foregroundColor(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-text-colors") : .black )
+                        .border(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
+                        .background(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-fill-colors") : .clear)
                         .cornerRadius(3)
                     
                 }.labelsHidden()

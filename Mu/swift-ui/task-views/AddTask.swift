@@ -32,10 +32,10 @@ struct AddTask: View {
             let ttsv = taskTargetSetViews[i]
             let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
                                     insertInto: CDCoordinator.moc,
-                                    min: 0,
-                                    max: Float(Int.random(in: 1...100)),
-                                    minInclusive: true,
-                                    maxInclusive: true,
+                                    min: ttsv.minTarget,
+                                    max: ttsv.maxTarget,
+                                    minOperator: SaveFormatter.getOperatorNumber(ttsv.minOperator),
+                                    maxOperator: SaveFormatter.getOperatorNumber(ttsv.maxOperator),
                                     priority: Int16(i),
                                     pattern: DayPattern(dow: ttsv.selectedDaysOfWeek.map{ SaveFormatter.getWeekdayNumber(weekday: $0) },
                                                         wom: ttsv.selectedWeeksOfMonth.map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) },
@@ -184,9 +184,9 @@ struct AddTask: View {
                     VStack {
                         ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
                             TaskTargetSetView(minTarget: self.taskTargetSetViews[idx].minTarget,
-                                              minInclusive: self.taskTargetSetViews[idx].minInclusive,
+                                              minOperator: self.taskTargetSetViews[idx].minOperator,
                                               maxTarget: self.taskTargetSetViews[idx].maxTarget,
-                                              maxInclusive: self.taskTargetSetViews[idx].maxInclusive,
+                                              maxOperator: self.taskTargetSetViews[idx].maxOperator,
                                               selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
                                               selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
                                               selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,

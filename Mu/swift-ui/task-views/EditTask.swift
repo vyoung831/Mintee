@@ -175,9 +175,9 @@ struct EditTask: View {
                     VStack {
                         ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
                             TaskTargetSetView(minTarget: self.taskTargetSetViews[idx].minTarget,
-                                              minInclusive: self.taskTargetSetViews[idx].minInclusive,
+                                              minOperator: self.taskTargetSetViews[idx].minOperator,
                                               maxTarget: self.taskTargetSetViews[idx].maxTarget,
-                                              maxInclusive: self.taskTargetSetViews[idx].maxInclusive,
+                                              maxOperator: self.taskTargetSetViews[idx].maxOperator,
                                               selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
                                               selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
                                               selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,

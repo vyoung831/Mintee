@@ -17,15 +17,15 @@ public class TaskTargetSet: NSManagedObject {
                          insertInto context: NSManagedObjectContext?,
                          min: Float,
                          max: Float,
-                         minInclusive: Bool,
-                         maxInclusive: Bool,
+                         minOperator: Int16,
+                         maxOperator: Int16,
                          priority: Int16,
                          pattern: DayPattern) {
         self.init(entity: entity, insertInto: context)
         self.min = min
         self.max = max
-        self.minInclusive = minInclusive
-        self.maxInclusive = maxInclusive
+        self.minOperator = minOperator
+        self.maxOperator = maxOperator
         self.priority = priority
         self.pattern = pattern
     }

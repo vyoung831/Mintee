@@ -24,10 +24,10 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         if let ttsArray = task.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for tts in ttsArray {
                 
-                let ttsv = TaskTargetSetView(minTarget: tts.min == nil ? nil : String(tts.min),
-                                             minInclusive: tts.minInclusive,
-                                             maxTarget: tts.max == nil ? nil : String(tts.max),
-                                             maxInclusive: tts.maxInclusive,
+                let ttsv = TaskTargetSetView(minTarget: tts.min,
+                                             minOperator: SaveFormatter.getOperatorString(tts.minOperator),
+                                             maxTarget: tts.max,
+                                             maxOperator: SaveFormatter.getOperatorString(tts.maxOperator),
                                              selectedDaysOfWeek: tts.getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) },
                                              selectedWeeksOfMonth: tts.getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) },
                                              selectedDaysOfMonth: tts.getDaysOfMonth().map{ String($0) })

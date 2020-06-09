@@ -63,9 +63,9 @@
     </entity>
     <entity name="TaskTargetSet" representedClassName="TaskTargetSet" syncable="YES">
         <attribute name="max" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="maxInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="maxOperator" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="min" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="minInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="minOperator" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="pattern" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskInstance" inverseName="targetSet" inverseEntity="TaskInstance"/>
