@@ -144,9 +144,9 @@ public class Task: NSManagedObject {
              */
             for targetSet in sortedTargetSets {
                 
-                let day = Calendar.current.component(.day, from: dateCounter)
-                let weekday = Calendar.current.component(.weekday, from: dateCounter)
-                if targetSet.checkDay(day: Int16(day), weekday: Int16(weekday)) {
+                if targetSet.checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
+                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
+                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     let ti = TaskInstance(context: CDCoordinator.moc)
                     ti.date = SaveFormatter.dateToStoredString(dateCounter)
@@ -158,7 +158,7 @@ public class Task: NSManagedObject {
                 }
                 
                 // TaskInstance created; check next date
-                if matched { matched = false; break}
+                if matched { matched = false; break }
                 
             }
             
@@ -170,6 +170,105 @@ public class Task: NSManagedObject {
                 exit(-1)
             }
         }
+    }
+    
+    /**
+     Deletes the TaskTargetSets that are already associated with this Task, attaches new ones, and updates new TaskInstances
+     - parameter targetSets: Array of new TaskTargetSets to associate with this Task, sorted by priority in ascending order
+     */
+    func updateTaskTargetSets(targetSets: [TaskTargetSet]) {
+        
+        // Delete current TaskTargetSets from MOC
+        if let targetSets = self.targetSets {
+            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+        } else {
+            print("Error deleting TaskTargetSets from \(self.debugDescription)")
+            exit(-1)
+        }
+        
+        // Set new targetSets and update instances
+        self.targetSets = NSSet(array: targetSets)
+        updateInstances()
+        
+    }
+    
+    /**
+     Uses this Task's targetSets to generate new or attach existing TaskInstances. Existing TaskInstances that are no longer needed are deleted.
+     */
+    private func updateInstances() {
+        
+        guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0.priority < $1.priority} ) else {
+            print("updateInstances() call from \(self.debugDescription) could not get and sort targetSets")
+            exit(-1)
+        }
+        
+        guard let sd = self.startDate, let ed = self.endDate else {
+            print("setNewTargetSets was called but startDate and/or endDate were nil")
+            exit(-1)
+        }
+        
+        var newInstances = Set<TaskInstance>()
+        var dateCounter = SaveFormatter.storedStringToDate(sd)
+        let endDate = SaveFormatter.storedStringToDate(ed)
+        var matched = false
+        while dateCounter.lessThanOrEqualToDate(endDate) {
+            
+            for case let targetSet in sortedTargetSets {
+                if targetSet.checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
+                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
+                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
+                    
+                    //extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from instances or a new one in the MOC
+                    let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))
+                    ti.date = SaveFormatter.dateToStoredString(dateCounter)
+                    newInstances.insert(ti)
+                    targetSet.addToInstances(ti)
+                    
+                    matched = true
+                }
+                if matched { matched = false; break}
+                
+            }
+            
+            // Increment dateCounter
+            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
+                dateCounter = newDate
+            } else { print("An error occurred in setNewTargetSets() when incrementing dateCounter"); exit(-1) }
+        }
+        
+        /*
+         All TaskInstances that should have been migrated to the new set should have been done so by now.
+         The old instances are deleted and self.instances is pointed to the new Set
+         */
+        if let instances = self.instances {
+            for case let oldInstance as TaskInstance in instances {
+                print("Warning: Deleting instance with date \(String(describing: oldInstance.date))")
+                CDCoordinator.moc.delete(oldInstance)
+            }
+        }
+        
+        self.instances = NSSet(set: newInstances)
+        
+    }
+    
+    /**
+     Unassociates (if necessary) and returns a TaskInstance with the desired date.
+     If one already exists and belongs to this Task, it is removed from instances; otherwise, a new one is created in the MOC
+     - parameter date: The date that the returned TaskInstance should have
+     - returns: TaskInstance with specified Date - either newly created or an existing one that's been disassociated with this Task
+     */
+    private func extractInstance(date: String) -> TaskInstance {
+        if let instances = self.instances {
+            for case let instance as TaskInstance in instances {
+                if instance.date == date {
+                    removeFromInstances(instance)
+                    return instance
+                }
+            }
+        }
+        let instance = TaskInstance(context: CDCoordinator.moc)
+        instance.date = date
+        return instance
     }
     
     // MARK: - Deletion

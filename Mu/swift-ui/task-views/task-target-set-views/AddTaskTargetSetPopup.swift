@@ -18,8 +18,6 @@ struct AddTaskTargetSetPopup: View {
         case dom = "Days of month"
     }
     
-    
-    
     // MARK: - UI constants and calculated variables
     
     let typePickerHeight: CGFloat = 125

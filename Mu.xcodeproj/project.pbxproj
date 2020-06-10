@@ -302,8 +302,8 @@
 				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
 				C499FFEC247364DF00ABB64C /* SaveFormatter.swift */,
 				C46826D02482EC0B006670A8 /* transformable */,
-				C4D04367245988E900A75BC9 /* generated-properties */,
-				C4D04366245988D200A75BC9 /* generated-subclasses */,
+				C4D04367245988E900A75BC9 /* properties */,
+				C4D04366245988D200A75BC9 /* subclasses */,
 			);
 			path = "core-data";
 			sourceTree = "<group>";
@@ -316,7 +316,7 @@
 			path = popups;
 			sourceTree = "<group>";
 		};
-		C4D04366245988D200A75BC9 /* generated-subclasses */ = {
+		C4D04366245988D200A75BC9 /* subclasses */ = {
 			isa = PBXGroup;
 			children = (
 				C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */,
@@ -327,10 +327,10 @@
 				C48F02302448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift */,
 				C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */,
 			);
-			path = "generated-subclasses";
+			path = subclasses;
 			sourceTree = "<group>";
 		};
-		C4D04367245988E900A75BC9 /* generated-properties */ = {
+		C4D04367245988E900A75BC9 /* properties */ = {
 			isa = PBXGroup;
 			children = (
 				C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */,
@@ -341,7 +341,7 @@
 				C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */,
 				C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */,
 			);
-			path = "generated-properties";
+			path = properties;
 			sourceTree = "<group>";
 		};
 		C4D0439024598DB200A75BC9 /* tab-bar */ = {

@@ -31,6 +31,25 @@ struct EditTask: View {
         task.name = self.taskName
         task.updateTags(newTagNames: self.tags)
         task.updateDates(startDate: self.startDate, endDate: self.endDate)
+        
+        var taskTargetSets: [TaskTargetSet] = []
+        for i in 0 ..< taskTargetSetViews.count {
+            let ttsv = taskTargetSetViews[i]
+            let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
+                                    insertInto: CDCoordinator.moc,
+                                    min: ttsv.minTarget,
+                                    max: ttsv.maxTarget,
+                                    minOperator: SaveFormatter.getOperatorNumber(ttsv.minOperator),
+                                    maxOperator: SaveFormatter.getOperatorNumber(ttsv.maxOperator),
+                                    priority: Int16(i),
+                                    pattern: DayPattern(dow: ttsv.selectedDaysOfWeek.map{ SaveFormatter.getWeekdayNumber(weekday: $0) },
+                                                        wom: ttsv.selectedWeeksOfMonth.map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) },
+                                                        dom: ttsv.selectedDaysOfMonth.map{ Int16($0) ?? 0 }))
+            taskTargetSets.append(tts)
+        }
+        
+        task.updateTaskTargetSets(targetSets: taskTargetSets)
+        
         do {
             try CDCoordinator.moc.save()
             return true
