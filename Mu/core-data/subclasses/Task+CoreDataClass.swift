@@ -114,13 +114,13 @@ public class Task: NSManagedObject {
         self.endDate = SaveFormatter.dateToStoredString(endDate)
     }
     
-    // MARK: - TaskTargetSet and TaskInstance handling
+    // MARK: - TaskTargetSet and TaskInstance adding
     
     /**
      Adds TaskTargetSets to this Task and generates TaskInstances, adding those TaskInstances to this Task and the appropriate TaskTargetSet.
      This function expects startDate and endDate to already be non-nil when called
-    - parameter targetSets: Array of TaskTargetSets to associate with this Task
-    */
+     - parameter targetSets: Array of TaskTargetSets to associate with this Task
+     */
     private func setNewTargetSets(targetSets: [TaskTargetSet]) {
         
         self.addToTargetSets(NSSet(array: targetSets))
@@ -172,6 +172,8 @@ public class Task: NSManagedObject {
         }
     }
     
+    // MARK: - TaskTargetSet and TaskInstance updating
+    
     /**
      Deletes the TaskTargetSets that are already associated with this Task, attaches new ones, and updates new TaskInstances
      - parameter targetSets: Array of new TaskTargetSets to associate with this Task, sorted by priority in ascending order
@@ -190,6 +192,92 @@ public class Task: NSManagedObject {
         self.targetSets = NSSet(array: targetSets)
         updateInstances()
         
+    }
+    
+    /**
+     Returns the date representations of existing TaskInstances that would be deleted given a new start date, end date, and set of DayPatterns
+     - parameter startDate: Newly proposed start date
+     - parameter endDate: Newly proposed end date
+     - parameter dayPatterns: Set of DayPatterns
+     - returns: Array of Strings representing TaskInstances that would be deleted, sorted by date. The Strings represent the dates in "M-d-yyyy" format
+     */
+    func getDeltaInstances(startDate: Date, endDate: Date, dayPatterns: Set<DayPattern>) -> [String] {
+        
+        var datesDelta: [String] = []
+        
+        guard let instances = self.instances as? Set<TaskInstance> else {
+            print("getDeltaInstances() in Task could not retrieve existing instances"); exit(-1)
+        }
+        
+        // Filter existing TaskInstances for ones before the proposed start date
+        let instancesBefore = instances.filter({
+            if let date = $0.date {
+                return SaveFormatter.storedStringToDate(date).lessThanOrEqualToDate(startDate)
+            } else { print("getDeltaInstances() found an existing TaskInstance with a nil date value"); exit(-1) }
+        })
+        
+        // Filter existing TaskInstances for ones after the proposed end date
+        let instancesAfter = instances.filter({
+            if let date = $0.date {
+                return endDate.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(date))
+            } else { print("getDeltaInstances() found an existing TaskInstance with a nil date value"); exit(-1) }
+        })
+        
+        let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ Date.toMDY(SaveFormatter.storedStringToDate($0)) }
+        let afterSorted = instancesAfter.map({ $0.date ?? "" }).sorted().map{ Date.toMDY(SaveFormatter.storedStringToDate($0)) }
+        datesDelta.append(contentsOf: beforeSorted)
+        
+        // Loop through each of the days from startDate to endDate to evaluate if TaskInstances for each day would be created, deleted, or carried over
+        var dateCounter = startDate
+        var matched = false
+        while dateCounter.lessThanOrEqualToDate(endDate) {
+            
+            print(dateCounter)
+            
+            /*
+             Loop through the set of DayPatterns
+             If one of the DayPatterns intersects with dateCounter's current Date, this Date is ignored and the next Date is checked, since the TaskInstance would be created or carried over.
+             */
+            for pattern in dayPatterns {
+                switch pattern.type {
+                case .dow:
+                    if pattern.daysOfWeek.contains(Int16(Calendar.current.component(.weekday, from: dateCounter))) { matched = true }
+                    break
+                case .wom:
+                    let day = Int16(Calendar.current.component(.day, from: dateCounter))
+                    guard let daysInMonth = Calendar.current.range(of: .day, in: .month, for: dateCounter) else { exit(-1) }
+                    
+                    if pattern.daysOfWeek.contains(Int16(Calendar.current.component(.weekday, from: dateCounter))) {
+                        if pattern.weeksOfMonth.contains(Int16(ceil(Float(day)/7))) { matched = true }
+                        else if pattern.weeksOfMonth.contains(SaveFormatter.getWeekOfMonthNumber(wom: "Last")) {
+                            if day + 7 > daysInMonth.count { matched = true }
+                        }
+                    }
+                    break
+                case .dom:
+                    if pattern.daysOfMonth.contains(Int16(Calendar.current.component(.day, from: dateCounter))) { matched = true }
+                    break
+                }
+                
+                if matched { break }
+            }
+            
+            // If none of the proposed DayPatterns matched with the date and a TaskInstance already exists for that date, add it to datesDelta since it would be deleted
+            if !matched && instances.contains(where: { $0.date == SaveFormatter.dateToStoredString(dateCounter)}) {
+                datesDelta.append(Date.toMDY(dateCounter))
+            }
+            
+            // Increment dateCounter
+            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
+                dateCounter = newDate
+            } else { print("An error occurred in getDeltaInstances() when incrementing dateCounter"); exit(-1) }
+            
+            matched = false
+            
+        }
+        
+        datesDelta.append(contentsOf: afterSorted)
+        return datesDelta
     }
     
     /**
@@ -242,7 +330,6 @@ public class Task: NSManagedObject {
          */
         if let instances = self.instances {
             for case let oldInstance as TaskInstance in instances {
-                print("Warning: Deleting instance with date \(String(describing: oldInstance.date))")
                 CDCoordinator.moc.delete(oldInstance)
             }
         }

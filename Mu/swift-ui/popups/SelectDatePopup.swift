@@ -20,7 +20,7 @@ struct SelectDatePopup: View {
     var body: some View {
         
         NavigationView {
-            VStack{
+            VStack {
                 if isStartDate {
                     DatePicker("", selection: self.$startDate, displayedComponents: .date)
                         .labelsHidden()
@@ -45,9 +45,3 @@ struct SelectDatePopup: View {
         
     }
 }
-
-//struct SelectDatePopup_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SelectDatePopup()
-//    }
-//}

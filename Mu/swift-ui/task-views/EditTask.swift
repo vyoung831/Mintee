@@ -13,12 +13,15 @@ struct EditTask: View {
     let startDateLabel: String = "Start Date: "
     let endDateLabel: String = "End Date: "
     let taskTypes: [String] = ["Recurring","Specific"]
+    let deleteMessage: String = "Because you changed your target sets, you will lose data from the following dates. Are you sure you want to continue?"
     
     var task: Task
     var dismiss: (() -> Void)
+    @State var datesToDelete: [String] = []
     @State var isPresentingSelectStartDatePopup: Bool = false
     @State var isPresentingSelectEndDatePopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
+    @State var isPresentingConfirmDeletePopup: Bool = false
     @State var saveFailed: Bool = false
     @State var deleteFailed: Bool = false
     @State var taskName: String
@@ -27,7 +30,8 @@ struct EditTask: View {
     @State var endDate: Date
     @State var taskTargetSetViews: [TaskTargetSetView] = []
     
-    private func saveTask() -> Bool {
+    private func saveTask() {
+        
         task.name = self.taskName
         task.updateTags(newTagNames: self.tags)
         task.updateDates(startDate: self.startDate, endDate: self.endDate)
@@ -52,10 +56,11 @@ struct EditTask: View {
         
         do {
             try CDCoordinator.moc.save()
-            return true
+            self.dismiss()
         } catch {
-            return false
+            self.saveFailed = true
         }
+        
     }
     
     private func deleteTask() -> Bool {
@@ -76,15 +81,36 @@ struct EditTask: View {
                 
                 HStack {
                     Button(action: {
-                        if self.saveTask() {
-                            self.dismiss()
-                        } else {
-                            // Display failure message in UI if saveTask() failed
-                            self.saveFailed = true
+                        
+                        /*
+                         Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
+                         If count > 0, the new TaskTargetSets would result in existing TaskInstances being deleted, so ConfirmDeletePopup is presented with the closure to call saveTask() if the user selects yes
+                         Otherwise, no TaskInstances would be deleted and saveTask is called directly
+                         */
+                        var dayPatterns: Set<DayPattern> = Set()
+                        for tts in self.taskTargetSetViews {
+                            
+                            // AddTaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
+                            let dp = DayPattern(dow: tts.selectedDaysOfWeek.map{SaveFormatter.getWeekdayNumber(weekday: $0)},
+                                                wom: tts.selectedWeeksOfMonth.map{SaveFormatter.getWeekOfMonthNumber(wom: $0)},
+                                                dom: tts.selectedDaysOfMonth.map{ Int16($0) ?? 0 })
+                            dayPatterns.insert(dp)
                         }
+                        self.datesToDelete = self.task.getDeltaInstances(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns)
+                        if self.datesToDelete.count > 0 { self.isPresentingConfirmDeletePopup = true }
+                        else { self.saveTask() }
+                        
                     }, label: {
                         Text("Save")
-                    }).disabled(self.taskName == "")
+                    })
+                        .disabled(self.taskName == "")
+                        .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
+                            ConfirmDeletePopup(deleteMessage: self.deleteMessage,
+                                               deleteList: self.datesToDelete,
+                                               delete: self.saveTask,
+                                               isBeingPresented: self.$isPresentingConfirmDeletePopup)
+                        })
+                    
                     Spacer()
                     
                     Text("Edit Task")
@@ -147,7 +173,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectStartDatePopup = true
                     }, label: {
-                        Text(startDateLabel + self.startDate.toMYD())
+                        Text(startDateLabel + Date.toMYD(self.startDate))
                     }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectStartDatePopup,
@@ -160,7 +186,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectEndDatePopup = true
                     }, label: {
-                        Text(endDateLabel + self.endDate.toMYD())
+                        Text(endDateLabel + Date.toMYD(self.endDate))
                     }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectEndDatePopup,
@@ -187,8 +213,7 @@ struct EditTask: View {
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             AddTaskTargetSetPopup.init(ttsViews: self.$taskTargetSetViews,
-                                                       isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)
-                        })
+                                                       isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)})
                     }
                     
                     VStack {

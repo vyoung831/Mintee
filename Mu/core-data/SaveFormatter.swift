@@ -12,6 +12,15 @@ import Foundation
 
 class SaveFormatter {
     
+    // MARK: - DateFormatters
+    
+    // Static DateFormatter for converting stored date Strings to Dates
+    static let storedStringToDateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df
+    }()
+    
     // MARK: - TaskTargetSet equality operators
     
     enum equalityOperators: String, CaseIterable {
@@ -132,12 +141,10 @@ class SaveFormatter {
     // MARK: - Date conversion
     
     /**
-     Returns a Date object from a String representation. The String representation is expected to be in "yyyy-MM-dd" format
+     Returns a Date object from a String representation. The stored String representation is expected to be in "yyyy-MM-dd" format
      */
     static func storedStringToDate(_ storedString: String) -> Date {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        if let date = df.date(from: storedString) { return date }
+        if let date = storedStringToDateFormatter.date(from: storedString) { return date }
         else {
             print("SaveFormatter could not convert a stored date string to Date")
             exit(-1)
@@ -145,12 +152,10 @@ class SaveFormatter {
     }
     
     /**
-     Returns a "yyyy-MM-dd" String representation of a Date for storing in Core Data
+     Returns a "yyyy-MM-dd" String representation of a Date to be stored in Core Data
      */
     static func dateToStoredString(_ date: Date) -> String {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        return df.string(from: date)
+        return storedStringToDateFormatter.string(from: date)
     }
     
 }
