@@ -23,7 +23,7 @@ class SaveFormatter {
     
     // MARK: - TaskTargetSet equality operators
     
-    enum equalityOperators: String, CaseIterable {
+    enum equalityOperator: String, CaseIterable {
         case lt = "<"
         case lte = "<="
         case eq = "="

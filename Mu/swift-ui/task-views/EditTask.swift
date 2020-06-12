@@ -212,8 +212,8 @@ struct EditTask: View {
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                            AddTaskTargetSetPopup.init(ttsViews: self.$taskTargetSetViews,
-                                                       isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)})
+                            TaskTargetSetPopup.init(isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
+                                                       save: { ttsv in self.taskTargetSetViews.append(ttsv) })})
                     }
                     
                     VStack {

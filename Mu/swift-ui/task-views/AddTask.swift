@@ -26,7 +26,7 @@ struct AddTask: View {
     @State var taskTargetSetViews: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
-        
+
         var taskTargetSets: [TaskTargetSet] = []
         for i in 0 ..< taskTargetSetViews.count {
             let ttsv = taskTargetSetViews[i]
@@ -177,7 +177,8 @@ struct AddTask: View {
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                            AddTaskTargetSetPopup.init(ttsViews: self.$taskTargetSetViews, isBeingPresented: self.$isPresentingAddTaskTargetSetPopup)
+                            TaskTargetSetPopup.init(isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
+                                                       save: { ttsv in self.taskTargetSetViews.append(ttsv) })
                         })
                     }
                     

@@ -61,4 +61,25 @@ extension Date {
         return false
     }
     
+    /**
+     Using the current calendar, compares and returns if this Date's is before the provided end Date.
+     This function only compares day, month, and year
+     - parameter endDate: End date to compare against
+     - returns: True if this Date is before endDate (day, month, year)
+     */
+    func lessThanDate(_ endDate: Date) -> Bool {
+        if Calendar.current.component(.year, from: self) < Calendar.current.component(.year, from: endDate) {
+            return true
+        } else if Calendar.current.component(.year, from: self) == Calendar.current.component(.year, from: endDate) {
+            if Calendar.current.component(.month, from: self) < Calendar.current.component(.month, from: endDate) {
+                return true
+            } else if Calendar.current.component(.month, from: self) == Calendar.current.component(.month, from: endDate) {
+                if Calendar.current.component(.day, from: self) < Calendar.current.component(.day, from: endDate) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
 }

@@ -13,7 +13,7 @@ class DayPattern: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
     
-    enum patternType: Int8 {
+    enum patternType: Int8, CaseIterable {
         case dow = 1
         case wom = 2
         case dom = 3

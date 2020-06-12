@@ -13,7 +13,7 @@
 		C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA324342E2300150D47 /* Preview Assets.xcassets */; };
 		C4037AB224342E2300150D47 /* MuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037AB124342E2300150D47 /* MuTests.swift */; };
 		C4037ABD24342E2300150D47 /* MuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* MuUITests.swift */; };
-		C409257C248664A600E463DA /* AddTaskTargetSetPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */; };
+		C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C409257B248664A600E463DA /* TaskTargetSetPopup.swift */; };
 		C40F6D872487BD74008114E5 /* BubbleRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F6D862487BD74008114E5 /* BubbleRows.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
@@ -84,7 +84,7 @@
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* MuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskTargetSetPopup.swift; sourceTree = "<group>"; };
+		C409257B248664A600E463DA /* TaskTargetSetPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopup.swift; sourceTree = "<group>"; };
 		C40F6D862487BD74008114E5 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
@@ -290,10 +290,10 @@
 		C48719A224891999004463F4 /* task-target-set-views */ = {
 			isa = PBXGroup;
 			children = (
-				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
-				C409257B248664A600E463DA /* AddTaskTargetSetPopup.swift */,
+				C409257B248664A600E463DA /* TaskTargetSetPopup.swift */,
 				C40F6D862487BD74008114E5 /* BubbleRows.swift */,
 				C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */,
+				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
 			);
 			path = "task-target-set-views";
 			sourceTree = "<group>";
@@ -313,8 +313,8 @@
 		C48F9763245B0B6B000339E9 /* popups */ = {
 			isa = PBXGroup;
 			children = (
-				C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */,
 				C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */,
+				C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */,
 			);
 			path = popups;
 			sourceTree = "<group>";
@@ -498,7 +498,7 @@
 				C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */,
 				C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */,
 				C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */,
-				C409257C248664A600E463DA /* AddTaskTargetSetPopup.swift in Sources */,
+				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */,

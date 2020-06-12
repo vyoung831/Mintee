@@ -1,5 +1,5 @@
 //
-//  AddTaskTargetSetPopup.swift
+//  TaskTargetSetPopup.swift
 //  Mu
 //
 //  Created by Vincent Young on 6/2/20.
@@ -8,15 +8,13 @@
 
 import SwiftUI
 
-struct AddTaskTargetSetPopup: View {
+struct TaskTargetSetPopup: View {
     
     // MARK: - Enums for Picker values
     
-    enum ttsType: String, CaseIterable {
-        case dow = "Days of week"
-        case wom = "Weekdays of month"
-        case dom = "Days of month"
-    }
+    var dayPatternTypeLabels: [DayPattern.patternType: String] = [.dow: "Days of week",
+                                                                  .wom: "Weekdays of month",
+                                                                  .dom: "Days of month"]
     
     // MARK: - UI constants and calculated variables
     
@@ -48,23 +46,24 @@ struct AddTaskTargetSetPopup: View {
     @State var selectedWeeks: Set<String> = Set()
     @State var selectedDaysOfMonth: Set<String> = Set()
     
-    @State var type: AddTaskTargetSetPopup.ttsType = .dow
-    @State var minOperator: SaveFormatter.equalityOperators = .lt
-    @State var maxOperator: SaveFormatter.equalityOperators = .lt
+    @State var type: DayPattern.patternType = .dow
+    @State var minOperator: SaveFormatter.equalityOperator = .lt
+    @State var maxOperator: SaveFormatter.equalityOperator = .lt
     @State var minValue: String = "0"
     @State var maxValue: String = "0"
     
     // MARK: - Bindings
     
-    @Binding var ttsViews: [TaskTargetSetView]
     @Binding var isBeingPresented: Bool
     
     // MARK: - Functions
     
+    var save: (TaskTargetSetView) -> ()
+    
     /**
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      */
-    private func save() {
+    private func done() {
         
         guard let min = Float(minValue), let max = Float(maxValue) else {
             // TO-DO: Crash report
@@ -78,7 +77,7 @@ struct AddTaskTargetSetPopup: View {
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
-        ttsViews.append(ttsv)
+        self.save(ttsv)
     }
     
     /**
@@ -107,9 +106,9 @@ struct AddTaskTargetSetPopup: View {
                 Group {
                     HStack {
                         Button(action: {
-                            self.save()
+                            self.done()
                             self.isBeingPresented = false
-                        }, label: { Text("Save") })
+                        }, label: { Text("Done") })
                             .disabled(self.maxOperator == .na && self.minOperator == .na)
                             .disabled(self.maxOperator == .eq && self.minOperator == .eq)
                             .disabled(!validDaysSelected())
@@ -130,8 +129,8 @@ struct AddTaskTargetSetPopup: View {
                     
                     // Days of week/month
                     BubbleRowsToggleable(maxBubbleRadius: 32,
-                                         bubbles: self.type == ttsType.dom ? dividedDaysOfMonth : daysOfWeek,
-                                         selectedBubbles: self.type == ttsType.dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
+                                         bubbles: self.type == .dom ? dividedDaysOfMonth : daysOfWeek,
+                                         selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
                     
                     // Weeks of month
                     if self.type == .wom {
@@ -142,8 +141,8 @@ struct AddTaskTargetSetPopup: View {
                     }
                     
                     Picker(selection: self.$type, label: Text("Type")) {
-                        ForEach(ttsType.allCases, id: \.self) { typeLabel in
-                            Text(typeLabel.rawValue)
+                        ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
+                            Text( self.dayPatternTypeLabels[pt] ?? "")
                         }
                     }.frame(height: typePickerHeight)
                     
@@ -163,7 +162,7 @@ struct AddTaskTargetSetPopup: View {
                         .cornerRadius(3)
                     
                     Picker("Low op", selection: self.$minOperator) {
-                        ForEach(SaveFormatter.equalityOperators.allCases, id: \.self) { op in
+                        ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
                             Text(op.rawValue)
                         }}
                         .frame(width: operationWidth, height: operationHeight)
@@ -172,7 +171,7 @@ struct AddTaskTargetSetPopup: View {
                     Text("Target")
                     
                     Picker("High op", selection: self.$maxOperator) {
-                        ForEach(SaveFormatter.equalityOperators.allCases, id: \.self) { op in
+                        ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
                             Text(op.rawValue)
                         }}
                         .frame(width: operationWidth, height: operationHeight)
