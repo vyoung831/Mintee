@@ -18,7 +18,7 @@ struct BubbleRows: View {
     var bubblesPerRow: Int = 7
     var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
-    var selectedBubbles: [String]
+    var selectedBubbles: Set<String>
     
     @State var grHeight: CGFloat = 0
     

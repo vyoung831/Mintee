@@ -19,12 +19,12 @@ class DayPattern: NSObject, NSSecureCoding {
         case dom = 3
     }
     
-    var daysOfWeek: [Int16]
-    var weeksOfMonth: [Int16]
-    var daysOfMonth: [Int16]
+    var daysOfWeek: Set<Int16>
+    var weeksOfMonth: Set<Int16>
+    var daysOfMonth: Set<Int16>
     var type: patternType
     
-    init(dow: [Int16], wom: [Int16], dom: [Int16]) {
+    init(dow: Set<Int16>, wom: Set<Int16>, dom: Set<Int16>) {
         self.daysOfWeek = dow
         self.weeksOfMonth = wom
         self.daysOfMonth = dom
@@ -42,9 +42,9 @@ class DayPattern: NSObject, NSSecureCoding {
     }
     
     required init(coder decoder: NSCoder) {
-        guard let dow = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfWeek") as? [Int16],
-            let wom = decoder.decodeObject(of: [DayPattern.self], forKey: "weeksOfMonth") as? [Int16],
-            let dom = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfMonth") as? [Int16],
+        guard let dow = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfWeek") as? Set<Int16>,
+            let wom = decoder.decodeObject(of: [DayPattern.self], forKey: "weeksOfMonth") as? Set<Int16>,
+            let dom = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfMonth") as? Set<Int16>,
             let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: "type") as? Int8
             else {
             exit(-1)

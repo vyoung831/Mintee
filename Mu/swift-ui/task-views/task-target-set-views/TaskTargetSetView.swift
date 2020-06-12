@@ -43,9 +43,9 @@ struct TaskTargetSetView: View {
     var minOperator: String?
     var maxTarget: Float
     var maxOperator: String?
-    var selectedDaysOfWeek: [String]
-    var selectedWeeksOfMonth: [String]
-    var selectedDaysOfMonth: [String]
+    var selectedDaysOfWeek: Set<String>
+    var selectedWeeksOfMonth: Set<String>
+    var selectedDaysOfMonth: Set<String>
     
     // MARK: - Closures
     

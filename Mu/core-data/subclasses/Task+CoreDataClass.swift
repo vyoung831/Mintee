@@ -35,12 +35,12 @@ public class Task: NSManagedObject {
     /**
      - returns: An array of strings representing the tagNames of this Task's tags
      */
-    public func getTagNamesArray() -> [String] {
+    public func getTagNames() -> Set<String> {
         if let tags = self.tags as? Set<Tag> {
-            let tagNames = tags.map({$0.name ?? ""})
+            let tagNames = Set(tags.map({$0.name ?? ""}))
             return tagNames
         }
-        return []
+        return Set<String>()
     }
     
     /**
@@ -231,8 +231,6 @@ public class Task: NSManagedObject {
         var dateCounter = startDate
         var matched = false
         while dateCounter.lessThanOrEqualToDate(endDate) {
-            
-            print(dateCounter)
             
             /*
              Loop through the set of DayPatterns

@@ -23,7 +23,7 @@ struct BubbleRowsToggleable: View {
     var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
     
-    @Binding var selectedBubbles: [String]
+    @Binding var selectedBubbles: Set<String>
     @State var grHeight: CGFloat = 0
     
     // MARK: - UI functions
@@ -95,7 +95,7 @@ struct BubbleRowsToggleable: View {
                             }.onTapGesture {
                                 // Add or remove the bubbleText from selectedBubbles
                                 if !self.selectedBubbles.contains(bubbleText) {
-                                    self.selectedBubbles.append(bubbleText)
+                                    self.selectedBubbles.insert(bubbleText)
                                 } else {
                                     self.selectedBubbles = self.selectedBubbles.filter { $0 != bubbleText }
                                 }

@@ -28,9 +28,9 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                                              minOperator: SaveFormatter.getOperatorString(tts.minOperator),
                                              maxTarget: tts.max,
                                              maxOperator: SaveFormatter.getOperatorString(tts.maxOperator),
-                                             selectedDaysOfWeek: tts.getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) },
-                                             selectedWeeksOfMonth: tts.getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) },
-                                             selectedDaysOfMonth: tts.getDaysOfMonth().map{ String($0) })
+                                             selectedDaysOfWeek: Set(tts.getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
+                                             selectedWeeksOfMonth: Set(tts.getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
+                                             selectedDaysOfMonth: Set(tts.getDaysOfMonth().map{ String($0) }))
                 ttsvArray.append(ttsv)
                 
             }
@@ -42,7 +42,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             let editTask = EditTask(task: task,
                                     dismiss: dismiss,
                                     taskName: task.name ?? "",
-                                    tags: task.getTagNamesArray(),
+                                    tags: task.getTagNames().sorted{$0 < $1},
                                     startDate: SaveFormatter.storedStringToDate(startDateString),
                                     endDate: SaveFormatter.storedStringToDate(endDateString),
                                     taskTargetSetViews: ttsvArray)

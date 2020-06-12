@@ -44,9 +44,9 @@ struct AddTaskTargetSetPopup: View {
     
     // MARK: - State variables
     
-    @State var selectedDaysOfWeek: [String] = []
-    @State var selectedWeeks: [String] = []
-    @State var selectedDaysOfMonth: [String] = []
+    @State var selectedDaysOfWeek: Set<String> = Set()
+    @State var selectedWeeks: Set<String> = Set()
+    @State var selectedDaysOfMonth: Set<String> = Set()
     
     @State var type: AddTaskTargetSetPopup.ttsType = .dow
     @State var minOperator: SaveFormatter.equalityOperators = .lt
@@ -75,9 +75,9 @@ struct AddTaskTargetSetPopup: View {
                                      minOperator: maxOperator == .eq || minOperator == .na ? nil : minOperator.rawValue,
                                      maxTarget: max,
                                      maxOperator: minOperator == .eq || maxOperator == .na ? nil : maxOperator.rawValue,
-                                     selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : [],
-                                     selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : [],
-                                     selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : [])
+                                     selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
+                                     selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
+                                     selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
         ttsViews.append(ttsv)
     }
     
