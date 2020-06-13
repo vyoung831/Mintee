@@ -290,9 +290,9 @@
 		C48719A224891999004463F4 /* task-target-set-views */ = {
 			isa = PBXGroup;
 			children = (
-				C409257B248664A600E463DA /* TaskTargetSetPopup.swift */,
 				C40F6D862487BD74008114E5 /* BubbleRows.swift */,
 				C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */,
+				C409257B248664A600E463DA /* TaskTargetSetPopup.swift */,
 				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
 			);
 			path = "task-target-set-views";

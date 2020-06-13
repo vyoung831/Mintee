@@ -24,7 +24,12 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         if let ttsArray = task.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for tts in ttsArray {
                 
-                let ttsv = TaskTargetSetView(minTarget: tts.min,
+                guard let pattern = tts.pattern as? DayPattern else {
+                    print("EditTaskHostingController could not read pattern from a TaskTargetSet \(tts.debugDescription)"); exit(-1)
+                }
+                
+                let ttsv = TaskTargetSetView(type: pattern.type,
+                                             minTarget: tts.min,
                                              minOperator: SaveFormatter.getOperatorString(tts.minOperator),
                                              maxTarget: tts.max,
                                              maxOperator: SaveFormatter.getOperatorString(tts.maxOperator),

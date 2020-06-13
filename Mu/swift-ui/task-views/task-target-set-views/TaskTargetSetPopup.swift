@@ -16,14 +16,14 @@ struct TaskTargetSetPopup: View {
                                                                   .wom: "Weekdays of month",
                                                                   .dom: "Days of month"]
     
-    // MARK: - UI constants and calculated variables
+    // MARK: - UI and calculated variables
     
     let typePickerHeight: CGFloat = 125
     let textFieldWidth: CGFloat = 55
     let operationWidth: CGFloat = 55
     let operationHeight: CGFloat = 100
     
-    var toggleable: Bool = true
+    var title: String
     let bubblesPerRow: Int = 7
     var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
     var weeksOfMonth: [[String]] { return [["1st","2nd","3rd","4th","Last"]] }
@@ -42,9 +42,9 @@ struct TaskTargetSetPopup: View {
     
     // MARK: - State variables
     
-    @State var selectedDaysOfWeek: Set<String> = Set()
-    @State var selectedWeeks: Set<String> = Set()
-    @State var selectedDaysOfMonth: Set<String> = Set()
+    @State var selectedDaysOfWeek: Set<String>
+    @State var selectedWeeks: Set<String>
+    @State var selectedDaysOfMonth: Set<String>
     
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
@@ -70,7 +70,8 @@ struct TaskTargetSetPopup: View {
             exit(-1)
         }
         
-        let ttsv = TaskTargetSetView(minTarget: min,
+        let ttsv = TaskTargetSetView(type: self.type,
+                                     minTarget: min,
                                      minOperator: maxOperator == .eq || minOperator == .na ? nil : minOperator.rawValue,
                                      maxTarget: max,
                                      maxOperator: minOperator == .eq || maxOperator == .na ? nil : maxOperator.rawValue,
@@ -113,7 +114,7 @@ struct TaskTargetSetPopup: View {
                             .disabled(self.maxOperator == .eq && self.minOperator == .eq)
                             .disabled(!validDaysSelected())
                         Spacer()
-                        Text("Add Target Set")
+                        Text(title)
                             .font(.title)
                         Spacer()
                         

@@ -45,8 +45,7 @@ class DayPattern: NSObject, NSSecureCoding {
         guard let dow = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfWeek") as? Set<Int16>,
             let wom = decoder.decodeObject(of: [DayPattern.self], forKey: "weeksOfMonth") as? Set<Int16>,
             let dom = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfMonth") as? Set<Int16>,
-            let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: "type") as? Int8
-            else {
+            let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: "type") as? Int8 else {
             exit(-1)
         }
         

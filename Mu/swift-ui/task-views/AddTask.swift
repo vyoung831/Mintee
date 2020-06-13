@@ -18,6 +18,7 @@ struct AddTask: View {
     @State var isPresentingSelectStartDatePopup: Bool = false
     @State var isPresentingSelectEndDatePopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
+    @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var saveFailed: Bool = false
     @State var taskName: String = ""
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
@@ -26,7 +27,7 @@ struct AddTask: View {
     @State var taskTargetSetViews: [TaskTargetSetView] = []
     
     private func saveTask() -> Bool {
-
+        
         var taskTargetSets: [TaskTargetSet] = []
         for i in 0 ..< taskTargetSetViews.count {
             let ttsv = taskTargetSetViews[i]
@@ -37,9 +38,9 @@ struct AddTask: View {
                                     minOperator: SaveFormatter.getOperatorNumber(ttsv.minOperator),
                                     maxOperator: SaveFormatter.getOperatorNumber(ttsv.maxOperator),
                                     priority: Int16(i),
-                                    pattern: DayPattern(dow: Set(ttsv.selectedDaysOfWeek.map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
-                                                        wom: Set(ttsv.selectedWeeksOfMonth.map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
-                                                        dom: Set(ttsv.selectedDaysOfMonth.map{ Int16($0) ?? 0 })))
+                                    pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
+                                                        wom: Set((ttsv.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
+                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []).map{ Int16($0) ?? 0 })))
             taskTargetSets.append(tts)
         }
         
@@ -177,14 +178,19 @@ struct AddTask: View {
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                            TaskTargetSetPopup.init(isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
-                                                       save: { ttsv in self.taskTargetSetViews.append(ttsv) })
+                            TaskTargetSetPopup.init(title: "Add Target Set",
+                                                    selectedDaysOfWeek: Set<String>(),
+                                                    selectedWeeks: Set<String>(),
+                                                    selectedDaysOfMonth: Set<String>(),
+                                                    isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
+                                                    save: { ttsv in self.taskTargetSetViews.append(ttsv) })
                         })
                     }
                     
                     VStack {
                         ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
-                            TaskTargetSetView(minTarget: self.taskTargetSetViews[idx].minTarget,
+                            TaskTargetSetView(type: self.taskTargetSetViews[idx].type,
+                                              minTarget: self.taskTargetSetViews[idx].minTarget,
                                               minOperator: self.taskTargetSetViews[idx].minOperator,
                                               maxTarget: self.taskTargetSetViews[idx].maxTarget,
                                               maxOperator: self.taskTargetSetViews[idx].maxOperator,
@@ -193,7 +199,17 @@ struct AddTask: View {
                                               selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
                                               moveUp: { if idx > 0 {self.taskTargetSetViews.swapAt(idx, idx - 1)} },
                                               moveDown: { if idx < self.taskTargetSetViews.count - 1 {self.taskTargetSetViews.swapAt(idx, idx + 1)} },
+                                              edit: { self.isPresentingEditTaskTargetSetPopup = true },
                                               delete: { self.taskTargetSetViews.remove(at: idx) })
+                                .sheet(isPresented: self.$isPresentingEditTaskTargetSetPopup, content: {
+                                    TaskTargetSetPopup.init(title: "Edit Target Set",
+                                                            selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set<String>(),
+                                                            selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set<String>(),
+                                                            selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set<String>(),
+                                                            type: self.taskTargetSetViews[idx].type,
+                                                            isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
+                                                            save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
+                            
                         }
                     }
                 }

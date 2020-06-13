@@ -39,18 +39,20 @@ struct TaskTargetSetView: View {
     /*
      TaskTargetSetView expects minOperator and maxOperator to be nil if a min/max target bound is not be used. Other views/classes such as EditTaskHostingController and AddTaskTargetSetPopup set this View's operators to nil to convey that.
      */
+    var type: DayPattern.patternType
     var minTarget: Float
     var minOperator: String?
     var maxTarget: Float
     var maxOperator: String?
-    var selectedDaysOfWeek: Set<String>
-    var selectedWeeksOfMonth: Set<String>
-    var selectedDaysOfMonth: Set<String>
+    var selectedDaysOfWeek: Set<String>?
+    var selectedWeeksOfMonth: Set<String>?
+    var selectedDaysOfMonth: Set<String>?
     
     // MARK: - Closures
     
     var moveUp: () -> () = {}
     var moveDown: () -> () = {}
+    var edit: () -> () = {}
     var delete: () -> () = {}
     
     // MARK: - UI functions
@@ -60,24 +62,26 @@ struct TaskTargetSetView: View {
      - returns: String containing the TaskTargetSetView's calculated label
      */
     func getLabel() -> String {
-        if self.selectedDaysOfWeek.count > 0 {
-            if self.selectedWeeksOfMonth.count > 0 {
-                let orderedWeeks = selectedWeeksOfMonth.sorted(by: { SaveFormatter.getWeekOfMonthNumber(wom: $0) < SaveFormatter.getWeekOfMonthNumber(wom: $1) })
-                var label: String = ""
-                for idx in 0 ..< orderedWeeks.count {
-                    label.append(contentsOf: orderedWeeks[idx])
-                    if idx < orderedWeeks.count - 1 {
-                        label.append(",")
-                    }
-                    label.append(" ")
-                }
-                label.append(contentsOf: "of each month")
-                return label
-            } else {
-                return "Every week"
+        
+        switch self.type {
+        case .dow: return "Every week"
+        case .wom:
+            guard let selectedWom = self.selectedWeeksOfMonth else {
+                print("TaskTargetSetView was set to type .wom but selectedWeeksOfMonth was false"); exit(-1)
             }
-        } else {
-            return "Every month"
+            
+            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.getWeekOfMonthNumber(wom: $0) < SaveFormatter.getWeekOfMonthNumber(wom: $1) })
+            var label: String = ""
+            for idx in 0 ..< orderedWeeks.count {
+                label.append(contentsOf: orderedWeeks[idx])
+                if idx < orderedWeeks.count - 1 {
+                    label.append(",")
+                }
+                label.append(" ")
+            }
+            label.append(contentsOf: "of each month")
+            return label
+        case .dom: return "Every month"
         }
     }
     
@@ -108,7 +112,7 @@ struct TaskTargetSetView: View {
             Group {
                 HStack(alignment: .center, spacing: buttonsSpacing) {
                     Button(action: {
-                        print("Edit button pressed")
+                        self.edit()
                     }, label: {
                         Text("Edit")
                     })
@@ -116,15 +120,15 @@ struct TaskTargetSetView: View {
                     Button(action: {
                         self.moveUp()
                     }, label: {
-                        Image(systemName: "arrow.up")
-                        .foregroundColor(Color("default-panel-icon-colors"))
+                        Image(systemName: "arrowtriangle.up.circle.fill")
+                            .foregroundColor(Color("default-panel-icon-colors"))
                     })
                     
                     Button(action: {
                         self.moveDown()
                     }, label: {
-                        Image(systemName: "arrow.down")
-                        .foregroundColor(Color("default-panel-icon-colors"))
+                        Image(systemName: "arrowtriangle.down.circle.fill")
+                            .foregroundColor(Color("default-panel-icon-colors"))
                     })
                     
                     Spacer()
@@ -133,7 +137,7 @@ struct TaskTargetSetView: View {
                         self.delete()
                     }, label: {
                         Image(systemName: "trash")
-                        .foregroundColor(Color("default-panel-icon-colors"))
+                            .foregroundColor(Color("default-panel-icon-colors"))
                     })
                 }
             }
@@ -141,8 +145,8 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(bubbles: self.selectedDaysOfWeek.count > 0 ? self.daysOfWeek : self.dividedDaysOfMonth,
-                           selectedBubbles: self.selectedDaysOfWeek.count > 0 ? self.selectedDaysOfWeek : self.selectedDaysOfMonth)
+                BubbleRows(bubbles: self.type == .dow || self.type == .wom ? self.daysOfWeek : self.dividedDaysOfMonth,
+                           selectedBubbles: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>() )
             }
             
             // MARK: - Frequency
