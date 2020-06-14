@@ -49,8 +49,9 @@ struct TaskTargetSetPopup: View {
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
     @State var maxOperator: SaveFormatter.equalityOperator = .lt
-    @State var minValue: String = "0"
-    @State var maxValue: String = "0"
+    @State var minValue: String = ""
+    @State var maxValue: String = ""
+    @State var errorMessage: String = ""
     
     // MARK: - Bindings
     
@@ -61,24 +62,68 @@ struct TaskTargetSetPopup: View {
     var save: (TaskTargetSetView) -> ()
     
     /**
+     Checks minOperator, maxOperator, and provided min/max values to see if combination is valid.
+     This function expects the caller to have un-wrapped min and max to check if they are valid Floats
+     - parameter min: minValue unwrapped to Float
+     - parameter max: maxValue unwrapped to Float
+     - returns: True if combination of operators and provided values are valid
+     */
+    func checkOperators(min: Float, max: Float) -> Bool {
+        
+        switch minOperator {
+        case .lt:
+            if maxOperator == .lt || maxOperator == .lte {
+                if min >= max {
+                    errorMessage = "Please set max value greater than min value"; return false
+                }
+            }
+            break
+        case .lte:
+            if maxOperator == .lt && min >= max {
+                errorMessage = "Please set max value greater than min value"; return false
+            } else if maxOperator == .lte {
+                if min == max {
+                    // Both minOperator and maxOperator are set to .lte the same value, so treat it as .eq
+                    minOperator = .eq; return true
+                } else if min > max { errorMessage = "Please set max value greater than min value"; return false }
+            }
+            return true
+        case .eq:
+            if maxOperator == .eq {
+                errorMessage = "Only one operator can be set to ="; return false
+            }
+        case .na: break
+        }
+        return true
+    }
+    
+    /**
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      */
     private func done() {
         
-        guard let min = Float(minValue), let max = Float(maxValue) else {
-            // TO-DO: Crash report
-            exit(-1)
-        }
+        var min: Float, max: Float
+        
+        if minValue.count > 0 {
+            if let minu = Float(minValue) { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
+        } else { minOperator = .na; min = 0 }
+        
+        if maxValue.count > 0 {
+            if let maxu = Float(maxValue) { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
+        } else { maxOperator = .na; max = 0 }
+        
+        if !checkOperators(min: min, max: max) { return }
         
         let ttsv = TaskTargetSetView(type: self.type,
-                                     minTarget: min,
-                                     minOperator: maxOperator == .eq || minOperator == .na ? nil : minOperator.rawValue,
-                                     maxTarget: max,
-                                     maxOperator: minOperator == .eq || maxOperator == .na ? nil : maxOperator.rawValue,
+                                     minTarget: maxOperator == .eq || minOperator == .na ? 0 : min,
+                                     minOperator: maxOperator == .eq || minOperator == .na ? .na : minOperator,
+                                     maxTarget: minOperator == .eq || maxOperator == .na ? 0 : max,
+                                     maxOperator: minOperator == .eq || maxOperator == .na ? .na : maxOperator,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
         self.save(ttsv)
+        self.isBeingPresented = false
     }
     
     /**
@@ -108,10 +153,8 @@ struct TaskTargetSetPopup: View {
                     HStack {
                         Button(action: {
                             self.done()
-                            self.isBeingPresented = false
                         }, label: { Text("Done") })
                             .disabled(self.maxOperator == .na && self.minOperator == .na)
-                            .disabled(self.maxOperator == .eq && self.minOperator == .eq)
                             .disabled(!validDaysSelected())
                         Spacer()
                         Text(title)
@@ -121,6 +164,10 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.isBeingPresented = false
                         }, label: { Text("Cancel") })
+                    }
+                    if errorMessage.count > 0 {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
                     }
                 }
                 
@@ -153,7 +200,7 @@ struct TaskTargetSetPopup: View {
                 
                 HStack(alignment: .center, spacing: 10) {
                     
-                    TextField("Low value", text: self.$minValue)
+                    TextField("", text: self.$minValue)
                         .disabled(self.maxOperator == .eq || self.minOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
@@ -178,7 +225,7 @@ struct TaskTargetSetPopup: View {
                         .frame(width: operationWidth, height: operationHeight)
                         .clipped()
                     
-                    TextField("High value", text: self.$maxValue)
+                    TextField("", text: self.$maxValue)
                         .disabled(self.minOperator == .eq || self.maxOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)

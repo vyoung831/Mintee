@@ -35,15 +35,12 @@ class SaveFormatter {
      - parameter op: String used by a view to represent a target operator.
      - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator
      */
-    static func getOperatorNumber(_ op: String?) -> Int16 {
+    static func getOperatorNumber(_ op: equalityOperator) -> Int16 {
         switch op {
-        case "<": return 1
-        case "<=": return 2
-        case "=": return 3
-        case nil: return 0 // N/A
-        default:
-            // TO-DO: Crash report
-            exit(-1)
+        case .na: return 0
+        case .lt: return 1
+        case .lte: return 2
+        case .eq: return 3
         }
     }
 
@@ -52,12 +49,12 @@ class SaveFormatter {
     - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
     - returns: String for a View to use to represent a target operator.
     */
-    static func getOperatorString(_ op: Int16) -> String? {
+    static func getOperatorString(_ op: Int16) -> equalityOperator {
         switch op {
-        case 0: return nil // N/A
-        case 1: return "<"
-        case 2: return "<="
-        case 3: return "="
+        case 0: return .na
+        case 1: return .lt
+        case 2: return .lte
+        case 3: return .eq
         default:
             // TO-DO: Crash report
             exit(-1)

@@ -41,9 +41,9 @@ struct TaskTargetSetView: View {
      */
     var type: DayPattern.patternType
     var minTarget: Float
-    var minOperator: String?
+    var minOperator: SaveFormatter.equalityOperator
     var maxTarget: Float
-    var maxOperator: String?
+    var maxOperator: SaveFormatter.equalityOperator
     var selectedDaysOfWeek: Set<String>?
     var selectedWeeksOfMonth: Set<String>?
     var selectedDaysOfMonth: Set<String>?
@@ -90,13 +90,11 @@ struct TaskTargetSetView: View {
      - returns: String to display as target
      */
     func getTarget() -> String {
-        if let minOp = minOperator, let maxOp = maxOperator {
-            return "\(minTarget.clean) \(minOp) Target \(maxOp) \(maxTarget.clean)"
-        } else if let minOp = minOperator {
-            return "Target \(minOp.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)"
-        } else if let maxOp = maxOperator {
-            return "Target \(maxOp.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)"
-        }
+        
+        if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.rawValue) Target \(maxOperator.rawValue) \(maxTarget.clean)" }
+        if minOperator != .na { return "Target \(minOperator.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
+        if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
+        
         // TO-DO: Send error report
         return ""
     }

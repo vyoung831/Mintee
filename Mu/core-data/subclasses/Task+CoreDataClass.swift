@@ -212,7 +212,7 @@ public class Task: NSManagedObject {
         // Filter existing TaskInstances for ones before the proposed start date
         let instancesBefore = instances.filter({
             if let date = $0.date {
-                return SaveFormatter.storedStringToDate(date).lessThanOrEqualToDate(startDate)
+                return SaveFormatter.storedStringToDate(date).lessThanDate(startDate)
             } else { print("getDeltaInstances() found an existing TaskInstance with a nil date value"); exit(-1) }
         })
         

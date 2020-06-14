@@ -207,6 +207,10 @@ struct AddTask: View {
                                                             selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set<String>(),
                                                             selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set<String>(),
                                                             type: self.taskTargetSetViews[idx].type,
+                                                            minOperator: self.taskTargetSetViews[idx].minOperator,
+                                                            maxOperator: self.taskTargetSetViews[idx].maxOperator,
+                                                            minValue: String(self.taskTargetSetViews[idx].minTarget.clean),
+                                                            maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
                                                             isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
                                                             save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
                             
