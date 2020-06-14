@@ -11,16 +11,51 @@
 import SwiftUI
 
 class EditTaskHostingController: UIHostingController<EditTask> {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
     
     init(task: Task, dismiss: @escaping (() -> Void)) {
+        
+        // Construct array of TaskTargetSetViews for EditTask to use
+        var ttsvArray: [TaskTargetSetView] = []
+        if let ttsArray = task.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
+            for tts in ttsArray {
+                
+                guard let pattern = tts.pattern as? DayPattern else {
+                    print("EditTaskHostingController could not read pattern from a TaskTargetSet \(tts.debugDescription)"); exit(-1)
+                }
+                
+                let ttsv = TaskTargetSetView(type: pattern.type,
+                                             minTarget: tts.min,
+                                             minOperator: SaveFormatter.getOperatorString(tts.minOperator),
+                                             maxTarget: tts.max,
+                                             maxOperator: SaveFormatter.getOperatorString(tts.maxOperator),
+                                             selectedDaysOfWeek: Set(tts.getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
+                                             selectedWeeksOfMonth: Set(tts.getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
+                                             selectedDaysOfMonth: Set(tts.getDaysOfMonth().map{ String($0) }))
+                ttsvArray.append(ttsv)
+                
+            }
+        }
+        
         // TO-DO: Obtain the Task from the TaskInstance provided by TodayCollectionViewController; then, construct the EditTask View
-        let editTask = EditTask(task: task, dismiss: dismiss, taskName: task.taskName ?? "", tags: task.getTagNamesArray(), startDate: Date(timeIntervalSinceNow: 0), endDate: Date(timeIntervalSinceNow: 86400))
-        super.init(rootView: editTask)
+        // TO-DO: Add startDate and endDate getters and setters to Task
+        if let startDateString = task.startDate, let endDateString = task.endDate {
+            let editTask = EditTask(task: task,
+                                    dismiss: dismiss,
+                                    taskName: task.name ?? "",
+                                    tags: task.getTagNames().sorted{$0 < $1},
+                                    startDate: SaveFormatter.storedStringToDate(startDateString),
+                                    endDate: SaveFormatter.storedStringToDate(endDateString),
+                                    taskTargetSetViews: ttsvArray)
+            super.init(rootView: editTask)
+        } else {
+            print("Nil value found in Task's dates")
+            exit(-1)
+        }
     }
     
     override init?(coder aDecoder: NSCoder, rootView: EditTask) {
