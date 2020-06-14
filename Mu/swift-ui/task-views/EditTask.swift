@@ -13,7 +13,7 @@ struct EditTask: View {
     let startDateLabel: String = "Start Date: "
     let endDateLabel: String = "End Date: "
     let taskTypes: [String] = ["Recurring","Specific"]
-    let deleteMessage: String = "Because you changed your target sets, you will lose data from the following dates. Are you sure you want to continue?"
+    let deleteMessage: String = "Because you changed your dates and/or target sets, you will lose data from the following dates. Are you sure you want to continue?"
     
     var task: Task
     var dismiss: (() -> Void)
@@ -23,13 +23,13 @@ struct EditTask: View {
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var isPresentingConfirmDeletePopup: Bool = false
-    @State var saveFailed: Bool = false
-    @State var deleteFailed: Bool = false
     @State var taskName: String
+    @State var saveErrorMessage: String = ""
     @State var tags: [String]
     @State var startDate: Date
     @State var endDate: Date
     @State var taskTargetSetViews: [TaskTargetSetView] = []
+    @State var deleteErrorMessage: String = ""
     
     private func saveTask() {
         
@@ -59,7 +59,7 @@ struct EditTask: View {
             try CDCoordinator.moc.save()
             self.dismiss()
         } catch {
-            self.saveFailed = true
+            self.saveErrorMessage = "Save failed. Please check if another Task with this name already exists"
         }
         
     }
@@ -82,6 +82,8 @@ struct EditTask: View {
                 
                 HStack {
                     Button(action: {
+                        
+                        if self.taskTargetSetViews.count < 1 { self.saveErrorMessage = "Please add one or more target sets"; return }
                         
                         /*
                          Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
@@ -135,8 +137,8 @@ struct EditTask: View {
                         .bold()
                     TextField(task.name ?? "", text: self.$taskName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                    if (self.saveFailed) {
-                        Text("Save failed")
+                    if (saveErrorMessage.count > 0) {
+                        Text(saveErrorMessage)
                             .foregroundColor(.red)
                     }
                 })
@@ -259,7 +261,7 @@ struct EditTask: View {
                         if self.deleteTask() {
                             self.dismiss()
                         } else {
-                            self.deleteFailed = true
+                            self.deleteErrorMessage = "Delete failed"
                         }
                     }, label: {
                         Text("Delete Task")
@@ -268,8 +270,8 @@ struct EditTask: View {
                             .foregroundColor(.white)
                     })
                     
-                    if (self.deleteFailed) {
-                        Text("Delete failed")
+                    if (deleteErrorMessage.count > 0) {
+                        Text(deleteErrorMessage)
                             .foregroundColor(.red)
                     }
                 }

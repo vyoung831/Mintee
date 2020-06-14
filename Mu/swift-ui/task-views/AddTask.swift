@@ -19,8 +19,8 @@ struct AddTask: View {
     @State var isPresentingSelectEndDatePopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
-    @State var saveFailed: Bool = false
     @State var taskName: String = ""
+    @State var errorMessage: String = ""
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
@@ -69,11 +69,14 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
+                        
+                        if self.taskTargetSetViews.count < 1 { self.errorMessage = "Please add one or more target sets"; return }
+                        
                         if self.saveTask() {
                             self.isBeingPresented = false
                         } else {
                             // Display failure message in UI if saveTask() failed
-                            self.saveFailed = true
+                            self.errorMessage = "Save failed. Please check if another Task with this name already exists"
                         }
                     }, label: {
                         Text("Save")
@@ -99,8 +102,8 @@ struct AddTask: View {
                         .bold()
                     TextField("Task name", text: self.$taskName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                    if (self.saveFailed) {
-                        Text("Save failed")
+                    if (errorMessage.count > 0) {
+                        Text(errorMessage)
                             .foregroundColor(.red)
                     }
                 })

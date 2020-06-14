@@ -102,16 +102,15 @@ struct TaskTargetSetPopup: View {
      */
     private func done() {
         
-        var min: Float, max: Float
+        if minValue.count < 1 && maxValue.count < 1 { errorMessage = "Fill out at least either lower or upper target bound"; return }
         
+        var min: Float, max: Float
         if minValue.count > 0 {
             if let minu = Float(minValue) { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
         } else { minOperator = .na; min = 0 }
-        
         if maxValue.count > 0 {
             if let maxu = Float(maxValue) { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
         } else { maxOperator = .na; max = 0 }
-        
         if !checkOperators(min: min, max: max) { return }
         
         let ttsv = TaskTargetSetView(type: self.type,
