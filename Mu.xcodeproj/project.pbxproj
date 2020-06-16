@@ -174,9 +174,8 @@
 			isa = PBXGroup;
 			children = (
 				C4037AA224342E2300150D47 /* Preview Content */,
-				C436D34A24505BFE001ED468 /* collection-views */,
 				C48F022F2448A4700088227F /* core-data */,
-				C44C7F85243CA54A00072AD8 /* swift-ui */,
+				C44C7F85243CA54A00072AD8 /* views */,
 				C466A7A324473A0400EC3E97 /* util */,
 				C4037AA824342E2300150D47 /* Info.plist */,
 				C4037A9724342E1F00150D47 /* AppDelegate.swift */,
@@ -226,18 +225,11 @@
 		C436D34924505A10001ED468 /* representable */ = {
 			isa = PBXGroup;
 			children = (
+				C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */,
+				C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */,
 				C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */,
 			);
 			path = representable;
-			sourceTree = "<group>";
-		};
-		C436D34A24505BFE001ED468 /* collection-views */ = {
-			isa = PBXGroup;
-			children = (
-				C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */,
-				C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */,
-			);
-			path = "collection-views";
 			sourceTree = "<group>";
 		};
 		C43BD94F2444728C003E68DC /* task-views */ = {
@@ -250,7 +242,7 @@
 			path = "task-views";
 			sourceTree = "<group>";
 		};
-		C44C7F85243CA54A00072AD8 /* swift-ui */ = {
+		C44C7F85243CA54A00072AD8 /* views */ = {
 			isa = PBXGroup;
 			children = (
 				C48F9763245B0B6B000339E9 /* popups */,
@@ -259,7 +251,7 @@
 				C4D0439024598DB200A75BC9 /* tab-bar */,
 				C43BD94F2444728C003E68DC /* task-views */,
 			);
-			path = "swift-ui";
+			path = views;
 			sourceTree = "<group>";
 		};
 		C466A7A324473A0400EC3E97 /* util */ = {
