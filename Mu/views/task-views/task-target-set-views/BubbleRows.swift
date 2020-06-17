@@ -12,8 +12,8 @@ struct BubbleRows: View {
     
     // MARK: - Properties
     
-    let rowSpacing: CGFloat = 12
-    let minimumInterBubbleSpacing: CGFloat = 5
+    static let rowSpacing: CGFloat = 12
+    static let minimumInterBubbleSpacing: CGFloat = 5
     
     var bubblesPerRow: Int = 7
     var maxBubbleRadius: CGFloat = 28
@@ -30,8 +30,8 @@ struct BubbleRows: View {
      - parameter totalWidth: The total width of the View containing the bubbles
      - returns: Bubble radius
      */
-    private func getBubbleRadius(totalWidth: CGFloat) -> CGFloat {
-        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubblesPerRow)-1)*minimumInterBubbleSpacing
+    func getBubbleRadius(totalWidth: CGFloat) -> CGFloat {
+        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubblesPerRow)-1)*BubbleRows.minimumInterBubbleSpacing
         let fullBubbleRadius = (bubblesCumulativeWidth/CGFloat(bubblesPerRow))/2
         return min(fullBubbleRadius, maxBubbleRadius)
     }
@@ -42,9 +42,9 @@ struct BubbleRows: View {
      - parameter totalWidth: width of the GeometryReader. The width is used to calculate the bubble radius, and in the returned size
      - returns: Height of the GeometryReader
      */
-    private func getGeometryReaderHeight(totalWidth: CGFloat) -> CGFloat {
+    func getGeometryReaderHeight(totalWidth: CGFloat) -> CGFloat {
         let bubbleHeight = 2*getBubbleRadius(totalWidth: totalWidth)
-        let spacing = CGFloat(self.bubbles.count-1)*self.rowSpacing
+        let spacing = CGFloat(self.bubbles.count-1)*BubbleRows.rowSpacing
         let totalHeight = bubbleHeight*(CGFloat(self.bubbles.count)) + spacing
         return totalHeight
     }
@@ -55,12 +55,12 @@ struct BubbleRows: View {
      - parameter totalWidth: The total width of the GeometryReader that contains the HStack
      - returns: HStack spacing
      */
-    private func getHStackSpacing(totalWidth: CGFloat) -> CGFloat {
+    func getHStackSpacing(totalWidth: CGFloat) -> CGFloat {
         let bubbleWidth = 2*getBubbleRadius(totalWidth: totalWidth)
         let bubblesCumulativeWidth = bubbleWidth * CGFloat(bubblesPerRow)
         let totalSpacing = totalWidth - bubblesCumulativeWidth
         let spacing = totalSpacing/(CGFloat(bubblesPerRow) - 1)
-        return max(spacing, minimumInterBubbleSpacing)
+        return max(spacing, BubbleRows.minimumInterBubbleSpacing)
     }
     
     // MARK: - View
@@ -72,7 +72,7 @@ struct BubbleRows: View {
          Because GeometryReader only updates the height of its frame and never the width, circular layout references between the GeometryReader and VStack are avoided
          */
         GeometryReader { gr in
-            VStack(alignment: .leading, spacing: self.rowSpacing) {
+            VStack(alignment: .leading, spacing: BubbleRows.rowSpacing) {
                 ForEach(0 ..< self.bubbles.count, id: \.self) { row in
                     
                     // Calculate the HStack spacing now that GeometryReader has the available width
