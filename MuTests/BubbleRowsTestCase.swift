@@ -25,10 +25,10 @@ class BubbleRowsTestCase: XCTestCase {
     func testMaxBubbleRadius() {
         let totalSpacing: CGFloat = 6 * BubbleRows.minimumInterBubbleSpacing
         let maxBubbleRadius: CGFloat = 30
-        let bubblesPerRow: Int = 7
-        let totalWidth = (2 * maxBubbleRadius * CGFloat(bubblesPerRow)) + totalSpacing + 1
+        let bubbles = [["0","1","2","3","4","5","6"]]
+        let totalWidth = (2 * maxBubbleRadius * CGFloat(bubbles[0].count)) + totalSpacing + 1
         
-        let br = BubbleRows(bubblesPerRow: bubblesPerRow, maxBubbleRadius: maxBubbleRadius, bubbles: [[]], selectedBubbles: Set([]))
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius, bubbles: bubbles, selectedBubbles: Set([]))
         let radius = br.getBubbleRadius(totalWidth: totalWidth)
         
         XCTAssert(radius == maxBubbleRadius)
@@ -40,10 +40,10 @@ class BubbleRowsTestCase: XCTestCase {
     func testSmallerBubbleRadius() {
         let totalSpacing: CGFloat = 6 * BubbleRows.minimumInterBubbleSpacing
         let maxBubbleRadius: CGFloat = 30
-        let bubblesPerRow: Int = 7
-        let totalWidth = (2 * maxBubbleRadius * CGFloat(bubblesPerRow)) + totalSpacing - 1
+        let bubbles = [["0","1","2","3","4","5","6"]]
+        let totalWidth = (2 * maxBubbleRadius * CGFloat(bubbles[0].count)) + totalSpacing - 1
         
-        let br = BubbleRows(bubblesPerRow: bubblesPerRow, maxBubbleRadius: maxBubbleRadius, bubbles: [[]], selectedBubbles: Set([]))
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius, bubbles: bubbles, selectedBubbles: Set([]))
         let radius = br.getBubbleRadius(totalWidth: totalWidth)
         
         XCTAssert(radius < maxBubbleRadius)
