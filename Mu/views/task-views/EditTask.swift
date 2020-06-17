@@ -93,7 +93,7 @@ struct EditTask: View {
                         var dayPatterns: Set<DayPattern> = Set()
                         for tts in self.taskTargetSetViews {
                             
-                            // AddTaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
+                            // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
                             let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
                                                 wom: Set((tts.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
                                                 dom: Set((tts.selectedDaysOfMonth ?? []).map{ Int16($0) ?? 0 }))
@@ -217,9 +217,6 @@ struct EditTask: View {
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Add Target Set",
-                                                    selectedDaysOfWeek: Set<String>(),
-                                                    selectedWeeks: Set<String>(),
-                                                    selectedDaysOfMonth: Set<String>(),
                                                     isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
                                                     save: { ttsv in self.taskTargetSetViews.append(ttsv) })})
                     }

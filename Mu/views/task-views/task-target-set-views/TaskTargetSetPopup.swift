@@ -42,9 +42,9 @@ struct TaskTargetSetPopup: View {
     
     // MARK: - State variables
     
-    @State var selectedDaysOfWeek: Set<String>
-    @State var selectedWeeks: Set<String>
-    @State var selectedDaysOfMonth: Set<String>
+    @State var selectedDaysOfWeek: Set<String> = Set<String>()
+    @State var selectedWeeks: Set<String> = Set<String>()
+    @State var selectedDaysOfMonth: Set<String> = Set<String>()
     
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
@@ -181,8 +181,7 @@ struct TaskTargetSetPopup: View {
                     
                     // Weeks of month
                     if self.type == .wom {
-                        BubbleRowsToggleable(bubblesPerRow: 5,
-                                             maxBubbleRadius: 32,
+                        BubbleRowsToggleable(maxBubbleRadius: 32,
                                              bubbles: weeksOfMonth,
                                              selectedBubbles: self.$selectedWeeks)
                     }
