@@ -28,7 +28,9 @@ class BubbleRowsTestCase: XCTestCase {
         let bubbles = [["0","1","2","3","4","5","6"]]
         let totalWidth = (2 * maxBubbleRadius * CGFloat(bubbles[0].count)) + totalSpacing + 1
         
-        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius, bubbles: bubbles, selectedBubbles: Set([]))
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius,
+                            bubbles: bubbles,
+                            selectedBubbles: Set([]))
         let radius = br.getBubbleRadius(totalWidth: totalWidth)
         
         XCTAssert(radius == maxBubbleRadius)
@@ -43,10 +45,47 @@ class BubbleRowsTestCase: XCTestCase {
         let bubbles = [["0","1","2","3","4","5","6"]]
         let totalWidth = (2 * maxBubbleRadius * CGFloat(bubbles[0].count)) + totalSpacing - 1
         
-        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius, bubbles: bubbles, selectedBubbles: Set([]))
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius,
+                            bubbles: bubbles,
+                            selectedBubbles: Set([]))
         let radius = br.getBubbleRadius(totalWidth: totalWidth)
         
         XCTAssert(radius < maxBubbleRadius)
+    }
+    
+    /**
+     Test the getBubbleRadius and getGeometryReaderHeight functions when empty rows of bubbles are provided to BubbleRows
+     */
+    func testGeometryReaderHeightEmpty() {
+        let maxBubbleRadius: CGFloat = 8
+        let totalWidth: CGFloat = 200
+        let bubbles: [[String]] = [[],[],[]]
+        
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius,
+                            bubbles: bubbles,
+                            selectedBubbles: Set([]))
+        let grHeight = br.getGeometryReaderHeight(totalWidth: totalWidth)
+        
+        XCTAssert(grHeight == 0)
+    }
+    
+    /**
+     Test the getBubbleRadius and getGeometryReaderHeight functions
+     */
+    func testGeometryReaderHeight() {
+        let maxBubbleRadius: CGFloat = 8
+        let totalWidth: CGFloat = 200
+        let bubbles = [["1","2","3","4","5","6","7"],
+                       ["8","9","10","11","12","13","14"]]
+        
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius,
+                            bubbles: bubbles,
+                            selectedBubbles: Set([]))
+        let radius = br.getBubbleRadius(totalWidth: totalWidth)
+        let grHeight = br.getGeometryReaderHeight(totalWidth: totalWidth)
+        
+        let expectedHeight = ((2 * radius) * CGFloat(bubbles.count)) + (CGFloat(bubbles.count - 1) * BubbleRows.rowSpacing)
+        XCTAssert(grHeight == expectedHeight)
     }
 
 }
