@@ -182,9 +182,6 @@ struct AddTask: View {
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Add Target Set",
-                                                    selectedDaysOfWeek: Set<String>(),
-                                                    selectedWeeks: Set<String>(),
-                                                    selectedDaysOfMonth: Set<String>(),
                                                     isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
                                                     save: { ttsv in self.taskTargetSetViews.append(ttsv) })
                         })
