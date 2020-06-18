@@ -87,5 +87,38 @@ class BubbleRowsTestCase: XCTestCase {
         let expectedHeight = ((2 * radius) * CGFloat(bubbles.count)) + (CGFloat(bubbles.count - 1) * BubbleRows.rowSpacing)
         XCTAssert(grHeight == expectedHeight)
     }
+    
+    /**
+     Test that BubbleRows increase HStack spacing when totalWidth is wide enough for bubbles to reach maxBubbleRadius
+     */
+    func testIncreasedHStackSpacing() {
+        let totalSpacing: CGFloat = 6 * BubbleRows.minimumInterBubbleSpacing
+        let maxBubbleRadius: CGFloat = 30
+        let bubbles = [["0","1","2","3","4","5","6"]]
+        let totalWidth = (2 * maxBubbleRadius * CGFloat(bubbles[0].count)) + totalSpacing + 1
+        
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius,
+                            bubbles: bubbles,
+                            selectedBubbles: Set([]))
+        let horizontalSpacing = br.getHStackSpacing(totalWidth: totalWidth)
+        
+        XCTAssert(BubbleRows.minimumInterBubbleSpacing < horizontalSpacing)
+    }
+    
+    /**
+     Test that BubbleRows returns minimumInterBubbleSpacing when totalWidth is not enough
+     */
+    func testHStackSpacingCompressionResistance() {
+        let totalWidth: CGFloat = 6 * BubbleRows.minimumInterBubbleSpacing
+        let maxBubbleRadius: CGFloat = 30
+        let bubbles = [["0","1","2","3","4","5","6"]]
+        
+        let br = BubbleRows(maxBubbleRadius: maxBubbleRadius,
+                            bubbles: bubbles,
+                            selectedBubbles: Set([]))
+        let horizontalSpacing = br.getHStackSpacing(totalWidth: totalWidth)
+        
+        XCTAssert(BubbleRows.minimumInterBubbleSpacing == horizontalSpacing)
+    }
 
 }
