@@ -177,7 +177,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectStartDatePopup = true
                     }, label: {
-                        Text(startDateLabel + Date.toMYD(self.startDate))
+                        Text(startDateLabel + Date.toMDYPresent(self.startDate))
                     }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectStartDatePopup,
@@ -190,7 +190,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectEndDatePopup = true
                     }, label: {
-                        Text(endDateLabel + Date.toMYD(self.endDate))
+                        Text(endDateLabel + Date.toMDYPresent(self.endDate))
                     }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectEndDatePopup,

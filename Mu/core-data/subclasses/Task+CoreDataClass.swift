@@ -223,8 +223,8 @@ public class Task: NSManagedObject {
             } else { print("getDeltaInstances() found an existing TaskInstance with a nil date value"); exit(-1) }
         })
         
-        let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ Date.toMDY(SaveFormatter.storedStringToDate($0)) }
-        let afterSorted = instancesAfter.map({ $0.date ?? "" }).sorted().map{ Date.toMDY(SaveFormatter.storedStringToDate($0)) }
+        let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ Date.toMDYShort(SaveFormatter.storedStringToDate($0)) }
+        let afterSorted = instancesAfter.map({ $0.date ?? "" }).sorted().map{ Date.toMDYShort(SaveFormatter.storedStringToDate($0)) }
         datesDelta.append(contentsOf: beforeSorted)
         
         // Loop through each of the days from startDate to endDate to evaluate if TaskInstances for each day would be created, deleted, or carried over
@@ -262,7 +262,7 @@ public class Task: NSManagedObject {
             
             // If none of the proposed DayPatterns matched with the date and a TaskInstance already exists for that date, add it to datesDelta since it would be deleted
             if !matched && instances.contains(where: { $0.date == SaveFormatter.dateToStoredString(dateCounter)}) {
-                datesDelta.append(Date.toMDY(dateCounter))
+                datesDelta.append(Date.toMDYShort(dateCounter))
             }
             
             // Increment dateCounter

@@ -18,19 +18,19 @@ class DateExtensionTests: XCTestCase {
     /**
      Test with GMT June 16, 2001 10:29:11 AM
      */
-    func testToMYD() {
+    func testToMDYPresent() {
         let date = Date(timeIntervalSince1970: 992687351)
         let day = String(format: "%02d", Calendar.current.component(.day, from: date))
-        XCTAssert(Date.toMYD(date) == "Jun \(day), 2001" )
+        XCTAssert(Date.toMDYPresent(date) == "Jun \(day), 2001" )
     }
     
     /**
      Test with GMT June 16, 2001 10:29:11 AM
      */
-    func testToMDY() {
+    func testToMDYShort() {
         let date = Date(timeIntervalSince1970: 992687351)
         let day = String(Calendar.current.component(.day, from: date))
-        XCTAssert(Date.toMDY(date) == "6-\(day)-2001" )
+        XCTAssert(Date.toMDYShort(date) == "6-\(day)-2001" )
     }
 
     /**
