@@ -12,13 +12,13 @@ extension Date {
     
     // MARK: - Date to String conversion
     
-    static let mydFormatter: DateFormatter = {
+    static let mdyPresentFormatter: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "MMM dd, yyyy"
         return df
     }()
     
-    static let mdyFormatter: DateFormatter = {
+    static let mdyShortFormatter: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "M-d-yyyy"
         return df
@@ -27,15 +27,16 @@ extension Date {
     /**
      Returns a "MMM dd,yyyy" String representation of a Date for presenting to user
      */
-    static func toMYD(_ date: Date) -> String {
-        return mydFormatter.string(from: date)
+    static func toMDYPresent(_ date: Date) -> String {
+        return mdyPresentFormatter.string(from: date)
     }
     
     /**
-     Returns a "M-d-yyyy" String representation of a Date for presenting to user
+     Returns a "M-d-yyyy" String representation of a Date.
+     Used to present dates to the user when confirming deletion of TaskInstances
      */
-    static func toMDY(_ date: Date) -> String {
-        return mdyFormatter.string(from: date)
+    static func toMDYShort(_ date: Date) -> String {
+        return mdyShortFormatter.string(from: date)
     }
     
     // MARK: - Date comparison

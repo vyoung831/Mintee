@@ -93,7 +93,7 @@ struct EditTask: View {
                         var dayPatterns: Set<DayPattern> = Set()
                         for tts in self.taskTargetSetViews {
                             
-                            // AddTaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
+                            // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
                             let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
                                                 wom: Set((tts.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
                                                 dom: Set((tts.selectedDaysOfMonth ?? []).map{ Int16($0) ?? 0 }))
@@ -177,7 +177,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectStartDatePopup = true
                     }, label: {
-                        Text(startDateLabel + Date.toMYD(self.startDate))
+                        Text(startDateLabel + Date.toMDYPresent(self.startDate))
                     }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectStartDatePopup,
@@ -190,7 +190,7 @@ struct EditTask: View {
                     Button(action: {
                         self.isPresentingSelectEndDatePopup = true
                     }, label: {
-                        Text(endDateLabel + Date.toMYD(self.endDate))
+                        Text(endDateLabel + Date.toMDYPresent(self.endDate))
                     }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectEndDatePopup,
@@ -217,9 +217,6 @@ struct EditTask: View {
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Add Target Set",
-                                                    selectedDaysOfWeek: Set<String>(),
-                                                    selectedWeeks: Set<String>(),
-                                                    selectedDaysOfMonth: Set<String>(),
                                                     isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
                                                     save: { ttsv in self.taskTargetSetViews.append(ttsv) })})
                     }

@@ -143,7 +143,7 @@ struct AddTask: View {
                     Button(action: {
                         self.isPresentingSelectStartDatePopup = true
                     }, label: {
-                        Text(startDateLabel + Date.toMYD(self.startDate))
+                        Text(startDateLabel + Date.toMDYPresent(self.startDate))
                     }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectStartDatePopup,
@@ -156,7 +156,7 @@ struct AddTask: View {
                     Button(action: {
                         self.isPresentingSelectEndDatePopup = true
                     }, label: {
-                        Text(endDateLabel + Date.toMYD(self.endDate))
+                        Text(endDateLabel + Date.toMDYPresent(self.endDate))
                     }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
                         SelectDatePopup.init(
                             isBeingPresented: self.$isPresentingSelectEndDatePopup,
@@ -182,9 +182,6 @@ struct AddTask: View {
                                 .foregroundColor(Color("default-panel-icon-colors"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Add Target Set",
-                                                    selectedDaysOfWeek: Set<String>(),
-                                                    selectedWeeks: Set<String>(),
-                                                    selectedDaysOfMonth: Set<String>(),
                                                     isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
                                                     save: { ttsv in self.taskTargetSetViews.append(ttsv) })
                         })

@@ -19,7 +19,6 @@ struct BubbleRowsToggleable: View {
     let rowSpacing: CGFloat = 12
     let minimumInterBubbleSpacing: CGFloat = 5
     
-    var bubblesPerRow: Int = 7
     var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
     
@@ -35,8 +34,8 @@ struct BubbleRowsToggleable: View {
      - returns: Bubble radius
      */
     private func getBubbleRadius(totalWidth: CGFloat) -> CGFloat {
-        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubblesPerRow)-1)*minimumInterBubbleSpacing
-        let fullBubbleRadius = (bubblesCumulativeWidth/CGFloat(bubblesPerRow))/2
+        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubbles[0].count)-1)*minimumInterBubbleSpacing
+        let fullBubbleRadius = (bubblesCumulativeWidth/CGFloat(bubbles[0].count))/2
         return min(fullBubbleRadius, maxBubbleRadius)
     }
     
@@ -61,9 +60,9 @@ struct BubbleRowsToggleable: View {
      */
     private func getHStackSpacing(totalWidth: CGFloat) -> CGFloat {
         let bubbleWidth = 2*getBubbleRadius(totalWidth: totalWidth)
-        let bubblesCumulativeWidth = bubbleWidth * CGFloat(bubblesPerRow)
+        let bubblesCumulativeWidth = bubbleWidth * CGFloat(bubbles[0].count)
         let totalSpacing = totalWidth - bubblesCumulativeWidth
-        let spacing = totalSpacing/(CGFloat(bubblesPerRow) - 1)
+        let spacing = totalSpacing/(CGFloat(bubbles[0].count) - 1)
         return max(spacing, minimumInterBubbleSpacing)
     }
     

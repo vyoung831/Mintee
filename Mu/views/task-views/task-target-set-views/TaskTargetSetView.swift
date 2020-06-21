@@ -64,7 +64,8 @@ struct TaskTargetSetView: View {
     func getLabel() -> String {
         
         switch self.type {
-        case .dow: return "Every week"
+        case .dow:
+            return "Every week"
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
                 print("TaskTargetSetView was set to type .wom but selectedWeeksOfMonth was false"); exit(-1)
@@ -81,8 +82,10 @@ struct TaskTargetSetView: View {
             }
             label.append(contentsOf: "of each month")
             return label
-        case .dom: return "Every month"
+        case .dom:
+            return "Every month"
         }
+        
     }
     
     /**
