@@ -19,6 +19,7 @@
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
 		C41A73ED245207F7007007CB /* EditTaskHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73EC245207F7007007CB /* EditTaskHostingController.swift */; };
 		C41F8733248F8FF2008AC18D /* Float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41F8732248F8FF2008AC18D /* Float+Extensions.swift */; };
+		C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
 		C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */; };
 		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
 		C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940C82498D713009FE818 /* SaveFormatterTests.swift */; };
@@ -96,6 +97,7 @@
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
 		C41A73EC245207F7007007CB /* EditTaskHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskHostingController.swift; sourceTree = "<group>"; };
 		C41F8732248F8FF2008AC18D /* Float+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+Extensions.swift"; sourceTree = "<group>"; };
+		C43205F424A0B7C0004D3AA1 /* TestContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestContainer.swift; sourceTree = "<group>"; };
 		C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
 		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
 		C44940C82498D713009FE818 /* SaveFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatterTests.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				C45790AD249FE74C002E16D5 /* TaskTests.swift */,
+				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
 			);
 			path = "core-data";
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C45790AE249FE74C002E16D5 /* TaskTests.swift in Sources */,
+				C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */,
 				C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */,
 				C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */,

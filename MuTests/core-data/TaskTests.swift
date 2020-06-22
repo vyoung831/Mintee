@@ -13,10 +13,12 @@ import CoreData
 class TaskTests: XCTestCase {
     
     override func setUpWithError() throws {
-        CDCoordinator.moc.rollback()
+        CDCoordinator.moc = TestContainer.testMoc
     }
     
-    override func tearDownWithError() throws { }
+    override func tearDownWithError() throws {
+        CDCoordinator.moc.rollback()
+    }
     
     /**
      Test the following updateTags() functions
@@ -26,7 +28,6 @@ class TaskTests: XCTestCase {
      */
     func testUpdateTags() throws {
         
-        var task: Task
         var tags: [Tag] = []
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
@@ -35,7 +36,7 @@ class TaskTests: XCTestCase {
         }
         XCTAssert(tags.count == 0)
         
-        task = Task(context: CDCoordinator.moc)
+        let task = Task(context: CDCoordinator.moc)
         task.updateTags(newTagNames: ["Tag1","Tag2"])
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
@@ -59,6 +60,37 @@ class TaskTests: XCTestCase {
             exit(-1)
         }
         XCTAssert(tags.count == 2)
+        
+    }
+    
+    /**
+     Test the time it takes updateTags to add 1,000 new Tags to the MOC
+     */
+    func testPerformanceAddNewTags() throws {
+        
+        var task: Task, tags: [String] = []
+        task = Task(context: CDCoordinator.moc)
+        for i in 1 ... 1000 { tags.append(String(i)) }
+        
+        self.measure {
+            task.updateTags(newTagNames: tags)
+        }
+        
+    }
+    
+    /**
+     Test the time it takes updateTags to delete 1,000 dead Tags from the MOC
+     */
+    func testPerformanceRemoveTags() throws {
+        
+        var task: Task, tags: [String] = []
+        task = Task(context: CDCoordinator.moc)
+        for i in 1 ... 1000 { tags.append(String(i)) }
+        task.updateTags(newTagNames: tags)
+        
+        self.measure {
+            task.updateTags(newTagNames: [])
+        }
         
     }
     
