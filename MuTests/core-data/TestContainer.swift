@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+@testable import Mu
 
 class TestContainer {
     
@@ -15,10 +16,20 @@ class TestContainer {
     static var testMoc = testShared.persistentContainer.viewContext
     
     /*
-     A test NSPersistentContainer to be used for unit testing. This container does not load any persistent stores
+     A test NSPersistentContainer that saves to an in-memory store and who's MOC is used for unit testing.
+     To avoid having multiple NSEntityDescriptions of the same NSManagedObject, this var uses the NSManagedObjectModel that CDCoordinator's static shared container had already loaded and registered
      */
-    var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Mu")
+    lazy var persistentContainer: NSPersistentCloudKitContainer = {
+        let mom = CDCoordinator.shared.persistentContainer.managedObjectModel
+        let container = NSPersistentCloudKitContainer(name: "Mu", managedObjectModel: mom)
+        
+        container.persistentStoreDescriptions.first?.type = NSInMemoryStoreType
+        container.loadPersistentStores(completionHandler: { description, error in
+            if error != nil {
+                print(error.debugDescription)
+            }
+        })
+        
         return container
     }()
     

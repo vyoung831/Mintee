@@ -20,6 +20,20 @@ class TaskTests: XCTestCase {
         CDCoordinator.moc.rollback()
     }
     
+    // MARK: - Constraint tests
+    
+    /**
+     Test that two Tasks with the same name can't be saved to the MOC
+     */
+    func testTasksSameName() {
+        let task1 = Task(context: CDCoordinator.moc); task1.name = "Task"
+        let task2 = Task(context: CDCoordinator.moc); task2.name = "Task"
+        do { try CDCoordinator.moc.save() } catch {
+            return
+        }
+        XCTAssert(false)
+    }
+    
     // MARK: - updateTags tests
     
     /**
