@@ -31,7 +31,7 @@ class TaskTests: XCTestCase {
         do { try CDCoordinator.moc.save() } catch {
             return
         }
-        XCTAssert(false)
+        XCTFail()
     }
     
     // MARK: - updateTags tests
