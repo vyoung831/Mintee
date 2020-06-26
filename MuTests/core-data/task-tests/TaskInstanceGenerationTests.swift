@@ -321,3 +321,120 @@ class TaskInstanceGenerationTests: XCTestCase {
     }
     
 }
+
+// MARK: - Performance tests
+
+extension TaskInstanceGenerationTests {
+    
+    func test5y3tts() {
+        
+        let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let end = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
+        
+        let dow = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 0,
+                                pattern: DayPattern(dow: Set<Int16>([2,4,6]), wom: Set<Int16>(), dom: Set<Int16>()))
+        let wom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 1,
+                                pattern: DayPattern(dow: Set<Int16>([1,3,5,7]), wom: Set<Int16>([2,4]), dom: Set<Int16>()))
+        let dom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 2,
+                                pattern: DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([3,6,9,12,15,18,21,24])))
+        
+        self.measure {
+            let _ = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+            insertInto: CDCoordinator.moc,
+            name: "Task",
+            tags: [],
+            startDate: start, endDate: end,
+            targetSets: [dow,wom,dom])
+        }
+        
+    }
+    
+    func test25y1tts() {
+        
+        let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let end = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        
+        let dom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 0,
+                                pattern: DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([3,6,9,12,15,18,21,24])))
+        
+        self.measure {
+            let _ = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+            insertInto: CDCoordinator.moc,
+            name: "Task",
+            tags: [],
+            startDate: start, endDate: end,
+            targetSets: [dom])
+        }
+        
+    }
+    
+    func test25y3tts() {
+        
+        let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let end = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        
+        let dow = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 0,
+                                pattern: DayPattern(dow: Set<Int16>([2,4,6]), wom: Set<Int16>(), dom: Set<Int16>()))
+        let wom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 1,
+                                pattern: DayPattern(dow: Set<Int16>([1,3,5,7]), wom: Set<Int16>([2,4]), dom: Set<Int16>()))
+        let dom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 2,
+                                pattern: DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([3,6,9,12,15,18,21,24])))
+        
+        self.measure {
+            let _ = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+            insertInto: CDCoordinator.moc,
+            name: "Task",
+            tags: [],
+            startDate: start, endDate: end,
+            targetSets: [dow,wom,dom])
+        }
+        
+    }
+    
+    /**
+     Test 25 years and 3 TaskTargetSets with every dom selected
+     */
+    func test25y3ttsFull() {
+        
+        let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let end = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        
+        let dow = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 0,
+                                pattern: DayPattern(dow: Set<Int16>([1]), wom: Set<Int16>(), dom: Set<Int16>()))
+        let wom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 1,
+                                pattern: DayPattern(dow: Set<Int16>([1]), wom: Set<Int16>([1]), dom: Set<Int16>()))
+        let dom = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 2,
+                                pattern: DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])))
+        
+        self.measure {
+            let _ = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+            insertInto: CDCoordinator.moc,
+            name: "Task",
+            tags: [],
+            startDate: start, endDate: end,
+            targetSets: [dow,wom,dom])
+        }
+        
+    }
+    
+}
