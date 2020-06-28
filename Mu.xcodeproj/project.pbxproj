@@ -40,6 +40,7 @@
 		C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96D243DEC480037C74C /* SettingsView.swift */; };
 		C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */; };
 		C47389992482CCB400462134 /* DayPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47389982482CCB400462134 /* DayPattern.swift */; };
+		C48D835C24A8313100C885B7 /* TaskUpdatedTargetSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D835B24A8313100C885B7 /* TaskUpdatedTargetSetTests.swift */; };
 		C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02302448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift */; };
 		C48F02482448A5730088227F /* Tag+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02342448A5730088227F /* Tag+CoreDataClass.swift */; };
 		C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02362448A5730088227F /* LegendEntry+CoreDataClass.swift */; };
@@ -49,7 +50,7 @@
 		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
 		C499FFF4247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
-		C4AF6FAC24A613F0003D4562 /* TaskInstanceUpdatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AF6FAB24A613F0003D4562 /* TaskInstanceUpdatingTests.swift */; };
+		C4AF6FAC24A613F0003D4562 /* TaskUpdatedDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AF6FAB24A613F0003D4562 /* TaskUpdatedDatesTests.swift */; };
 		C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */; };
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */; };
@@ -121,6 +122,7 @@
 		C46DC96D243DEC480037C74C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskInstance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C47389982482CCB400462134 /* DayPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPattern.swift; sourceTree = "<group>"; };
+		C48D835B24A8313100C885B7 /* TaskUpdatedTargetSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskUpdatedTargetSetTests.swift; sourceTree = "<group>"; };
 		C48F02302448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskSummaryAnalysis+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02342448A5730088227F /* Tag+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02362448A5730088227F /* LegendEntry+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegendEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -130,7 +132,7 @@
 		C499FFEC247364DF00ABB64C /* SaveFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatter.swift; sourceTree = "<group>"; };
 		C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
-		C4AF6FAB24A613F0003D4562 /* TaskInstanceUpdatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInstanceUpdatingTests.swift; sourceTree = "<group>"; };
+		C4AF6FAB24A613F0003D4562 /* TaskUpdatedDatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskUpdatedDatesTests.swift; sourceTree = "<group>"; };
 		C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetViewTests.swift; sourceTree = "<group>"; };
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopupTests.swift; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTests.swift; sourceTree = "<group>"; };
@@ -294,7 +296,8 @@
 			children = (
 				C45790AD249FE74C002E16D5 /* TaskTests.swift */,
 				C462099924A1FE5100F52F16 /* TaskInstanceGenerationTests.swift */,
-				C4AF6FAB24A613F0003D4562 /* TaskInstanceUpdatingTests.swift */,
+				C4AF6FAB24A613F0003D4562 /* TaskUpdatedDatesTests.swift */,
+				C48D835B24A8313100C885B7 /* TaskUpdatedTargetSetTests.swift */,
 			);
 			path = "task-tests";
 			sourceTree = "<group>";
@@ -579,7 +582,8 @@
 				C462099A24A1FE5100F52F16 /* TaskInstanceGenerationTests.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */,
 				C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */,
-				C4AF6FAC24A613F0003D4562 /* TaskInstanceUpdatingTests.swift in Sources */,
+				C48D835C24A8313100C885B7 /* TaskUpdatedTargetSetTests.swift in Sources */,
+				C4AF6FAC24A613F0003D4562 /* TaskUpdatedDatesTests.swift in Sources */,
 				C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */,
 				C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift in Sources */,
 				C44940CD2498F113009FE818 /* BubbleRowsTests.swift in Sources */,
