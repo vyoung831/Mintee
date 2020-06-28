@@ -159,6 +159,18 @@ class TargetSetUpdateTests: XCTestCase {
         var newDom: Set<String> = globalDom.subtracting(newWom)
         task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
         
+        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newWom).subtracting(newDom)
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
+        
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -184,6 +196,18 @@ class TargetSetUpdateTests: XCTestCase {
         var newDow: Set<String> = globalDow
         var newDom: Set<String> = globalDom.subtracting(newDow)
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        
+        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newDow).subtracting(newDom)
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -211,6 +235,18 @@ class TargetSetUpdateTests: XCTestCase {
         var newWom: Set<String> = globalWom.subtracting(newDow)
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc)])
         
+        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newDow).subtracting(newWom)
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
+        
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -233,6 +269,17 @@ class TargetSetUpdateTests: XCTestCase {
     
     func testDeleteAllTargetSets() throws {
         task.updateTaskTargetSets(targetSets: [])
+        
+        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var expectedDelta = (globalDow.union(globalWom).union(globalDom))
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        
         task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -258,6 +305,11 @@ class TargetSetUpdateTests: XCTestCase {
         var oldWom: Set<String> = globalWom.subtracting(oldDow).subtracting(newDow)
         var oldDom: Set<String> = globalDom.subtracting(oldWom).subtracting(oldDow).subtracting(newDow)
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
+        
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -305,6 +357,11 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDom: Set<String> = globalDom.subtracting(oldWom).subtracting(newDow).subtracting(oldDow)
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
         
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
+        
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -351,6 +408,11 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDom: Set<String> = globalDom.subtracting(newDow).subtracting(oldWom).subtracting(oldDow)
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
         
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
+        
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -396,6 +458,11 @@ class TargetSetUpdateTests: XCTestCase {
         var newDow: Set<String> = Set(["2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28"]
         ).subtracting(oldDom).subtracting(oldWom).subtracting(oldDow)
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
+        
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        
+        task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -456,6 +523,9 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDom: Set<String> = globalDom.subtracting(newDow).subtracting(oldWom).subtracting(newWom).subtracting(oldDow).subtracting(newDom)
         
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet])
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -525,6 +595,9 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDom: Set<String> = globalDom.subtracting(newDom).subtracting(oldWom).subtracting(newDow).subtracting(oldDow).subtracting(newWom)
         
         task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet])
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -595,6 +668,17 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDom: Set<String> = globalDom.subtracting(newDom).subtracting(oldWom).subtracting(newDow).subtracting(newWom)
         
         task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet])
+        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        let datesStillExisting = newWom.union(newDow).union(oldWom).union(newDom).union(oldDom)
+        var expectedDelta = globalDow.subtracting( datesStillExisting )
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        task.updateInstances()
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
