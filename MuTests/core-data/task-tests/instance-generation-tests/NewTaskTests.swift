@@ -1,5 +1,5 @@
 //
-//  TaskInstanceGenerationTests.swift
+//  NewTaskTests.swift
 //  MuTests
 //
 //  This class tests scenarios where a Task is created and new TaskInstances need to be generated.
@@ -14,7 +14,7 @@ import XCTest
 import CoreData
 @testable import Mu
 
-class TaskInstanceGenerationTests: XCTestCase {
+class NewTaskTests: XCTestCase {
     
     let dowMin: Float = 1, dowMax: Float = 2, womMin: Float = 3, womMax: Float = 4, domMin: Float = 5, domMax: Float = 6
     

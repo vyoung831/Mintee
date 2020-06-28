@@ -1,5 +1,5 @@
 //
-//  TaskUpdatedDatesTests.swift
+//  DateUpdateTests.swift
 //  MuTests
 //
 //  This class tests scenarios where a Task is edited and TaskInstances need to be regenerated, including the following user scenarios
@@ -14,7 +14,7 @@ import XCTest
 import CoreData
 @testable import Mu
 
-class TaskUpdatedDatesTests: XCTestCase {
+class DateUpdateTests: XCTestCase {
     
     let dowMin: Float = 1, dowMax: Float = 2, womMin: Float = 3, womMax: Float = 4, domMin: Float = 5, domMax: Float = 6
     
