@@ -104,6 +104,22 @@ public class Task: NSManagedObject {
     // MARK: - Date handling
     
     /**
+     Converts start date to save format and stores it to this Task.
+     - parameter startDate: Start date of type Date
+     */
+    func updateStartDate(_ startDate: Date) {
+        self.startDate = SaveFormatter.dateToStoredString(startDate)
+    }
+    
+    /**
+     Converts end date to save format and stores it to this Task.
+     - parameter endDate: End date of type Date
+     */
+    func updateEndDate(_ endDate: Date) {
+        self.endDate = SaveFormatter.dateToStoredString(endDate)
+    }
+    
+    /**
      Converts start and end dates to save format and stores them to this Task.
      This function does not check if startDate is before endDate; it should have been handled by the caller.
      - parameter startDate: Start date of type Date
@@ -173,26 +189,6 @@ public class Task: NSManagedObject {
     }
     
     // MARK: - TaskTargetSet and TaskInstance updating
-    
-    /**
-     Deletes the TaskTargetSets that are already associated with this Task, attaches new ones, and updates new TaskInstances
-     - parameter targetSets: Array of new TaskTargetSets to associate with this Task, sorted by priority in ascending order
-     */
-    func updateTaskTargetSets(targetSets: [TaskTargetSet]) {
-        
-        // Delete current TaskTargetSets from MOC
-        if let targetSets = self.targetSets {
-            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
-        } else {
-            print("Error deleting TaskTargetSets from \(self.debugDescription)")
-            exit(-1)
-        }
-        
-        // Set new targetSets and update instances
-        self.targetSets = NSSet(array: targetSets)
-        updateInstances()
-        
-    }
     
     /**
      Returns the date representations of existing TaskInstances that would be deleted given a new start date, end date, and set of DayPatterns
@@ -279,9 +275,29 @@ public class Task: NSManagedObject {
     }
     
     /**
+     Deletes the TaskTargetSets that are already associated with this Task, attaches new ones, and updates new TaskInstances
+     - parameter targetSets: Array of new TaskTargetSets to associate with this Task, sorted by priority in ascending order
+     */
+    func updateTaskTargetSets(targetSets: [TaskTargetSet]) {
+        
+        // Delete current TaskTargetSets from MOC
+        if let targetSets = self.targetSets {
+            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+        } else {
+            print("Error deleting TaskTargetSets from \(self.debugDescription)")
+            exit(-1)
+        }
+        
+        // Set new targetSets and update instances
+        self.targetSets = NSSet(array: targetSets)
+        updateInstances()
+        
+    }
+    
+    /**
      Uses this Task's targetSets to generate new or attach existing TaskInstances. Existing TaskInstances that are no longer needed are deleted.
      */
-    private func updateInstances() {
+    func updateInstances() {
         
         guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0.priority < $1.priority} ) else {
             print("updateInstances() call from \(self.debugDescription) could not get and sort targetSets")

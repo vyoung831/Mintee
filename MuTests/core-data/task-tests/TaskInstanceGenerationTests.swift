@@ -14,7 +14,12 @@ class TaskInstanceGenerationTests: XCTestCase {
     
     let dowMin: Float = 1, dowMax: Float = 2, womMin: Float = 3, womMax: Float = 4, domMin: Float = 5, domMax: Float = 6
     
-    // Create .dow TaskTargetSet with days of week = 1,2,3,6 ("U","M","T","F")
+    /*
+     Target sets
+     - .dow TaskTargetSet with days of week = 1,2,3,6 ("U","M","T","F")
+     - .wom TaskTargetSet with days of week = 3 ("T") and weeks of month = all
+     - .dom TaskTargetSet with days of month = 1,2,3,4,5,6,7,8,9,10
+     */
     func getDowTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
         let dowPattern = DayPattern(dow: Set<Int16>([1,2,3,6]), wom: Set<Int16>(), dom: Set<Int16>())
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
@@ -24,8 +29,6 @@ class TaskInstanceGenerationTests: XCTestCase {
                              priority: 0,
                              pattern: dowPattern)
     }
-    
-    // Create TaskTargetSet with days of week = 3 ("T") and weeks of month = all
     func getWomTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
         let womPattern = DayPattern(dow: Set<Int16>([3]), wom: Set<Int16>([1,2,3,4,5]), dom: Set<Int16>())
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
@@ -35,8 +38,6 @@ class TaskInstanceGenerationTests: XCTestCase {
                              priority: 0,
                              pattern: womPattern)
     }
-    
-    // Create TaskTargetSet with days of month = 1,2,3,4,5,6,7,8,9,10
     func getDomTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
         let domPattern = DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([1,2,3,4,5,6,7,8,9,10]))
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
