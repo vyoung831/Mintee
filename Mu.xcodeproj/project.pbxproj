@@ -63,7 +63,6 @@
 		C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */; };
 		C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */; };
 		C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */; };
-		C4F8324524A948D6007213DA /* DeltaInstanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F8324424A948D6007213DA /* DeltaInstanceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,7 +145,6 @@
 		C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskSummaryAnalysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRowsToggleable.swift; sourceTree = "<group>"; };
 		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
-		C4F8324424A948D6007213DA /* DeltaInstanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaInstanceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -403,10 +401,9 @@
 		C4F8324324A9482D007213DA /* instance-generation-tests */ = {
 			isa = PBXGroup;
 			children = (
-				C462099924A1FE5100F52F16 /* NewTaskTests.swift */,
 				C4AF6FAB24A613F0003D4562 /* DateUpdateTests.swift */,
+				C462099924A1FE5100F52F16 /* NewTaskTests.swift */,
 				C48D835B24A8313100C885B7 /* TargetSetUpdateTests.swift */,
-				C4F8324424A948D6007213DA /* DeltaInstanceTests.swift */,
 			);
 			path = "instance-generation-tests";
 			sourceTree = "<group>";
@@ -589,7 +586,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C45790AE249FE74C002E16D5 /* TaskTests.swift in Sources */,
-				C4F8324524A948D6007213DA /* DeltaInstanceTests.swift in Sources */,
 				C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */,
 				C462099A24A1FE5100F52F16 /* NewTaskTests.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */,

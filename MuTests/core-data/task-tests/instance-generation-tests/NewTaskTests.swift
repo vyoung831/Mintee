@@ -316,7 +316,7 @@ class NewTaskTests: XCTestCase {
 
 // MARK: - Performance tests
 
-extension TaskInstanceGenerationTests {
+extension NewTaskTests {
     
     func test5y3tts() {
         

@@ -231,6 +231,10 @@ class DateUpdateTests: XCTestCase {
                                         "2019-11-01", "2019-11-02", "2019-11-03", "2019-11-04", "2019-11-05", "2019-11-06", "2019-11-07", "2019-11-08", "2019-11-09", "2019-11-10",
             "2019-12-01", "2019-12-02", "2019-12-03", "2019-12-04", "2019-12-05", "2019-12-06", "2019-12-07", "2019-12-08", "2019-12-09", "2019-12-10"]).union(globalDom).subtracting(newWom).subtracting(newDow)
         let newStart = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
+        
+        let delta = task.getDeltaInstances(startDate: newStart, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        
         task.updateStartDate(newStart)
         task.updateInstances()
         
@@ -267,6 +271,17 @@ class DateUpdateTests: XCTestCase {
         var newDom: Set<String> = Set(["2020-07-01", "2020-07-02", "2020-07-03", "2020-07-04", "2020-07-05", "2020-07-06", "2020-07-07", "2020-07-08", "2020-07-09", "2020-07-10", "2020-08-01", "2020-08-02", "2020-08-03", "2020-08-04", "2020-08-05", "2020-08-06", "2020-08-07", "2020-08-08", "2020-08-09", "2020-08-10", "2020-09-01", "2020-09-02", "2020-09-03", "2020-09-04", "2020-09-05", "2020-09-06", "2020-09-07", "2020-09-08", "2020-09-09", "2020-09-10", "2020-10-01", "2020-10-02", "2020-10-03", "2020-10-04", "2020-10-05", "2020-10-06", "2020-10-07", "2020-10-08", "2020-10-09", "2020-10-10", "2020-11-01", "2020-11-02", "2020-11-03", "2020-11-04", "2020-11-05", "2020-11-06", "2020-11-07", "2020-11-08", "2020-11-09", "2020-11-10", "2020-12-01", "2020-12-02", "2020-12-03", "2020-12-04", "2020-12-05", "2020-12-06", "2020-12-07", "2020-12-08", "2020-12-09", "2020-12-10", "2021-01-01"]
         ).subtracting(newWom).subtracting(newDow)
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 7, day: 1))!
+        
+        var delta = Set(task.getDeltaInstances(startDate: newStart, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newDow).subtracting(newWom).subtracting(newDom)
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        
         task.updateStartDate(newStart)
         task.updateInstances()
         
@@ -336,6 +351,17 @@ class DateUpdateTests: XCTestCase {
         "2020-05-01", "2020-05-02", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-05-07", "2020-05-08", "2020-05-09", "2020-05-10",
         "2020-06-01", "2020-06-02", "2020-06-03", "2020-06-04", "2020-06-05", "2020-06-06", "2020-06-07", "2020-06-08", "2020-06-09", "2020-06-10"]).subtracting(newWom).subtracting(newDow)
         let newEnd = Calendar.current.date(from: DateComponents(year: 2020, month: 6, day: 30))!
+        
+        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: newEnd, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newDow).subtracting(newWom).subtracting(newDom)
+        for dateToDelete in delta {
+            XCTAssert(expectedDelta.contains(dateToDelete))
+            expectedDelta.remove(dateToDelete)
+            delta.remove(dateToDelete)
+        }
+        XCTAssert(expectedDelta.count == 0)
+        XCTAssert(delta.count == 0)
+        
         task.updateEndDate(newEnd)
         task.updateInstances()
         
@@ -372,6 +398,10 @@ class DateUpdateTests: XCTestCase {
         var newDom: Set<String> = Set(["2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05", "2021-01-06", "2021-01-07", "2021-01-08", "2021-01-09", "2021-01-10", "2021-02-01", "2021-02-02", "2021-02-03", "2021-02-04", "2021-02-05", "2021-02-06", "2021-02-07", "2021-02-08", "2021-02-09", "2021-02-10", "2021-03-01", "2021-03-02", "2021-03-03", "2021-03-04", "2021-03-05", "2021-03-06", "2021-03-07", "2021-03-08", "2021-03-09", "2021-03-10", "2021-04-01", "2021-04-02", "2021-04-03", "2021-04-04", "2021-04-05", "2021-04-06", "2021-04-07", "2021-04-08", "2021-04-09", "2021-04-10", "2021-05-01", "2021-05-02", "2021-05-03", "2021-05-04", "2021-05-05", "2021-05-06", "2021-05-07", "2021-05-08", "2021-05-09", "2021-05-10", "2021-06-01", "2021-06-02", "2021-06-03", "2021-06-04", "2021-06-05", "2021-06-06", "2021-06-07", "2021-06-08", "2021-06-09", "2021-06-10", "2021-07-01", "2021-07-02", "2021-07-03", "2021-07-04", "2021-07-05", "2021-07-06", "2021-07-07", "2021-07-08", "2021-07-09", "2021-07-10", "2021-08-01", "2021-08-02", "2021-08-03", "2021-08-04", "2021-08-05", "2021-08-06", "2021-08-07", "2021-08-08", "2021-08-09", "2021-08-10", "2021-09-01", "2021-09-02", "2021-09-03", "2021-09-04", "2021-09-05", "2021-09-06", "2021-09-07", "2021-09-08", "2021-09-09", "2021-09-10", "2021-10-01", "2021-10-02", "2021-10-03", "2021-10-04", "2021-10-05", "2021-10-06", "2021-10-07", "2021-10-08", "2021-10-09", "2021-10-10", "2021-11-01", "2021-11-02", "2021-11-03", "2021-11-04", "2021-11-05", "2021-11-06", "2021-11-07", "2021-11-08", "2021-11-09", "2021-11-10", "2021-12-01", "2021-12-02", "2021-12-03", "2021-12-04", "2021-12-05", "2021-12-06", "2021-12-07", "2021-12-08", "2021-12-09", "2021-12-10", "2022-01-01"]
             ).union(globalDom).subtracting(newWom).subtracting(newDow)
         let newEnd = Calendar.current.date(from: DateComponents(year: 2022, month: 1, day: 1))!
+        
+        let delta = task.getDeltaInstances(startDate: startDate, endDate: newEnd, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        XCTAssert(delta.count == 0)
+        
         task.updateEndDate(newEnd)
         task.updateInstances()
         
