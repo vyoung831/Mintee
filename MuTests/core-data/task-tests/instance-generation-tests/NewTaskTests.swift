@@ -324,13 +324,10 @@ class NewTaskTests: XCTestCase {
 //  - The years between startDate and endDate
 //  - The number of TaskTargetSets defined to the Task
 //
-//  Created by Vincent Young on 6/23/20.
-//  Copyright © 2020 Vincent Young. All rights reserved.
-//
 
 extension NewTaskTests {
     
-    func test5y3tts() {
+    func testPerformance5y3tts() {
         
         let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let end = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
@@ -359,7 +356,7 @@ extension NewTaskTests {
         
     }
     
-    func test25y1tts() {
+    func testPerformance25y1tts() {
         
         let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let end = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
@@ -380,7 +377,7 @@ extension NewTaskTests {
         
     }
     
-    func test25y3tts() {
+    func testPerformance25y3tts() {
         
         let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let end = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
@@ -412,7 +409,7 @@ extension NewTaskTests {
     /**
      Test 25 years and 3 TaskTargetSets with every dom selected
      */
-    func test25y3ttsFull() {
+    func testPerformance25y3ttsFull() {
         
         let start = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let end = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!

@@ -714,3 +714,117 @@ class TargetSetUpdateTests: XCTestCase {
     }
     
 }
+
+// MARK: - updateInstances performance tests
+
+//
+//  Extension to TargetSetUpdateTests.swift
+//
+//  This extension performance tests updateInstances() when TaskTargetSets are deleted
+//  Tests are named after
+//  - The years between startDate and endDate
+//  - The number of TaskTargetSets deleted
+//
+
+extension TargetSetUpdateTests {
+    
+    func testPerformanceUpdateInstancesFiveYearsDeleteOne() {
+        
+        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let endDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
+        task.updateDates(startDate: startDate, endDate: endDate)
+        task.updateInstances()
+        
+        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        self.measure {
+            task.updateInstances()
+        }
+        
+    }
+    
+    func testPerformanceUpdateInstancesTenYearsDeleteOne() {
+        
+        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let endDate = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
+        task.updateDates(startDate: startDate, endDate: endDate)
+        task.updateInstances()
+        
+        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        self.measure {
+            task.updateInstances()
+        }
+        
+    }
+    
+    func testPerformanceUpdateInstancesTwentyFiveYearsDeleteOne() {
+        
+        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let endDate = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        task.updateDates(startDate: startDate, endDate: endDate)
+        task.updateInstances()
+        
+        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        self.measure {
+            task.updateInstances()
+        }
+        
+    }
+    
+}
+
+// MARK: - getDeltaInstances performance tests
+
+//
+//  Extension to TargetSetUpdateTests.swift
+//
+//  This extension performance tests getDeltaInstances() when TaskTargetSets are deleted
+//  Tests are named after
+//  - The years between startDate and endDate
+//  - The number of TaskTargetSets deleted
+//
+
+extension TargetSetUpdateTests {
+    
+    func testPerformanceDeltaInstancesFiveYearsDeleteOne() {
+        
+        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let endDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
+        task.updateDates(startDate: startDate, endDate: endDate)
+        task.updateInstances()
+
+        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        self.measure {
+            task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        }
+
+    }
+
+    func testPerformanceDeltaInstancesTenYearsDeleteOne() {
+
+        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let endDate = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
+        task.updateDates(startDate: startDate, endDate: endDate)
+        task.updateInstances()
+        
+        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        self.measure {
+            task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        }
+
+    }
+
+    func testPerformanceDeltaInstancesTwentyFiveYearsDeleteOne() {
+
+        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let endDate = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        task.updateDates(startDate: startDate, endDate: endDate)
+        task.updateInstances()
+        
+        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        self.measure {
+            task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        }
+
+    }
+    
+}

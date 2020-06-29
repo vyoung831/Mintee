@@ -432,6 +432,8 @@ class DateUpdateTests: XCTestCase {
     
 }
 
+// MARK: - Performance tests
+
 //
 //  Extension to DateUpdateTests.swift
 //
@@ -439,13 +441,10 @@ class DateUpdateTests: XCTestCase {
 //  The task is set with 3 TaskTargetSets (dow, wom, dom)
 //  Tests are named by the change in gap between startDate and endDate
 //
-//  Created by Vincent Young on 6/26/20.
-//  Copyright © 2020 Vincent Young. All rights reserved.
-//
 
 extension DateUpdateTests {
     
-    func testOneYearToFiveYears() {
+    func testPerformanceOneYearToFiveYears() {
         let newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         task.updateEndDate(newEnd)
         self.measure {
@@ -453,7 +452,7 @@ extension DateUpdateTests {
         }
     }
     
-    func testOneYearToTenYears() {
+    func testPerformanceOneYearToTenYears() {
         let newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
         task.updateEndDate(newEnd)
         self.measure {
@@ -461,7 +460,7 @@ extension DateUpdateTests {
         }
     }
     
-    func testFiveYearsToTenYears() {
+    func testPerformanceFiveYearsToTenYears() {
         var newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         task.updateEndDate(newEnd)
         task.updateInstances()
@@ -473,7 +472,7 @@ extension DateUpdateTests {
         }
     }
     
-    func testFiveYearsToTwentyFiveYears() {
+    func testPerformanceFiveYearsToTwentyFiveYears() {
         var newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         task.updateEndDate(newEnd)
         task.updateInstances()
@@ -485,7 +484,7 @@ extension DateUpdateTests {
         }
     }
     
-    func testTenYearsToTwentyFiveYears() {
+    func testPerformanceTenYearsToTwentyFiveYears() {
         var newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
         task.updateEndDate(newEnd)
         task.updateInstances()
