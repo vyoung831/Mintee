@@ -431,3 +431,70 @@ class DateUpdateTests: XCTestCase {
     }
     
 }
+
+//
+//  Extension to DateUpdateTests.swift
+//
+//  This extension tests performances of updateInstances() after a Task's dates are changed
+//  The task is set with 3 TaskTargetSets (dow, wom, dom)
+//  Tests are named by the change in gap between startDate and endDate
+//
+//  Created by Vincent Young on 6/26/20.
+//  Copyright © 2020 Vincent Young. All rights reserved.
+//
+
+extension DateUpdateTests {
+    
+    func testOneYearToFiveYears() {
+        let newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        self.measure {
+            task.updateInstances()
+        }
+    }
+    
+    func testOneYearToTenYears() {
+        let newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        self.measure {
+            task.updateInstances()
+        }
+    }
+    
+    func testFiveYearsToTenYears() {
+        var newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        task.updateInstances()
+        
+        newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        self.measure {
+            task.updateInstances()
+        }
+    }
+    
+    func testFiveYearsToTwentyFiveYears() {
+        var newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        task.updateInstances()
+        
+        newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        self.measure {
+            task.updateInstances()
+        }
+    }
+    
+    func testTenYearsToTwentyFiveYears() {
+        var newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        task.updateInstances()
+        
+        newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        task.updateEndDate(newEnd)
+        self.measure {
+            task.updateInstances()
+        }
+    }
+    
+}
