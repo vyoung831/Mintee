@@ -135,8 +135,10 @@ struct EditTask: View {
                 VStack (alignment: .leading, spacing: 5, content: {
                     Text("Task name")
                         .bold()
+                        .accessibility(identifier: "task-name-label")
                     TextField(task.name ?? "", text: self.$taskName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .accessibility(identifier: "task-name-text-field")
                     if (saveErrorMessage.count > 0) {
                         Text(saveErrorMessage)
                             .foregroundColor(.red)
@@ -148,13 +150,16 @@ struct EditTask: View {
                     HStack {
                         Text("Tags")
                             .bold()
+                            .accessibility(identifier: "tags-section-label")
                         Image(systemName: "plus")
+                            .accessibility(identifier: "add-tag-button")
                     }
                     ForEach(self.tags,id: \.description) { tag in
                         Text(tag)
                             .padding(.all, 8)
                             .foregroundColor(.white)
                             .background(Color.black)
+                            .accessibility(identifier: "tag")
                     }
                 }
                 
@@ -247,6 +252,7 @@ struct EditTask: View {
                                                             maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
                                                             isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
                                                             save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
+                                .accessibility(identifier: "task-target-set")
                         }
                     }
                 }
