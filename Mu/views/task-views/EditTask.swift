@@ -18,8 +18,6 @@ struct EditTask: View {
     var task: Task
     var dismiss: (() -> Void)
     @State var datesToDelete: [String] = []
-    @State var isPresentingSelectStartDatePopup: Bool = false
-    @State var isPresentingSelectEndDatePopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var isPresentingConfirmDeletePopup: Bool = false
@@ -132,18 +130,11 @@ struct EditTask: View {
                 
                 // MARK: - Task name text field
                 
-                VStack (alignment: .leading, spacing: 5, content: {
-                    Text("Task name")
-                        .bold()
-                        .accessibility(identifier: "task-name-label")
-                    TextField(task.name ?? "", text: self.$taskName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .accessibility(identifier: "task-name-text-field")
-                    if (saveErrorMessage.count > 0) {
-                        Text(saveErrorMessage)
-                            .foregroundColor(.red)
-                    }
-                })
+                TaskNameTextField(taskName: self.$taskName)
+                if (saveErrorMessage.count > 0) {
+                    Text(saveErrorMessage)
+                        .foregroundColor(.red)
+                }
                 
                 // MARK: - Tags
                 Group {
@@ -175,36 +166,8 @@ struct EditTask: View {
                 
                 // MARK: - Dates
                 
-                Group {
-                    Text("Dates")
-                        .bold()
-                    
-                    Button(action: {
-                        self.isPresentingSelectStartDatePopup = true
-                    }, label: {
-                        Text(startDateLabel + Date.toMDYPresent(self.startDate))
-                    }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
-                        SelectDatePopup.init(
-                            isBeingPresented: self.$isPresentingSelectStartDatePopup,
-                            startDate: self.$startDate,
-                            endDate: self.$endDate,
-                            isStartDate: true,
-                            label: "Select Start Date")
-                    })
-                    
-                    Button(action: {
-                        self.isPresentingSelectEndDatePopup = true
-                    }, label: {
-                        Text(endDateLabel + Date.toMDYPresent(self.endDate))
-                    }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
-                        SelectDatePopup.init(
-                            isBeingPresented: self.$isPresentingSelectEndDatePopup,
-                            startDate: self.$startDate,
-                            endDate: self.$endDate,
-                            isStartDate: false,
-                            label: "Select End Date")
-                    })
-                }
+                SelectDateSection(startDate: self.$startDate,
+                                  endDate: self.$endDate)
                 
                 // MARK: - Target sets
                 

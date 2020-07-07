@@ -29,6 +29,8 @@
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
 		C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */; };
 		C455C2CB248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */; };
+		C4578D2324B4065C008BD3D4 /* TaskNameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */; };
+		C4578D2524B4076D008BD3D4 /* SelectDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */; };
 		C45790AE249FE74C002E16D5 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45790AD249FE74C002E16D5 /* TaskTests.swift */; };
 		C462099A24A1FE5100F52F16 /* NewTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462099924A1FE5100F52F16 /* NewTaskTests.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
@@ -113,6 +115,8 @@
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
 		C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNameTextField.swift; sourceTree = "<group>"; };
+		C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateSection.swift; sourceTree = "<group>"; };
 		C45790AD249FE74C002E16D5 /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
 		C462099924A1FE5100F52F16 /* NewTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskTests.swift; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 			children = (
 				C43BD950244472A4003E68DC /* AddTask.swift */,
 				C41A73E52451BFD2007007CB /* EditTask.swift */,
+				C4578D2124B40645008BD3D4 /* reused-views */,
 				C48719A224891999004463F4 /* task-target-set-views */,
 			);
 			path = "task-views";
@@ -300,6 +305,15 @@
 				C43BD94F2444728C003E68DC /* task-views */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		C4578D2124B40645008BD3D4 /* reused-views */ = {
+			isa = PBXGroup;
+			children = (
+				C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */,
+				C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */,
+			);
+			path = "reused-views";
 			sourceTree = "<group>";
 		};
 		C45790AC249FE72A002E16D5 /* core-data */ = {
@@ -594,6 +608,7 @@
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */,
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
+				C4578D2324B4065C008BD3D4 /* TaskNameTextField.swift in Sources */,
 				C455C2CB248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift in Sources */,
 				C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */,
 				C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */,
@@ -602,6 +617,7 @@
 				C48F024E2448A5730088227F /* Task+CoreDataClass.swift in Sources */,
 				C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
+				C4578D2524B4076D008BD3D4 /* SelectDateSection.swift in Sources */,
 				C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,

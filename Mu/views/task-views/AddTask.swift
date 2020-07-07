@@ -15,8 +15,6 @@ struct AddTask: View {
     let taskTypes: [String] = ["Recurring","Specific"]
     
     @Binding var isBeingPresented: Bool
-    @State var isPresentingSelectStartDatePopup: Bool = false
-    @State var isPresentingSelectEndDatePopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var taskName: String = ""
@@ -44,13 +42,13 @@ struct AddTask: View {
             taskTargetSets.append(tts)
         }
         
-        let newTask = Task(entity: Task.entity(),
-                           insertInto: CDCoordinator.moc,
-                           name: self.taskName,
-                           tags: self.tags,
-                           startDate: self.startDate,
-                           endDate: self.endDate,
-                           targetSets: taskTargetSets)
+        let _ = Task(entity: Task.entity(),
+                     insertInto: CDCoordinator.moc,
+                     name: self.taskName,
+                     tags: self.tags,
+                     startDate: self.startDate,
+                     endDate: self.endDate,
+                     targetSets: taskTargetSets)
         do {
             try CDCoordinator.moc.save()
             return true
@@ -97,18 +95,11 @@ struct AddTask: View {
                 
                 // MARK: - Task name text field
                 
-                VStack (alignment: .leading, spacing: 5, content: {
-                    Text("Task name")
-                        .bold()
-                        .accessibility(identifier: "task-name-label")
-                    TextField("Task name", text: self.$taskName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .accessibility(identifier: "task-name-text-field")
-                    if (errorMessage.count > 0) {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                    }
-                })
+                TaskNameTextField(taskName: self.$taskName)
+                if (errorMessage.count > 0) {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                }
                 
                 // MARK: - Tags
                 
@@ -141,36 +132,8 @@ struct AddTask: View {
                 
                 // MARK: - Dates
                 
-                Group {
-                    Text("Dates")
-                        .bold()
-                    
-                    Button(action: {
-                        self.isPresentingSelectStartDatePopup = true
-                    }, label: {
-                        Text(startDateLabel + Date.toMDYPresent(self.startDate))
-                    }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
-                        SelectDatePopup.init(
-                            isBeingPresented: self.$isPresentingSelectStartDatePopup,
-                            startDate: self.$startDate,
-                            endDate: self.$endDate,
-                            isStartDate: true,
-                            label: "Select Start Date")
-                    })
-                    
-                    Button(action: {
-                        self.isPresentingSelectEndDatePopup = true
-                    }, label: {
-                        Text(endDateLabel + Date.toMDYPresent(self.endDate))
-                    }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
-                        SelectDatePopup.init(
-                            isBeingPresented: self.$isPresentingSelectEndDatePopup,
-                            startDate: self.$startDate,
-                            endDate: self.$endDate,
-                            isStartDate: false,
-                            label: "Select End Date")
-                    })
-                }
+                SelectDateSection(startDate: self.$startDate,
+                                  endDate: self.$endDate)
                 
                 // MARK: - Target sets
                 
