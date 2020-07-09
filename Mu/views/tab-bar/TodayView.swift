@@ -25,6 +25,9 @@ struct TodayView: View {
                         Image(systemName: "plus.circle")
                             .frame(width: 30, height: 30, alignment: .center)
                             .foregroundColor(Color("default-panel-icon-colors"))
+                            .accessibility(identifier: "add-task-button")
+                            .accessibility(label: Text("Add button"))
+                            .accessibility(hint: Text("Tap to add a new task"))
                     })
                     
                     Button(action: {}) {

@@ -91,7 +91,11 @@ struct BubbleRowsToggleable: View {
                                            alignment: .center)
                                 Text(String(bubbleText)).foregroundColor(self.selectedBubbles.contains(bubbleText)
                                     ? .white : Color("default-panel-text-colors") )
-                            }.onTapGesture {
+                            }
+                            .accessibility(identifier: "day-bubble-\(bubbleText)")
+                            .accessibility(label: Text("\(bubbleText)"))
+                            .accessibility(hint: Text("Tap to toggle this day"))
+                            .onTapGesture {
                                 // Add or remove the bubbleText from selectedBubbles
                                 if !self.selectedBubbles.contains(bubbleText) {
                                     self.selectedBubbles.insert(bubbleText)

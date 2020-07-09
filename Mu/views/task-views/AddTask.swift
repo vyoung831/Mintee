@@ -67,9 +67,7 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
-                        
                         if self.taskTargetSetViews.count < 1 { self.errorMessage = "Please add one or more target sets"; return }
-                        
                         if self.saveTask() {
                             self.isBeingPresented = false
                         } else {
@@ -78,7 +76,13 @@ struct AddTask: View {
                         }
                     }, label: {
                         Text("Save")
-                    }).disabled(self.taskName == "")
+                            .accessibilityElement(children: .ignore)
+                    })
+                        .accessibility(label: Text("Save button"))
+                        .accessibility(hint: Text("Tap to save new task"))
+                        .accessibility(identifier: "add-task-save-button")
+                        .disabled(self.taskName == "")
+                    
                     Spacer()
                     
                     Text("Add Task")
@@ -108,8 +112,13 @@ struct AddTask: View {
                         Text("Tags")
                             .bold()
                             .accessibility(identifier: "tags-section-label")
+                            .accessibility(label: Text("Tags"))
+                            .accessibility(addTraits: .isHeader)
                         Image(systemName: "plus")
                             .accessibility(identifier: "add-tag-button")
+                            .accessibility(label: Text("Add"))
+                            .accessibility(hint: Text("Tap to add a tag"))
+                        
                     }
                     ForEach(self.tags,id: \.description) { tag in
                         Text(tag)
@@ -117,6 +126,7 @@ struct AddTask: View {
                             .foregroundColor(.white)
                             .background(Color.black)
                             .accessibility(identifier: "tag")
+                            .accessibility(value: Text("\(tag)"))
                     }
                 }
                 
@@ -148,6 +158,9 @@ struct AddTask: View {
                                 .resizable()
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color("default-panel-icon-colors"))
+                                .accessibility(identifier: "add-task-target-set-button")
+                                .accessibility(label: Text("Add"))
+                                .accessibility(hint: Text("Tap to add a target set"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Add Target Set",
                                                     isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
@@ -181,9 +194,8 @@ struct AddTask: View {
                                                             maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
                                                             isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
                                                             save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
-                                .accessibility(identifier: "task-target-set")
-                            
                         }
+                        
                     }
                 }
                 

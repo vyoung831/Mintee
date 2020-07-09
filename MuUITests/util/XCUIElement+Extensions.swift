@@ -29,14 +29,14 @@ extension XCUIElement {
      Returns the set of descendant XCUIElements whose accessibilityIdentifier match the one provided by the caller. accessibiltyLabel is not compared
      */
     func childrenSet(matching type: XCUIElement.ElementType, identifier: String) -> Set<XCUIElement> {
-        var matchingDescendants = Set<XCUIElement>()
-        let descendants = self.children(matching: type).allElementsBoundByIndex
-        for descendant in descendants {
-            if descendant.identifier == identifier {
-                matchingDescendants.insert(descendant)
+        var matchingChildren = Set<XCUIElement>()
+        let children = self.children(matching: type).allElementsBoundByIndex
+        for child in children {
+            if child.identifier == identifier {
+                matchingChildren.insert(child)
             }
         }
-        return matchingDescendants
+        return matchingChildren
     }
     
 }

@@ -105,6 +105,9 @@ struct EditTask: View {
                     }, label: {
                         Text("Save")
                     })
+                        .accessibility(identifier: "edit-task-save-button")
+                        .accessibility(label: Text("Save"))
+                        .accessibility(hint: Text("Tap to save changes to task"))
                         .disabled(self.taskName == "")
                         .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
                             ConfirmDeletePopup(deleteMessage: self.deleteMessage,
@@ -141,9 +144,12 @@ struct EditTask: View {
                     HStack {
                         Text("Tags")
                             .bold()
-                            .accessibility(identifier: "tags-section-label")
+                            .accessibility(label: Text("Tags"))
+                            .accessibility(addTraits: .isHeader)
                         Image(systemName: "plus")
                             .accessibility(identifier: "add-tag-button")
+                            .accessibility(label: Text("Add"))
+                            .accessibility(hint: Text("Tap to add a tag"))
                     }
                     ForEach(self.tags,id: \.description) { tag in
                         Text(tag)
@@ -151,6 +157,7 @@ struct EditTask: View {
                             .foregroundColor(.white)
                             .background(Color.black)
                             .accessibility(identifier: "tag")
+                            .accessibility(value: Text("\(tag)"))
                     }
                 }
                 
@@ -183,6 +190,9 @@ struct EditTask: View {
                                 .resizable()
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color("default-panel-icon-colors"))
+                                .accessibility(identifier: "add-task-target-set-button")
+                                .accessibility(label: Text("Add"))
+                                .accessibility(hint: Text("Tap to add a target set"))
                         }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Add Target Set",
                                                     isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
@@ -215,7 +225,6 @@ struct EditTask: View {
                                                             maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
                                                             isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
                                                             save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
-                                .accessibility(identifier: "task-target-set")
                         }
                     }
                 }

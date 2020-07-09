@@ -319,10 +319,10 @@
 		C45790AC249FE72A002E16D5 /* core-data */ = {
 			isa = PBXGroup;
 			children = (
-				C406563524AA08DC002926EB /* tag-tests */,
-				C406563224AA0199002926EB /* tasktargetset-tests */,
 				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
+				C406563524AA08DC002926EB /* tag-tests */,
 				C462099824A1FE3D00F52F16 /* task-tests */,
+				C406563224AA0199002926EB /* tasktargetset-tests */,
 			);
 			path = "core-data";
 			sourceTree = "<group>";

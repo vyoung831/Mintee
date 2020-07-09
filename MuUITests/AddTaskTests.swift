@@ -30,12 +30,39 @@ class AddTaskTests: XCTestCase {
         let app = XCUIApplication()
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Today"].tap()
-        app.navigationBars["Today"].buttons["plus.circle"].tap()
+        app.navigationBars["Today"].buttons["add-task-button"].tap()
         
         // Check that fields/sections are blank or empty
-        XCTAssert(app.otherElements.textFields["Task name"].label.count == 0)
+        XCTAssert(app.otherElements.textFields["task-name-text-field"].label.count == 0)
         XCTAssert(app.descendantsSet(matching: .any, identifier: "tag").count == 0)
         XCTAssert(app.descendantsSet(matching: .any, identifier: "task-target-set").count == 0)
+        
+    }
+    
+    /**
+     Navigate to AddTask, and confirm that save is disabled after completing the following
+     - Leave task name text field empty
+     - Leave task type unselected
+     - Add 1 TaskTargetSet
+     */
+    func testSaveButtonOneTargetSet() {
+        
+        // Navigate to Today and to AddTask
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Today"].tap()
+        app.navigationBars["Today"].buttons["add-task-button"].tap()
+        app.scrollViews.otherElements.buttons["add-task-target-set-button"].tap()
+        
+        // Add a TaskTargetSet and confirm that save is disabled
+        app.staticTexts["Add Target Set"].tap()
+        app.staticTexts["day-bubble-M"].tap()
+        
+        app.textFields["minimum-value"].tap()
+        app.textFields["minimum-value"].typeText("2")
+        
+        app/*@START_MENU_TOKEN@*/.buttons["add-target-set-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"add-target-set-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        XCTAssert(!app.buttons["add-task-save-button"].isEnabled)
         
     }
     
