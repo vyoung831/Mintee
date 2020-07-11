@@ -33,7 +33,8 @@ class AddTaskTests: XCTestCase {
         app.navigationBars["Today"].buttons["add-task-button"].tap()
         
         // Check that fields/sections are blank or empty
-        XCTAssert(app.otherElements.textFields["task-name-text-field"].label.count == 0)
+        // TO-DO: Change test to get the text field's value that is NOT placeholder
+        XCTAssert((app.otherElements.textFields["task-name-text-field"].value as! String) == "Task name")
         XCTAssert(app.descendantsSet(matching: .any, identifier: "tag").count == 0)
         XCTAssert(app.descendantsSet(matching: .any, identifier: "task-target-set").count == 0)
         
@@ -63,6 +64,27 @@ class AddTaskTests: XCTestCase {
         
         app/*@START_MENU_TOKEN@*/.buttons["add-target-set-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"add-target-set-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         XCTAssert(!app.buttons["add-task-save-button"].isEnabled)
+        
+    }
+    
+    /**
+     Navigate to AddTask, and confirm that save is enabled after completing the following
+     - Enter a task name
+     - Leave task type unselected
+     - Leave TaskTargetSet count as empty
+     */
+    func testSaveButtonName() {
+        
+        // Navigate to Today and to AddTask
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Today"].tap()
+        app.navigationBars["Today"].buttons["add-task-button"].tap()
+        
+        app.otherElements.textFields["task-name-text-field"].tap()
+        app.otherElements.textFields["task-name-text-field"].typeText("Name")
+        
+        XCTAssert(app.buttons["add-task-save-button"].isEnabled)
         
     }
     
