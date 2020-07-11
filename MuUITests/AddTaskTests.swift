@@ -86,6 +86,10 @@ class AddTaskTests: XCTestCase {
         
         XCTAssert(app.buttons["add-task-save-button"].isEnabled)
         
+        XCTAssertFalse(app.staticTexts["add-task-error-message"].exists)
+        app.buttons["add-task-save-button"].tap()
+        XCTAssert(app.staticTexts["add-task-error-message"].label.count > 0)
+        
     }
     
 }

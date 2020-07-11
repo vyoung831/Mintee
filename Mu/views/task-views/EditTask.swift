@@ -140,6 +140,8 @@ struct EditTask: View {
                 if (saveErrorMessage.count > 0) {
                     Text(saveErrorMessage)
                         .foregroundColor(.red)
+                        .accessibility(identifier: "edit-task-save-error-message")
+                        .accessibility(hidden: true)
                 }
                 
                 // MARK: - Tags

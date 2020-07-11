@@ -107,6 +107,8 @@ struct AddTask: View {
                 if (errorMessage.count > 0) {
                     Text(errorMessage)
                         .foregroundColor(.red)
+                        .accessibility(identifier: "add-task-error-message")
+                        .accessibility(hidden: true)
                 }
                 
                 // MARK: - Tags
