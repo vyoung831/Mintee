@@ -1,5 +1,5 @@
 //
-//  AddTaskTests.swift
+//  AddTaskUITests.swift
 //  MuUITests
 //
 //  Created by Vincent Young on 3/31/20.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-class AddTaskTests: XCTestCase {
+class AddTaskUITests: XCTestCase {
     
     override func setUp() {
         continueAfterFailure = false
