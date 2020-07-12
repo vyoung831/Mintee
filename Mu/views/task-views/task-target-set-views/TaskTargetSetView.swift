@@ -116,21 +116,30 @@ struct TaskTargetSetView: View {
                         self.edit()
                     }, label: {
                         Text("Edit")
+                        
                     })
+                        .accessibility(label: Text("Edit"))
+                        .accessibility(hint: Text("Tap to edit target set"))
                     
                     Button(action: {
                         self.moveUp()
                     }, label: {
                         Image(systemName: "arrowtriangle.up.circle.fill")
                             .foregroundColor(Color("default-panel-icon-colors"))
+                        
                     })
+                        .accessibility(label: Text("Up"))
+                        .accessibility(hint: Text("Tap to increase target set's priority"))
                     
                     Button(action: {
                         self.moveDown()
                     }, label: {
                         Image(systemName: "arrowtriangle.down.circle.fill")
                             .foregroundColor(Color("default-panel-icon-colors"))
+                        
                     })
+                        .accessibility(label: Text("Down"))
+                        .accessibility(hint: Text("Tap to decrease target set's priority"))
                     
                     Spacer()
                     
@@ -140,6 +149,8 @@ struct TaskTargetSetView: View {
                         Image(systemName: "trash")
                             .foregroundColor(Color("default-panel-icon-colors"))
                     })
+                        .accessibility(label: Text("Delete"))
+                        .accessibility(hint: Text("Tap to delete target set"))
                 }
             }
             
@@ -169,5 +180,9 @@ struct TaskTargetSetView: View {
         .background( Color("default-panel-colors") )
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
+        .accessibilityElement(children: .combine)
+        .accessibility(identifier: "task-target-set")
+        .accessibility(label: Text("Target set"))
+        .accessibility(value: Text("\(selectedDaysOfWeek!.joined(separator: ", ")). \(getLabel()). \(getTarget())"))
     }
 }

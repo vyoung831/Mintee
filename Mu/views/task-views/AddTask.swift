@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct AddTask: View {
     
@@ -15,8 +16,6 @@ struct AddTask: View {
     let taskTypes: [String] = ["Recurring","Specific"]
     
     @Binding var isBeingPresented: Bool
-    @State var isPresentingSelectStartDatePopup: Bool = false
-    @State var isPresentingSelectEndDatePopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var taskName: String = ""
@@ -44,13 +43,13 @@ struct AddTask: View {
             taskTargetSets.append(tts)
         }
         
-        let newTask = Task(entity: Task.entity(),
-                           insertInto: CDCoordinator.moc,
-                           name: self.taskName,
-                           tags: self.tags,
-                           startDate: self.startDate,
-                           endDate: self.endDate,
-                           targetSets: taskTargetSets)
+        let _ = Task(entity: Task.entity(),
+                     insertInto: CDCoordinator.moc,
+                     name: self.taskName,
+                     tags: self.tags,
+                     startDate: self.startDate,
+                     endDate: self.endDate,
+                     targetSets: taskTargetSets)
         do {
             try CDCoordinator.moc.save()
             return true
@@ -69,18 +68,25 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
-                        
                         if self.taskTargetSetViews.count < 1 { self.errorMessage = "Please add one or more target sets"; return }
-                        
                         if self.saveTask() {
                             self.isBeingPresented = false
                         } else {
                             // Display failure message in UI if saveTask() failed
                             self.errorMessage = "Save failed. Please check if another Task with this name already exists"
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                UIAccessibility.post(notification: .announcement, argument: self.errorMessage)
+                            }
                         }
                     }, label: {
                         Text("Save")
-                    }).disabled(self.taskName == "")
+                            .accessibilityElement(children: .ignore)
+                    })
+                        .accessibility(label: Text("Save button"))
+                        .accessibility(hint: Text("Tap to save new task"))
+                        .accessibility(identifier: "add-task-save-button")
+                        .disabled(self.taskName == "")
+                    
                     Spacer()
                     
                     Text("Add Task")
@@ -97,16 +103,13 @@ struct AddTask: View {
                 
                 // MARK: - Task name text field
                 
-                VStack (alignment: .leading, spacing: 5, content: {
-                    Text("Task name")
-                        .bold()
-                    TextField("Task name", text: self.$taskName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    if (errorMessage.count > 0) {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                    }
-                })
+                TaskNameTextField(taskName: self.$taskName)
+                if (errorMessage.count > 0) {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .accessibility(identifier: "add-task-error-message")
+                        .accessibility(hidden: true)
+                }
                 
                 // MARK: - Tags
                 
@@ -114,13 +117,22 @@ struct AddTask: View {
                     HStack {
                         Text("Tags")
                             .bold()
+                            .accessibility(identifier: "tags-section-label")
+                            .accessibility(label: Text("Tags"))
+                            .accessibility(addTraits: .isHeader)
                         Image(systemName: "plus")
+                            .accessibility(identifier: "add-tag-button")
+                            .accessibility(label: Text("Add"))
+                            .accessibility(hint: Text("Tap to add a tag"))
+                        
                     }
                     ForEach(self.tags,id: \.description) { tag in
                         Text(tag)
                             .padding(.all, 8)
                             .foregroundColor(.white)
                             .background(Color.black)
+                            .accessibility(identifier: "tag")
+                            .accessibility(value: Text("\(tag)"))
                     }
                 }
                 
@@ -136,87 +148,12 @@ struct AddTask: View {
                 
                 // MARK: - Dates
                 
-                Group {
-                    Text("Dates")
-                        .bold()
-                    
-                    Button(action: {
-                        self.isPresentingSelectStartDatePopup = true
-                    }, label: {
-                        Text(startDateLabel + Date.toMDYPresent(self.startDate))
-                    }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
-                        SelectDatePopup.init(
-                            isBeingPresented: self.$isPresentingSelectStartDatePopup,
-                            startDate: self.$startDate,
-                            endDate: self.$endDate,
-                            isStartDate: true,
-                            label: "Select Start Date")
-                    })
-                    
-                    Button(action: {
-                        self.isPresentingSelectEndDatePopup = true
-                    }, label: {
-                        Text(endDateLabel + Date.toMDYPresent(self.endDate))
-                    }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
-                        SelectDatePopup.init(
-                            isBeingPresented: self.$isPresentingSelectEndDatePopup,
-                            startDate: self.$startDate,
-                            endDate: self.$endDate,
-                            isStartDate: false,
-                            label: "Select End Date")
-                    })
-                }
+                SelectDateSection(startDate: self.$startDate,
+                                  endDate: self.$endDate)
                 
                 // MARK: - Target sets
-                
-                Group {
-                    HStack {
-                        Text("Target Sets")
-                            .bold()
-                        Button(action: {
-                            self.isPresentingAddTaskTargetSetPopup = true
-                        }, label: {
-                            Image(systemName: "plus.circle")
-                                .resizable()
-                                .frame(width: 30, height: 30, alignment: .center)
-                                .foregroundColor(Color("default-panel-icon-colors"))
-                        }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                            TaskTargetSetPopup.init(title: "Add Target Set",
-                                                    isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
-                                                    save: { ttsv in self.taskTargetSetViews.append(ttsv) })
-                        })
-                    }
                     
-                    VStack {
-                        ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
-                            TaskTargetSetView(type: self.taskTargetSetViews[idx].type,
-                                              minTarget: self.taskTargetSetViews[idx].minTarget,
-                                              minOperator: self.taskTargetSetViews[idx].minOperator,
-                                              maxTarget: self.taskTargetSetViews[idx].maxTarget,
-                                              maxOperator: self.taskTargetSetViews[idx].maxOperator,
-                                              selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
-                                              selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
-                                              selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
-                                              moveUp: { if idx > 0 {self.taskTargetSetViews.swapAt(idx, idx - 1)} },
-                                              moveDown: { if idx < self.taskTargetSetViews.count - 1 {self.taskTargetSetViews.swapAt(idx, idx + 1)} },
-                                              edit: { self.isPresentingEditTaskTargetSetPopup = true },
-                                              delete: { self.taskTargetSetViews.remove(at: idx) })
-                                .sheet(isPresented: self.$isPresentingEditTaskTargetSetPopup, content: {
-                                    TaskTargetSetPopup.init(title: "Edit Target Set",
-                                                            selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set<String>(),
-                                                            selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set<String>(),
-                                                            selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set<String>(),
-                                                            type: self.taskTargetSetViews[idx].type,
-                                                            minOperator: self.taskTargetSetViews[idx].minOperator,
-                                                            maxOperator: self.taskTargetSetViews[idx].maxOperator,
-                                                            minValue: String(self.taskTargetSetViews[idx].minTarget.clean),
-                                                            maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
-                                                            isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
-                                                            save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
-                            
-                        }
-                    }
-                }
+                TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
                 
             }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })

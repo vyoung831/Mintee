@@ -155,6 +155,9 @@ struct TaskTargetSetPopup: View {
                         }, label: { Text("Done") })
                             .disabled(self.maxOperator == .na && self.minOperator == .na)
                             .disabled(!validDaysSelected())
+                            .accessibility(identifier: "add-target-set-done-button")
+                            .accessibility(label: Text("Done"))
+                            .accessibility(hint: Text("Tap to finish adding target set"))
                         Spacer()
                         Text(title)
                             .font(.title)
@@ -163,6 +166,9 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.isBeingPresented = false
                         }, label: { Text("Cancel") })
+                            .accessibility(identifier: "add-target-set-cancel-button")
+                            .accessibility(label: Text("Cancel"))
+                            .accessibility(hint: Text("Tap to cancel adding target set"))
                     }
                     if errorMessage.count > 0 {
                         Text(errorMessage)
@@ -206,6 +212,9 @@ struct TaskTargetSetPopup: View {
                         .border(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
                         .background(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-fill-colors") : .clear)
                         .cornerRadius(3)
+                        .accessibility(identifier: "minimum-value")
+                        .accessibility(label: Text("Minimum"))
+                        .accessibility(hint: Text("Enter your target set's minimum value or leave blank"))
                     
                     Picker("Low op", selection: self.$minOperator) {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
@@ -231,6 +240,9 @@ struct TaskTargetSetPopup: View {
                         .border(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
                         .background(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-fill-colors") : .clear)
                         .cornerRadius(3)
+                        .accessibility(identifier: "maximum-value")
+                        .accessibility(label: Text("Maximum"))
+                        .accessibility(hint: Text("Enter your target set's maximum value or leave blank"))
                     
                 }.labelsHidden()
             }

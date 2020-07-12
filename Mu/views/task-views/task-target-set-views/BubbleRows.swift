@@ -88,6 +88,7 @@ struct BubbleRows: View {
                                 Text(String(bubbleText)).foregroundColor(self.selectedBubbles.contains(bubbleText)
                                     ? .white : Color("default-panel-text-colors") )
                             }
+                            .accessibility(identifier: "day-bubble-\(bubbleText)")
                         }
                     }
                     
