@@ -14,7 +14,7 @@ extension Date {
     
     static let mdyPresentFormatter: DateFormatter = {
         let df = DateFormatter()
-        df.dateFormat = "MMM dd, yyyy"
+        df.dateFormat = "MMM d, yyyy"
         return df
     }()
     
