@@ -35,27 +35,29 @@ struct SelectDateSection: View {
                 self.isPresentingSelectStartDatePopup = true
             }, label: {
                 Text(startDateLabel + Date.toMDYPresent(self.startDate))
-            }).popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
-                SelectDatePopup.init(
-                    isBeingPresented: self.$isPresentingSelectStartDatePopup,
-                    startDate: self.$startDate,
-                    endDate: self.$endDate,
-                    isStartDate: true,
-                    label: "Select Start Date")
             })
+                .popover(isPresented: self.$isPresentingSelectStartDatePopup, content: {
+                    SelectDatePopup.init(
+                        isBeingPresented: self.$isPresentingSelectStartDatePopup,
+                        startDate: self.$startDate,
+                        endDate: self.$endDate,
+                        isStartDate: true,
+                        label: "Select Start Date")})
+                .accessibility(identifier: "start-date")
             
             Button(action: {
                 self.isPresentingSelectEndDatePopup = true
             }, label: {
                 Text(endDateLabel + Date.toMDYPresent(self.endDate))
-            }).popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
-                SelectDatePopup.init(
-                    isBeingPresented: self.$isPresentingSelectEndDatePopup,
-                    startDate: self.$startDate,
-                    endDate: self.$endDate,
-                    isStartDate: false,
-                    label: "Select End Date")
             })
+                .popover(isPresented: self.$isPresentingSelectEndDatePopup, content: {
+                    SelectDatePopup.init(
+                        isBeingPresented: self.$isPresentingSelectEndDatePopup,
+                        startDate: self.$startDate,
+                        endDate: self.$endDate,
+                        isStartDate: false,
+                        label: "Select End Date")})
+                .accessibility(identifier: "end-date")
             
         })
     }

@@ -24,22 +24,29 @@ struct SelectDatePopup: View {
                 if isStartDate {
                     DatePicker("", selection: self.$startDate, displayedComponents: .date)
                         .labelsHidden()
+                        .accessibility(identifier: "start-date-picker")
                 } else {
-                    DatePicker("", selection: self.$endDate, in: startDate..., displayedComponents: .date)
+                    DatePicker("", selection: self.$endDate, displayedComponents: .date)
                         .labelsHidden()
+                        .accessibility(identifier: "end-date-picker")
                 }
             }
-            .navigationBarTitle(label ?? "Select Date")
+            .navigationBarTitle(label ?? "Select \(isStartDate ? "Start": "End" ) Date")
             .navigationBarItems(trailing:
                 Button(action: {
                     // If the start date was changed and moved ahead of end date, "fast-forward" end date to match start date
                     if self.isStartDate && self.startDate > self.endDate {
                         self.endDate = self.startDate
+                    } else if !self.isStartDate && self.endDate < self.startDate {
+                        self.startDate = self.endDate
                     }
                     self.isBeingPresented = false
                 }, label: {
                     Text("Done")
-                }))
+                })
+                    .accessibility(identifier: "select-date-popup-done-button")
+                    .accessibility(label: Text("Tap to finish setting \(isStartDate ? "start": "end" ) date"))
+            )
             
         }
         
