@@ -25,20 +25,6 @@ struct TaskTargetSetPopup: View {
     
     var title: String
     let bubblesPerRow: Int = 7
-    var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
-    var weeksOfMonth: [[String]] { return [["1st","2nd","3rd","4th","Last"]] }
-    var dividedDaysOfMonth: [[String]] {
-        var dividedDOM: [[String]] = []
-        let daysOfMonth: [String] = ["1","2","3","4","5","6","7","8","9",
-                                     "10","11","12","13","14","15","16","17","18","19",
-                                     "20","21","22","23","24","25","26","27","28","29",
-                                     "30","31"]
-        for x in stride(from: 0, to: daysOfMonth.count, by: bubblesPerRow) {
-            let domSlice = daysOfMonth[x ... min(x + Int(bubblesPerRow) - 1, daysOfMonth.count - 1)]
-            dividedDOM.append( Array(domSlice) )
-        }
-        return dividedDOM
-    }
     
     // MARK: - State variables
     
@@ -62,6 +48,15 @@ struct TaskTargetSetPopup: View {
     var save: (TaskTargetSetView) -> ()
     
     /**
+     Announce to user via accessibility notification the error message is displayed
+     */
+    func announceError() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIAccessibility.post(notification: .announcement, argument: self.errorMessage)
+        }
+    }
+    
+    /**
      Checks minOperator, maxOperator, and provided min/max values to see if combination is valid.
      This function expects the caller to have un-wrapped min and max to check if they are valid Floats
      - parameter min: minValue unwrapped to Float
@@ -74,23 +69,33 @@ struct TaskTargetSetPopup: View {
         case .lt:
             if maxOperator == .lt || maxOperator == .lte {
                 if min >= max {
-                    errorMessage = "Please set max value greater than min value"; return false
+                    errorMessage = "Please set max value greater than min value"
+                    announceError()
+                    return false
                 }
             }
             break
         case .lte:
             if maxOperator == .lt && min >= max {
-                errorMessage = "Please set max value greater than min value"; return false
+                errorMessage = "Please set max value greater than min value"
+                announceError()
+                return false
             } else if maxOperator == .lte {
                 if min == max {
                     // Both minOperator and maxOperator are set to .lte the same value, so treat it as .eq
                     minOperator = .eq; return true
-                } else if min > max { errorMessage = "Please set max value greater than min value"; return false }
+                } else if min > max {
+                    errorMessage = "Please set max value greater than min value"
+                    announceError()
+                    return false
+                }
             }
             return true
         case .eq:
             if maxOperator == .eq {
-                errorMessage = "Only one operator can be set to ="; return false
+                errorMessage = "Only one operator can be set to ="
+                announceError()
+                return false
             }
         case .na: break
         }
@@ -153,11 +158,11 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.done()
                         }, label: { Text("Done") })
+                            .accessibility(identifier: "task-target-set-popup-done-button")
+                            .accessibility(label: Text("Done"))
+                            .accessibility(hint: Text("Tap to finish setting target set"))
                             .disabled(self.maxOperator == .na && self.minOperator == .na)
                             .disabled(!validDaysSelected())
-                            .accessibility(identifier: "add-target-set-done-button")
-                            .accessibility(label: Text("Done"))
-                            .accessibility(hint: Text("Tap to finish adding target set"))
                         Spacer()
                         Text(title)
                             .font(.title)
@@ -166,13 +171,15 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.isBeingPresented = false
                         }, label: { Text("Cancel") })
-                            .accessibility(identifier: "add-target-set-cancel-button")
+                            .accessibility(identifier: "task-target-set-popup-cancel-button")
                             .accessibility(label: Text("Cancel"))
-                            .accessibility(hint: Text("Tap to cancel adding target set"))
+                            .accessibility(hint: Text("Tap to cancel setting target set"))
                     }
                     if errorMessage.count > 0 {
                         Text(errorMessage)
                             .foregroundColor(.red)
+                            .accessibility(identifier: "task-target-set-popup-error-message")
+                            .accessibility(hidden: true)
                     }
                 }
                 
@@ -182,21 +189,25 @@ struct TaskTargetSetPopup: View {
                     
                     // Days of week/month
                     BubbleRowsToggleable(maxBubbleRadius: 32,
-                                         bubbles: self.type == .dom ? dividedDaysOfMonth : daysOfWeek,
+                                         bubbles: self.type == .dom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow),
                                          selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
                     
                     // Weeks of month
                     if self.type == .wom {
                         BubbleRowsToggleable(maxBubbleRadius: 32,
-                                             bubbles: weeksOfMonth,
+                                             bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .wom),
                                              selectedBubbles: self.$selectedWeeks)
                     }
                     
-                    Picker(selection: self.$type, label: Text("Type")) {
+                    Picker(selection: self.$type,
+                           label: Text("Type")
+                            .accessibility(hint: Text("Use to set target set pattern type"))) {
                         ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
                             Text( self.dayPatternTypeLabels[pt] ?? "")
                         }
-                    }.frame(height: typePickerHeight)
+                    }
+                    .accessibility(identifier: "task-target-set-popup-pattern-type-picker")
+                    .frame(height: typePickerHeight)
                     
                 }
                 

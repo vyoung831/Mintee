@@ -19,21 +19,6 @@ struct TaskTargetSetView: View {
     let buttonsSpacing: CGFloat = 20
     let bubblesPerRow: Int = 7
     
-    var daysOfWeek: [[String]] { return [["M","T","W","R","F","S","U"]] }
-    
-    var dividedDaysOfMonth: [[String]] {
-        var dividedDOM: [[String]] = []
-        let daysOfMonth: [String] = ["1","2","3","4","5","6","7","8","9",
-                                     "10","11","12","13","14","15","16","17","18","19",
-                                     "20","21","22","23","24","25","26","27","28","29",
-                                     "30","31"]
-        for x in stride(from: 0, to: daysOfMonth.count, by: bubblesPerRow) {
-            let domSlice = daysOfMonth[x ... min(x + Int(bubblesPerRow) - 1, daysOfMonth.count - 1)]
-            dividedDOM.append( Array(domSlice) )
-        }
-        return dividedDOM
-    }
-    
     // MARK: - Variables
     
     /*
@@ -157,7 +142,7 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(bubbles: self.type == .dow || self.type == .wom ? self.daysOfWeek : self.dividedDaysOfMonth,
+                BubbleRows(bubbles: self.type == .dow || self.type == .wom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom),
                            selectedBubbles: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>() )
             }
             

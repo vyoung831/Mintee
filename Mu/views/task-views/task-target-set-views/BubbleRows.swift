@@ -89,6 +89,8 @@ struct BubbleRows: View {
                                     ? .white : Color("default-panel-text-colors") )
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
+                            .accessibility(label: Text("\(DayBubbleLabels.getLongLabel(bubbleText))"))
+                            .accessibility(hint: Text("Tap to toggle this day"))
                         }
                     }
                     

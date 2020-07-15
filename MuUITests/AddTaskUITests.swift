@@ -64,7 +64,7 @@ class AddTaskUITests: XCTestCase {
         app.textFields["minimum-value"].tap()
         app.textFields["minimum-value"].typeText("2")
         
-        app/*@START_MENU_TOKEN@*/.buttons["add-target-set-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"add-target-set-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        app.buttons["task-target-set-popup-done-button"].tap()
         XCTAssert(!app.buttons["add-task-save-button"].isEnabled)
         
     }
@@ -119,7 +119,7 @@ class AddTaskUITests: XCTestCase {
         app.staticTexts["day-bubble-M"].tap()
         app.textFields["minimum-value"].tap()
         app.textFields["minimum-value"].typeText("2")
-        app/*@START_MENU_TOKEN@*/.buttons["add-target-set-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"add-target-set-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        app.buttons["task-target-set-popup-done-button"].tap()
         XCTAssert(app.buttons["add-task-save-button"].isEnabled)
         
         XCTAssertFalse(app.staticTexts["add-task-error-message"].exists)

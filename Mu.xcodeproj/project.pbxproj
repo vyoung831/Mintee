@@ -20,6 +20,7 @@
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
 		C41A73ED245207F7007007CB /* EditTaskHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73EC245207F7007007CB /* EditTaskHostingController.swift */; };
+		C41D107824BDCBA800549CA1 /* DayBubbleLabels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41D107724BDCBA800549CA1 /* DayBubbleLabels.swift */; };
 		C41F8733248F8FF2008AC18D /* Float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41F8732248F8FF2008AC18D /* Float+Extensions.swift */; };
 		C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
 		C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */; };
@@ -108,6 +109,7 @@
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
 		C41A73EC245207F7007007CB /* EditTaskHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskHostingController.swift; sourceTree = "<group>"; };
+		C41D107724BDCBA800549CA1 /* DayBubbleLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBubbleLabels.swift; sourceTree = "<group>"; };
 		C41F8732248F8FF2008AC18D /* Float+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+Extensions.swift"; sourceTree = "<group>"; };
 		C43205F424A0B7C0004D3AA1 /* TestContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestContainer.swift; sourceTree = "<group>"; };
 		C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -209,13 +211,13 @@
 			children = (
 				C4037AA224342E2300150D47 /* Preview Content */,
 				C48F022F2448A4700088227F /* core-data */,
-				C44C7F85243CA54A00072AD8 /* views */,
 				C466A7A324473A0400EC3E97 /* util */,
-				C4037AA824342E2300150D47 /* Info.plist */,
+				C44C7F85243CA54A00072AD8 /* views */,
 				C4037A9724342E1F00150D47 /* AppDelegate.swift */,
 				C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */,
 				C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */,
 				C4037AA024342E2300150D47 /* Assets.xcassets */,
+				C4037AA824342E2300150D47 /* Info.plist */,
 			);
 			path = Mu;
 			sourceTree = "<group>";
@@ -279,6 +281,14 @@
 			path = hosting;
 			sourceTree = "<group>";
 		};
+		C41D107624BDCB8C00549CA1 /* constants */ = {
+			isa = PBXGroup;
+			children = (
+				C41D107724BDCBA800549CA1 /* DayBubbleLabels.swift */,
+			);
+			path = constants;
+			sourceTree = "<group>";
+		};
 		C436D34924505A10001ED468 /* representable */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +304,7 @@
 			children = (
 				C43BD950244472A4003E68DC /* AddTask.swift */,
 				C41A73E52451BFD2007007CB /* EditTask.swift */,
+				C41D107624BDCB8C00549CA1 /* constants */,
 				C4578D2124B40645008BD3D4 /* reused-views */,
 				C48719A224891999004463F4 /* task-target-set-views */,
 			);
@@ -616,6 +627,7 @@
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
 				C4578D2324B4065C008BD3D4 /* TaskNameTextField.swift in Sources */,
 				C455C2CB248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift in Sources */,
+				C41D107824BDCBA800549CA1 /* DayBubbleLabels.swift in Sources */,
 				C48F02442448A5730088227F /* TaskSummaryAnalysis+CoreDataClass.swift in Sources */,
 				C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */,
 				C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */,
