@@ -23,6 +23,7 @@ struct TaskTargetSetSection: View {
             HStack {
                 Text("Target Sets")
                     .bold()
+                
                 Button(action: {
                     self.isPresentingAddTaskTargetSetPopup = true
                 }, label: {
@@ -34,9 +35,9 @@ struct TaskTargetSetSection: View {
                         .accessibility(label: Text("Add"))
                         .accessibility(hint: Text("Tap to add a target set"))
                 }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                    TaskTargetSetPopup.init(title: "Add Target Set",
-                                            isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
-                                            save: { ttsv in self.taskTargetSetViews.append(ttsv) })})
+                            TaskTargetSetPopup.init(title: "Add Target Set",
+                                                    isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
+                                                    save: { ttsv in self.taskTargetSetViews.append(ttsv) })})
             }
             
             ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
@@ -53,19 +54,20 @@ struct TaskTargetSetSection: View {
                                   edit: { self.isPresentingEditTaskTargetSetPopup = true },
                                   delete: { self.taskTargetSetViews.remove(at: idx) })
                     .sheet(isPresented: self.$isPresentingEditTaskTargetSetPopup, content: {
-                        TaskTargetSetPopup.init(title: "Edit Target Set",
-                                                selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set<String>(),
-                                                selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set<String>(),
-                                                selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set<String>(),
-                                                type: self.taskTargetSetViews[idx].type,
-                                                minOperator: self.taskTargetSetViews[idx].minOperator,
-                                                maxOperator: self.taskTargetSetViews[idx].maxOperator,
-                                                minValue: String(self.taskTargetSetViews[idx].minTarget.clean),
-                                                maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
-                                                isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
-                                                save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
+                            TaskTargetSetPopup.init(title: "Edit Target Set",
+                                                    selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set<String>(),
+                                                    selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set<String>(),
+                                                    selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set<String>(),
+                                                    type: self.taskTargetSetViews[idx].type,
+                                                    minOperator: self.taskTargetSetViews[idx].minOperator,
+                                                    maxOperator: self.taskTargetSetViews[idx].maxOperator,
+                                                    minValue: String(self.taskTargetSetViews[idx].minTarget.clean),
+                                                    maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
+                                                    isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
+                                                    save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
+                
             }
-
+            
         }
     }
 }
