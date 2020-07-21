@@ -103,8 +103,9 @@ struct TaskTargetSetView: View {
                         Text("Edit")
                         
                     })
-                        .accessibility(label: Text("Edit"))
-                        .accessibility(hint: Text("Tap to edit target set"))
+                    .accessibility(identifier: "task-target-set-view-edit-button")
+                    .accessibility(label: Text("Edit target set"))
+                    .accessibility(hint: Text("Tap to edit target set"))
                     
                     Button(action: {
                         self.moveUp()
@@ -113,8 +114,9 @@ struct TaskTargetSetView: View {
                             .foregroundColor(Color("default-panel-icon-colors"))
                         
                     })
-                        .accessibility(label: Text("Up"))
-                        .accessibility(hint: Text("Tap to increase target set's priority"))
+                    .accessibility(identifier: "task-target-set-view-up-button")
+                    .accessibility(label: Text("Increase target set priority"))
+                    .accessibility(hint: Text("Tap to increase target set's priority"))
                     
                     Button(action: {
                         self.moveDown()
@@ -123,8 +125,9 @@ struct TaskTargetSetView: View {
                             .foregroundColor(Color("default-panel-icon-colors"))
                         
                     })
-                        .accessibility(label: Text("Down"))
-                        .accessibility(hint: Text("Tap to decrease target set's priority"))
+                    .accessibility(identifier: "task-target-set-view-down-button")
+                    .accessibility(label: Text("Decrease target set priority"))
+                    .accessibility(hint: Text("Tap to decrease target set's priority"))
                     
                     Spacer()
                     
@@ -134,8 +137,10 @@ struct TaskTargetSetView: View {
                         Image(systemName: "trash")
                             .foregroundColor(Color("default-panel-icon-colors"))
                     })
-                        .accessibility(label: Text("Delete"))
-                        .accessibility(hint: Text("Tap to delete target set"))
+                    .accessibility(identifier: "task-target-set-view-delete-button")
+                    .accessibility(label: Text("Delete target set"))
+                    .accessibility(hint: Text("Tap to delete target set"))
+                    
                 }
             }
             
@@ -144,6 +149,7 @@ struct TaskTargetSetView: View {
             Group {
                 BubbleRows(bubbles: self.type == .dow || self.type == .wom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom),
                            selectedBubbles: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>() )
+                    .accessibilityElement(children: .ignore)
             }
             
             // MARK: - Frequency
@@ -166,8 +172,8 @@ struct TaskTargetSetView: View {
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
         .accessibilityElement(children: .combine)
-        .accessibility(identifier: "task-target-set")
+        .accessibility(identifier: "task-target-set-view")
         .accessibility(label: Text("Target set"))
-        .accessibility(value: Text("\(selectedDaysOfWeek!.joined(separator: ", ")). \(getLabel()). \(getTarget())"))
+        .accessibility(value: Text("\(selectedDaysOfWeek!.map{DayBubbleLabels.getLongLabel($0)}.joined(separator: ", ")). \(getLabel()). \(getTarget())"))
     }
 }

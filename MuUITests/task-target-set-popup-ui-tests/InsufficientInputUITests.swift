@@ -10,6 +10,8 @@ import XCTest
 
 class InsufficientInputUITests: XCTestCase {
     
+    let insufficientInputErrorMessage: String = "Fill out at least either lower or upper target bound"
+    
     override func setUpWithError() throws {
         continueAfterFailure = false
         
@@ -32,7 +34,6 @@ class InsufficientInputUITests: XCTestCase {
     func testDow() throws {
         
         let app = XCUIApplication()
-        app.staticTexts["Add Target Set"].tap()
         XCTAssertFalse( app.staticTexts["task-target-set-popup-error-message"].exists )
         XCTAssertFalse( app.buttons["task-target-set-popup-done-button"].isEnabled )
         
@@ -44,7 +45,7 @@ class InsufficientInputUITests: XCTestCase {
         
         // Attempt to finish and verify that error message appears
         app.buttons["task-target-set-popup-done-button"].tap()
-        XCTAssert( app.staticTexts["task-target-set-popup-error-message"].label.count > 0 )
+        XCTAssert( app.staticTexts["task-target-set-popup-error-message"].label == insufficientInputErrorMessage )
         
     }
     
@@ -56,7 +57,6 @@ class InsufficientInputUITests: XCTestCase {
     func testWom() {
         
         let app = XCUIApplication()
-        app.staticTexts["Add Target Set"].tap()
         XCTAssertFalse( app.staticTexts["task-target-set-popup-error-message"].exists )
         XCTAssertFalse( app.buttons["task-target-set-popup-done-button"].isEnabled )
         
@@ -76,7 +76,7 @@ class InsufficientInputUITests: XCTestCase {
         app.staticTexts["day-bubble-M"].tap()
         XCTAssert( app.buttons["task-target-set-popup-done-button"].isEnabled )
         app.buttons["task-target-set-popup-done-button"].tap()
-        XCTAssert( app.staticTexts["task-target-set-popup-error-message"].label.count > 0 )
+        XCTAssert( app.staticTexts["task-target-set-popup-error-message"].label == insufficientInputErrorMessage)
         
     }
     
@@ -88,7 +88,6 @@ class InsufficientInputUITests: XCTestCase {
     func testDom() {
         
         let app = XCUIApplication()
-        app.staticTexts["Add Target Set"].tap()
         XCTAssertFalse( app.staticTexts["task-target-set-popup-error-message"].exists )
         XCTAssertFalse( app.buttons["task-target-set-popup-done-button"].isEnabled )
         
@@ -100,7 +99,7 @@ class InsufficientInputUITests: XCTestCase {
         
         // Attempt to finish and verify that error message appears
         app.buttons["task-target-set-popup-done-button"].tap()
-        XCTAssert( app.staticTexts["task-target-set-popup-error-message"].label.count > 0 )
+        XCTAssert( app.staticTexts["task-target-set-popup-error-message"].label == insufficientInputErrorMessage)
         
     }
     
@@ -110,7 +109,6 @@ class InsufficientInputUITests: XCTestCase {
     func testPatternTypeSwitch() {
         
         let app = XCUIApplication()
-        app.staticTexts["Add Target Set"].tap()
         XCTAssertFalse( app.staticTexts["task-target-set-popup-error-message"].exists )
         XCTAssertFalse( app.buttons["task-target-set-popup-done-button"].isEnabled )
         

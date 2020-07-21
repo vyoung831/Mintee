@@ -16,6 +16,11 @@
 		C406563724AA08E9002926EB /* TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563624AA08E9002926EB /* TagTests.swift */; };
 		C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C409257B248664A600E463DA /* TaskTargetSetPopup.swift */; };
 		C40F6D872487BD74008114E5 /* BubbleRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F6D862487BD74008114E5 /* BubbleRows.swift */; };
+		C4130C1924C6FB4F003EF047 /* LowOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */; };
+		C4130C1B24C6FB56003EF047 /* HighOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */; };
+		C4130C1D24C6FB6B003EF047 /* LowEqualToHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */; };
+		C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */; };
+		C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
@@ -106,6 +111,11 @@
 		C406563624AA08E9002926EB /* TagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTests.swift; sourceTree = "<group>"; };
 		C409257B248664A600E463DA /* TaskTargetSetPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopup.swift; sourceTree = "<group>"; };
 		C40F6D862487BD74008114E5 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
+		C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowOnlyTests.swift; sourceTree = "<group>"; };
+		C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighOnlyTests.swift; sourceTree = "<group>"; };
+		C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEqualToHighTests.swift; sourceTree = "<group>"; };
+		C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowGreaterThanHighTests.swift; sourceTree = "<group>"; };
+		C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLessThanHighTests.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
@@ -296,6 +306,11 @@
 			isa = PBXGroup;
 			children = (
 				C430EEAB24BF822A00BD98FD /* InsufficientInputUITests.swift */,
+				C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */,
+				C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */,
+				C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */,
+				C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */,
+				C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */,
 			);
 			path = "task-target-set-popup-ui-tests";
 			sourceTree = "<group>";
@@ -680,12 +695,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4130C1D24C6FB6B003EF047 /* LowEqualToHighTests.swift in Sources */,
 				C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */,
 				C430EEAC24BF822A00BD98FD /* InsufficientInputUITests.swift in Sources */,
+				C4130C1924C6FB4F003EF047 /* LowOnlyTests.swift in Sources */,
+				C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */,
 				C4DCDFBA24B12A3B008F727F /* XCUIElement+Extensions.swift in Sources */,
 				C4FE995124BB8E3F0050C217 /* SelectDatePopupUITests.swift in Sources */,
 				C4037ABD24342E2300150D47 /* AddTaskUITests.swift in Sources */,
+				C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */,
 				C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */,
+				C4130C1B24C6FB56003EF047 /* HighOnlyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
