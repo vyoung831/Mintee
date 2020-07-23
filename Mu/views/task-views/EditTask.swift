@@ -22,6 +22,7 @@ struct EditTask: View {
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var isPresentingConfirmDeletePopup: Bool = false
     @State var taskName: String
+    @State var taskTypeIndex: Int = -1
     @State var saveErrorMessage: String = ""
     @State var tags: [String]
     @State var startDate: Date
@@ -168,13 +169,7 @@ struct EditTask: View {
                 
                 // MARK: - Task type
                 
-                Group {
-                    Text("Task Type")
-                        .bold()
-                    ForEach(taskTypes,id: \.description) { taskType in
-                        Text(taskType)
-                    }
-                }
+                TaskTypeSection(taskTypes: self.taskTypes, taskTypeIndex: self.$taskTypeIndex)
                 
                 // MARK: - Dates
                 

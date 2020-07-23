@@ -19,6 +19,7 @@ struct AddTask: View {
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var taskName: String = ""
+    @State var taskTypeIndex: Int = -1
     @State var errorMessage: String = ""
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
     @State var startDate: Date = Date()
@@ -138,13 +139,7 @@ struct AddTask: View {
                 
                 // MARK: - Task type
                 
-                Group{
-                    Text("Task Type")
-                        .bold()
-                    ForEach(taskTypes,id: \.description) { taskType in
-                        Text(taskType)
-                    }
-                }
+                TaskTypeSection(taskTypes: self.taskTypes, taskTypeIndex: self.$taskTypeIndex)
                 
                 // MARK: - Dates
                 

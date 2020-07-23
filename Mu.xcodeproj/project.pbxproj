@@ -21,6 +21,7 @@
 		C4130C1D24C6FB6B003EF047 /* LowEqualToHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */; };
 		C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */; };
 		C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */; };
+		C4130C2324C86E9A003EF047 /* TaskTypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
@@ -116,6 +117,7 @@
 		C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEqualToHighTests.swift; sourceTree = "<group>"; };
 		C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowGreaterThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLessThanHighTests.swift; sourceTree = "<group>"; };
+		C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTypeSection.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */,
 				C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */,
 				C482233224BA57B000E6426E /* TaskTargetSetSection.swift */,
+				C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */,
 			);
 			path = "reused-views";
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				C41F8733248F8FF2008AC18D /* Float+Extensions.swift in Sources */,
 				C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */,
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
+				C4130C2324C86E9A003EF047 /* TaskTypeSection.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */,
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
 				C4578D2324B4065C008BD3D4 /* TaskNameTextField.swift in Sources */,
