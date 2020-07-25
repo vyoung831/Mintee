@@ -21,6 +21,43 @@ class SaveFormatter {
         return df
     }()
     
+    // MARK: - Task type
+    
+    enum taskType: String, CaseIterable {
+        case recurring = "Recurring"
+        case specific = "Specific"
+    }
+    
+    /**
+     Returns an Int16 from a member of enum taskType for persistent storage saving
+     - parameter type: Member of enum taskType to be used by objects in memory
+     - returns: Int16 saved to persistent storage that is used to represent a task type
+     */
+    static func taskTypeToStored(type: taskType) -> Int16 {
+        switch type {
+        case .recurring:
+            return 0
+        case .specific:
+            return 1
+        }
+    }
+    
+    /**
+     Returns a member of enum taskType from a stored Int
+     - parameter storedType: Int16 saved to persistent storage that is used to represent a task type
+     - returns: Member of enum taskType to be used by objects in memory
+     */
+    static func storedToTaskType(storedType: Int16) -> taskType {
+        switch storedType {
+        case 0:
+            return .recurring
+        case 1:
+            return .specific
+        default:
+            exit(-1)
+        }
+    }
+    
     // MARK: - TaskTargetSet equality operators
     
     enum equalityOperator: String, CaseIterable {
@@ -43,12 +80,12 @@ class SaveFormatter {
         case .eq: return 3
         }
     }
-
+    
     /**
-    Returns an String from a TaskTargetSet's minOperator/maxOperator for a View to use to represent a target operator
-    - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
-    - returns: String for a View to use to represent a target operator.
-    */
+     Returns a String from a TaskTargetSet's minOperator/maxOperator for a View to use to represent a target operator
+     - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
+     - returns: String for a View to use to represent a target operator.
+     */
     static func getOperatorString(_ op: Int16) -> equalityOperator {
         switch op {
         case 0: return .na
@@ -138,7 +175,9 @@ class SaveFormatter {
     // MARK: - Date conversion
     
     /**
-     Returns a Date object from a String representation. The stored String representation is expected to be in "yyyy-MM-dd" format
+     Returns a Date object from a String representation that was saved to persistent storage
+     - parameter storedString: String representation of a date in  "yyyy-MM-dd" format
+     - returns: Date representation of storedString
      */
     static func storedStringToDate(_ storedString: String) -> Date {
         if let date = storedStringToDateFormatter.date(from: storedString) { return date }
@@ -149,7 +188,9 @@ class SaveFormatter {
     }
     
     /**
-     Returns a "yyyy-MM-dd" String representation of a Date to be stored in Core Data
+     Returns a "yyyy-MM-dd" String representation of a Date to be saved to persistent storage
+     - parameter date: Date to convert
+     - returns: String representation of a date in  "yyyy-MM-dd" format
      */
     static func dateToStoredString(_ date: Date) -> String {
         return storedStringToDateFormatter.string(from: date)

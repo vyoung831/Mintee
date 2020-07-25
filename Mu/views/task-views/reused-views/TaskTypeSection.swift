@@ -13,8 +13,8 @@ import SwiftUI
 
 struct TaskTypeSection: View {
     
-    var taskTypes: [String]
-    @Binding var taskTypeIndex: Int
+    var taskTypes: [SaveFormatter.taskType]
+    @Binding var taskType: SaveFormatter.taskType
     
     var body: some View {
         
@@ -24,12 +24,12 @@ struct TaskTypeSection: View {
                 .bold()
             
             ForEach(0 ..< self.taskTypes.count, id: \.self) { idx in
-                Button(taskTypes[idx], action: {
-                    self.taskTypeIndex = idx
+                Button(taskTypes[idx].rawValue, action: {
+                    self.taskType = self.taskTypes[idx]
                 })
                 .padding(12)
-                .foregroundColor(self.taskTypeIndex == idx ? Color("default-button-text-colors") : Color("default-disabled-text-colors"))
-                .background(self.taskTypeIndex == idx ? Color("default-button-colors") : Color.clear )
+                .foregroundColor(taskTypes[idx] == self.taskType ? Color("default-button-text-colors") : Color("default-disabled-text-colors"))
+                .background(taskTypes[idx] == self.taskType ? Color("default-button-colors") : Color.clear )
                 .cornerRadius(3)
             }
             

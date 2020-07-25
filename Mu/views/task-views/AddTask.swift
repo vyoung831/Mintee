@@ -13,13 +13,13 @@ struct AddTask: View {
     
     let startDateLabel: String = "Start Date: "
     let endDateLabel: String = "End Date: "
-    let taskTypes: [String] = ["Recurring","Specific"]
+    let taskTypes: [SaveFormatter.taskType] = SaveFormatter.taskType.allCases
     
     @Binding var isBeingPresented: Bool
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var taskName: String = ""
-    @State var taskTypeIndex: Int = -1
+    @State var taskType: SaveFormatter.taskType = .recurring
     @State var errorMessage: String = ""
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
     @State var startDate: Date = Date()
@@ -44,13 +44,25 @@ struct AddTask: View {
             taskTargetSets.append(tts)
         }
         
-        let _ = Task(entity: Task.entity(),
-                     insertInto: CDCoordinator.moc,
-                     name: self.taskName,
-                     tags: self.tags,
-                     startDate: self.startDate,
-                     endDate: self.endDate,
-                     targetSets: taskTargetSets)
+        switch self.taskType {
+        case .recurring:
+            let _ = Task(entity: Task.entity(),
+                         insertInto: CDCoordinator.moc,
+                         name: self.taskName,
+                         tags: self.tags,
+                         startDate: self.startDate,
+                         endDate: self.endDate,
+                         targetSets: taskTargetSets)
+            break
+        case .specific:
+            let _ = Task(entity: Task.entity(),
+                         insertInto: CDCoordinator.moc,
+                         name: self.taskName,
+                         tags: self.tags,
+                         dates: [])
+            break
+        }
+        
         do {
             try CDCoordinator.moc.save()
             return true
@@ -69,7 +81,10 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
-                        if self.taskTargetSetViews.count < 1 { self.errorMessage = "Please add one or more target sets"; return }
+                        if self.taskType == .recurring && self.taskTargetSetViews.count < 1 {
+                            self.errorMessage = "Please add one or more target sets"; return
+                        }
+                        
                         if self.saveTask() {
                             self.isBeingPresented = false
                         } else {
@@ -83,10 +98,10 @@ struct AddTask: View {
                         Text("Save")
                             .accessibilityElement(children: .ignore)
                     })
-                        .accessibility(label: Text("Save button"))
-                        .accessibility(hint: Text("Tap to save new task"))
-                        .accessibility(identifier: "add-task-save-button")
-                        .disabled(self.taskName == "")
+                    .accessibility(label: Text("Save button"))
+                    .accessibility(hint: Text("Tap to save new task"))
+                    .accessibility(identifier: "add-task-save-button")
+                    .disabled(self.taskName == "")
                     
                     Spacer()
                     
@@ -139,7 +154,7 @@ struct AddTask: View {
                 
                 // MARK: - Task type
                 
-                TaskTypeSection(taskTypes: self.taskTypes, taskTypeIndex: self.$taskTypeIndex)
+                TaskTypeSection(taskTypes: self.taskTypes, taskType: self.$taskType)
                 
                 // MARK: - Dates
                 
@@ -147,8 +162,10 @@ struct AddTask: View {
                                   endDate: self.$endDate)
                 
                 // MARK: - Target sets
-                    
-                TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
+                
+                if self.taskType == .recurring {
+                    TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
+                }
                 
             }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
