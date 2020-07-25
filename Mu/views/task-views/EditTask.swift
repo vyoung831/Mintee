@@ -55,8 +55,7 @@ struct EditTask: View {
                     taskTargetSets.append(tts)
                 }
             }
-            task.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: taskTargetSets)
-            print("FROM ET \(taskTargetSets)")
+            task.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets))
             break
         case .specific:
             task.updateSpecificInstances(dates: [])

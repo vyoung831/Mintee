@@ -52,7 +52,7 @@ struct AddTask: View {
                          tags: self.tags,
                          startDate: self.startDate,
                          endDate: self.endDate,
-                         targetSets: taskTargetSets)
+                         targetSets: Set(taskTargetSets))
             break
         case .specific:
             let _ = Task(entity: Task.entity(),

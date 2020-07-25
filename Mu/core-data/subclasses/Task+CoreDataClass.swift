@@ -25,7 +25,7 @@ public class Task: NSManagedObject {
                      tags: [String],
                      startDate: Date,
                      endDate: Date,
-                     targetSets: [TaskTargetSet]) {
+                     targetSets: Set<TaskTargetSet>) {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.updateTags(newTagNames: tags)
@@ -123,15 +123,15 @@ public class Task: NSManagedObject {
      For a newly added recurring-type Task, adds TaskTargetSets and generates TaskInstances, associating those TaskInstances with this Task and the appropriate TaskTargetSet.
      - parameter startDate: Task's start date
      - parameter endDate: Task's end date
-     - parameter targetSets: Array of TaskTargetSets to associate with this Task
+     - parameter targetSets: Set of TaskTargetSets to associate with this Task
      */
-    private func newRecurringInstances(startDate: Date, endDate: Date, targetSets: [TaskTargetSet]) {
+    private func newRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) {
         
         // Set task type, start date, end date, and sort TaskTargetSets
         self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
-        self.addToTargetSets(NSSet(array: targetSets))
+        self.addToTargetSets(NSSet(set: targetSets))
         let sortedTargetSets = targetSets.sorted(by: { $0.priority < $1.priority} )
         
         // Gt start date and end date to iterate over
@@ -341,9 +341,9 @@ public class Task: NSManagedObject {
      - Sets new TaskTargetSets and generates new TaskInstances where needed, and deletes existing TaskInstances that don't intersect with the caller-provided TaskTargetSets
      - parameter startDate: startDate to assign to this Task
      - parameter endDate: endDate to assign to this Task
-     - parameter targetSets: Array of new TaskTargetSets to associate with this Task
+     - parameter targetSets: Set of new TaskTargetSets to associate with this Task
      */
-    func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: [TaskTargetSet]) {
+    func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
         self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
@@ -357,8 +357,7 @@ public class Task: NSManagedObject {
         }
         
         // Set new targetSets and update instances
-        self.targetSets = NSSet(array: targetSets)
-        print(targetSets)
+        self.targetSets = NSSet(set: targetSets)
         generateAndPruneInstances()
         
     }
