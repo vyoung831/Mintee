@@ -211,9 +211,9 @@ public class Task: NSManagedObject {
      - parameter dayPatterns: Set of DayPatterns
      - returns: Array of Strings representing TaskInstances that would be deleted, sorted by date. The Strings represent the dates in "M-d-yyyy" format
      */
-    func getDeltaInstancesRecurring(startDate: Date, endDate: Date, dayPatterns: Set<DayPattern>) -> [String] {
+    func getDeltaInstancesRecurring(startDate: Date, endDate: Date, dayPatterns: Set<DayPattern>) -> [Date] {
         
-        var datesDelta: [String] = []
+        var datesDelta: [Date] = []
         
         guard let instances = self.instances as? Set<TaskInstance> else {
             print("getDeltaInstancesRecurring() in Task could not retrieve existing instances"); exit(-1)
@@ -233,8 +233,8 @@ public class Task: NSManagedObject {
             } else { print("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value"); exit(-1) }
         })
         
-        let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ Date.toMDYShort(SaveFormatter.storedStringToDate($0)) }
-        let afterSorted = instancesAfter.map({ $0.date ?? "" }).sorted().map{ Date.toMDYShort(SaveFormatter.storedStringToDate($0)) }
+        let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
+        let afterSorted = instancesAfter.map({ $0.date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
         datesDelta.append(contentsOf: beforeSorted)
         
         // Loop through each of the days from startDate to endDate to evaluate if TaskInstances for each day would be created, deleted, or carried over
@@ -272,7 +272,7 @@ public class Task: NSManagedObject {
             
             // If none of the proposed DayPatterns matched with the date and a TaskInstance already exists for that date, add it to datesDelta since it would be deleted
             if !matched && instances.contains(where: { $0.date == SaveFormatter.dateToStoredString(dateCounter)}) {
-                datesDelta.append(Date.toMDYShort(dateCounter))
+                datesDelta.append(dateCounter)
             }
             
             // Increment dateCounter
@@ -337,6 +337,24 @@ public class Task: NSManagedObject {
      For a recurring-type Task, updates dates, taskType, instances, and targetSets. This function
      - Updates this Task's taskType to .recurring
      - Sets this Task's startDate and endDate
+     - Generates new TaskInstances where needed, and deletes existing TaskInstances that don't intersect with the caller-provided TaskTargetSets
+     - parameter startDate: startDate to assign to this Task
+     - parameter endDate: endDate to assign to this Task
+     */
+    func updateRecurringInstances(startDate: Date, endDate: Date) {
+        
+        // Set task type, set start and end dates, and delete TaskTargetSets
+        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
+        self.startDate = SaveFormatter.dateToStoredString(startDate)
+        self.endDate = SaveFormatter.dateToStoredString(endDate)
+        generateAndPruneInstances()
+        
+    }
+    
+    /**
+     For a recurring-type Task, updates dates, taskType, instances, and targetSets. This function
+     - Updates this Task's taskType to .recurring
+     - Sets this Task's startDate and endDate
      - Deletes existing TaskTargetSets
      - Sets new TaskTargetSets and generates new TaskInstances where needed, and deletes existing TaskInstances that don't intersect with the caller-provided TaskTargetSets
      - parameter startDate: startDate to assign to this Task
@@ -349,8 +367,12 @@ public class Task: NSManagedObject {
         self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
-        if let targetSets = self.targetSets {
-            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+        if let existingTargetSets = self.targetSets {
+            for case let tts as TaskTargetSet in existingTargetSets {
+                if !targetSets.contains(tts) {
+                    CDCoordinator.moc.delete(tts)
+                }
+            }
         } else {
             print("Error deleting TaskTargetSets from \(self.debugDescription)")
             exit(-1)
@@ -365,7 +387,7 @@ public class Task: NSManagedObject {
     /**
      Uses this Task's targetSets to generate new or attach existing TaskInstances. Existing TaskInstances that are no longer needed are deleted.
      */
-    func generateAndPruneInstances() {
+    private func generateAndPruneInstances() {
         
         guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0.priority < $1.priority} ) else {
             print("updateInstances() call from \(self.debugDescription) could not get and sort targetSets")

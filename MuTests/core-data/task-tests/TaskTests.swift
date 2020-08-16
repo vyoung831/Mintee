@@ -80,30 +80,6 @@ class TaskTests: XCTestCase {
     }
     
     /**
-     Test that updateDates updates the Task's dates and saves in the expected String format
-     */
-    func testUpdateDates() {
-        
-        let task = Task(context: CDCoordinator.moc)
-        XCTAssert(task.startDate == nil)
-        XCTAssert(task.endDate == nil)
-        
-        // Start date = GMT April 17, 1998 13:49:35
-        // End date = GMT December 5, 1998 01:22:55
-        let startDate = Date(timeIntervalSince1970: 892820975)
-        let endDate = Date(timeIntervalSince1970: 912820975)
-        let startDay = String(format: "%02d", Calendar.current.component(.day, from: startDate))
-        let endDay = String(format: "%02d", Calendar.current.component(.day, from: endDate))
-        let startDateString = "1998-04-\(startDay)"
-        let endDateString = "1998-12-\(endDay)"
-        
-        task.updateDates(startDate: startDate, endDate: endDate)
-        XCTAssert(task.startDate == startDateString)
-        XCTAssert(task.endDate == endDateString)
-        
-    }
-    
-    /**
      Test that deleteSelf deletes the Task, its Tags, its TaskInstances, and its TaskTargetSets
      */
     func testDeleteTask() throws {

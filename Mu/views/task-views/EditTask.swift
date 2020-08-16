@@ -115,7 +115,7 @@ struct EditTask: View {
                                                     dom: Set((tts.selectedDaysOfMonth ?? []).map{ Int16($0) ?? 0 }))
                                 dayPatterns.insert(dp)
                             }
-                            self.datesToDelete = self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns)
+                            self.datesToDelete = self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
                             break
                         case .specific:
                             self.datesToDelete = self.task.getDeltaInstancesSpecific(dates: Set<Date>())

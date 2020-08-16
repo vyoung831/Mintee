@@ -142,9 +142,13 @@ class TargetSetUpdateTests: XCTestCase {
         CDCoordinator.moc = TestContainer.testMoc
         task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                     insertInto: CDCoordinator.moc,
-                    name: "Task", tags: [],
-                    startDate: startDate, endDate: endDate,
-                    targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+                    name: "Task",
+                    tags: [],
+                    startDate: startDate,
+                    endDate: endDate,
+                    targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),
+                                    getWomTargetSet(CDCoordinator.moc),
+                                    getDomTargetSet(CDCoordinator.moc)))
     }
     
     override func tearDownWithError() throws {
@@ -157,9 +161,9 @@ class TargetSetUpdateTests: XCTestCase {
         
         var newWom: Set<String> = globalWom
         var newDom: Set<String> = globalDom.subtracting(newWom)
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
         
-        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newWom).subtracting(newDom)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -169,8 +173,9 @@ class TargetSetUpdateTests: XCTestCase {
         XCTAssert(expectedDelta.count == 0)
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
-        
+        task.updateRecurringInstances(startDate: startDate,
+                                      endDate: endDate,
+                                      targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -195,9 +200,9 @@ class TargetSetUpdateTests: XCTestCase {
         
         var newDow: Set<String> = globalDow
         var newDom: Set<String> = globalDom.subtracting(newDow)
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
         
-        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newDow).subtracting(newDom)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -207,8 +212,9 @@ class TargetSetUpdateTests: XCTestCase {
         XCTAssert(expectedDelta.count == 0)
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
-        
+        task.updateRecurringInstances(startDate: startDate,
+                                      endDate: endDate,
+                                      targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -233,9 +239,9 @@ class TargetSetUpdateTests: XCTestCase {
         
         var newDow: Set<String> = globalDow
         var newWom: Set<String> = globalWom.subtracting(newDow)
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc))
         
-        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDow.union(globalWom).union(globalDom)).subtracting(newDow).subtracting(newWom)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -245,8 +251,9 @@ class TargetSetUpdateTests: XCTestCase {
         XCTAssert(expectedDelta.count == 0)
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
-        
+        task.updateRecurringInstances(startDate: startDate,
+                                      endDate: endDate,
+                                      targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -268,9 +275,9 @@ class TargetSetUpdateTests: XCTestCase {
     }
     
     func testDeleteAllTargetSets() throws {
-        task.updateTaskTargetSets(targetSets: [])
         
-        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        let newTargetSets: Set<TaskTargetSet> = []
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDow.union(globalWom).union(globalDom))
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -280,7 +287,9 @@ class TargetSetUpdateTests: XCTestCase {
         XCTAssert(expectedDelta.count == 0)
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate,
+                                      endDate: endDate,
+                                      targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -304,12 +313,12 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDow: Set<String> = globalDow.subtracting(newDow)
         var oldWom: Set<String> = globalWom.subtracting(oldDow).subtracting(newDow)
         var oldDom: Set<String> = globalDom.subtracting(oldWom).subtracting(oldDow).subtracting(newDow)
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
         
-        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -355,12 +364,12 @@ class TargetSetUpdateTests: XCTestCase {
         ).subtracting(oldDow)
         var oldWom: Set<String> = globalWom.subtracting(newDow).subtracting(oldDow)
         var oldDom: Set<String> = globalDom.subtracting(oldWom).subtracting(newDow).subtracting(oldDow)
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
         
-        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -406,12 +415,12 @@ class TargetSetUpdateTests: XCTestCase {
         var newDow: Set<String> = Set(["2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28"]
         ).subtracting(oldWom).subtracting(oldDow)
         var oldDom: Set<String> = globalDom.subtracting(newDow).subtracting(oldWom).subtracting(oldDow)
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
         
-        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -457,12 +466,12 @@ class TargetSetUpdateTests: XCTestCase {
         var oldDom: Set<String> = globalDom.subtracting(oldWom).subtracting(oldDow)
         var newDow: Set<String> = Set(["2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28"]
         ).subtracting(oldDom).subtracting(oldWom).subtracting(oldDow)
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet])
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
         
-        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
         
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -522,11 +531,11 @@ class TargetSetUpdateTests: XCTestCase {
         ).subtracting(oldWom).subtracting(newWom).subtracting(oldDow).subtracting(newDom)
         var oldDom: Set<String> = globalDom.subtracting(newDow).subtracting(oldWom).subtracting(newWom).subtracting(oldDow).subtracting(newDom)
         
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet])
-        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
-        task.updateInstances()
         
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -591,14 +600,14 @@ class TargetSetUpdateTests: XCTestCase {
         ).subtracting(oldDow).subtracting(newWom)
         var oldWom: Set<String> = globalWom.subtracting(newDow).subtracting(oldDow).subtracting(newWom)
         var newDom: Set<String> = Set(["2020-01-03", "2020-01-06", "2020-01-09", "2020-01-12", "2020-01-15", "2020-01-18", "2020-01-21", "2020-01-24", "2020-01-27", "2020-01-30", "2020-02-03", "2020-02-06", "2020-02-09", "2020-02-12", "2020-02-15", "2020-02-18", "2020-02-21", "2020-02-24", "2020-02-27", "2020-03-03", "2020-03-06", "2020-03-09", "2020-03-12", "2020-03-15", "2020-03-18", "2020-03-21", "2020-03-24", "2020-03-27", "2020-03-30", "2020-04-03", "2020-04-06", "2020-04-09", "2020-04-12", "2020-04-15", "2020-04-18", "2020-04-21", "2020-04-24", "2020-04-27", "2020-04-30", "2020-05-03", "2020-05-06", "2020-05-09", "2020-05-12", "2020-05-15", "2020-05-18", "2020-05-21", "2020-05-24", "2020-05-27", "2020-05-30", "2020-06-03", "2020-06-06", "2020-06-09", "2020-06-12", "2020-06-15", "2020-06-18", "2020-06-21", "2020-06-24", "2020-06-27", "2020-06-30", "2020-07-03", "2020-07-06", "2020-07-09", "2020-07-12", "2020-07-15", "2020-07-18", "2020-07-21", "2020-07-24", "2020-07-27", "2020-07-30", "2020-08-03", "2020-08-06", "2020-08-09", "2020-08-12", "2020-08-15", "2020-08-18", "2020-08-21", "2020-08-24", "2020-08-27", "2020-08-30", "2020-09-03", "2020-09-06", "2020-09-09", "2020-09-12", "2020-09-15", "2020-09-18", "2020-09-21", "2020-09-24", "2020-09-27", "2020-09-30", "2020-10-03", "2020-10-06", "2020-10-09", "2020-10-12", "2020-10-15", "2020-10-18", "2020-10-21", "2020-10-24", "2020-10-27", "2020-10-30", "2020-11-03", "2020-11-06", "2020-11-09", "2020-11-12", "2020-11-15", "2020-11-18", "2020-11-21", "2020-11-24", "2020-11-27", "2020-11-30", "2020-12-03", "2020-12-06", "2020-12-09", "2020-12-12", "2020-12-15", "2020-12-18", "2020-12-21", "2020-12-24", "2020-12-27", "2020-12-30"]
-            ).subtracting(oldWom).subtracting(newDow).subtracting(oldDow).subtracting(newWom)
+        ).subtracting(oldWom).subtracting(newDow).subtracting(oldDow).subtracting(newWom)
         var oldDom: Set<String> = globalDom.subtracting(newDom).subtracting(oldWom).subtracting(newDow).subtracting(oldDow).subtracting(newWom)
         
-        task.updateTaskTargetSets(targetSets: [getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet])
-        let delta = task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
-        task.updateInstances()
         
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
@@ -664,11 +673,11 @@ class TargetSetUpdateTests: XCTestCase {
         ).subtracting(newWom)
         var oldWom: Set<String> = globalWom.subtracting(newDow).subtracting(newWom)
         var newDom: Set<String> = Set(["2020-01-03", "2020-01-06", "2020-01-09", "2020-01-12", "2020-01-15", "2020-01-18", "2020-01-21", "2020-01-24", "2020-01-27", "2020-01-30", "2020-02-03", "2020-02-06", "2020-02-09", "2020-02-12", "2020-02-15", "2020-02-18", "2020-02-21", "2020-02-24", "2020-02-27", "2020-03-03", "2020-03-06", "2020-03-09", "2020-03-12", "2020-03-15", "2020-03-18", "2020-03-21", "2020-03-24", "2020-03-27", "2020-03-30", "2020-04-03", "2020-04-06", "2020-04-09", "2020-04-12", "2020-04-15", "2020-04-18", "2020-04-21", "2020-04-24", "2020-04-27", "2020-04-30", "2020-05-03", "2020-05-06", "2020-05-09", "2020-05-12", "2020-05-15", "2020-05-18", "2020-05-21", "2020-05-24", "2020-05-27", "2020-05-30", "2020-06-03", "2020-06-06", "2020-06-09", "2020-06-12", "2020-06-15", "2020-06-18", "2020-06-21", "2020-06-24", "2020-06-27", "2020-06-30", "2020-07-03", "2020-07-06", "2020-07-09", "2020-07-12", "2020-07-15", "2020-07-18", "2020-07-21", "2020-07-24", "2020-07-27", "2020-07-30", "2020-08-03", "2020-08-06", "2020-08-09", "2020-08-12", "2020-08-15", "2020-08-18", "2020-08-21", "2020-08-24", "2020-08-27", "2020-08-30", "2020-09-03", "2020-09-06", "2020-09-09", "2020-09-12", "2020-09-15", "2020-09-18", "2020-09-21", "2020-09-24", "2020-09-27", "2020-09-30", "2020-10-03", "2020-10-06", "2020-10-09", "2020-10-12", "2020-10-15", "2020-10-18", "2020-10-21", "2020-10-24", "2020-10-27", "2020-10-30", "2020-11-03", "2020-11-06", "2020-11-09", "2020-11-12", "2020-11-15", "2020-11-18", "2020-11-21", "2020-11-24", "2020-11-27", "2020-11-30", "2020-12-03", "2020-12-06", "2020-12-09", "2020-12-12", "2020-12-15", "2020-12-18", "2020-12-21", "2020-12-24", "2020-12-27", "2020-12-30"]
-            ).subtracting(oldWom).subtracting(newDow).subtracting(newWom)
+        ).subtracting(oldWom).subtracting(newDow).subtracting(newWom)
         var oldDom: Set<String> = globalDom.subtracting(newDom).subtracting(oldWom).subtracting(newDow).subtracting(newWom)
         
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet])
-        var delta = Set(task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern})))
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         let datesStillExisting = newWom.union(newDow).union(oldWom).union(newDom).union(oldDom)
         var expectedDelta = globalDow.subtracting( datesStillExisting )
         for dateToDelete in delta {
@@ -678,7 +687,7 @@ class TargetSetUpdateTests: XCTestCase {
         }
         XCTAssert(expectedDelta.count == 0)
         XCTAssert(delta.count == 0)
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -720,7 +729,7 @@ class TargetSetUpdateTests: XCTestCase {
 //
 //  Extension to TargetSetUpdateTests.swift
 //
-//  This extension performance tests updateInstances() when TaskTargetSets are deleted
+//  This extension performance tests updateInstance functions when TaskTargetSets are deleted
 //  Tests are named after
 //  - The years between startDate and endDate
 //  - The number of TaskTargetSets deleted
@@ -732,12 +741,11 @@ extension TargetSetUpdateTests {
         
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
-        task.updateDates(startDate: startDate, endDate: endDate)
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
         
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.updateInstances()
+            task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         }
         
     }
@@ -746,12 +754,11 @@ extension TargetSetUpdateTests {
         
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
-        task.updateDates(startDate: startDate, endDate: endDate)
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
         
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.updateInstances()
+            task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         }
         
     }
@@ -760,12 +767,11 @@ extension TargetSetUpdateTests {
         
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
-        task.updateDates(startDate: startDate, endDate: endDate)
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
         
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.updateInstances()
+            task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         }
         
     }
@@ -777,7 +783,7 @@ extension TargetSetUpdateTests {
 //
 //  Extension to TargetSetUpdateTests.swift
 //
-//  This extension performance tests getDeltaInstances() when TaskTargetSets are deleted
+//  This extension performance tests get delta instance functions when TaskTargetSets are deleted
 //  Tests are named after
 //  - The years between startDate and endDate
 //  - The number of TaskTargetSets deleted
@@ -789,42 +795,39 @@ extension TargetSetUpdateTests {
         
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
-        task.updateDates(startDate: startDate, endDate: endDate)
-        task.updateInstances()
-
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
+        
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern}))
         }
-
+        
     }
-
+    
     func testPerformanceDeltaInstancesTenYearsDeleteOne() {
-
+        
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
-        task.updateDates(startDate: startDate, endDate: endDate)
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
         
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern}))
         }
-
+        
     }
-
+    
     func testPerformanceDeltaInstancesTwentyFiveYearsDeleteOne() {
-
+        
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
-        task.updateDates(startDate: startDate, endDate: endDate)
-        task.updateInstances()
+        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
         
-        task.updateTaskTargetSets(targetSets: [getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc)])
+        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstances(startDate: startDate, endDate: endDate, dayPatterns: Set((task.targetSets as! Set<TaskTargetSet>).map{$0.pattern! as! DayPattern}))
+            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern}))
         }
-
+        
     }
     
 }
