@@ -41,7 +41,7 @@ class TodayViewControllerUITests: XCTestCase {
         app.tabBars.buttons["Today"].tap()
         let todayNavigationBar = app.navigationBars["Today"]
         todayNavigationBar.buttons["Date"].tap()
-        // TO-DO: Assert that SelectDatePopup appears after popups have been integrated
+        // TO-DO: Assert that SetDatePopup appears after popups have been integrated
     }
     
     func testTaskCardSelected() {

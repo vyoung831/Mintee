@@ -1,5 +1,5 @@
 //
-//  SelectDatePopup.swift
+//  SetDatePopup.swift
 //  Mu
 //
 //  Created by Vincent Young on 4/30/20.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SelectDatePopup: View {
+struct SetDatePopup: View {
     
     @Binding var isBeingPresented: Bool
     @Binding var startDate: Date
@@ -31,7 +31,7 @@ struct SelectDatePopup: View {
                         .accessibility(identifier: "end-date-picker")
                 }
             }
-            .navigationBarTitle(label ?? "Select \(isStartDate ? "Start": "End" ) Date")
+            .navigationBarTitle(label ?? "Set \(isStartDate ? "Start": "End" ) Date")
             .navigationBarItems(trailing:
                 Button(action: {
                     // If the start date was changed and moved ahead of end date, "fast-forward" end date to match start date
@@ -44,7 +44,7 @@ struct SelectDatePopup: View {
                 }, label: {
                     Text("Done")
                 })
-                    .accessibility(identifier: "select-date-popup-done-button")
+                    .accessibility(identifier: "set-date-popup-done-button")
                     .accessibility(label: Text("Tap to finish setting \(isStartDate ? "start": "end" ) date"))
             )
             

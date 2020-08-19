@@ -61,11 +61,23 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             }
             break
         case .specific:
+            
+            var dates: [Date] = []
+            guard let instances = task.instances else {
+                print("EditTaskHostingController found nil value when accessing Task's instances"); exit(-1)
+            }
+            for case let instance as TaskInstance in instances {
+                if let dateString = instance.date {
+                    dates.append(SaveFormatter.storedStringToDate(dateString))
+                }
+            }
+            
             let editTask = EditTask(task: task,
                                     dismiss: dismiss,
                                     taskName: task.name ?? "",
                                     taskType: taskType,
-                                    tags: task.getTagNames().sorted{$0 < $1})
+                                    tags: task.getTagNames().sorted{$0 < $1},
+                                    dates: dates.sorted())
             super.init(rootView: editTask)
             break
         }

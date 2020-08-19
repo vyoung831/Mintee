@@ -22,9 +22,14 @@ struct AddTask: View {
     @State var taskType: SaveFormatter.taskType = .recurring
     @State var errorMessage: String = ""
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
+    
+    // For recurring Tasks
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var taskTargetSetViews: [TaskTargetSetView] = []
+    
+    // For specific Tasks
+    @State var dates: [Date] = []
     
     private func saveTask() -> Bool {
         
@@ -59,7 +64,7 @@ struct AddTask: View {
                          insertInto: CDCoordinator.moc,
                          name: self.taskName,
                          tags: self.tags,
-                         dates: [])
+                         dates: self.dates)
             break
         }
         
@@ -81,8 +86,16 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
-                        if self.taskType == .recurring && self.taskTargetSetViews.count < 1 {
-                            self.errorMessage = "Please add one or more target sets"; return
+                        
+                        switch self.taskType {
+                        case .recurring:
+                            if self.taskTargetSetViews.count < 1 {
+                                self.errorMessage = "Please add one or more target sets"; return
+                            }
+                        case .specific:
+                            if self.dates.count < 1 {
+                                self.errorMessage = "Please add one or more dates"; return
+                            }
                         }
                         
                         if self.saveTask() {
@@ -158,8 +171,12 @@ struct AddTask: View {
                 
                 // MARK: - Dates
                 
-                SelectDateSection(startDate: self.$startDate,
-                                  endDate: self.$endDate)
+                if self.taskType == .recurring {
+                    StartAndEndDateSection(startDate: self.$startDate,
+                                           endDate: self.$endDate)
+                } else {
+                    SelectDatesSection(dates: self.$dates)
+                }
                 
                 // MARK: - Target sets
                 

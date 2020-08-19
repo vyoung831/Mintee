@@ -25,7 +25,7 @@ extension Date {
     }()
     
     /**
-     Returns a "MMM dd,yyyy" String representation of a Date for presenting to user
+     Returns a "MMM d, yyyy" String representation of a Date for presenting to user
      */
     static func toMDYPresent(_ date: Date) -> String {
         return mdyPresentFormatter.string(from: date)
