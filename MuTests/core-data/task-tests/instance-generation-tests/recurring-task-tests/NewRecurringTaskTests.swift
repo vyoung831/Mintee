@@ -1,5 +1,5 @@
 //
-//  NewTaskTests.swift
+//  NewRecurringTaskTests.swift
 //  MuTests
 //
 //  This class tests scenarios where a Task is created and new TaskInstances need to be generated.
@@ -14,7 +14,7 @@ import XCTest
 import CoreData
 @testable import Mu
 
-class NewTaskTests: XCTestCase {
+class NewRecurringTaskTests: XCTestCase {
     
     let dowMin: Float = 1, dowMax: Float = 2, womMin: Float = 3, womMax: Float = 4, domMin: Float = 5, domMax: Float = 6
     
@@ -317,7 +317,7 @@ class NewTaskTests: XCTestCase {
 // MARK: - Performance tests
 
 //
-//  Extension to NewTaskTests.swift
+//  Extension to NewRecurringTaskTests.swift
 //
 //  This extension performance tests generation of TaskInstances when a new Task is created.
 //  Tests are named after
@@ -325,7 +325,7 @@ class NewTaskTests: XCTestCase {
 //  - The number of TaskTargetSets defined to the Task
 //
 
-extension NewTaskTests {
+extension NewRecurringTaskTests {
     
     func testPerformance5y3tts() {
         

@@ -1,5 +1,5 @@
 //
-//  SelectDatePopupUITests.swift
+//  SetDatePopupUITests.swift
 //  MuUITests
 //
 //  Created by Vincent Young on 7/12/20.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import Mu
 
-class SelectDatePopupUITests: XCTestCase {
+class SetDatePopupUITests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -26,7 +26,7 @@ class SelectDatePopupUITests: XCTestCase {
     override func tearDownWithError() throws {}
     
     /**
-     Navigate to AddTask and to SelectDatePopup.
+     Navigate to AddTask and to SetDatePopup.
      Set the start date and confirm that the start date label was updated on AddTask
      */
     func testSetStartDate() throws {
@@ -36,13 +36,13 @@ class SelectDatePopupUITests: XCTestCase {
         app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: "December")
         app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: "1")
         app.pickerWheels.element(boundBy: 2).adjust(toPickerWheelValue: "2050")
-        app.buttons["select-date-popup-done-button"].tap()
+        app.buttons["set-date-popup-done-button"].tap()
         
         XCTAssert(app.buttons["start-date"].label == "Start Date: Dec 1, 2050")
     }
     
     /**
-     Navigate to AddTask and to SelectDatePopup.
+     Navigate to AddTask and to SetDatePopup.
      Set the start date to later than current end date, and confirm that both dates were updated on AddTask
      */
     func testSetStartDateLaterThanEndDate() throws {
@@ -60,14 +60,14 @@ class SelectDatePopupUITests: XCTestCase {
         app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: "December")
         app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: "1")
         app.pickerWheels.element(boundBy: 2).adjust(toPickerWheelValue: String(endYear! + 1))
-        app.buttons["select-date-popup-done-button"].tap()
+        app.buttons["set-date-popup-done-button"].tap()
         
         XCTAssert(app.buttons["start-date"].label == "Start Date: Dec 1, \(endYear! + 1)")
         XCTAssert(app.buttons["end-date"].label == "End Date: Dec 1, \(endYear! + 1)")
     }
     
     /**
-     Navigate to AddTask and to SelectDatePopup.
+     Navigate to AddTask and to SetDatePopup.
      Set the end date to earlier than current start date, and confirm that both dates were updated on AddTask
      */
     func testSetEndDateEarlierThanStartDate() throws {
@@ -85,7 +85,7 @@ class SelectDatePopupUITests: XCTestCase {
         app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: "December")
         app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: "1")
         app.pickerWheels.element(boundBy: 2).adjust(toPickerWheelValue: String(startYear! - 1))
-        app.buttons["select-date-popup-done-button"].tap()
+        app.buttons["set-date-popup-done-button"].tap()
         
         XCTAssert(app.buttons["start-date"].label == "Start Date: Dec 1, \(startYear! - 1)")
         XCTAssert(app.buttons["end-date"].label == "End Date: Dec 1, \(startYear! - 1)")
@@ -93,9 +93,9 @@ class SelectDatePopupUITests: XCTestCase {
     }
     
     /**
-     Navigate to AddTask and to SelectDatePopup.
+     Navigate to AddTask and to SetDatePopup.
      Attempt to update the start date's day and month (in order), and verify that the update was successful
-     Test written because bug was found where dates were not being updated after only month and day were changed in SelectDatePopup
+     Test written because bug was found where dates were not being updated after only month and day were changed in SetDatePopup
      */
     func testUpdateStartDateDayAndMonth() throws {
         let app = XCUIApplication()
@@ -115,16 +115,16 @@ class SelectDatePopupUITests: XCTestCase {
         app.buttons["start-date"].tap()
         app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: finalStartDay)
         app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: DateFormatter().monthSymbols[finalStartMonth - 1])
-        app.buttons["select-date-popup-done-button"].tap()
+        app.buttons["set-date-popup-done-button"].tap()
         
         XCTAssert(app.buttons["start-date"].label == "Start Date: \(DateFormatter().shortMonthSymbols[finalStartMonth - 1]) \(finalStartDay), \(startYear)")
         
     }
     
     /**
-     Navigate to AddTask and to SelectDatePopup.
+     Navigate to AddTask and to SetDatePopup.
      Attempt to update the start date's month and day (in order), and verify that the update was successful
-     Test written because bug was found where dates were not being updated after only month and day were changed in SelectDatePopup
+     Test written because bug was found where dates were not being updated after only month and day were changed in SetDatePopup
      */
     func testUpdateStartDateMonthAndDay() throws {
         let app = XCUIApplication()
@@ -144,7 +144,7 @@ class SelectDatePopupUITests: XCTestCase {
         app.buttons["start-date"].tap()
         app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: DateFormatter().monthSymbols[finalStartMonth - 1])
         app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: finalStartDay)
-        app.buttons["select-date-popup-done-button"].tap()
+        app.buttons["set-date-popup-done-button"].tap()
         
         XCTAssert(app.buttons["start-date"].label == "Start Date: \(DateFormatter().shortMonthSymbols[finalStartMonth - 1]) \(finalStartDay), \(startYear)")
         

@@ -13,17 +13,23 @@ struct AddTask: View {
     
     let startDateLabel: String = "Start Date: "
     let endDateLabel: String = "End Date: "
-    let taskTypes: [String] = ["Recurring","Specific"]
+    let taskTypes: [SaveFormatter.taskType] = SaveFormatter.taskType.allCases
     
     @Binding var isBeingPresented: Bool
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var taskName: String = ""
+    @State var taskType: SaveFormatter.taskType = .recurring
     @State var errorMessage: String = ""
     @State var tags: [String] = ["Tag1","Tag4","Tag3"]
+    
+    // For recurring Tasks
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var taskTargetSetViews: [TaskTargetSetView] = []
+    
+    // For specific Tasks
+    @State var dates: [Date] = []
     
     private func saveTask() -> Bool {
         
@@ -43,13 +49,25 @@ struct AddTask: View {
             taskTargetSets.append(tts)
         }
         
-        let _ = Task(entity: Task.entity(),
-                     insertInto: CDCoordinator.moc,
-                     name: self.taskName,
-                     tags: self.tags,
-                     startDate: self.startDate,
-                     endDate: self.endDate,
-                     targetSets: taskTargetSets)
+        switch self.taskType {
+        case .recurring:
+            let _ = Task(entity: Task.entity(),
+                         insertInto: CDCoordinator.moc,
+                         name: self.taskName,
+                         tags: self.tags,
+                         startDate: self.startDate,
+                         endDate: self.endDate,
+                         targetSets: Set(taskTargetSets))
+            break
+        case .specific:
+            let _ = Task(entity: Task.entity(),
+                         insertInto: CDCoordinator.moc,
+                         name: self.taskName,
+                         tags: self.tags,
+                         dates: self.dates)
+            break
+        }
+        
         do {
             try CDCoordinator.moc.save()
             return true
@@ -68,7 +86,18 @@ struct AddTask: View {
                 
                 HStack {
                     Button(action: {
-                        if self.taskTargetSetViews.count < 1 { self.errorMessage = "Please add one or more target sets"; return }
+                        
+                        switch self.taskType {
+                        case .recurring:
+                            if self.taskTargetSetViews.count < 1 {
+                                self.errorMessage = "Please add one or more target sets"; return
+                            }
+                        case .specific:
+                            if self.dates.count < 1 {
+                                self.errorMessage = "Please add one or more dates"; return
+                            }
+                        }
+                        
                         if self.saveTask() {
                             self.isBeingPresented = false
                         } else {
@@ -82,10 +111,10 @@ struct AddTask: View {
                         Text("Save")
                             .accessibilityElement(children: .ignore)
                     })
-                        .accessibility(label: Text("Save button"))
-                        .accessibility(hint: Text("Tap to save new task"))
-                        .accessibility(identifier: "add-task-save-button")
-                        .disabled(self.taskName == "")
+                    .accessibility(label: Text("Save button"))
+                    .accessibility(hint: Text("Tap to save new task"))
+                    .accessibility(identifier: "add-task-save-button")
+                    .disabled(self.taskName == "")
                     
                     Spacer()
                     
@@ -138,22 +167,22 @@ struct AddTask: View {
                 
                 // MARK: - Task type
                 
-                Group{
-                    Text("Task Type")
-                        .bold()
-                    ForEach(taskTypes,id: \.description) { taskType in
-                        Text(taskType)
-                    }
-                }
+                TaskTypeSection(taskTypes: self.taskTypes, taskType: self.$taskType)
                 
                 // MARK: - Dates
                 
-                SelectDateSection(startDate: self.$startDate,
-                                  endDate: self.$endDate)
+                if self.taskType == .recurring {
+                    StartAndEndDateSection(startDate: self.$startDate,
+                                           endDate: self.$endDate)
+                } else {
+                    SelectDatesSection(dates: self.$dates)
+                }
                 
                 // MARK: - Target sets
-                    
-                TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
+                
+                if self.taskType == .recurring {
+                    TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
+                }
                 
             }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })

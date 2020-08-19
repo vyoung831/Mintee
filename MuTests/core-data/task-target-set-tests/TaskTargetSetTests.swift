@@ -31,8 +31,8 @@ class TaskTargetSetTests: XCTestCase {
                                                     wom: Set([]),
                                                     dom: Set([])))
         XCTAssert(tts.getDaysOfWeek() == dow)
-        XCTAssert(tts.getWeeksOfMonth() == nil)
-        XCTAssert(tts.getDaysOfMonth() == nil)
+        XCTAssert(tts.getWeeksOfMonth().count == 0)
+        XCTAssert(tts.getDaysOfMonth().count == 0)
     }
     
     func testGetWeekdaysOfMonth() {
@@ -46,7 +46,7 @@ class TaskTargetSetTests: XCTestCase {
                                                     dom: Set([])))
         XCTAssert(tts.getDaysOfWeek() == dow)
         XCTAssert(tts.getWeeksOfMonth() == wom)
-        XCTAssert(tts.getDaysOfMonth() == nil)
+        XCTAssert(tts.getDaysOfMonth().count == 0)
     }
     
     func testGetDaysOfMonth() {
@@ -57,8 +57,8 @@ class TaskTargetSetTests: XCTestCase {
                                 pattern: DayPattern(dow: Set([]),
                                                     wom: Set([]),
                                                     dom: dom))
-        XCTAssert(tts.getDaysOfWeek() == nil)
-        XCTAssert(tts.getWeeksOfMonth() == nil)
+        XCTAssert(tts.getDaysOfWeek().count == 0)
+        XCTAssert(tts.getWeeksOfMonth().count == 0)
         XCTAssert(tts.getDaysOfMonth() == dom)
     }
     

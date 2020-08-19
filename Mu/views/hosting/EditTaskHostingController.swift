@@ -19,7 +19,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     
     init(task: Task, dismiss: @escaping (() -> Void)) {
         
-        // Construct array of TaskTargetSetViews for EditTask to use
+        // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
         var ttsvArray: [TaskTargetSetView] = []
         if let ttsArray = task.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for tts in ttsArray {
@@ -41,21 +41,47 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             }
         }
         
-        // TO-DO: Obtain the Task from the TaskInstance provided by TodayCollectionViewController; then, construct the EditTask View
         // TO-DO: Add startDate and endDate getters and setters to Task
-        if let startDateString = task.startDate, let endDateString = task.endDate {
+        let taskType = SaveFormatter.storedToTaskType(storedType: task.taskType)
+        switch taskType {
+        case .recurring:
+            if let startDateString = task.startDate, let endDateString = task.endDate {
+                let editTask = EditTask(task: task,
+                                        dismiss: dismiss,
+                                        taskName: task.name ?? "",
+                                        taskType: taskType,
+                                        tags: task.getTagNames().sorted{$0 < $1},
+                                        startDate: SaveFormatter.storedStringToDate(startDateString),
+                                        endDate: SaveFormatter.storedStringToDate(endDateString),
+                                        taskTargetSetViews: ttsvArray)
+                super.init(rootView: editTask)
+            } else {
+                print("Nil value found in Task's dates")
+                exit(-1)
+            }
+            break
+        case .specific:
+            
+            var dates: [Date] = []
+            guard let instances = task.instances else {
+                print("EditTaskHostingController found nil value when accessing Task's instances"); exit(-1)
+            }
+            for case let instance as TaskInstance in instances {
+                if let dateString = instance.date {
+                    dates.append(SaveFormatter.storedStringToDate(dateString))
+                }
+            }
+            
             let editTask = EditTask(task: task,
                                     dismiss: dismiss,
                                     taskName: task.name ?? "",
+                                    taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
-                                    startDate: SaveFormatter.storedStringToDate(startDateString),
-                                    endDate: SaveFormatter.storedStringToDate(endDateString),
-                                    taskTargetSetViews: ttsvArray)
+                                    dates: dates.sorted())
             super.init(rootView: editTask)
-        } else {
-            print("Nil value found in Task's dates")
-            exit(-1)
+            break
         }
+        
     }
     
     override init?(coder aDecoder: NSCoder, rootView: EditTask) {

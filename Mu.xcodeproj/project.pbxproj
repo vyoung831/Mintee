@@ -21,6 +21,7 @@
 		C4130C1D24C6FB6B003EF047 /* LowEqualToHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */; };
 		C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */; };
 		C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */; };
+		C4130C2324C86E9A003EF047 /* TaskTypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
@@ -37,9 +38,9 @@
 		C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */; };
 		C455C2CB248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */; };
 		C4578D2324B4065C008BD3D4 /* TaskNameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */; };
-		C4578D2524B4076D008BD3D4 /* SelectDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */; };
+		C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */; };
 		C45790AE249FE74C002E16D5 /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45790AD249FE74C002E16D5 /* TaskTests.swift */; };
-		C462099A24A1FE5100F52F16 /* NewTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462099924A1FE5100F52F16 /* NewTaskTests.swift */; };
+		C462099A24A1FE5100F52F16 /* NewRecurringTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462099924A1FE5100F52F16 /* NewRecurringTaskTests.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
 		C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C466A7A524473A2500EC3E97 /* Date+Extensions.swift */; };
 		C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4697EE124561BEF00B028A2 /* CDCoordinator.swift */; };
@@ -57,13 +58,18 @@
 		C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02362448A5730088227F /* LegendEntry+CoreDataClass.swift */; };
 		C48F024E2448A5730088227F /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F023A2448A5730088227F /* Task+CoreDataClass.swift */; };
 		C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */; };
-		C48F9762245ADBC3000339E9 /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */; };
+		C48F9762245ADBC3000339E9 /* SetDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F9761245ADBC3000339E9 /* SetDatePopup.swift */; };
+		C49376B524E8F000002478CD /* TaskTypeSwitchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49376B424E8F000002478CD /* TaskTypeSwitchTests.swift */; };
 		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
 		C499FFF4247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
+		C49D666724E8992B0030DB54 /* DateTestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49D666624E8992B0030DB54 /* DateTestExtensions.swift */; };
+		C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */; };
+		C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */; };
 		C4AF6FAC24A613F0003D4562 /* DateUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AF6FAB24A613F0003D4562 /* DateUpdateTests.swift */; };
 		C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */; };
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */; };
+		C4BD101224C9944A00CD8DAB /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */; };
 		C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */; };
 		C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */; };
@@ -71,11 +77,11 @@
 		C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */; };
 		C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */; };
 		C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */; };
-		C4E73FCD245DFD0D007ADD34 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */; };
 		C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */; };
+		C4E7C7B124E8DC980005C9CB /* SpecificTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E7C7B024E8DC980005C9CB /* SpecificTaskTests.swift */; };
 		C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */; };
 		C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */; };
-		C4FE995124BB8E3F0050C217 /* SelectDatePopupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FE995024BB8E3F0050C217 /* SelectDatePopupUITests.swift */; };
+		C4FE995124BB8E3F0050C217 /* SetDatePopupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +122,7 @@
 		C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEqualToHighTests.swift; sourceTree = "<group>"; };
 		C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowGreaterThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLessThanHighTests.swift; sourceTree = "<group>"; };
+		C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTypeSection.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
@@ -132,9 +139,9 @@
 		C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNameTextField.swift; sourceTree = "<group>"; };
-		C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateSection.swift; sourceTree = "<group>"; };
+		C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartAndEndDateSection.swift; sourceTree = "<group>"; };
 		C45790AD249FE74C002E16D5 /* TaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
-		C462099924A1FE5100F52F16 /* NewTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskTests.swift; sourceTree = "<group>"; };
+		C462099924A1FE5100F52F16 /* NewRecurringTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecurringTaskTests.swift; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
 		C466A7A524473A2500EC3E97 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		C4697EE124561BEF00B028A2 /* CDCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCoordinator.swift; sourceTree = "<group>"; };
@@ -152,13 +159,18 @@
 		C48F02362448A5730088227F /* LegendEntry+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegendEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F023A2448A5730088227F /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C48F02422448A5730088227F /* Analysis+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataClass.swift"; sourceTree = "<group>"; };
-		C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
+		C48F9761245ADBC3000339E9 /* SetDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopup.swift; sourceTree = "<group>"; };
+		C49376B424E8F000002478CD /* TaskTypeSwitchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTypeSwitchTests.swift; sourceTree = "<group>"; };
 		C499FFEC247364DF00ABB64C /* SaveFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatter.swift; sourceTree = "<group>"; };
 		C499FFF2247371FA00ABB64C /* TaskTargetSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
+		C49D666624E8992B0030DB54 /* DateTestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTestExtensions.swift; sourceTree = "<group>"; };
+		C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatesSection.swift; sourceTree = "<group>"; };
+		C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDatePopup.swift; sourceTree = "<group>"; };
 		C4AF6FAB24A613F0003D4562 /* DateUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUpdateTests.swift; sourceTree = "<group>"; };
 		C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetViewTests.swift; sourceTree = "<group>"; };
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopupTests.swift; sourceTree = "<group>"; };
+		C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTests.swift; sourceTree = "<group>"; };
 		C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopup.swift; sourceTree = "<group>"; };
@@ -166,11 +178,12 @@
 		C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegendEntry+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskSummaryAnalysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C4E7C7AF24E8AC1F0005C9CB /* MuTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MuTests copy-Info.plist"; path = "/Users/vincentyoung/Documents/Work/Mu/MuTests copy-Info.plist"; sourceTree = "<absolute>"; };
+		C4E7C7B024E8DC980005C9CB /* SpecificTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificTaskTests.swift; sourceTree = "<group>"; };
 		C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRowsToggleable.swift; sourceTree = "<group>"; };
 		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
-		C4FE995024BB8E3F0050C217 /* SelectDatePopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopupUITests.swift; sourceTree = "<group>"; };
+		C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopupUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +218,7 @@
 				C4037AB024342E2300150D47 /* MuTests */,
 				C4037ABB24342E2300150D47 /* MuUITests */,
 				C4037A9524342E1F00150D47 /* Products */,
+				C4E7C7AF24E8AC1F0005C9CB /* MuTests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -252,6 +266,7 @@
 				C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */,
 				C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */,
 				C45790AC249FE72A002E16D5 /* core-data */,
+				C49D666524E8991B0030DB54 /* util */,
 			);
 			path = MuTests;
 			sourceTree = "<group>";
@@ -263,19 +278,19 @@
 				C4037ABE24342E2300150D47 /* Info.plist */,
 				C4037ABC24342E2300150D47 /* AddTaskUITests.swift */,
 				C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */,
-				C4FE995024BB8E3F0050C217 /* SelectDatePopupUITests.swift */,
+				C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */,
 				C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */,
 				C4DCDFBC24B144E8008F727F /* util */,
 			);
 			path = MuUITests;
 			sourceTree = "<group>";
 		};
-		C406563224AA0199002926EB /* tasktargetset-tests */ = {
+		C406563224AA0199002926EB /* task-target-set-tests */ = {
 			isa = PBXGroup;
 			children = (
 				C406563324AA01A9002926EB /* TaskTargetSetTests.swift */,
 			);
-			path = "tasktargetset-tests";
+			path = "task-target-set-tests";
 			sourceTree = "<group>";
 		};
 		C406563524AA08DC002926EB /* tag-tests */ = {
@@ -352,9 +367,11 @@
 		C4578D2124B40645008BD3D4 /* reused-views */ = {
 			isa = PBXGroup;
 			children = (
+				C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */,
+				C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */,
 				C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */,
-				C4578D2424B4076D008BD3D4 /* SelectDateSection.swift */,
 				C482233224BA57B000E6426E /* TaskTargetSetSection.swift */,
+				C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */,
 			);
 			path = "reused-views";
 			sourceTree = "<group>";
@@ -365,7 +382,7 @@
 				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
 				C406563524AA08DC002926EB /* tag-tests */,
 				C462099824A1FE3D00F52F16 /* task-tests */,
-				C406563224AA0199002926EB /* tasktargetset-tests */,
+				C406563224AA0199002926EB /* task-target-set-tests */,
 			);
 			path = "core-data";
 			sourceTree = "<group>";
@@ -432,9 +449,26 @@
 			isa = PBXGroup;
 			children = (
 				C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */,
-				C48F9761245ADBC3000339E9 /* SelectDatePopup.swift */,
+				C48F9761245ADBC3000339E9 /* SetDatePopup.swift */,
+				C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */,
 			);
 			path = popups;
+			sourceTree = "<group>";
+		};
+		C49376B324E8EFE0002478CD /* task-type-switch-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C49376B424E8F000002478CD /* TaskTypeSwitchTests.swift */,
+			);
+			path = "task-type-switch-tests";
+			sourceTree = "<group>";
+		};
+		C49D666524E8991B0030DB54 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				C49D666624E8992B0030DB54 /* DateTestExtensions.swift */,
+			);
+			path = util;
 			sourceTree = "<group>";
 		};
 		C4D04366245988D200A75BC9 /* subclasses */ = {
@@ -455,10 +489,10 @@
 			isa = PBXGroup;
 			children = (
 				C4E73FAB245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift */,
-				C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */,
 				C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */,
 				C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */,
-				C4E73FB9245DFD0D007ADD34 /* Task+CoreDataProperties.swift */,
+				C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */,
+				C455C2C9248E5895005A3944 /* TaskTargetSet+CoreDataProperties.swift */,
 				C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */,
 				C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */,
 			);
@@ -485,12 +519,30 @@
 			path = util;
 			sourceTree = "<group>";
 		};
-		C4F8324324A9482D007213DA /* instance-generation-tests */ = {
+		C4E7C7B224E8DCF70005C9CB /* recurring-task-tests */ = {
 			isa = PBXGroup;
 			children = (
 				C4AF6FAB24A613F0003D4562 /* DateUpdateTests.swift */,
-				C462099924A1FE5100F52F16 /* NewTaskTests.swift */,
+				C462099924A1FE5100F52F16 /* NewRecurringTaskTests.swift */,
 				C48D835B24A8313100C885B7 /* TargetSetUpdateTests.swift */,
+			);
+			path = "recurring-task-tests";
+			sourceTree = "<group>";
+		};
+		C4E7C7B324E8DD070005C9CB /* specific-task-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C4E7C7B024E8DC980005C9CB /* SpecificTaskTests.swift */,
+			);
+			path = "specific-task-tests";
+			sourceTree = "<group>";
+		};
+		C4F8324324A9482D007213DA /* instance-generation-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C49376B324E8EFE0002478CD /* task-type-switch-tests */,
+				C4E7C7B324E8DD070005C9CB /* specific-task-tests */,
+				C4E7C7B224E8DCF70005C9CB /* recurring-task-tests */,
 			);
 			path = "instance-generation-tests";
 			sourceTree = "<group>";
@@ -634,12 +686,12 @@
 				C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */,
 				C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */,
 				C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */,
+				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry+CoreDataClass.swift in Sources */,
-				C4E73FCD245DFD0D007ADD34 /* Task+CoreDataProperties.swift in Sources */,
 				C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */,
 				C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */,
 				C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */,
@@ -649,6 +701,7 @@
 				C41F8733248F8FF2008AC18D /* Float+Extensions.swift in Sources */,
 				C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */,
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
+				C4130C2324C86E9A003EF047 /* TaskTypeSection.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis+CoreDataClass.swift in Sources */,
 				C41A73E62451BFD2007007CB /* EditTask.swift in Sources */,
 				C4578D2324B4065C008BD3D4 /* TaskNameTextField.swift in Sources */,
@@ -662,13 +715,15 @@
 				C48F024E2448A5730088227F /* Task+CoreDataClass.swift in Sources */,
 				C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
-				C4578D2524B4076D008BD3D4 /* SelectDateSection.swift in Sources */,
+				C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */,
 				C4E73FBF245DFD0D007ADD34 /* Analysis+CoreDataProperties.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,
 				C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */,
-				C48F9762245ADBC3000339E9 /* SelectDatePopup.swift in Sources */,
+				C48F9762245ADBC3000339E9 /* SetDatePopup.swift in Sources */,
+				C4BD101224C9944A00CD8DAB /* Task+CoreDataProperties.swift in Sources */,
 				C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */,
+				C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,15 +731,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C49D666724E8992B0030DB54 /* DateTestExtensions.swift in Sources */,
 				C45790AE249FE74C002E16D5 /* TaskTests.swift in Sources */,
 				C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */,
 				C406563424AA01A9002926EB /* TaskTargetSetTests.swift in Sources */,
-				C462099A24A1FE5100F52F16 /* NewTaskTests.swift in Sources */,
+				C462099A24A1FE5100F52F16 /* NewRecurringTaskTests.swift in Sources */,
 				C406563724AA08E9002926EB /* TagTests.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */,
 				C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */,
 				C48D835C24A8313100C885B7 /* TargetSetUpdateTests.swift in Sources */,
+				C4E7C7B124E8DC980005C9CB /* SpecificTaskTests.swift in Sources */,
 				C4AF6FAC24A613F0003D4562 /* DateUpdateTests.swift in Sources */,
+				C49376B524E8F000002478CD /* TaskTypeSwitchTests.swift in Sources */,
 				C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */,
 				C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift in Sources */,
 				C44940CD2498F113009FE818 /* BubbleRowsTests.swift in Sources */,
@@ -701,7 +759,7 @@
 				C4130C1924C6FB4F003EF047 /* LowOnlyTests.swift in Sources */,
 				C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */,
 				C4DCDFBA24B12A3B008F727F /* XCUIElement+Extensions.swift in Sources */,
-				C4FE995124BB8E3F0050C217 /* SelectDatePopupUITests.swift in Sources */,
+				C4FE995124BB8E3F0050C217 /* SetDatePopupUITests.swift in Sources */,
 				C4037ABD24342E2300150D47 /* AddTaskUITests.swift in Sources */,
 				C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */,
 				C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */,
