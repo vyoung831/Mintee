@@ -14,8 +14,6 @@ import SwiftUI
 @objc(Task)
 public class Task: NSManagedObject {
     
-    // MARK: - Initializers
-    
     /**
      Convenience init for recurring-type Task
      */
@@ -46,7 +44,11 @@ public class Task: NSManagedObject {
         self.updateSpecificInstances(dates: dates)
     }
     
-    // MARK: - Tag handling
+}
+
+// MARK: - Tag handling
+
+extension Task {
     
     /**
      - returns: An array of strings representing the tagNames of this Task's tags
@@ -117,7 +119,11 @@ public class Task: NSManagedObject {
         }
     }
     
-    // MARK: - TaskTargetSet and TaskInstance adding
+}
+
+// MARK: - TaskTargetSet and TaskInstance adding
+
+extension Task {
     
     /**
      For a newly added recurring-type Task, adds TaskTargetSets and generates TaskInstances, associating those TaskInstances with this Task and the appropriate TaskTargetSet.
@@ -288,7 +294,11 @@ public class Task: NSManagedObject {
         return datesDelta
     }
     
-    // MARK: - TaskInstance and TaskTargetSet updating
+}
+
+// MARK: - TaskInstance and TaskTargetSet updating
+
+extension Task {
     
     /**
      For a specific-type Task, updates taskType, instances, and targetSets. This function
@@ -461,15 +471,19 @@ public class Task: NSManagedObject {
         return instance
     }
     
-    // MARK: - Deletion
-    
+}
+
+// MARK: - Deletion
+
+extension Task {
+
     /**
      Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
      Also deletes all TaskInstances and TaskTargetSets associated with this Task.
      */
     func deleteSelf() {
         self.removeAllTags()
-        
+
         if let targetSets = self.targetSets, let instances = self.instances {
             for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
             for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
@@ -477,8 +491,8 @@ public class Task: NSManagedObject {
             print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
             exit(-1)
         }
-        
+
         CDCoordinator.moc.delete(self)
     }
-    
+
 }
