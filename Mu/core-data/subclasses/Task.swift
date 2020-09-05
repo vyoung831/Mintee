@@ -187,7 +187,11 @@ extension Task {
         }
     }
     
-    // MARK: - TaskInstance delta checking
+}
+
+// MARK: - TaskInstance delta checking
+
+extension Task {
     
     /**
      Returns the date representations of existing TaskInstances that would be deleted given a new set of Dates for a specific-type Task
@@ -196,7 +200,7 @@ extension Task {
      */
     func getDeltaInstancesSpecific(dates: Set<Date>) -> [String] {
         guard let instances = self.instances as? Set<TaskInstance> else {
-            print("getDeltaInstancesSpecific() in Task could not retrieve existing instances"); exit(-1)
+            print("getdeltainstancesspecific() in Task could not retrieve existing instances"); exit(-1)
         }
         
         var datesDelta: [String] = []
@@ -476,14 +480,14 @@ extension Task {
 // MARK: - Deletion
 
 extension Task {
-
+    
     /**
      Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
      Also deletes all TaskInstances and TaskTargetSets associated with this Task.
      */
     func deleteSelf() {
         self.removeAllTags()
-
+        
         if let targetSets = self.targetSets, let instances = self.instances {
             for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
             for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
@@ -491,8 +495,8 @@ extension Task {
             print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
             exit(-1)
         }
-
+        
         CDCoordinator.moc.delete(self)
     }
-
+    
 }

@@ -12,8 +12,6 @@ struct TodayView: View {
     
     @State var isPresentingAddTask: Bool = false
     
-    @Environment(\.managedObjectContext) var moc
-    
     var body: some View {
         NavigationView {
             TodayCollectionViewControllerRepresentable()

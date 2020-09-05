@@ -20,48 +20,6 @@ class TaskTargetSetTests: XCTestCase {
         CDCoordinator.moc.rollback()
     }
     
-    // MARK: - Getting days tests
-    
-    func testGetDaysOfWeek() {
-        let dow: Set<Int16> = Set([1,3,5,7])
-        let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                insertInto: CDCoordinator.moc,
-                                min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
-                                pattern: DayPattern(dow: dow,
-                                                    wom: Set([]),
-                                                    dom: Set([])))
-        XCTAssert(tts.getDaysOfWeek() == dow)
-        XCTAssert(tts.getWeeksOfMonth().count == 0)
-        XCTAssert(tts.getDaysOfMonth().count == 0)
-    }
-    
-    func testGetWeekdaysOfMonth() {
-        let dow: Set<Int16> = Set([1,3,5,7])
-        let wom: Set<Int16> = Set([1,3,5])
-        let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                insertInto: CDCoordinator.moc,
-                                min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
-                                pattern: DayPattern(dow: dow,
-                                                    wom: wom,
-                                                    dom: Set([])))
-        XCTAssert(tts.getDaysOfWeek() == dow)
-        XCTAssert(tts.getWeeksOfMonth() == wom)
-        XCTAssert(tts.getDaysOfMonth().count == 0)
-    }
-    
-    func testGetDaysOfMonth() {
-        let dom: Set<Int16> = Set([0,3,6,9,12,15,18,21,24,27,30])
-        let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                insertInto: CDCoordinator.moc,
-                                min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
-                                pattern: DayPattern(dow: Set([]),
-                                                    wom: Set([]),
-                                                    dom: dom))
-        XCTAssert(tts.getDaysOfWeek().count == 0)
-        XCTAssert(tts.getWeeksOfMonth().count == 0)
-        XCTAssert(tts.getDaysOfMonth() == dom)
-    }
-    
     // MARK: - checkDay tests
     
     func testCheckDayDow() {
