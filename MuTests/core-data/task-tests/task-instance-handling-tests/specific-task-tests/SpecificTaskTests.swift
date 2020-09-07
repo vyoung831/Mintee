@@ -31,7 +31,7 @@ class SpecificTaskTests: XCTestCase {
         let dates: [Date] = [Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!,
                              Calendar.current.date(from: DateComponents(year: 2021, month: 2, day: 1))!,
                              Calendar.current.date(from: DateComponents(year: 2022, month: 3, day: 1))!]
-        let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+        let _ = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                         insertInto: CDCoordinator.moc,
                         name: "Task",
                         tags: ["Tag"],

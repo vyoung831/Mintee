@@ -27,7 +27,7 @@ public class Task: NSManagedObject {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.updateTags(newTagNames: tags)
-        self.newRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
+        self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
     }
     
     /**
@@ -42,6 +42,24 @@ public class Task: NSManagedObject {
         self.name = name
         self.updateTags(newTagNames: tags)
         self.updateSpecificInstances(dates: dates)
+    }
+    
+    /**
+     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
+     Also deletes all TaskInstances and TaskTargetSets associated with this Task.
+     */
+    public func deleteSelf() {
+        self.removeAllTags()
+        
+        if let targetSets = self.targetSets, let instances = self.instances {
+            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+            for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
+        } else {
+            print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
+            exit(-1)
+        }
+        
+        CDCoordinator.moc.delete(self)
     }
     
 }
@@ -189,7 +207,7 @@ extension Task {
     
 }
 
-// MARK: - TaskInstance delta checking
+// MARK: - TaskInstance delta
 
 extension Task {
     
@@ -473,30 +491,6 @@ extension Task {
         let instance = TaskInstance(context: CDCoordinator.moc)
         instance.date = date
         return instance
-    }
-    
-}
-
-// MARK: - Deletion
-
-extension Task {
-    
-    /**
-     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
-     Also deletes all TaskInstances and TaskTargetSets associated with this Task.
-     */
-    func deleteSelf() {
-        self.removeAllTags()
-        
-        if let targetSets = self.targetSets, let instances = self.instances {
-            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
-            for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
-        } else {
-            print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
-            exit(-1)
-        }
-        
-        CDCoordinator.moc.delete(self)
     }
     
 }
