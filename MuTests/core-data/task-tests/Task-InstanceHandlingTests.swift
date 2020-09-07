@@ -153,8 +153,13 @@ class Task_InstanceHandlingTests: XCTestCase {
 // MARK: - updateSpecificInstances tests
 
 extension Task_InstanceHandlingTests {
+
+    // MARK: - Task type updates
     
-    
+    func testUpdateSpecificInstances_confirmTaskType() throws {
+        task.updateSpecificInstances(dates: [])
+        XCTAssert(task.taskType == SaveFormatter.taskTypeToStored(type: .specific))
+    }
     
 }
 
@@ -162,7 +167,19 @@ extension Task_InstanceHandlingTests {
 
 extension Task_InstanceHandlingTests {
     
-    // MARK: - Start or end date changes
+    // MARK: - Task type updates
+    
+    func testUpdateRecurringInstances_withoutTargetSets_confirmTaskType() throws {
+        task.updateRecurringInstances(startDate: Date(), endDate: Date())
+        XCTAssert(task.taskType == SaveFormatter.taskTypeToStored(type: .recurring))
+    }
+    
+    func testUpdateRecurringInstances_withTargetSets_confirmTaskType() throws {
+        task.updateRecurringInstances(startDate: Date(), endDate: Date(), targetSets: Set<TaskTargetSet>())
+        XCTAssert(task.taskType == SaveFormatter.taskTypeToStored(type: .recurring))
+    }
+    
+    // MARK: - Start or end date updates
     
     func testUpdateRecurringInstances_startDateEarlier() throws {
         
