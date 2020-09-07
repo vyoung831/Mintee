@@ -57,7 +57,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupCell()
+        setUpCell()
     }
     
     // MARK: - UI updates
@@ -84,25 +84,25 @@ class TodayCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI setup
     
-    private func setupCell() {
+    private func setUpCell() {
         self.layer.cornerRadius = cornerRadius
         self.layer.borderColor = borderColor
         self.layer.borderWidth = CGFloat(borderWidth)
         self.backgroundColor = .white
-        setupSubviews()
+        setUpSubviews()
     }
     
-    private func setupSubviews() {
+    private func setUpSubviews() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        setupLabels()
-        setupButtons()
-        setupCompletionMeter()
+        setUpLabels()
+        setUpButtons()
+        setUpCompletionMeter()
     }
     
     /**
      This function sets up the cell's labels that display the Task name, target, and current status
      */
-    private func setupLabels() {
+    private func setUpLabels() {
         
         // Target label
         target.adjustsFontSizeToFitWidth = true
@@ -137,7 +137,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
     /**
      This function sets up the cell's buttons and their target methods. Each button's target methods should have been set with a closure provided by the UICollectionViewDataSource
      */
-    private func setupButtons() {
+    private func setUpButtons() {
         
         // Edit button
         editButton.setTitle("Edit", for: UIControl.State.normal)
@@ -162,7 +162,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
     /**
      This function sets up all of completionMeter's autolayout constraints except for its height. This class expects that height constraint to be calculated when updateCompletionPercentage()
      */
-    private func setupCompletionMeter() {
+    private func setUpCompletionMeter() {
         completionMeter.layer.cornerRadius = cornerRadius
         self.addSubview(completionMeter)
         completionMeter.translatesAutoresizingMaskIntoConstraints = false

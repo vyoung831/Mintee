@@ -30,13 +30,13 @@ class TodayCollectionViewController: UICollectionViewController {
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
-        setupCollectionView()
-        setupFetchedResults()
+        setUpCollectionView()
+        setUpFetchedResults()
     }
     
     // MARK: - UI setup
     
-    private func setupCollectionView() {
+    private func setUpCollectionView() {
         collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: taskCardReuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -52,7 +52,7 @@ class TodayCollectionViewController: UICollectionViewController {
     
     // MARK: - NSFetchedResultsController setup
     
-    private func setupFetchedResults() {
+    private func setUpFetchedResults() {
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         fetchRequest.sortDescriptors = []
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.moc, sectionNameKeyPath: nil, cacheName: nil)
