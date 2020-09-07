@@ -17,34 +17,45 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         // Do any additional setup after loading the view.
     }
     
-    init(task: Task, dismiss: @escaping (() -> Void)) {
-        
-        // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
+    /**
+     Extracts the TaskTargetSets associated with a Task and converts them into an array of TaskTargetSetViews
+     The Array's TaskTargetSetViews are sorted by priority
+     parm task:
+     */
+    static func extractTTSVArray(task: Task) -> [TaskTargetSetView] {
         var ttsvArray: [TaskTargetSetView] = []
         if let ttsArray = task.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
-            for tts in ttsArray {
+            for idx in 0 ..< ttsArray.count {
                 
-                guard let pattern = tts.pattern as? DayPattern else {
-                    print("EditTaskHostingController could not read pattern from a TaskTargetSet \(tts.debugDescription)"); exit(-1)
+                guard let pattern = ttsArray[idx].pattern as? DayPattern else {
+                    print("EditTaskHostingController could not read pattern from a TaskTargetSet \(ttsArray[idx].debugDescription)"); exit(-1)
                 }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,
-                                             minTarget: tts.min,
-                                             minOperator: SaveFormatter.getOperatorString(tts.minOperator),
-                                             maxTarget: tts.max,
-                                             maxOperator: SaveFormatter.getOperatorString(tts.maxOperator),
-                                             selectedDaysOfWeek: Set(tts.getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
-                                             selectedWeeksOfMonth: Set(tts.getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
-                                             selectedDaysOfMonth: Set(tts.getDaysOfMonth().map{ String($0) }))
+                                             minTarget: ttsArray[idx].min,
+                                             minOperator: SaveFormatter.getOperatorString(ttsArray[idx].minOperator),
+                                             maxTarget: ttsArray[idx].max,
+                                             maxOperator: SaveFormatter.getOperatorString(ttsArray[idx].maxOperator),
+                                             selectedDaysOfWeek: Set(ttsArray[idx].getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
+                                             selectedWeeksOfMonth: Set(ttsArray[idx].getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
+                                             selectedDaysOfMonth: Set(ttsArray[idx].getDaysOfMonth().map{ String($0) }))
                 ttsvArray.append(ttsv)
                 
             }
         }
+        return ttsvArray
+    }
+    
+    init(task: Task, dismiss: @escaping (() -> Void)) {
         
         // TO-DO: Add startDate and endDate getters and setters to Task
         let taskType = SaveFormatter.storedToTaskType(storedType: task.taskType)
         switch taskType {
         case .recurring:
+            
+            // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
+            let ttsvArray: [TaskTargetSetView] = EditTaskHostingController.extractTTSVArray(task: task)
+            
             if let startDateString = task.startDate, let endDateString = task.endDate {
                 let editTask = EditTask(task: task,
                                         dismiss: dismiss,

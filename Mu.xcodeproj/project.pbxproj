@@ -44,6 +44,7 @@
 		C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C466A7A524473A2500EC3E97 /* Date+Extensions.swift */; };
 		C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4697EE124561BEF00B028A2 /* CDCoordinator.swift */; };
 		C46C2BD62505D69C000320B4 /* FloatExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C2BD52505D69C000320B4 /* FloatExtensionTests.swift */; };
+		C46C2BDA2505DF62000320B4 /* EditTaskHostingControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C2BD92505DF62000320B4 /* EditTaskHostingControllerTests.swift */; };
 		C46C466B247DFC83001431B8 /* TaskInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C4669247DFC83001431B8 /* TaskInstance.swift */; };
 		C46DC968243DEBB20037C74C /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC967243DEBB20037C74C /* TodayView.swift */; };
 		C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC969243DEC3B0037C74C /* AnalysisView.swift */; };
@@ -144,6 +145,7 @@
 		C466A7A524473A2500EC3E97 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		C4697EE124561BEF00B028A2 /* CDCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCoordinator.swift; sourceTree = "<group>"; };
 		C46C2BD52505D69C000320B4 /* FloatExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtensionTests.swift; sourceTree = "<group>"; };
+		C46C2BD92505DF62000320B4 /* EditTaskHostingControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskHostingControllerTests.swift; sourceTree = "<group>"; };
 		C46C4669247DFC83001431B8 /* TaskInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInstance.swift; sourceTree = "<group>"; };
 		C46DC967243DEBB20037C74C /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		C46DC969243DEC3B0037C74C /* AnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
@@ -292,9 +294,8 @@
 		C405FA0224F15BE200F6A547 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				C44940CC2498F113009FE818 /* BubbleRowsTests.swift */,
-				C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */,
-				C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */,
+				C46C2BD72505DF1A000320B4 /* representable-tests */,
+				C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -435,6 +436,24 @@
 				C47389982482CCB400462134 /* DayPattern.swift */,
 			);
 			path = transformable;
+			sourceTree = "<group>";
+		};
+		C46C2BD72505DF1A000320B4 /* representable-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C46C2BD92505DF62000320B4 /* EditTaskHostingControllerTests.swift */,
+			);
+			path = "representable-tests";
+			sourceTree = "<group>";
+		};
+		C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C44940CC2498F113009FE818 /* BubbleRowsTests.swift */,
+				C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */,
+				C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */,
+			);
+			path = "task-target-set-views-tests";
 			sourceTree = "<group>";
 		};
 		C48719A224891999004463F4 /* task-target-set-views */ = {
@@ -718,6 +737,7 @@
 				C4E5D5F225042F6C00557373 /* Task-InstanceDeltaTests.swift in Sources */,
 				C406563424AA01A9002926EB /* TaskTargetSetTests.swift in Sources */,
 				C406563724AA08E9002926EB /* Tag-Tests.swift in Sources */,
+				C46C2BDA2505DF62000320B4 /* EditTaskHostingControllerTests.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */,
 				C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */,
 				C4E5D5EE250426A000557373 /* Task-TagHandlingTests.swift in Sources */,
