@@ -139,74 +139,6 @@ extension Task {
     
 }
 
-// MARK: - TaskTargetSet and TaskInstance adding
-
-extension Task {
-    
-    /**
-     For a newly added recurring-type Task, adds TaskTargetSets and generates TaskInstances, associating those TaskInstances with this Task and the appropriate TaskTargetSet.
-     - parameter startDate: Task's start date
-     - parameter endDate: Task's end date
-     - parameter targetSets: Set of TaskTargetSets to associate with this Task
-     */
-    private func newRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) {
-        
-        // Set task type, start date, end date, and sort TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
-        self.startDate = SaveFormatter.dateToStoredString(startDate)
-        self.endDate = SaveFormatter.dateToStoredString(endDate)
-        self.addToTargetSets(NSSet(set: targetSets))
-        let sortedTargetSets = targetSets.sorted(by: { $0.priority < $1.priority} )
-        
-        // Gt start date and end date to iterate over
-        guard let sd = self.startDate, let ed = self.endDate else {
-            print("newRecurringInstances() was called but startDate and/or endDate were nil")
-            exit(-1)
-        }
-        var dateCounter = SaveFormatter.storedStringToDate(sd)
-        let endDate = SaveFormatter.storedStringToDate(ed)
-        
-        // Loop through each of the days from startDate to endDate and generate TaskInstances where necessary
-        var matched = false
-        while dateCounter.lessThanOrEqualToDate(endDate) {
-            
-            /*
-             Loop through the array of TaskTargetSets (already sorted by priority).
-             If one of the TaskTargetSet's pattern intersects with current dateCounter, a TaskInstance is created, added to instances, and associated with the TaskTargetSet.
-             Since this is for new Tasks, prior task existence is not checked.
-             */
-            for targetSet in sortedTargetSets {
-                
-                if targetSet.checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
-                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
-                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
-                    
-                    let ti = TaskInstance(context: CDCoordinator.moc)
-                    ti.date = SaveFormatter.dateToStoredString(dateCounter)
-                    
-                    self.addToInstances(ti)
-                    targetSet.addToInstances(ti)
-                    
-                    matched = true
-                }
-                
-                // TaskInstance created; check next date
-                if matched { matched = false; break }
-                
-            }
-            
-            // Increment day
-            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
-                dateCounter = newDate
-            } else {
-                print("An error occurred in newRecurringInstances() when incrementing dateCounter")
-                exit(-1)
-            }
-        }
-    }
-    
-}
-
 // MARK: - TaskInstance delta
 
 extension Task {
@@ -430,22 +362,22 @@ extension Task {
             print("setNewTargetSets was called but startDate and/or endDate were nil")
             exit(-1)
         }
-        
-        var newInstances = Set<TaskInstance>()
         var dateCounter = SaveFormatter.storedStringToDate(sd)
         let endDate = SaveFormatter.storedStringToDate(ed)
+        
+        var newInstances = Set<TaskInstance>()
         var matched = false
         while dateCounter.lessThanOrEqualToDate(endDate) {
             
-            for case let targetSet in sortedTargetSets {
-                if targetSet.checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
-                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
-                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
+            for idx in 0 ..< sortedTargetSets.count {
+                if sortedTargetSets[idx].checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
+                                                  weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
+                                                  daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from its TaskTargetSet or a new one in the MOC
                     let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))
                     newInstances.insert(ti)
-                    ti.targetSet = targetSet
+                    ti.targetSet = sortedTargetSets[idx]
                     
                     matched = true
                 }
@@ -474,7 +406,7 @@ extension Task {
     }
     
     /**
-     Unassociates (if necessary) and returns a TaskInstance with the desired date. This function was created for TaskInstances that need to have their targetSet relationship updated
+     Unassociates (if necessary) and returns a TaskInstance with the desired date
      If one already exists and belongs to this Task, it is removed from instances; otherwise, a new one is created in the MOC
      - parameter date: The date that the returned TaskInstance should have
      - returns: TaskInstance with specified Date - either newly created or an existing one that's been disassociated with this Task

@@ -161,6 +161,24 @@ extension Task_InstanceHandlingTests {
         XCTAssert(task.taskType == SaveFormatter.taskTypeToStored(type: .specific))
     }
     
+    // MARK: - TaskInstance generation
+    
+    func testUpdateSpecificInstances_confirmInstances() throws {
+        
+        let dates: [Date] = [Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!,
+                             Calendar.current.date(from: DateComponents(year: 2021, month: 2, day: 1))!,
+                             Calendar.current.date(from: DateComponents(year: 2022, month: 3, day: 1))!]
+        task.updateSpecificInstances(dates: dates)
+        
+        let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
+        let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
+        XCTAssert(instances.count == 3)
+        for instance in instances {
+            XCTAssert(dates.contains(SaveFormatter.storedStringToDate(instance.date!)))
+        }
+        
+    }
+    
 }
 
 // MARK: - updateRecurringInstances tests
@@ -981,41 +999,58 @@ extension Task_InstanceHandlingTests{
     
     // MARK: - TTS deletion tests
     
-    func testUpdateRecurringInstances_performance_fiveYears_deleteOneTTS() {
+    func testUpdateRecurringInstances_performance_fiveYears_twoTTS() {
         
-        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
-        let endDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
+        let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+            task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
         }
         
     }
     
-    func testUpdateRecurringInstances_performance_tenYears_deleteOneTTS() {
+    func testUpdateRecurringInstances_performance_tenYears_twoTTS() {
         
-        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
-        let endDate = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
+        let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+            task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
         }
         
     }
     
-    func testUpdateRecurringInstances_performance_twentyFiveYears_deleteOneTTS() {
+    func testUpdateRecurringInstances_performance_twentyFiveYears_twoTTS() {
         
-        let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
-        let endDate = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
+        let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+            task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
+        }
+        
+    }
+    
+    /**
+     Test updateRecurringInstances with 3 TTSes and every day selected in the dom TTS
+     */
+    func testUpdateRecurringInstances_performance_twentyFiveYears_threeTTS_fullDom() {
+        
+        let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
+        let newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
+        
+        let newDomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                insertInto: CDCoordinator.moc,
+                                min: 0, max: 1, minOperator: 1, maxOperator: 1, priority: 9,
+                                pattern: DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])))
+        let newTargetSets: Set<TaskTargetSet> = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), newDomSet)
+        
+        self.measure {
+            task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
         }
         
     }
