@@ -34,10 +34,12 @@ class DateExtensionTests: XCTestCase {
     }
 
     /**
-     Test lessThanEqualToDate and lessThanDate.
-     This test covers cases where the start Date's day, month, and/or year are (less than, equal to, or greater than) those of the end Date
+     Test lessThanEqualToDate and lessThanDate using Dates with
+     - Different days
+     - Same month
+     - Same year
      */
-    func testLessThanFunctions() {
+    func testLessThanFunctions_sameMonth_sameYear() {
         
         // Test same month and year, with different days
         var startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
@@ -54,10 +56,19 @@ class DateExtensionTests: XCTestCase {
         endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
         XCTAssert(!startDate.lessThanOrEqualToDate(endDate))
         XCTAssert(!startDate.lessThanDate(endDate))
+    
+    }
+    
+    /**
+     Test lessThanEqualToDate and lessThanDate using Dates of
+     - Different days
+     - Different months
+     - Same year
+     */
+    func testLessThanFunctions_differentMonth_sameYear() {
         
-        // Test same year, with different month and day comparisons (Same month already tested)
-        startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 4, day: 15))!
-        endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
+        var startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 4, day: 15))!
+        var endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
         XCTAssert(startDate.lessThanOrEqualToDate(endDate))
         XCTAssert(startDate.lessThanDate(endDate))
         startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 4, day: 14))!
@@ -82,12 +93,18 @@ class DateExtensionTests: XCTestCase {
         XCTAssert(!startDate.lessThanOrEqualToDate(endDate))
         XCTAssert(!startDate.lessThanDate(endDate))
         
-        /*
-         Test different day, month, and year relationships (Same year already tested)
-         */
-        // Start year > end year
-        startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2011, month: 4, day: 15))!
-        endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
+    }
+    
+    /**
+     Test lessThanEqualToDate and lessThanDate using Dates with
+     - Different days
+     - Different months
+     - Start year later than end year
+     */
+    func testLessThanFunctions_startYearLaterThanEndYear() {
+        
+        var startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2011, month: 4, day: 15))!
+        var endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
         XCTAssert(!startDate.lessThanOrEqualToDate(endDate))
         XCTAssert(!startDate.lessThanDate(endDate))
         startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2011, month: 4, day: 14))!
@@ -124,10 +141,20 @@ class DateExtensionTests: XCTestCase {
         endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
         XCTAssert(!startDate.lessThanOrEqualToDate(endDate))
         XCTAssert(!startDate.lessThanDate(endDate))
+           
+    }
+    
+    
+    /**
+     Test lessThanEqualToDate and lessThanDate using Dates with
+     - Different days
+     - Different months
+     - Start year earlier than end year
+     */
+    func testLessThanFunctions_startYearEarlierThanEndYear() {
         
-        // Start year < end year
-        startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2009, month: 4, day: 15))!
-        endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
+        var startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2009, month: 4, day: 15))!
+        var endDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2010, month: 5, day: 15))!
         XCTAssert(startDate.lessThanOrEqualToDate(endDate))
         XCTAssert(startDate.lessThanDate(endDate))
         startDate = Calendar.current.date(from: DateComponents.init(calendar: Calendar.current, timeZone: .current, year: 2009, month: 4, day: 14))!
