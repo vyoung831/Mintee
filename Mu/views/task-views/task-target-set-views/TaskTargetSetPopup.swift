@@ -35,8 +35,8 @@ struct TaskTargetSetPopup: View {
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
     @State var maxOperator: SaveFormatter.equalityOperator = .lt
-    @State var minValue: String = ""
-    @State var maxValue: String = ""
+    @State var minValueString: String = ""
+    @State var maxValueString: String = ""
     @State var errorMessage: String = ""
     
     // MARK: - Bindings
@@ -59,8 +59,8 @@ struct TaskTargetSetPopup: View {
     /**
      Checks minOperator, maxOperator, and provided min/max values to see if combination is valid.
      This function expects the caller to have un-wrapped min and max to check if they are valid Floats
-     - parameter min: minValue unwrapped to Float
-     - parameter max: maxValue unwrapped to Float
+     - parameter min: minValueString unwrapped to Float
+     - parameter max: maxValueString unwrapped to Float
      - returns: True if combination of operators and provided values are valid
      */
     func checkOperators(min: Float, max: Float) -> Bool {
@@ -104,19 +104,20 @@ struct TaskTargetSetPopup: View {
     
     /**
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
+     - returns: True if TaskTargetSetView save was successful
      */
-    private func done() {
+    private func done() -> Bool {
         
-        if minValue.count < 1 && maxValue.count < 1 { errorMessage = "Fill out at least either lower or upper target bound"; return }
+        if minValueString.count < 1 && maxValueString.count < 1 { errorMessage = "Fill out at least either lower or upper target bound"; return false}
         
         var min: Float, max: Float
-        if minValue.count > 0 {
-            if let minu = Float(minValue) { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
+        if minValueString.count > 0 {
+            if let minu = Float(minValueString) { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return false}
         } else { minOperator = .na; min = 0 }
-        if maxValue.count > 0 {
-            if let maxu = Float(maxValue) { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
+        if maxValueString.count > 0 {
+            if let maxu = Float(maxValueString) { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return false}
         } else { maxOperator = .na; max = 0 }
-        if !checkOperators(min: min, max: max) { return }
+        if !checkOperators(min: min, max: max) { return false }
         
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: maxOperator == .eq || minOperator == .na ? 0 : min,
@@ -128,6 +129,7 @@ struct TaskTargetSetPopup: View {
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
         self.save(ttsv)
         self.isBeingPresented = false
+        return true
     }
     
     /**
@@ -215,7 +217,7 @@ struct TaskTargetSetPopup: View {
                 
                 HStack(alignment: .center, spacing: 10) {
                     
-                    TextField("", text: self.$minValue)
+                    TextField("", text: self.$minValueString)
                         .disabled(self.maxOperator == .eq || self.minOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
@@ -243,7 +245,7 @@ struct TaskTargetSetPopup: View {
                         .frame(width: operationWidth, height: operationHeight)
                         .clipped()
                     
-                    TextField("", text: self.$maxValue)
+                    TextField("", text: self.$maxValueString)
                         .disabled(self.minOperator == .eq || self.maxOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
