@@ -121,7 +121,7 @@ struct TaskTargetSetPopup: View {
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      - returns: True if TaskTargetSetView save was successful
      */
-    func done() {
+    private func done() {
         
         if checkEmptyValues() { errorMessage = "Fill out at least either lower or upper target bound"; return }
         
