@@ -147,9 +147,10 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(bubbles: self.type == .dow || self.type == .wom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom),
-                           selectedBubbles: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>() )
+                BubbleRows(type: self.type,
+                           selected: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>())
                     .accessibilityElement(children: .ignore)
+                
             }
             
             // MARK: - Frequency
