@@ -57,6 +57,21 @@ struct TaskTargetSetPopup: View {
     }
     
     /**
+     - returns: True if both minValue and maxValue TextFields are empty
+     */
+    func checkEmptyValues() -> Bool {
+        return minValueString.count < 1 && maxValueString.count < 1
+    }
+    
+    func validateMinValue() -> Float? {
+        return Float(minValueString)
+    }
+    
+    func validateMaxValue() -> Float? {
+        return Float(maxValueString)
+    }
+    
+    /**
      Checks minOperator, maxOperator, and provided min/max values to see if combination is valid.
      This function expects the caller to have un-wrapped min and max to check if they are valid Floats
      - parameter min: minValueString unwrapped to Float
@@ -106,19 +121,20 @@ struct TaskTargetSetPopup: View {
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      - returns: True if TaskTargetSetView save was successful
      */
-    private func done() -> Bool {
+    func done() {
         
-        if minValueString.count < 1 && maxValueString.count < 1 { errorMessage = "Fill out at least either lower or upper target bound"; return false}
+        if checkEmptyValues() { errorMessage = "Fill out at least either lower or upper target bound"; return }
         
+        // Min/Max value input validation
         var min: Float, max: Float
         if minValueString.count > 0 {
-            if let minu = Float(minValueString) { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return false}
+            if let minu = validateMinValue() { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
         } else { minOperator = .na; min = 0 }
         if maxValueString.count > 0 {
-            if let maxu = Float(maxValueString) { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return false}
+            if let maxu = validateMaxValue() { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
         } else { maxOperator = .na; max = 0 }
-        if !checkOperators(min: min, max: max) { return false }
         
+        if !checkOperators(min: min, max: max) { return }
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: maxOperator == .eq || minOperator == .na ? 0 : min,
                                      minOperator: maxOperator == .eq || minOperator == .na ? .na : minOperator,
@@ -129,7 +145,6 @@ struct TaskTargetSetPopup: View {
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
         self.save(ttsv)
         self.isBeingPresented = false
-        return true
     }
     
     /**
@@ -160,11 +175,11 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.done()
                         }, label: { Text("Done") })
-                            .accessibility(identifier: "task-target-set-popup-done-button")
-                            .accessibility(label: Text("Done"))
-                            .accessibility(hint: Text("Tap to finish setting target set"))
-                            .disabled(self.maxOperator == .na && self.minOperator == .na)
-                            .disabled(!validDaysSelected())
+                        .accessibility(identifier: "task-target-set-popup-done-button")
+                        .accessibility(label: Text("Done"))
+                        .accessibility(hint: Text("Tap to finish setting target set"))
+                        .disabled(self.maxOperator == .na && self.minOperator == .na)
+                        .disabled(!validDaysSelected())
                         Spacer()
                         Text(title)
                             .font(.title)
@@ -173,9 +188,9 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.isBeingPresented = false
                         }, label: { Text("Cancel") })
-                            .accessibility(identifier: "task-target-set-popup-cancel-button")
-                            .accessibility(label: Text("Cancel"))
-                            .accessibility(hint: Text("Tap to cancel setting target set"))
+                        .accessibility(identifier: "task-target-set-popup-cancel-button")
+                        .accessibility(label: Text("Cancel"))
+                        .accessibility(hint: Text("Tap to cancel setting target set"))
                     }
                     if errorMessage.count > 0 {
                         Text(errorMessage)

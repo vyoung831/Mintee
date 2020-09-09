@@ -11,17 +11,39 @@ import XCTest
 @testable import Mu
 
 class TaskTargetSetPopupTests: XCTestCase {
-
+    
     @State var ibp: Bool = true
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+    
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
+    
+    // MARK: - Insufficient input tests
+    
+    func testDone_insufficientInput() throws {
+        let ttsp = TaskTargetSetPopup(title: "", minOperator: .lt, maxOperator: .lt, isBeingPresented: self.$ibp, save: { ttsv in })
+        XCTAssert(ttsp.checkEmptyValues())
+    }
+    
+    func testDone_insufficientInput_minValueOnly() throws {
+        let ttsp = TaskTargetSetPopup(title: "", minOperator: .lt, maxOperator: .lt, minValueString: "0", isBeingPresented: self.$ibp, save: { ttsv in })
+        XCTAssertFalse(ttsp.checkEmptyValues())
+    }
+    
+    func testDone_insufficientInput_maxValueOnly() throws {
+        let ttsp = TaskTargetSetPopup(title: "", minOperator: .lt, maxOperator: .lt, maxValueString: "0", isBeingPresented: self.$ibp, save: { ttsv in })
+        XCTAssertFalse(ttsp.checkEmptyValues())
+    }
+    
+    func testDone_insufficientInput_minAndMaxValues() throws {
+        let ttsp = TaskTargetSetPopup(title: "", minOperator: .lt, maxOperator: .lt, minValueString: "0", maxValueString: "0", isBeingPresented: self.$ibp, save: { ttsv in })
+        XCTAssertFalse(ttsp.checkEmptyValues())
+    }
+    
     /**
      Test checkOperators when min is less than max. ttsp is redeclared for each test case because SwiftUI doesn't support altering @State variables from external views
      */
@@ -147,5 +169,5 @@ class TaskTargetSetPopupTests: XCTestCase {
         XCTAssert( ttsp.checkOperators(min: min, max: max) )
         
     }
-
+    
 }

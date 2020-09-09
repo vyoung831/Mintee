@@ -61,8 +61,8 @@ struct TaskTargetSetSection: View {
                                                     type: self.taskTargetSetViews[idx].type,
                                                     minOperator: self.taskTargetSetViews[idx].minOperator,
                                                     maxOperator: self.taskTargetSetViews[idx].maxOperator,
-                                                    minValue: String(self.taskTargetSetViews[idx].minTarget.clean),
-                                                    maxValue: String(self.taskTargetSetViews[idx].maxTarget.clean),
+                                                    minValueString: String(self.taskTargetSetViews[idx].minTarget.clean),
+                                                    maxValueString: String(self.taskTargetSetViews[idx].maxTarget.clean),
                                                     isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
                                                     save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
                 
