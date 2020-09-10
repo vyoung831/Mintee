@@ -35,10 +35,13 @@ class DayBubbleLabels {
         switch patternType {
         case .dow:
             sourceLabels = daysOfWeek
+            break
         case .wom:
             sourceLabels = weeksOfMonth
+            break
         case .dom:
             sourceLabels = daysOfMonth
+            break
         }
         var dividedLabels: [[String]] = []
         for x in stride(from: 0, to: sourceLabels.count, by: bubblesPerRow) {
