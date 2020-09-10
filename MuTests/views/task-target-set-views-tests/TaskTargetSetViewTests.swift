@@ -2,8 +2,8 @@
 //  TaskTargetSetViewTests.swift
 //  MuTests
 //
-//  Created by Vincent Young on 6/20/20.
-//  Copyright © 2020 Vincent Young. All rights reserved.
+//  Created by Vincent Young on 6/1/1.
+//  Copyright © 11 Vincent Young. All rights reserved.
 //
 
 import XCTest
@@ -19,114 +19,181 @@ class TaskTargetSetViewTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    /**
-     Test that getLabel returns the expected string when type is set to EqualityOperator.dow
-     */
-    func testGetLabelDaysOfWeek() {
+    // MARK: - getLabel tests
+    
+    func testGetLabel_daysOfWeek() {
         let ttsv = TaskTargetSetView(type: .dow,
-                                     minTarget: 20,
+                                     minTarget: 1,
                                      minOperator: .lt,
-                                     maxTarget: 25,
+                                     maxTarget: 2,
                                      maxOperator: .lt)
         XCTAssert( ttsv.getLabel() == "Every week")
     }
     
-    /**
-     Test that getLabel reorders the weeks of month and returns the expected string when type is set to EqualityOperator.wom
-     */
-    func testGetLabelWeekdaysOfMonth() {
+    func testGetLabel_weekdaysOfMonth_singleWeek() {
         let ttsv = TaskTargetSetView(type: .wom,
-                                     minTarget: 20,
+                                     minTarget: 1,
                                      minOperator: .lt,
-                                     maxTarget: 25,
+                                     maxTarget: 2,
                                      maxOperator: .lt,
-                                     selectedWeeksOfMonth: Set<String>(["1st","3rd","2nd"]))
-        XCTAssert( ttsv.getLabel() == "1st, 2nd, 3rd of each month")
+                                     selectedWeeksOfMonth: Set<String>(["4th"]))
+        XCTAssert( ttsv.getLabel() == "4th of each month")
     }
     
-    /**
-     Test that getLabel returns the expected string when type is set to EqualityOperator.dom
-     */
-    func testGetLabelDaysOfMonth() {
-        let ttsv = TaskTargetSetView(type: .dom,
-                                     minTarget: 20,
+    func testGetLabel_weekdaysOfMonth_multipleWeeks() {
+        let ttsv = TaskTargetSetView(type: .wom,
+                                     minTarget: 1,
                                      minOperator: .lt,
-                                     maxTarget: 25,
+                                     maxTarget: 2,
+                                     maxOperator: .lt,
+                                     selectedWeeksOfMonth: Set<String>(["Last","1st","3rd","2nd"]))
+        XCTAssert( ttsv.getLabel() == "1st, 2nd, 3rd, Last of each month")
+    }
+    
+    func testGetLabel_daysOfMonth() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lt,
+                                     maxTarget: 2,
                                      maxOperator: .lt)
         XCTAssert( ttsv.getLabel() == "Every month")
     }
     
-    /**
-     Test getTarget with TaskTargetSetView where one or both operators are set to EqualityOperator.lt
-     */
-    func testGetTargetLessThan() {
-        
-        // Min operator == .lt tests
+    // MARK: - getTarget tests
+    
+    func testGetTarget_minLessThan_maxLessThan() {
         var ttsv = TaskTargetSetView(type: .dom,
-                                     minTarget: 20,
+                                     minTarget: 1,
                                      minOperator: .lt,
-                                     maxTarget: 25,
+                                     maxTarget: 2,
                                      maxOperator: .lt)
-        XCTAssert( ttsv.getTarget() == "20 < Target < 25" )
-        
-        ttsv.maxOperator = .lte
-        XCTAssert( ttsv.getTarget() == "20 < Target <= 25" )
-        
-        ttsv.maxOperator = .na
-        XCTAssert( ttsv.getTarget() == "Target > 20" )
-        
-        // Max operator == .lt tests
-        ttsv.maxOperator = .lt
-        ttsv.minOperator = .na
-        XCTAssert( ttsv.getTarget() == "Target < 25" )
-        
+        XCTAssert( ttsv.getTarget() == "1 < Target < 2" )
     }
     
-    /**
-     Test getTarget with TaskTargetSetView where one or both operators are set to EqualityOperator.lte
-     */
-    func testGetTargetLessOrEqualTo() {
-        
-        // Min operator == .lte tests
-        var ttsv = TaskTargetSetView(type: .dom,
-                                     minTarget: 20,
-                                     minOperator: .lte,
-                                     maxTarget: 25,
-                                     maxOperator: .lt)
-        XCTAssert( ttsv.getTarget() == "20 <= Target < 25" )
-        
-        ttsv.maxOperator = .lte
-        XCTAssert( ttsv.getTarget() == "20 <= Target <= 25" )
-        
-        ttsv.maxOperator = .na
-        XCTAssert( ttsv.getTarget() == "Target >= 20" )
-        
-        // Max operator = .lte tests
-        ttsv.maxOperator = .lte
-        ttsv.minOperator = .na
-        XCTAssert( ttsv.getTarget() == "Target <= 25" )
-        
+    func testGetTarget_minLessThan_maxLessThanEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lt,
+                                     maxTarget: 2,
+                                     maxOperator: .lte)
+        XCTAssert( ttsv.getTarget() == "1 < Target <= 2" )
     }
     
-    /**
-     Test getTarget when one of the operators is set to EqualityOperator.eq
-     For each case, this test sets the other operator to .na because TaskTargetSetView only checks if operators are not .na when creating the label
-     */
-    func testGetTargetEqual() {
-        
-        var ttsv = TaskTargetSetView(type: .dom,
-                                     minTarget: 20,
-                                     minOperator: .eq,
-                                     maxTarget: 25,
+    func testGetTarget_minLessThan_maxEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lt,
+                                     maxTarget: 2,
                                      maxOperator: .na)
-        XCTAssert( ttsv.getTarget() == "Target = 20" )
-        
-        ttsv.minOperator = .na
-        ttsv.maxOperator = .eq
-        XCTAssert( ttsv.getTarget() == "Target = 25" )
-        
+        XCTAssert( ttsv.getTarget() == "Target = 2" )
     }
     
+    func testGetTarget_minLessThan_maxNotApplicable() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lt,
+                                     maxTarget: 2,
+                                     maxOperator: .na)
+        XCTAssert( ttsv.getTarget() == "Target > 1" )
+    }
     
+    func testGetTarget_minLessThanEqual_maxLessThan() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lte,
+                                     maxTarget: 2,
+                                     maxOperator: .lt)
+        XCTAssert( ttsv.getTarget() == "1 <= Target < 2" )
+    }
+    
+    func testGetTarget_minLessThanEqual_maxLessThanEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lte,
+                                     maxTarget: 2,
+                                     maxOperator: .lte)
+        XCTAssert( ttsv.getTarget() == "1 <= Target <= 2")
+    }
+    
+    func testGetTarget_minLessThanEqual_maxEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lte,
+                                     maxTarget: 2,
+                                     maxOperator: .eq)
+        XCTAssert( ttsv.getTarget() == "Target = 2" )
+    }
+    
+    func testGetTarget_minLessThanEqual_maxNotApplicable() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .lte,
+                                     maxTarget: 2,
+                                     maxOperator: .na)
+        XCTAssert( ttsv.getTarget() == "Target >= 1" )
+    }
+    
+    func testGetTarget_minEqual_maxLessThan() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .eq,
+                                     maxTarget: 2,
+                                     maxOperator: .lt)
+        XCTAssert( ttsv.getTarget() == "Target = 1" )
+    }
+    
+    func testGetTarget_minEqual_maxLessThanEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .eq,
+                                     maxTarget: 2,
+                                     maxOperator: .lte)
+        XCTAssert( ttsv.getTarget() == "Target = 1" )
+    }
+    
+    func testGetTarget_minEqual_maxEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .eq,
+                                     maxTarget: 2,
+                                     maxOperator: .eq)
+        XCTAssert( ttsv.getTarget() == "Target = 1" )
+    }
+    
+    func testGetTarget_minEqual_maxNotApplicable() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .eq,
+                                     maxTarget: 2,
+                                     maxOperator: .na)
+        XCTAssert( ttsv.getTarget() == "Target = 1" )
+    }
+    
+    func testGetTarget_minNotApplicable_maxLessThan() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .na,
+                                     maxTarget: 2,
+                                     maxOperator: .lt)
+        XCTAssert( ttsv.getTarget() == "Target < 2" )
+    }
+    
+    func testGetTarget_minNotApplicable_maxLessThanEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .na,
+                                     maxTarget: 2,
+                                     maxOperator: .lte)
+        XCTAssert( ttsv.getTarget() == "Target <= 2" )
+    }
+    
+    func testGetTarget_minNotApplicable_maxEqual() {
+        let ttsv = TaskTargetSetView(type: .dom,
+                                     minTarget: 1,
+                                     minOperator: .na,
+                                     maxTarget: 2,
+                                     maxOperator: .eq)
+        XCTAssert( ttsv.getTarget() == "Target = 2" )
+    }
 
 }
