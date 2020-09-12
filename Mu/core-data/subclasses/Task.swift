@@ -223,7 +223,13 @@ extension Task {
                     }
                     break
                 case .dom:
+                    /*
+                     Last day of month is represented as 0, so the following conditions are checked
+                     - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
+                     - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
+                     */
                     if pattern.daysOfMonth.contains(Int16(Calendar.current.component(.day, from: dateCounter))) { matched = true }
+                    else if pattern.daysOfMonth.contains(0) && Calendar.current.component(.day, from: dateCounter) == Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count { matched = true }
                     break
                 }
                 
