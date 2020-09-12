@@ -57,7 +57,12 @@ public class TaskTargetSet: NSManagedObject {
             return pattern.daysOfWeek.contains(weekday) &&
                 (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ))
         case .dom:
-            return pattern.daysOfMonth.contains(day)
+            /*
+             Last day of month is represented as 0, so the following conditions are checked
+             - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
+             - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
+             */
+            return pattern.daysOfMonth.contains(day) || ( pattern.daysOfMonth.contains(0) && day == daysInMonth)
         }
         
     }

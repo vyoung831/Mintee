@@ -49,7 +49,7 @@ class EditTaskHostingControllerTests: XCTestCase {
         
         XCTAssert(ttsv.minTarget == dowMin)
         XCTAssert(ttsv.minOperator == .lt)
-        XCTAssert(ttsv.minTarget == dowMax)
+        XCTAssert(ttsv.maxTarget == dowMax)
         XCTAssert(ttsv.maxOperator == .lt)
         XCTAssert(ttsv.type == .dow)
         
