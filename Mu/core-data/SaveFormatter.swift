@@ -133,7 +133,7 @@ class SaveFormatter {
     }
     
     /**
-     Returns an Int16 to append to to a DayPattern's dow
+     Returns an Int16 to insert into a DayPattern's dow
      - parameter weekDay: String used by a view to represent weekday. Must be one of ["M","T","W","R","F","S","U"]
      - returns: Int16 to store in DayPattern's dow; U=1
      */
@@ -170,6 +170,16 @@ class SaveFormatter {
             // TO-DO: Crash reporting
             exit(-1)
         }
+    }
+    
+    /**
+     Returns an Int16 to insert into a DayPattern's dom
+     - parameter dayOfMonth: String used by a view to represent day of month
+     - returns: Int16 to store in DayPattern's dow; U=1
+     */
+    static func getDayOfMonthInt(_ dayOfMonth: String) -> Int16 {
+        if let dom = Int16(dayOfMonth), dom <= 31, dom >= 0 { return dom }
+        exit(-1)
     }
     
     // MARK: - Date conversion

@@ -45,7 +45,7 @@ struct AddTask: View {
                                     priority: Int16(i),
                                     pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
                                                         wom: Set((ttsv.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
-                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []).map{ Int16($0) ?? 0 })))
+                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []).map{ SaveFormatter.getDayOfMonthInt($0) })))
             taskTargetSets.append(tts)
         }
         

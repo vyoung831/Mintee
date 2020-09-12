@@ -22,7 +22,7 @@ class DayBubbleLabels {
     static let daysOfMonth: [String] = ["1","2","3","4","5","6","7","8","9",
                                         "10","11","12","13","14","15","16","17","18","19",
                                         "20","21","22","23","24","25","26","27","28","29",
-                                        "30","31"]
+                                        "30","31","Last"]
     
     /**
      Returns a representation of day bubbles that BubbleRows and BubbleRowsToggleable need to display their content
@@ -35,10 +35,13 @@ class DayBubbleLabels {
         switch patternType {
         case .dow:
             sourceLabels = daysOfWeek
+            break
         case .wom:
             sourceLabels = weeksOfMonth
+            break
         case .dom:
             sourceLabels = daysOfMonth
+            break
         }
         var dividedLabels: [[String]] = []
         for x in stride(from: 0, to: sourceLabels.count, by: bubblesPerRow) {

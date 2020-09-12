@@ -21,6 +21,20 @@ struct BubbleRows: View {
     
     @State var grHeight: CGFloat = 0
     
+    // MARK: - Initializers
+    
+    init(type: DayPattern.patternType, selected: Set<String>) {
+        switch type {
+        case .dow:
+            self.bubbles = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7, patternType: .dow); break
+        case .wom:
+            self.bubbles = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 5, patternType: .wom); break
+        case .dom:
+            self.bubbles = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7, patternType: .dom); break
+        }
+        self.selectedBubbles = selected
+    }
+    
     // MARK: - UI functions
     
     /**

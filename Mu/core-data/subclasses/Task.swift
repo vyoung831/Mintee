@@ -14,8 +14,6 @@ import SwiftUI
 @objc(Task)
 public class Task: NSManagedObject {
     
-    // MARK: - Initializers
-    
     /**
      Convenience init for recurring-type Task
      */
@@ -29,7 +27,7 @@ public class Task: NSManagedObject {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.updateTags(newTagNames: tags)
-        self.newRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
+        self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
     }
     
     /**
@@ -46,7 +44,29 @@ public class Task: NSManagedObject {
         self.updateSpecificInstances(dates: dates)
     }
     
-    // MARK: - Tag handling
+    /**
+     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
+     Also deletes all TaskInstances and TaskTargetSets associated with this Task.
+     */
+    public func deleteSelf() {
+        self.removeAllTags()
+        
+        if let targetSets = self.targetSets, let instances = self.instances {
+            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+            for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
+        } else {
+            print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
+            exit(-1)
+        }
+        
+        CDCoordinator.moc.delete(self)
+    }
+    
+}
+
+// MARK: - Tag handling
+
+extension Task {
     
     /**
      - returns: An array of strings representing the tagNames of this Task's tags
@@ -117,71 +137,11 @@ public class Task: NSManagedObject {
         }
     }
     
-    // MARK: - TaskTargetSet and TaskInstance adding
-    
-    /**
-     For a newly added recurring-type Task, adds TaskTargetSets and generates TaskInstances, associating those TaskInstances with this Task and the appropriate TaskTargetSet.
-     - parameter startDate: Task's start date
-     - parameter endDate: Task's end date
-     - parameter targetSets: Set of TaskTargetSets to associate with this Task
-     */
-    private func newRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) {
-        
-        // Set task type, start date, end date, and sort TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
-        self.startDate = SaveFormatter.dateToStoredString(startDate)
-        self.endDate = SaveFormatter.dateToStoredString(endDate)
-        self.addToTargetSets(NSSet(set: targetSets))
-        let sortedTargetSets = targetSets.sorted(by: { $0.priority < $1.priority} )
-        
-        // Gt start date and end date to iterate over
-        guard let sd = self.startDate, let ed = self.endDate else {
-            print("newRecurringInstances() was called but startDate and/or endDate were nil")
-            exit(-1)
-        }
-        var dateCounter = SaveFormatter.storedStringToDate(sd)
-        let endDate = SaveFormatter.storedStringToDate(ed)
-        
-        // Loop through each of the days from startDate to endDate and generate TaskInstances where necessary
-        var matched = false
-        while dateCounter.lessThanOrEqualToDate(endDate) {
-            
-            /*
-             Loop through the array of TaskTargetSets (already sorted by priority).
-             If one of the TaskTargetSet's pattern intersects with current dateCounter, a TaskInstance is created, added to instances, and associated with the TaskTargetSet.
-             Since this is for new Tasks, prior task existence is not checked.
-             */
-            for targetSet in sortedTargetSets {
-                
-                if targetSet.checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
-                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
-                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
-                    
-                    let ti = TaskInstance(context: CDCoordinator.moc)
-                    ti.date = SaveFormatter.dateToStoredString(dateCounter)
-                    
-                    self.addToInstances(ti)
-                    targetSet.addToInstances(ti)
-                    
-                    matched = true
-                }
-                
-                // TaskInstance created; check next date
-                if matched { matched = false; break }
-                
-            }
-            
-            // Increment day
-            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
-                dateCounter = newDate
-            } else {
-                print("An error occurred in newRecurringInstances() when incrementing dateCounter")
-                exit(-1)
-            }
-        }
-    }
-    
-    // MARK: - TaskInstance delta checking
+}
+
+// MARK: - TaskInstance delta
+
+extension Task {
     
     /**
      Returns the date representations of existing TaskInstances that would be deleted given a new set of Dates for a specific-type Task
@@ -190,7 +150,7 @@ public class Task: NSManagedObject {
      */
     func getDeltaInstancesSpecific(dates: Set<Date>) -> [String] {
         guard let instances = self.instances as? Set<TaskInstance> else {
-            print("getDeltaInstancesSpecific() in Task could not retrieve existing instances"); exit(-1)
+            print("getdeltainstancesspecific() in Task could not retrieve existing instances"); exit(-1)
         }
         
         var datesDelta: [String] = []
@@ -263,7 +223,13 @@ public class Task: NSManagedObject {
                     }
                     break
                 case .dom:
+                    /*
+                     Last day of month is represented as 0, so the following conditions are checked
+                     - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
+                     - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
+                     */
                     if pattern.daysOfMonth.contains(Int16(Calendar.current.component(.day, from: dateCounter))) { matched = true }
+                    else if pattern.daysOfMonth.contains(0) && Calendar.current.component(.day, from: dateCounter) == Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count { matched = true }
                     break
                 }
                 
@@ -288,7 +254,11 @@ public class Task: NSManagedObject {
         return datesDelta
     }
     
-    // MARK: - TaskInstance and TaskTargetSet updating
+}
+
+// MARK: - TaskInstance and TaskTargetSet updating
+
+extension Task {
     
     /**
      For a specific-type Task, updates taskType, instances, and targetSets. This function
@@ -398,22 +368,22 @@ public class Task: NSManagedObject {
             print("setNewTargetSets was called but startDate and/or endDate were nil")
             exit(-1)
         }
-        
-        var newInstances = Set<TaskInstance>()
         var dateCounter = SaveFormatter.storedStringToDate(sd)
         let endDate = SaveFormatter.storedStringToDate(ed)
+        
+        var newInstances = Set<TaskInstance>()
         var matched = false
         while dateCounter.lessThanOrEqualToDate(endDate) {
             
-            for case let targetSet in sortedTargetSets {
-                if targetSet.checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
-                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
-                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
+            for idx in 0 ..< sortedTargetSets.count {
+                if sortedTargetSets[idx].checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
+                                                  weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
+                                                  daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from its TaskTargetSet or a new one in the MOC
                     let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))
                     newInstances.insert(ti)
-                    ti.targetSet = targetSet
+                    ti.targetSet = sortedTargetSets[idx]
                     
                     matched = true
                 }
@@ -442,7 +412,7 @@ public class Task: NSManagedObject {
     }
     
     /**
-     Unassociates (if necessary) and returns a TaskInstance with the desired date. This function was created for TaskInstances that need to have their targetSet relationship updated
+     Unassociates (if necessary) and returns a TaskInstance with the desired date
      If one already exists and belongs to this Task, it is removed from instances; otherwise, a new one is created in the MOC
      - parameter date: The date that the returned TaskInstance should have
      - returns: TaskInstance with specified Date - either newly created or an existing one that's been disassociated with this Task
@@ -459,26 +429,6 @@ public class Task: NSManagedObject {
         let instance = TaskInstance(context: CDCoordinator.moc)
         instance.date = date
         return instance
-    }
-    
-    // MARK: - Deletion
-    
-    /**
-     Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
-     Also deletes all TaskInstances and TaskTargetSets associated with this Task.
-     */
-    func deleteSelf() {
-        self.removeAllTags()
-        
-        if let targetSets = self.targetSets, let instances = self.instances {
-            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
-            for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
-        } else {
-            print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
-            exit(-1)
-        }
-        
-        CDCoordinator.moc.delete(self)
     }
     
 }

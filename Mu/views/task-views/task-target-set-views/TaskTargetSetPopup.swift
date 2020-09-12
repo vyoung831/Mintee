@@ -35,8 +35,8 @@ struct TaskTargetSetPopup: View {
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
     @State var maxOperator: SaveFormatter.equalityOperator = .lt
-    @State var minValue: String = ""
-    @State var maxValue: String = ""
+    @State var minValueString: String = ""
+    @State var maxValueString: String = ""
     @State var errorMessage: String = ""
     
     // MARK: - Bindings
@@ -57,10 +57,25 @@ struct TaskTargetSetPopup: View {
     }
     
     /**
+     - returns: True if both minValue and maxValue TextFields are empty
+     */
+    func checkEmptyValues() -> Bool {
+        return minValueString.count < 1 && maxValueString.count < 1
+    }
+    
+    func validateMinValue() -> Float? {
+        return Float(minValueString)
+    }
+    
+    func validateMaxValue() -> Float? {
+        return Float(maxValueString)
+    }
+    
+    /**
      Checks minOperator, maxOperator, and provided min/max values to see if combination is valid.
      This function expects the caller to have un-wrapped min and max to check if they are valid Floats
-     - parameter min: minValue unwrapped to Float
-     - parameter max: maxValue unwrapped to Float
+     - parameter min: minValueString unwrapped to Float
+     - parameter max: maxValueString unwrapped to Float
      - returns: True if combination of operators and provided values are valid
      */
     func checkOperators(min: Float, max: Float) -> Bool {
@@ -104,20 +119,22 @@ struct TaskTargetSetPopup: View {
     
     /**
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
+     - returns: True if TaskTargetSetView save was successful
      */
     private func done() {
         
-        if minValue.count < 1 && maxValue.count < 1 { errorMessage = "Fill out at least either lower or upper target bound"; return }
+        if checkEmptyValues() { errorMessage = "Fill out at least either lower or upper target bound"; return }
         
+        // Min/Max value input validation
         var min: Float, max: Float
-        if minValue.count > 0 {
-            if let minu = Float(minValue) { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
+        if minValueString.count > 0 {
+            if let minu = validateMinValue() { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
         } else { minOperator = .na; min = 0 }
-        if maxValue.count > 0 {
-            if let maxu = Float(maxValue) { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
+        if maxValueString.count > 0 {
+            if let maxu = validateMaxValue() { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
         } else { maxOperator = .na; max = 0 }
-        if !checkOperators(min: min, max: max) { return }
         
+        if !checkOperators(min: min, max: max) { return }
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: maxOperator == .eq || minOperator == .na ? 0 : min,
                                      minOperator: maxOperator == .eq || minOperator == .na ? .na : minOperator,
@@ -158,11 +175,11 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.done()
                         }, label: { Text("Done") })
-                            .accessibility(identifier: "task-target-set-popup-done-button")
-                            .accessibility(label: Text("Done"))
-                            .accessibility(hint: Text("Tap to finish setting target set"))
-                            .disabled(self.maxOperator == .na && self.minOperator == .na)
-                            .disabled(!validDaysSelected())
+                        .accessibility(identifier: "task-target-set-popup-done-button")
+                        .accessibility(label: Text("Done"))
+                        .accessibility(hint: Text("Tap to finish setting target set"))
+                        .disabled(self.maxOperator == .na && self.minOperator == .na)
+                        .disabled(!validDaysSelected())
                         Spacer()
                         Text(title)
                             .font(.title)
@@ -171,9 +188,9 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.isBeingPresented = false
                         }, label: { Text("Cancel") })
-                            .accessibility(identifier: "task-target-set-popup-cancel-button")
-                            .accessibility(label: Text("Cancel"))
-                            .accessibility(hint: Text("Tap to cancel setting target set"))
+                        .accessibility(identifier: "task-target-set-popup-cancel-button")
+                        .accessibility(label: Text("Cancel"))
+                        .accessibility(hint: Text("Tap to cancel setting target set"))
                     }
                     if errorMessage.count > 0 {
                         Text(errorMessage)
@@ -215,7 +232,7 @@ struct TaskTargetSetPopup: View {
                 
                 HStack(alignment: .center, spacing: 10) {
                     
-                    TextField("", text: self.$minValue)
+                    TextField("", text: self.$minValueString)
                         .disabled(self.maxOperator == .eq || self.minOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
@@ -243,7 +260,7 @@ struct TaskTargetSetPopup: View {
                         .frame(width: operationWidth, height: operationHeight)
                         .clipped()
                     
-                    TextField("", text: self.$maxValue)
+                    TextField("", text: self.$maxValueString)
                         .disabled(self.minOperator == .eq || self.maxOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
