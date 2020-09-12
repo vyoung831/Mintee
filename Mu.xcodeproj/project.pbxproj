@@ -65,6 +65,8 @@
 		C49D666724E8992B0030DB54 /* DateTestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49D666624E8992B0030DB54 /* DateTestExtensions.swift */; };
 		C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */; };
 		C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */; };
+		C4ACD3C9250D6FCB00D56277 /* AddTagPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */; };
+		C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ACD3CA250D715100D56277 /* TagsSection.swift */; };
 		C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */; };
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */; };
 		C4BD101224C9944A00CD8DAB /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */; };
@@ -167,6 +169,8 @@
 		C49D666624E8992B0030DB54 /* DateTestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTestExtensions.swift; sourceTree = "<group>"; };
 		C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatesSection.swift; sourceTree = "<group>"; };
 		C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDatePopup.swift; sourceTree = "<group>"; };
+		C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagPopup.swift; sourceTree = "<group>"; };
+		C4ACD3CA250D715100D56277 /* TagsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSection.swift; sourceTree = "<group>"; };
 		C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetViewTests.swift; sourceTree = "<group>"; };
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopupTests.swift; sourceTree = "<group>"; };
 		C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -387,6 +391,7 @@
 			children = (
 				C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */,
 				C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */,
+				C4ACD3CA250D715100D56277 /* TagsSection.swift */,
 				C4578D2224B4065C008BD3D4 /* TaskNameTextField.swift */,
 				C482233224BA57B000E6426E /* TaskTargetSetSection.swift */,
 				C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */,
@@ -489,6 +494,7 @@
 				C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */,
 				C48F9761245ADBC3000339E9 /* SetDatePopup.swift */,
 				C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */,
+				C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */,
 			);
 			path = popups;
 			sourceTree = "<group>";
@@ -685,6 +691,7 @@
 				C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */,
 				C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */,
 				C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */,
+				C4ACD3C9250D6FCB00D56277 /* AddTagPopup.swift in Sources */,
 				C46C466B247DFC83001431B8 /* TaskInstance.swift in Sources */,
 				C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */,
 				C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */,
@@ -725,6 +732,7 @@
 				C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */,
 				C48F9762245ADBC3000339E9 /* SetDatePopup.swift in Sources */,
 				C4BD101224C9944A00CD8DAB /* Task+CoreDataProperties.swift in Sources */,
+				C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */,
 				C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */,
 				C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */,
 			);
