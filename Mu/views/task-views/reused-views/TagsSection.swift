@@ -45,13 +45,29 @@ struct TagsSection: View {
             })
             
         }
-        ForEach(self.tags,id: \.description) { tag in
-            Text(tag)
-                .padding(.all, 8)
-                .foregroundColor(.white)
-                .background(Color.black)
-                .accessibility(identifier: "tag")
-                .accessibility(value: Text("\(tag)"))
+        
+        ForEach(0 ..< self.tags.count, id: \.self) { idx in
+            
+            HStack {
+                Text(self.tags[idx])
+                
+                Button(action: {
+                    self.tags.remove(at: idx)
+                }, label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(Color("default-button-text-colors"))
+                })
+                .accessibility(identifier: "tag-remove-button")
+                .accessibility(label: Text("Remove tag"))
+                .accessibility(hint: Text("Tap to remove tag"))
+            }
+            .padding(12)
+            .foregroundColor(Color("default-button-text-colors"))
+            .background(Color("default-button-colors"))
+            .cornerRadius(3)
+            .accessibility(identifier: "tag")
+            .accessibilityElement(children: .combine)
+            
         }
     }
 }

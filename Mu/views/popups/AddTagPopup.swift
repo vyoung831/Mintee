@@ -14,6 +14,7 @@ struct AddTagPopup: View {
     @Binding var isBeingPresented: Bool
     @State var errorMessage: String = ""
     
+    // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
     var addTag: (String) -> String?
     
     var body: some View {
@@ -31,7 +32,7 @@ struct AddTagPopup: View {
                     .accessibility(hint: Text("Tap to cancel adding tag"))
                     
                     Spacer()
-                    Text("Add tag")
+                    Text("Add Tag")
                         .font(.title)
                     Spacer()
                     

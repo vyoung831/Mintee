@@ -21,7 +21,7 @@ struct AddTask: View {
     @State var taskName: String = ""
     @State var taskType: SaveFormatter.taskType = .recurring
     @State var errorMessage: String = ""
-    @State var tags: [String] = ["Tag1","Tag4","Tag3"]
+    @State var tags: [String] = []
     
     // For recurring Tasks
     @State var startDate: Date = Date()
