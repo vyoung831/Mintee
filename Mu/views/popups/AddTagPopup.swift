@@ -11,8 +11,8 @@ import CoreData
 
 struct AddTagPopup: View {
     
-    @State var tag: String = ""
     @Binding var isBeingPresented: Bool
+    @State var tagText: String = ""
     @State var errorMessage: String = ""
     
     @FetchRequest(
@@ -22,6 +22,21 @@ struct AddTagPopup: View {
     
     // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
     var addTag: (String) -> String?
+    
+    /**
+     Compares a Tag's name to the content in the tag name TextField and determines if the Tag should be displayed to the user to be selected
+     - parameter tag: Tag to evaluate
+     - returns: True if tag's name is
+     */
+    func tagShouldBeDisplayed(_ tag: Tag) -> Bool {
+        if let tagName = tag.name {
+            if tagName.lowercased().contains(self.tagText.lowercased()) || self.tagText.count == 0 {
+                return true
+            }
+        }
+        return false
+    }
+    
     
     var body: some View {
         
@@ -43,7 +58,7 @@ struct AddTagPopup: View {
                     Spacer()
                     
                     Button(action: {
-                        if let closureErrorMessage = addTag(self.tag) {
+                        if let closureErrorMessage = addTag(self.tagText) {
                             self.errorMessage = closureErrorMessage
                         } else {
                             isBeingPresented = false
@@ -56,7 +71,7 @@ struct AddTagPopup: View {
                 }
             }
             
-            TextField("Tag name", text: self.$tag)
+            TextField("Tag name", text: self.$tagText)
                 .padding(10)
                 .foregroundColor(Color.init("default-disabled-text-colors"))
                 .border(Color.init("default-border-colors"), width: 2)
@@ -68,18 +83,13 @@ struct AddTagPopup: View {
             }
             
             // tagsFetch is filtered for Tag names containing the TextField's value
-            List(tagsFetch.filter{ tag in
-                if let tagName = tag.name {
-                    if tagName.lowercased().contains(self.tag.lowercased()) || self.tag.count == 0 {
-                        return true
-                    }
-                }
-                return false
+            List(tagsFetch.filter{
+                tagShouldBeDisplayed($0)
             }, id: \.self) { tag in
                 if let tagName = tag.name {
                     Button(tagName) {
                         // Sets the TextField value to the tapped Tag
-                        self.tag = tagName
+                        self.tagText = tagName
                     }
                 }
             }
