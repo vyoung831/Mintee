@@ -7,12 +7,18 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct AddTagPopup: View {
     
     @State var tag: String = ""
     @Binding var isBeingPresented: Bool
     @State var errorMessage: String = ""
+    
+    @FetchRequest(
+        entity: Tag.entity(),
+        sortDescriptors: [NSSortDescriptor(key: #keyPath(Tag.name), ascending: true)]
+    ) var tagsFetch: FetchedResults<Tag>
     
     // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
     var addTag: (String) -> String?
@@ -59,6 +65,23 @@ struct AddTagPopup: View {
             if errorMessage.count > 0 {
                 Text(errorMessage)
                     .foregroundColor(.red)
+            }
+            
+            // tagsFetch is filtered for Tag names containing the TextField's value
+            List(tagsFetch.filter{ tag in
+                if let tagName = tag.name {
+                    if tagName.lowercased().contains(self.tag.lowercased()) || self.tag.count == 0 {
+                        return true
+                    }
+                }
+                return false
+            }, id: \.self) { tag in
+                if let tagName = tag.name {
+                    Button(tagName) {
+                        // Sets the TextField value to the tapped Tag
+                        self.tag = tagName
+                    }
+                }
             }
             
             Spacer()

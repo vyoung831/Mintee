@@ -32,7 +32,7 @@ struct TagsSection: View {
                     .accessibility(label: Text("Add"))
                     .accessibility(hint: Text("Tap to add a tag"))
             })
-            .popover(isPresented: self.$isPresentingAddTagPopup, content: {
+            .sheet(isPresented: self.$isPresentingAddTagPopup, content: {
                 AddTagPopup(isBeingPresented: self.$isPresentingAddTagPopup, addTag: { newTagName in
                     if tags.contains(where: {$0.lowercased() == newTagName.lowercased()}) {
                         return "Tag \(newTagName) already exists for this task"
@@ -41,7 +41,7 @@ struct TagsSection: View {
                         tags.sort()
                         return nil
                     }
-                })
+                }).environment(\.managedObjectContext, CDCoordinator.moc)
             })
             
         }
