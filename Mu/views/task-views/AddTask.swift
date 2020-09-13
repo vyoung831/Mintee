@@ -21,7 +21,7 @@ struct AddTask: View {
     @State var taskName: String = ""
     @State var taskType: SaveFormatter.taskType = .recurring
     @State var errorMessage: String = ""
-    @State var tags: [String] = ["Tag1","Tag4","Tag3"]
+    @State var tags: [String] = []
     
     // For recurring Tasks
     @State var startDate: Date = Date()
@@ -142,28 +142,7 @@ struct AddTask: View {
                 
                 // MARK: - Tags
                 
-                Group {
-                    HStack {
-                        Text("Tags")
-                            .bold()
-                            .accessibility(identifier: "tags-section-label")
-                            .accessibility(label: Text("Tags"))
-                            .accessibility(addTraits: .isHeader)
-                        Image(systemName: "plus")
-                            .accessibility(identifier: "add-tag-button")
-                            .accessibility(label: Text("Add"))
-                            .accessibility(hint: Text("Tap to add a tag"))
-                        
-                    }
-                    ForEach(self.tags,id: \.description) { tag in
-                        Text(tag)
-                            .padding(.all, 8)
-                            .foregroundColor(.white)
-                            .background(Color.black)
-                            .accessibility(identifier: "tag")
-                            .accessibility(value: Text("\(tag)"))
-                    }
-                }
+                TagsSection(tags: self.$tags)
                 
                 // MARK: - Task type
                 

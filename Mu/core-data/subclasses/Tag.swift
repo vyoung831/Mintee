@@ -24,6 +24,7 @@ public class Tag: NSManagedObject {
             self.name = tagName
         } else {
             fatalError("Unable to find Entity")
+            exit(-1)
         }
     }
     
