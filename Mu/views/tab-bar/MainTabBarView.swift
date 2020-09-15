@@ -11,6 +11,9 @@ import SwiftUI
 struct MainTabBarView: View {
     var body: some View {
         TabView {
+            SettingsView().tabItem {
+                Text("Settings")
+            }
             TodayView().tabItem {
                 Text("Today")
             }
@@ -19,9 +22,6 @@ struct MainTabBarView: View {
             }
             ManageView().tabItem {
                 Text("Manage")
-            }
-            SettingsView().tabItem {
-                Text("Settings")
             }
         }
     }
