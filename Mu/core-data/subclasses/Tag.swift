@@ -23,7 +23,6 @@ public class Tag: NSManagedObject {
             self.init(entity: entity, insertInto: CDCoordinator.moc)
             self.name = tagName
         } else {
-            fatalError("Unable to find Entity")
             exit(-1)
         }
     }

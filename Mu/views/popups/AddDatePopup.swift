@@ -25,22 +25,22 @@ struct AddDatePopup: View {
             }
             .navigationBarTitle("Add Date")
             .navigationBarItems(leading:
-                                    Button(action: {
-                                        isBeingPresented = false
-                                    }, label: {
-                                        Text("Cancel")
-                                    })
-                                    .accessibility(identifier: "add-date-popup-cancel-button")
-                                    .accessibility(hint: Text("Tap to cancel date selection")),
+                Button(action: {
+                    self.isBeingPresented = false
+                }, label: {
+                    Text("Cancel")
+                })
+                    .accessibility(identifier: "add-date-popup-cancel-button")
+                    .accessibility(hint: Text("Tap to cancel date selection")),
                                 trailing:
-                                    Button(action: {
-                                        addDate(self.date)
-                                        isBeingPresented = false
-                                    }, label: {
-                                        Text("Done")
-                                    })
-                                    .accessibility(identifier: "add-date-popup-done-button")
-                                    .accessibility(label: Text("Tap to finish adding date")))
+                Button(action: {
+                    self.addDate(self.date)
+                    self.isBeingPresented = false
+                }, label: {
+                    Text("Done")
+                })
+                    .accessibility(identifier: "add-date-popup-done-button")
+                    .accessibility(label: Text("Tap to finish adding date")))
         }
         
     }

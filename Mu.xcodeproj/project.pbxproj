@@ -303,6 +303,7 @@
 		C405FA0224F15BE200F6A547 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				C42CE5E82515639A00044AC7 /* main-view-tests */,
 				C4C5FDE3250E7173004FAE47 /* popup-tests */,
 				C46C2BD72505DF1A000320B4 /* representable-tests */,
 				C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */,
@@ -340,6 +341,13 @@
 				C41D107724BDCBA800549CA1 /* DayBubbleLabels.swift */,
 			);
 			path = constants;
+			sourceTree = "<group>";
+		};
+		C42CE5E82515639A00044AC7 /* main-view-tests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "main-view-tests";
 			sourceTree = "<group>";
 		};
 		C430EEAA24BF820400BD98FD /* task-target-set-popup-ui-tests */ = {
@@ -630,7 +638,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Vincent Young";
 				TargetAttributes = {
 					C4037A9324342E1F00150D47 = {
@@ -833,6 +841,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -893,6 +902,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

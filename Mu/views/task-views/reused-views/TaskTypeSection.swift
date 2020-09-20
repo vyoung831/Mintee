@@ -24,13 +24,13 @@ struct TaskTypeSection: View {
                 .bold()
             
             ForEach(0 ..< self.taskTypes.count, id: \.self) { idx in
-                Button(taskTypes[idx].rawValue, action: {
+                Button(self.taskTypes[idx].rawValue, action: {
                     self.taskType = self.taskTypes[idx]
                 })
-                .padding(12)
-                .foregroundColor(taskTypes[idx] == self.taskType ? Color("default-button-text-colors") : Color("default-disabled-text-colors"))
-                .background(taskTypes[idx] == self.taskType ? Color("default-button-colors") : Color.clear )
-                .cornerRadius(3)
+                    .padding(12)
+                    .foregroundColor(self.taskTypes[idx] == self.taskType ? Color("default-button-text-colors") : Color("default-disabled-text-colors"))
+                    .background(self.taskTypes[idx] == self.taskType ? Color("default-button-colors") : Color.clear )
+                    .cornerRadius(3)
             }
             
         }

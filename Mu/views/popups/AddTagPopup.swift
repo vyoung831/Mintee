@@ -45,7 +45,7 @@ struct AddTagPopup: View {
             Group {
                 HStack {
                     Button(action: {
-                        isBeingPresented = false
+                        self.isBeingPresented = false
                     }, label: {
                         Text("Cancel")
                     })
@@ -58,10 +58,10 @@ struct AddTagPopup: View {
                     Spacer()
                     
                     Button(action: {
-                        if let closureErrorMessage = addTag(self.tagText) {
+                        if let closureErrorMessage = self.addTag(self.tagText) {
                             self.errorMessage = closureErrorMessage
                         } else {
-                            isBeingPresented = false
+                            self.isBeingPresented = false
                         }
                     }, label: {
                         Text("Done")

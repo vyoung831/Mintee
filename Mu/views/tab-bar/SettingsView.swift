@@ -10,21 +10,81 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    var cards: [SettingsViewCard] = [SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation1"),
+                                     SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation2"),
+                                     SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation3"),
+                                     SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation4"),
+                                     SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation5"),
+                                     SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation6"),
+                                     SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation7")]
+    
+    let collectionVerticalPadding: CGFloat = 25
+    let minHStackSpacing: CGFloat = 25
+    
+    @State var hStackSpacing: CGFloat = 1
+    @State var cardWidth: CGFloat = 100
+    @State var cardsPerRow: Int = 1
+    
     var body: some View {
         
         NavigationView {
             ScrollView(.vertical, showsIndicators: true, content: {
-                HStack(alignment: .center, spacing: 25) {
-                    SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation")
-                        .frame(width: 100, height: 150, alignment: .center)
+                
+                GeometryReader { gr in
                     
-                    SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation")
-                        .frame(width: 100, height: 150, alignment: .center)
-                    
-                    SettingsViewCard(icon: Image(systemName: "paintbrush"),label: "Presentation")
-                        .frame(width: 100, height: 150, alignment: .center)
+                    VStack {
+                        ForEach(0 ..< Int( ceil(Double(self.cards.count)/Double(self.cardsPerRow)) ), id: \.self) { row in
+                            
+                            HStack(spacing: self.hStackSpacing) {
+                                ForEach(0 ..< self.cardsPerRow, id: \.self) { card in
+                                    if self.cards.count - 1 >= (row * self.cardsPerRow + card) {
+                                        self.cards[row * self.cardsPerRow + card]
+                                            .frame(width: self.cardWidth,
+                                                   height: self.cardWidth * 1.5,
+                                                   alignment: .center)
+                                    }
+                                }
+                                Spacer()
+                            }
+                            .padding(EdgeInsets(top: 0, leading: self.hStackSpacing, bottom: 0, trailing: self.hStackSpacing))
+                            .frame(height: 150)
+                        }
+                    }
+                    .padding(EdgeInsets(top: self.collectionVerticalPadding, leading: 0, bottom: self.collectionVerticalPadding, trailing: 0))
+                    .preference(key: SettingsMockCollectionWidth.self, value: gr.size.width)
+                    .onPreferenceChange(SettingsMockCollectionWidth.self) { width in
+                        
+                        let widthAvailable = (width - 2 * minHStackSpacing)
+                        if self.cardWidth >= widthAvailable {
+                            
+                            /*
+                             If the default cardWidth is greater than the width available (minus the minimum hstackSpacing on either side of each row), do the following:
+                             - Shrink the cardWidth
+                             - Set the hstackSpacing (used as padding) to the minimum
+                             */
+                            self.cardsPerRow = 1
+                            self.cardWidth = widthAvailable
+                            self.hStackSpacing = minHStackSpacing
+                            
+                        } else {
+                            
+                            /*
+                             Find the max number of cards that can fit in each row with the minimum hstackSpacing
+                             Then using the cards per row, find the average of the remaining space to assign to hstackSpacing
+                             As a result, the mock collectionView's horizontal spacing and padding are equal
+                             */
+                            self.cardsPerRow = Int(floor((widthAvailable - self.cardWidth) / (self.cardWidth + self.minHStackSpacing)) + 1)
+                            if self.cardsPerRow == 1 {
+                                // If only one card can fit, adjust the hstackSpacing
+                                self.hStackSpacing = (width - self.cardWidth) / 2
+                            } else {
+                                let totalSpacingAvailable = width - CGFloat(self.cardsPerRow) * self.cardWidth
+                                self.hStackSpacing = totalSpacingAvailable / (CGFloat(self.cardsPerRow) + 1)
+                            }
+                            
+                        }
+                    }
                 }
-                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 35)
             })
             .navigationBarTitle("Settings")
         }
@@ -60,10 +120,10 @@ struct SettingsViewCard: View {
             GeometryReader { gr in
                 HStack {
                     Spacer()
-                    icon
+                    self.icon
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: maxIconWidth, minHeight: gr.size.height, maxHeight: gr.size.height)
+                        .frame(maxWidth: self.maxIconWidth, minHeight: gr.size.height, maxHeight: gr.size.height)
                     Spacer()
                 }
             }
@@ -76,11 +136,19 @@ struct SettingsViewCard: View {
                 .layoutPriority(1)
             
         }
-        .foregroundColor(.white)
+        .foregroundColor(.black)
         .padding(cardPadding)
-        .border(Color.white, width: borderThickness)
+        .border(Color.black, width: borderThickness)
         .cornerRadius(cornerRadius)
         
     }
     
+}
+
+struct SettingsMockCollectionWidth: PreferenceKey {
+    typealias Value = CGFloat
+    
+    static var defaultValue: CGFloat = CGFloat(0)
+    
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { }
 }
