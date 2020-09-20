@@ -136,9 +136,9 @@ struct SettingsViewCard: View {
                 .layoutPriority(1)
             
         }
-        .foregroundColor(.black)
+        .foregroundColor(Color.init("default-panel-text-colors"))
         .padding(cardPadding)
-        .border(Color.black, width: borderThickness)
+        .border(Color.init("default-panel-text-colors"), width: borderThickness)
         .cornerRadius(cornerRadius)
         
     }
