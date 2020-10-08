@@ -37,7 +37,6 @@ struct AddTagPopup: View {
         return false
     }
     
-    
     var body: some View {
         
         VStack(alignment: .center, spacing: 30) {
