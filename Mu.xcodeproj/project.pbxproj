@@ -74,6 +74,7 @@
 		C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */; };
 		C4C961C6250A432000C7EEEA /* DayBubbleLabelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabelsTests.swift */; };
 		C4D618ED252E9A65009A9751 /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618EC252E9A65009A9751 /* SettingsViewTests.swift */; };
+		C4D618F8252EA085009A9751 /* SettingsPresentationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */; };
 		C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */; };
 		C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */; };
@@ -181,6 +182,7 @@
 		C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddTagPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBubbleLabelsTests.swift; sourceTree = "<group>"; };
 		C4D618EC252E9A65009A9751 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
+		C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationDetailView.swift; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTests.swift; sourceTree = "<group>"; };
 		C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopup.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				C416E6BE251808000063309F /* SettingsPresentationView.swift */,
+				C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */,
 			);
 			path = "settings-views";
 			sourceTree = "<group>";
@@ -732,6 +735,7 @@
 				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
+				C4D618F8252EA085009A9751 /* SettingsPresentationDetailView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry.swift in Sources */,

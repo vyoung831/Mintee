@@ -17,6 +17,7 @@ struct SettingsView: View {
     let rowSpacing: CGFloat = 20
     let itemSpacing: CGFloat = 15
     let gridHorizontalPadding: CGFloat = 25
+    let gridVerticalPadding: CGFloat = 25
     
     let cardHeightMultiplier: CGFloat = 1.5
     let minItemWidth: CGFloat = 85
@@ -87,7 +88,6 @@ struct SettingsView: View {
                 if gr.size.width > 0 {
                     
                     ScrollView(.vertical, showsIndicators: true) {
-                        
                         LazyVGrid(columns: getVGridLayout(totalWidth: gr.size.width),
                                   alignment: .center,
                                   spacing: self.rowSpacing) {
@@ -98,8 +98,7 @@ struct SettingsView: View {
                                            alignment: .center)
                             }
                         }
-                        .padding(EdgeInsets(top: 0, leading: self.gridHorizontalPadding, bottom: 0, trailing: self.gridHorizontalPadding) )
-                        
+                        .padding(EdgeInsets(top: self.gridVerticalPadding, leading: self.gridHorizontalPadding, bottom: self.gridVerticalPadding, trailing: self.gridHorizontalPadding) )
                     }
                 }
             }
