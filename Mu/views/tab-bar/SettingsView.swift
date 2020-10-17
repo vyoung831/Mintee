@@ -120,6 +120,8 @@ struct SettingsViewCard<Content: View>: View {
     let icon: Image
     let label: String
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         NavigationLink(destination: self.targetView ) {
@@ -156,9 +158,9 @@ struct SettingsViewCard<Content: View>: View {
                     .layoutPriority(1)
                 
             }
-            .foregroundColor(Color.init("default-panel-text-colors"))
+            .foregroundColor(themeManager.collectionItem)
             .padding(cardPadding)
-            .border(Color.init("default-panel-text-colors"), width: borderThickness)
+            .border(themeManager.collectionItemBorder, width: borderThickness)
             .cornerRadius(cornerRadius)
             
         }

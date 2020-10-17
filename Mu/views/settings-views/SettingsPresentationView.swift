@@ -12,7 +12,7 @@ struct SettingsPresentationView: View {
     
     // MARK: - Color Theme
     
-    @EnvironmentObject var themeManager: ThemeManager
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     // MARK: - Presentation Settings
     

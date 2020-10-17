@@ -22,6 +22,8 @@ struct ConfirmDeletePopup: View {
     var delete: () -> ()
     @Binding var isBeingPresented: Bool
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         VStack(alignment: .center, spacing: vstackSpacing) {
@@ -67,7 +69,7 @@ struct ConfirmDeletePopup: View {
                         Text("No")
                             .frame(width: min((geometry.size.width - self.hstackSpacing)/2,75))
                             .padding(.all, 10)
-                            .background(Color.init("default-button-colors"))
+                            .background(themeManager.button)
                             .foregroundColor(Color.init("default-button-text-colors"))
                             .cornerRadius(5)
                     })

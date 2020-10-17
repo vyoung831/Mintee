@@ -26,6 +26,9 @@ class ThemeManager: NSObject, ObservableObject {
     enum ThemedUIElement: String, CaseIterable {
         case panel = "panel"
         case panelContent = "panelContent"
+        case button = "button"
+        case textFieldBorder = "textFieldBorder"
+        case disabledTextField = "disabledTextField"
         case collectionItem = "collectionItem"
         case collectionItemBorder = "collectionItemBorder"
         case collectionItemContent = "collectionItemContent"
@@ -39,12 +42,21 @@ class ThemeManager: NSObject, ObservableObject {
         return tms
     }()
     
-    // Published variables to be used by Views. Views that interact with ThemeManager should read from the Published Colors, and save to UserDefaults by setting theme.
-    @Published var panelColor: Color
-    @Published var panelContentColor: Color
-    @Published var collectionItemColor: Color
-    @Published var collectionItemBorderColor: Color
-    @Published var collectionItemContentColor: Color
+    /*
+     * Published variables to be used by Views. Views that interact with ThemeManager should read from the Published Colors, and save to UserDefaults by setting theme.
+     */
+    @Published var panel: Color
+    @Published var panelContent: Color
+    
+    @Published var button: Color
+    
+    @Published var textFieldBorder: Color
+    @Published var disabledTextField: Color
+    
+    @Published var collectionItem: Color
+    @Published var collectionItemBorder: Color
+    @Published var collectionItemContent: Color
+    
     @Published var theme: String {
         didSet {
             UserDefaults.standard.setValue(theme,
@@ -66,11 +78,14 @@ class ThemeManager: NSObject, ObservableObject {
         }
         self.theme = savedTheme.rawValue
         
-        panelColor = ThemeManager.getElementColor(.panel, savedTheme)
-        panelContentColor = ThemeManager.getElementColor(.panelContent, savedTheme)
-        collectionItemColor = ThemeManager.getElementColor(.collectionItem, savedTheme)
-        collectionItemBorderColor = ThemeManager.getElementColor(.collectionItemBorder, savedTheme)
-        collectionItemContentColor = ThemeManager.getElementColor(.collectionItemContent, savedTheme)
+        self.panel = ThemeManager.getElementColor(.panel, savedTheme)
+        self.panelContent = ThemeManager.getElementColor(.panelContent, savedTheme)
+        self.button = ThemeManager.getElementColor(.button, savedTheme)
+        self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, savedTheme)
+        self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, savedTheme)
+        self.collectionItem = ThemeManager.getElementColor(.collectionItem, savedTheme)
+        self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, savedTheme)
+        self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, savedTheme)
         super.init()
     }
     
@@ -87,11 +102,14 @@ class ThemeManager: NSObject, ObservableObject {
         guard let unwrappedChanges = change else { return }
         if let newKey = unwrappedChanges[.newKey] as? String {
             if let newTheme = ThemeManager.Theme.init(rawValue: newKey) {
-                panelColor = ThemeManager.getElementColor(.panel, newTheme)
-                panelContentColor = ThemeManager.getElementColor(.panelContent, newTheme)
-                collectionItemColor = ThemeManager.getElementColor(.collectionItem, newTheme)
-                collectionItemBorderColor = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
-                collectionItemContentColor = ThemeManager.getElementColor(.collectionItemContent, newTheme)
+                self.panel = ThemeManager.getElementColor(.panel, newTheme)
+                self.panelContent = ThemeManager.getElementColor(.panelContent, newTheme)
+                self.button = ThemeManager.getElementColor(.button, newTheme)
+                self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, newTheme)
+                self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, newTheme)
+                self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
+                self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
+                self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
             } else {
                 print("ThemeManager observed a change to \"Theme\" in UserDefaults that could not be converted to a value of type Theme")
             }
@@ -112,7 +130,7 @@ class ThemeManager: NSObject, ObservableObject {
         case .ocean:
             return Color("theme-ocean-\(element.rawValue)")
         case .system:
-            return .clear
+            return .primary
         }
     }
     

@@ -23,6 +23,8 @@ struct AddTagPopup: View {
     // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
     var addTag: (String) -> String?
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     /**
      Compares a Tag's name to the content in the tag name TextField and determines if the Tag should be displayed to the user to be selected
      - parameter tag: Tag to evaluate
@@ -72,8 +74,7 @@ struct AddTagPopup: View {
             
             TextField("Tag name", text: self.$tagText)
                 .padding(10)
-                .foregroundColor(Color.init("default-disabled-text-colors"))
-                .border(Color.init("default-border-colors"), width: 2)
+                .border(themeManager.textFieldBorder, width: 2)
                 .cornerRadius(3)
             
             if errorMessage.count > 0 {

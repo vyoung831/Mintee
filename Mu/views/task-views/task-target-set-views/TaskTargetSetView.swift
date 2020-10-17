@@ -40,6 +40,10 @@ struct TaskTargetSetView: View {
     var edit: () -> () = {}
     var delete: () -> () = {}
     
+    // MARK: - Environment Objects
+    
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     // MARK: - UI functions
     
     /**
@@ -168,7 +172,7 @@ struct TaskTargetSetView: View {
         }
         .foregroundColor(Color("default-panel-text-colors"))
         .padding(vStackPadding)
-        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.black, lineWidth: borderWidth))
+        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(themeManager.collectionItemBorder, lineWidth: borderWidth))
         .background( Color("default-panel-colors") )
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
