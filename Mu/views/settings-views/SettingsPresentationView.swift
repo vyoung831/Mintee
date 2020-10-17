@@ -12,13 +12,7 @@ struct SettingsPresentationView: View {
     
     // MARK: - Color Theme
     
-    @AppStorage(PresentationOption.theme.rawValue) var theme: String = ""
-    enum Theme: String, CaseIterable {
-        case system = "System Default"
-        case cyber = "Cyber"
-        case jungle = "Jungle"
-        case ocean = "Ocean"
-    }
+    @EnvironmentObject var themeManager: ThemeManager
     
     // MARK: - Presentation Settings
     
@@ -34,7 +28,7 @@ struct SettingsPresentationView: View {
     static func getPossibleOptions(option: PresentationOption) -> [String] {
         switch option {
         case .theme:
-            return Theme.allCases.map{ $0.rawValue }
+            return ThemeManager.Theme.allCases.map{ $0.rawValue }
         }
     }
     
@@ -46,7 +40,7 @@ struct SettingsPresentationView: View {
     func getUserDefaultBinding(_ option: PresentationOption) -> Binding<String> {
         switch option {
         case .theme:
-            return self.$theme
+            return $themeManager.theme
         }
     }
     

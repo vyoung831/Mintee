@@ -10,10 +10,11 @@ import SwiftUI
 
 struct SettingsPresentationDetailView: View {
     
+    // The name of the key saved to UserDefaults and its possible values
     var option: String
     var values: [String]
     
-    // Binding to value saved to UserDefaults. Value that the parent sets should have the @AppStorage wrapper
+    // Binding to the current value saved to UserDefaults under option
     @Binding var savedValue: String
     
     var body: some View {
