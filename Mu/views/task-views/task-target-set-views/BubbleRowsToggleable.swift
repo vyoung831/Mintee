@@ -25,6 +25,8 @@ struct BubbleRowsToggleable: View {
     @Binding var selectedBubbles: Set<String>
     @State var grHeight: CGFloat = 0
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     // MARK: - UI functions
     
     /**
@@ -84,13 +86,13 @@ struct BubbleRowsToggleable: View {
                             ZStack {
                                 Circle()
                                     .foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                        ? .blue : .clear)
+                                                        ? themeManager.button : .clear)
                                     .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
                                     .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                            height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                            alignment: .center)
                                 Text(String(bubbleText)).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                    ? .white : Color("default-panel-text-colors"))
+                                                                            ? themeManager.buttonText : themeManager.button)
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
                             .accessibility(label: Text("\(DayBubbleLabels.getLongLabel(bubbleText))"))

@@ -28,6 +28,7 @@ class ThemeManager: NSObject, ObservableObject {
         case panel = "panel"
         case panelContent = "panelContent"
         case button = "button"
+        case buttonText = "buttonText"
         case textFieldBorder = "textFieldBorder"
         case disabledTextField = "disabledTextField"
         case collectionItem = "collectionItem"
@@ -47,6 +48,7 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var panelContent: Color
     
     @Published var button: Color
+    @Published var buttonText: Color
     
     @Published var textFieldBorder: Color
     @Published var disabledTextField: Color
@@ -74,6 +76,7 @@ class ThemeManager: NSObject, ObservableObject {
         self.panel = ThemeManager.getElementColor(.panel, savedTheme)
         self.panelContent = ThemeManager.getElementColor(.panelContent, savedTheme)
         self.button = ThemeManager.getElementColor(.button, savedTheme)
+        self.buttonText = ThemeManager.getElementColor(.buttonText, savedTheme)
         self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, savedTheme)
         self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, savedTheme)
         self.collectionItem = ThemeManager.getElementColor(.collectionItem, savedTheme)
@@ -98,6 +101,7 @@ class ThemeManager: NSObject, ObservableObject {
                 self.panel = ThemeManager.getElementColor(.panel, newTheme)
                 self.panelContent = ThemeManager.getElementColor(.panelContent, newTheme)
                 self.button = ThemeManager.getElementColor(.button, newTheme)
+                self.buttonText = ThemeManager.getElementColor(.buttonText, newTheme)
                 self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, newTheme)
                 self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, newTheme)
                 self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)

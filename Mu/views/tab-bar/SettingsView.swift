@@ -23,6 +23,8 @@ struct SettingsView: View {
     let minItemWidth: CGFloat = 85
     @State var itemWidth: CGFloat = 100
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     /**
      Returns the exact item width (of equal width) needed to fill a row.
      This function uses SettingsView's itemSpacing constant for intra-item spacing
@@ -102,6 +104,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .background(themeManager.panel)
             .navigationTitle(Text("Settings"))
         }
         
@@ -158,11 +161,11 @@ struct SettingsViewCard<Content: View>: View {
                     .layoutPriority(1)
                 
             }
-            .foregroundColor(themeManager.collectionItem)
             .padding(cardPadding)
             .border(themeManager.collectionItemBorder, width: borderThickness)
             .cornerRadius(cornerRadius)
-            
+            .foregroundColor(themeManager.collectionItemContent)
+            .background(themeManager.collectionItem)
         }
     }
     

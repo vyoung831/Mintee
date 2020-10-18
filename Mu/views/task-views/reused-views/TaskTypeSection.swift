@@ -16,6 +16,8 @@ struct TaskTypeSection: View {
     var taskTypes: [SaveFormatter.taskType]
     @Binding var taskType: SaveFormatter.taskType
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 7) {
@@ -27,10 +29,10 @@ struct TaskTypeSection: View {
                 Button(self.taskTypes[idx].rawValue, action: {
                     self.taskType = self.taskTypes[idx]
                 })
-                    .padding(12)
-                    .foregroundColor(self.taskTypes[idx] == self.taskType ? Color("default-button-text-colors") : Color("default-disabled-text-colors"))
-                    .background(self.taskTypes[idx] == self.taskType ? Color("default-button-colors") : Color.clear )
-                    .cornerRadius(3)
+                .padding(12)
+                .foregroundColor(self.taskTypes[idx] == self.taskType ? themeManager.buttonText : themeManager.panelContent)
+                .background(self.taskTypes[idx] == self.taskType ? themeManager.button : Color.clear )
+                .cornerRadius(3)
             }
             
         }

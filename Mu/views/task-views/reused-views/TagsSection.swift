@@ -13,6 +13,8 @@ struct TagsSection: View {
     @State var isPresentingAddTagPopup: Bool = false
     @Binding var tags: [String]
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         VStack{
             
@@ -29,7 +31,7 @@ struct TagsSection: View {
                     Image(systemName: "plus.circle")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(Color("default-panel-icon-colors"))
+                        .foregroundColor(themeManager.panelContent)
                         .accessibility(identifier: "add-tag-button")
                         .accessibility(label: Text("Add"))
                         .accessibility(hint: Text("Tap to add a tag"))
@@ -56,15 +58,15 @@ struct TagsSection: View {
                         self.tags.remove(at: idx)
                     }, label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(Color("default-button-text-colors"))
+                            .foregroundColor(themeManager.buttonText)
                     })
                         .accessibility(identifier: "tag-remove-button")
                         .accessibility(label: Text("Remove tag"))
                         .accessibility(hint: Text("Tap to remove tag"))
                 }
                 .padding(12)
-                .foregroundColor(Color("default-button-text-colors"))
-                .background(Color("default-button-colors"))
+                .foregroundColor(themeManager.buttonText)
+                .background(themeManager.button)
                 .cornerRadius(3)
                 .accessibility(identifier: "tag")
                 .accessibilityElement(children: .combine)

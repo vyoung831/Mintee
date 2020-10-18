@@ -17,6 +17,8 @@ struct TaskTargetSetSection: View {
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -30,7 +32,7 @@ struct TaskTargetSetSection: View {
                     Image(systemName: "plus.circle")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(Color("default-panel-icon-colors"))
+                        .foregroundColor(themeManager.panelContent)
                         .accessibility(identifier: "add-task-target-set-button")
                         .accessibility(label: Text("Add"))
                         .accessibility(hint: Text("Tap to add a target set"))

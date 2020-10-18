@@ -70,7 +70,7 @@ struct ConfirmDeletePopup: View {
                             .frame(width: min((geometry.size.width - self.hstackSpacing)/2,75))
                             .padding(.all, 10)
                             .background(themeManager.button)
-                            .foregroundColor(Color.init("default-button-text-colors"))
+                            .foregroundColor(themeManager.buttonText)
                             .cornerRadius(5)
                     })
                     

@@ -226,5 +226,7 @@ struct EditTask: View {
             })
             .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
+        .background(themeManager.panel)
+        .foregroundColor(themeManager.panelContent)
     }
 }

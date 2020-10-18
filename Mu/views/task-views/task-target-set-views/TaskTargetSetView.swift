@@ -115,7 +115,7 @@ struct TaskTargetSetView: View {
                         self.moveUp()
                     }, label: {
                         Image(systemName: "arrowtriangle.up.circle.fill")
-                            .foregroundColor(Color("default-panel-icon-colors"))
+                            .foregroundColor(themeManager.collectionItemContent)
                         
                     })
                     .accessibility(identifier: "task-target-set-view-up-button")
@@ -126,7 +126,7 @@ struct TaskTargetSetView: View {
                         self.moveDown()
                     }, label: {
                         Image(systemName: "arrowtriangle.down.circle.fill")
-                            .foregroundColor(Color("default-panel-icon-colors"))
+                            .foregroundColor(themeManager.collectionItemContent)
                         
                     })
                     .accessibility(identifier: "task-target-set-view-down-button")
@@ -139,7 +139,7 @@ struct TaskTargetSetView: View {
                         self.delete()
                     }, label: {
                         Image(systemName: "trash")
-                            .foregroundColor(Color("default-panel-icon-colors"))
+                            .foregroundColor(themeManager.collectionItemContent)
                     })
                     .accessibility(identifier: "task-target-set-view-delete-button")
                     .accessibility(label: Text("Delete target set"))
@@ -170,10 +170,10 @@ struct TaskTargetSetView: View {
             }
             
         }
-        .foregroundColor(Color("default-panel-text-colors"))
+        .foregroundColor(themeManager.collectionItemContent)
         .padding(vStackPadding)
         .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(themeManager.collectionItemBorder, lineWidth: borderWidth))
-        .background( Color("default-panel-colors") )
+        .background( themeManager.collectionItem )
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
         .accessibilityElement(children: .combine)
