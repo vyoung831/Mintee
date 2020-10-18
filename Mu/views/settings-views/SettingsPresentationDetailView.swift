@@ -17,6 +17,8 @@ struct SettingsPresentationDetailView: View {
     // Binding to the current value saved to UserDefaults under option
     @Binding var savedValue: String
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         List(self.values, id: \.self) { value in

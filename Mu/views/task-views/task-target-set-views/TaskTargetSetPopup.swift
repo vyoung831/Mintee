@@ -240,7 +240,8 @@ struct TaskTargetSetPopup: View {
                         .keyboardType( .decimalPad )
                         .padding(10)
                         .border(themeManager.textFieldBorder, width: 2)
-                        .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : .clear)
+                        .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : .white)
+                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .black)
                         .cornerRadius(3)
                         .accessibility(identifier: "minimum-value")
                         .accessibility(label: Text("Minimum"))
@@ -267,7 +268,8 @@ struct TaskTargetSetPopup: View {
                         .keyboardType( .decimalPad )
                         .padding(10)
                         .border(themeManager.textFieldBorder, width: 2)
-                        .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : .clear)
+                        .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : .white)
+                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .black)
                         .cornerRadius(3)
                         .accessibility(identifier: "maximum-value")
                         .accessibility(label: Text("Maximum"))
@@ -275,6 +277,9 @@ struct TaskTargetSetPopup: View {
                     
                 }.labelsHidden()
             }
-        }).padding(15)
+        })
+        .padding(15)
+        .background(themeManager.panel)
+        .foregroundColor(themeManager.panelContent)
     }
 }

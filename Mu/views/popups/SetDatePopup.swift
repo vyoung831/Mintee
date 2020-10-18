@@ -17,6 +17,8 @@ struct SetDatePopup: View {
     var isStartDate: Bool = false
     var label: String?
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         NavigationView {

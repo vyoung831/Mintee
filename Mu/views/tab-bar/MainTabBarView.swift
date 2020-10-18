@@ -11,17 +11,11 @@ import SwiftUI
 struct MainTabBarView: View {
     var body: some View {
         TabView {
-            SettingsView().tabItem {
-                Text("Settings")
-            }
             TodayView().tabItem {
                 Text("Today")
             }
-            AnalysisView().tabItem {
-                Text("Analysis")
-            }
-            ManageView().tabItem {
-                Text("Manage")
+            SettingsView().tabItem {
+                Text("Settings")
             }
         }
     }

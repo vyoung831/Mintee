@@ -31,6 +31,7 @@ class ThemeManager: NSObject, ObservableObject {
         case buttonText = "buttonText"
         case textFieldBorder = "textFieldBorder"
         case disabledTextField = "disabledTextField"
+        case disabledTextFieldText = "disabledTextFieldText"
         case collectionItem = "collectionItem"
         case collectionItemBorder = "collectionItemBorder"
         case collectionItemContent = "collectionItemContent"
@@ -52,6 +53,7 @@ class ThemeManager: NSObject, ObservableObject {
     
     @Published var textFieldBorder: Color
     @Published var disabledTextField: Color
+    @Published var disabledTextFieldText: Color
     
     @Published var collectionItem: Color
     @Published var collectionItemBorder: Color
@@ -79,6 +81,7 @@ class ThemeManager: NSObject, ObservableObject {
         self.buttonText = ThemeManager.getElementColor(.buttonText, savedTheme)
         self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, savedTheme)
         self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, savedTheme)
+        self.disabledTextFieldText = ThemeManager.getElementColor(.disabledTextFieldText, savedTheme)
         self.collectionItem = ThemeManager.getElementColor(.collectionItem, savedTheme)
         self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, savedTheme)
         self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, savedTheme)
@@ -104,6 +107,7 @@ class ThemeManager: NSObject, ObservableObject {
                 self.buttonText = ThemeManager.getElementColor(.buttonText, newTheme)
                 self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, newTheme)
                 self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, newTheme)
+                self.disabledTextFieldText = ThemeManager.getElementColor(.disabledTextFieldText, newTheme)
                 self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
                 self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
                 self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)

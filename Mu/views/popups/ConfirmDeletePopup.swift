@@ -78,5 +78,7 @@ struct ConfirmDeletePopup: View {
             }
         }
         .padding(vstackPadding)
+        .background(themeManager.panel)
+        .foregroundColor(themeManager.panelContent)
     }
 }

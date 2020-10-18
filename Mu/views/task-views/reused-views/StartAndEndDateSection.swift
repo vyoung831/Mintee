@@ -23,7 +23,7 @@ struct StartAndEndDateSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15, content: {
-            Text("Dates")
+            Text("Start and End Date")
                 .bold()
             
             /*
@@ -35,6 +35,7 @@ struct StartAndEndDateSection: View {
                 self.isPresentingSetStartDatePopup = true
             }, label: {
                 Text(startDateLabel + Date.toMDYPresent(self.startDate))
+                    .foregroundColor(.accentColor)
             })
             .popover(isPresented: self.$isPresentingSetStartDatePopup, content: {
                         SetDatePopup.init(
@@ -49,6 +50,7 @@ struct StartAndEndDateSection: View {
                 self.isPresentingSetEndDatePopup = true
             }, label: {
                 Text(endDateLabel + Date.toMDYPresent(self.endDate))
+                    .foregroundColor(.accentColor)
             })
             .popover(isPresented: self.$isPresentingSetEndDatePopup, content: {
                         SetDatePopup.init(
