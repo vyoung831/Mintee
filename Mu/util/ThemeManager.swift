@@ -2,9 +2,10 @@
 //  ThemeManager.swift
 //  Mu
 //
-//  ThemeManager is used to hold the latest theme values from UserDefaults
-//  At app startup, SceneDelegate injects a shared instance of ThemeManager that SwiftUI Views can retrieve theme variables from
-//  The shared ThemeManager is registered with UserDefaults to observe the keyPath "Theme". Changes to "Theme" in UserDefaults result in update to @Published variables of type Color.
+//  A shared instance of ThemeManager is used to hold, update, and read values from UserDefaults
+//  When "Theme" is changed in UserDefaults, ThemeManager does the following:
+//  - Posts a .themeChanged Notification that UIViews can observe
+//  - Updates Published properties. SwiftUI Views that are observing ThemeManager.shared will update their Views and UIViews can query the Published properties upon observing Notifications. Due to SwiftUI bugs, SwiftUI Views should define ThemeManager.shared as an @ObservedObject instead of using @EnvironmentObject
 //
 //  Created by Vincent Young on 10/10/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -42,9 +43,6 @@ class ThemeManager: NSObject, ObservableObject {
         return tms
     }()
     
-    /*
-     * Published variables to be used by Views. Views that interact with ThemeManager should read from the Published Colors, and save to UserDefaults by setting theme.
-     */
     @Published var panel: Color
     @Published var panelContent: Color
     
@@ -57,7 +55,7 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var collectionItemBorder: Color
     @Published var collectionItemContent: Color
     
-    @Published var theme: String {
+    @Published var theme: String = getUserDefaultsTheme().rawValue {
         didSet {
             UserDefaults.standard.setValue(theme,
                                            forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
@@ -72,12 +70,7 @@ class ThemeManager: NSObject, ObservableObject {
      - @Published Colors set by theme
      */
     override init() {
-        var savedTheme: Theme = .system
-        if let savedThemeKey = UserDefaults.standard.string(forKey: SettingsPresentationView.PresentationOption.theme.rawValue) {
-            savedTheme = ThemeManager.Theme.init(rawValue: savedThemeKey) ?? .system
-        }
-        self.theme = savedTheme.rawValue
-        
+        let savedTheme = ThemeManager.getUserDefaultsTheme()
         self.panel = ThemeManager.getElementColor(.panel, savedTheme)
         self.panelContent = ThemeManager.getElementColor(.panelContent, savedTheme)
         self.button = ThemeManager.getElementColor(.button, savedTheme)
@@ -110,6 +103,7 @@ class ThemeManager: NSObject, ObservableObject {
                 self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
                 self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
                 self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
+                NotificationCenter.default.post(name: .themeChanged, object: nil)
             } else {
                 print("ThemeManager observed a change to \"Theme\" in UserDefaults that could not be converted to a value of type Theme")
             }
@@ -132,6 +126,23 @@ class ThemeManager: NSObject, ObservableObject {
         case .system:
             return .primary
         }
+    }
+    
+    /**
+     Returns the Theme based on the current value saved to key "Theme" in UserDefaults. If the current value can't be cast to a Theme, this function sets the value in UserDefaults to Theme.system's rawValue
+     - returns: Value currently assigned to key "Theme" of UserDefaults
+     */
+    static func getUserDefaultsTheme() -> Theme {
+        if let savedTheme = UserDefaults.standard.string(forKey: SettingsPresentationView.PresentationOption.theme.rawValue) {
+            if let theme = ThemeManager.Theme.init(rawValue: savedTheme) {
+                return theme
+            } else {
+                print("Found invalid value \(savedTheme) for key \"Theme\" in UserDefaults")
+                UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
+                return .system
+            }
+        }
+        return .system
     }
     
 }

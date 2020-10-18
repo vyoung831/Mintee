@@ -11,16 +11,12 @@ import CoreData
 
 struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable {
     
+    typealias UIViewControllerType = TodayCollectionViewController
+    
     func makeUIViewController(context: Context) -> TodayCollectionViewController {
         return TodayCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
     func updateUIViewController(_ uiViewController: TodayCollectionViewController, context: Context) {}
     
-}
-
-struct TodayCollectionViewControllerRepresentable_Previews: PreviewProvider {
-    static var previews: some View {
-        TodayCollectionViewControllerRepresentable()
-    }
 }

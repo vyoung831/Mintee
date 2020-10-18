@@ -58,6 +58,17 @@ class TodayCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpCell()
+        observeNotificationCenter()
+    }
+    
+    // MARK: - UI update notifications and handling
+    
+    private func observeNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+    }
+    
+    @objc func updateTheme(){
+        self.layer.borderColor = UIColor(ThemeManager.shared.collectionItemBorder).cgColor
     }
     
     // MARK: - UI updates
@@ -75,10 +86,15 @@ class TodayCollectionViewCell: UICollectionViewCell {
      This function replaces the completion meter's old height constraint with one with the updated completion percentage.
      */
     public func updateCompletionMeter(newCompletionPercentage: CGFloat) {
-        completionMeter.backgroundColor = [UIColor.red,UIColor.orange,UIColor.yellow,UIColor.green,UIColor.blue,UIColor.purple].randomElement()
         completionPercentage = newCompletionPercentage
         removeConstraint(completionMeterHeightConstraint)
-        completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter, attribute: .height, relatedBy: .equal, toItem: self.contentView, attribute: .height, multiplier: completionPercentage, constant: 0)
+        completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
+                                                             attribute: .height,
+                                                             relatedBy: .equal,
+                                                             toItem: self.contentView,
+                                                             attribute: .height,
+                                                             multiplier: completionPercentage,
+                                                             constant: 0)
         completionMeterHeightConstraint.isActive = true
     }
     
@@ -86,10 +102,10 @@ class TodayCollectionViewCell: UICollectionViewCell {
     
     private func setUpCell() {
         self.layer.cornerRadius = cornerRadius
-        self.layer.borderColor = borderColor
         self.layer.borderWidth = CGFloat(borderWidth)
         self.backgroundColor = .white
         setUpSubviews()
+        updateTheme()
     }
     
     private func setUpSubviews() {
