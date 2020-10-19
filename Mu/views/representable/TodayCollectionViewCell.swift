@@ -69,6 +69,14 @@ class TodayCollectionViewCell: UICollectionViewCell {
     
     @objc func updateTheme(){
         self.layer.borderColor = UIColor(ThemeManager.shared.collectionItemBorder).cgColor
+        self.backgroundColor = UIColor(ThemeManager.getElementColor(.collectionItem, .system))
+        
+        let textColor = UIColor(ThemeManager.getElementColor(.collectionItemContent, .system))
+        self.taskName.textColor = textColor
+        self.target.textColor = textColor
+        self.status.textColor = textColor 
+        setButton.setTitleColor(textColor, for: UIControl.State.normal)
+        editButton.setTitleColor(textColor, for: UIControl.State.normal)
     }
     
     // MARK: - UI updates
@@ -157,7 +165,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
         
         // Edit button
         editButton.setTitle("Edit", for: UIControl.State.normal)
-        editButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         editButton.addTarget(self, action: #selector(editButtonPressed), for: UIControl.Event.touchUpInside)
         self.contentView.addSubview(editButton)
         editButton.translatesAutoresizingMaskIntoConstraints = false
@@ -166,7 +173,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
         
         // Set button
         setButton.setTitle("Set", for: UIControl.State.normal)
-        setButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         setButton.addTarget(self, action: #selector(setButtonPressed), for: UIControl.Event.touchUpInside)
         self.contentView.addSubview(setButton)
         setButton.translatesAutoresizingMaskIntoConstraints = false

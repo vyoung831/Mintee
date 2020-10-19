@@ -75,7 +75,6 @@ struct AddTagPopup: View {
             TextField("Tag name", text: self.$tagText)
                 .padding(10)
                 .border(themeManager.textFieldBorder, width: 2)
-                .background(Color.white)
                 .cornerRadius(3)
             
             if errorMessage.count > 0 {

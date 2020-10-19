@@ -132,7 +132,16 @@ class ThemeManager: NSObject, ObservableObject {
         case .ocean:
             return Color("theme-ocean-\(element.rawValue)")
         case .system:
-            return .primary
+            switch element {
+            case .panel:
+                return .clear
+            case .buttonText, .collectionItem:
+                return Color(UIColor.systemBackground)
+            case .collectionItemBorder:
+                return .primary
+            default:
+                return .primary
+            }
         }
     }
     
