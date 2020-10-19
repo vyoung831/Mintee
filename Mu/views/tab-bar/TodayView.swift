@@ -11,6 +11,9 @@ import SwiftUI
 struct TodayView: View {
     
     @State var isPresentingAddTask: Bool = false
+    @State var isPresentingSelectDate: Bool = false
+    
+    @State var date: Date = Date()
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -29,24 +32,24 @@ struct TodayView: View {
                             .accessibility(label: Text("Add button"))
                             .accessibility(hint: Text("Tap to add a new task"))
                     })
+                    .sheet(isPresented: $isPresentingAddTask, content:  {
+                        AddTask(isBeingPresented: self.$isPresentingAddTask)
+                    })
                     
-                    Button(action: {}) {
+                    Button(action: {
+                        self.isPresentingSelectDate = true
+                    }) {
                         Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
                             .foregroundColor(themeManager.panelContent)
                     }
+                    .sheet(isPresented: $isPresentingSelectDate, content:  {
+                        SelectDatePopup(isBeingPresented: self.$isPresentingSelectDate, date: self.$date, label: "Select Date")
+                    })
                 })
                 .foregroundColor(themeManager.panelContent)
                 .scaleEffect(1.5)
                 )
         }
-        .sheet(isPresented: $isPresentingAddTask, content:  {
-            AddTask(isBeingPresented: self.$isPresentingAddTask)
-        })
-    }
-}
-
-struct TodayView_Previews: PreviewProvider {
-    static var previews: some View {
-        TodayView()
+        
     }
 }
