@@ -39,6 +39,4 @@ extension UINavigationController {
         self.navigationBar.layoutIfNeeded()
     }
     
-    
-    
 }
