@@ -23,6 +23,8 @@ struct AddTagPopup: View {
     // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
     var addTag: (String) -> String?
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     /**
      Compares a Tag's name to the content in the tag name TextField and determines if the Tag should be displayed to the user to be selected
      - parameter tag: Tag to evaluate
@@ -37,7 +39,6 @@ struct AddTagPopup: View {
         return false
     }
     
-    
     var body: some View {
         
         VStack(alignment: .center, spacing: 30) {
@@ -45,7 +46,7 @@ struct AddTagPopup: View {
             Group {
                 HStack {
                     Button(action: {
-                        isBeingPresented = false
+                        self.isBeingPresented = false
                     }, label: {
                         Text("Cancel")
                     })
@@ -58,10 +59,10 @@ struct AddTagPopup: View {
                     Spacer()
                     
                     Button(action: {
-                        if let closureErrorMessage = addTag(self.tagText) {
+                        if let closureErrorMessage = self.addTag(self.tagText) {
                             self.errorMessage = closureErrorMessage
                         } else {
-                            isBeingPresented = false
+                            self.isBeingPresented = false
                         }
                     }, label: {
                         Text("Done")
@@ -73,8 +74,7 @@ struct AddTagPopup: View {
             
             TextField("Tag name", text: self.$tagText)
                 .padding(10)
-                .foregroundColor(Color.init("default-disabled-text-colors"))
-                .border(Color.init("default-border-colors"), width: 2)
+                .border(themeManager.textFieldBorder, width: 2)
                 .cornerRadius(3)
             
             if errorMessage.count > 0 {
@@ -97,6 +97,8 @@ struct AddTagPopup: View {
             Spacer()
         }
         .padding(15)
+        .background(themeManager.panel)
+        .foregroundColor(themeManager.panelContent)
         
     }
 }

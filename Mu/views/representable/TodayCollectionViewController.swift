@@ -32,6 +32,17 @@ class TodayCollectionViewController: UICollectionViewController {
         super.init(collectionViewLayout: layout)
         setUpCollectionView()
         setUpFetchedResults()
+        observeNotificationCenter()
+    }
+    
+    // MARK: - Appearance updates
+    
+    private func observeNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+    }
+    
+    @objc func updateTheme() {
+        collectionView.backgroundColor = UIColor(ThemeManager.shared.panel)
     }
     
     // MARK: - UI setup
@@ -47,7 +58,8 @@ class TodayCollectionViewController: UICollectionViewController {
         collectionViewLayout.minimumInteritemSpacing = self.minimumInteritemSpacing
         collectionViewLayout.minimumLineSpacing = self.minimumLineSpacing
         collectionView.collectionViewLayout = collectionViewLayout
-        collectionView.backgroundColor = UIColor(named: "default-panel-colors")
+        
+        updateTheme()
     }
     
     // MARK: - NSFetchedResultsController setup
@@ -84,6 +96,7 @@ extension TodayCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
             if let task = fetchedResultsController?.fetchedObjects?[indexPath.item] {
+                
                 cell.setTaskName(taskName: task.name ?? "")
                 cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
                 

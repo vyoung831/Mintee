@@ -12,6 +12,8 @@ struct TodayView: View {
     
     @State var isPresentingAddTask: Bool = false
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         NavigationView {
             TodayCollectionViewControllerRepresentable()
@@ -22,7 +24,7 @@ struct TodayView: View {
                     }, label: {
                         Image(systemName: "plus.circle")
                             .frame(width: 30, height: 30, alignment: .center)
-                            .foregroundColor(Color("default-panel-icon-colors"))
+                            .foregroundColor(themeManager.panelContent)
                             .accessibility(identifier: "add-task-button")
                             .accessibility(label: Text("Add button"))
                             .accessibility(hint: Text("Tap to add a new task"))
@@ -30,12 +32,12 @@ struct TodayView: View {
                     
                     Button(action: {}) {
                         Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(Color("default-panel-icon-colors"))
+                            .foregroundColor(themeManager.panelContent)
                     }
                 })
-                    .foregroundColor(.black)
-                    .scaleEffect(1.5)
-            )
+                .foregroundColor(themeManager.panelContent)
+                .scaleEffect(1.5)
+                )
         }
         .sheet(isPresented: $isPresentingAddTask, content:  {
             AddTask(isBeingPresented: self.$isPresentingAddTask)

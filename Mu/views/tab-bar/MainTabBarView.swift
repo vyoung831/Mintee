@@ -14,12 +14,6 @@ struct MainTabBarView: View {
             TodayView().tabItem {
                 Text("Today")
             }
-            AnalysisView().tabItem {
-                Text("Analysis")
-            }
-            ManageView().tabItem {
-                Text("Manage")
-            }
             SettingsView().tabItem {
                 Text("Settings")
             }

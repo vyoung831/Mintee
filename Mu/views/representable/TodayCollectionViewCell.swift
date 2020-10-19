@@ -58,6 +58,25 @@ class TodayCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpCell()
+        observeNotificationCenter()
+    }
+    
+    // MARK: - UI update notifications and handling
+    
+    private func observeNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+    }
+    
+    @objc func updateTheme(){
+        self.layer.borderColor = UIColor(ThemeManager.shared.collectionItemBorder).cgColor
+        self.backgroundColor = UIColor(ThemeManager.getElementColor(.collectionItem, .system))
+        
+        let textColor = UIColor(ThemeManager.getElementColor(.collectionItemContent, .system))
+        self.taskName.textColor = textColor
+        self.target.textColor = textColor
+        self.status.textColor = textColor 
+        setButton.setTitleColor(textColor, for: UIControl.State.normal)
+        editButton.setTitleColor(textColor, for: UIControl.State.normal)
     }
     
     // MARK: - UI updates
@@ -75,10 +94,15 @@ class TodayCollectionViewCell: UICollectionViewCell {
      This function replaces the completion meter's old height constraint with one with the updated completion percentage.
      */
     public func updateCompletionMeter(newCompletionPercentage: CGFloat) {
-        completionMeter.backgroundColor = [UIColor.red,UIColor.orange,UIColor.yellow,UIColor.green,UIColor.blue,UIColor.purple].randomElement()
         completionPercentage = newCompletionPercentage
         removeConstraint(completionMeterHeightConstraint)
-        completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter, attribute: .height, relatedBy: .equal, toItem: self.contentView, attribute: .height, multiplier: completionPercentage, constant: 0)
+        completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
+                                                             attribute: .height,
+                                                             relatedBy: .equal,
+                                                             toItem: self.contentView,
+                                                             attribute: .height,
+                                                             multiplier: completionPercentage,
+                                                             constant: 0)
         completionMeterHeightConstraint.isActive = true
     }
     
@@ -86,10 +110,10 @@ class TodayCollectionViewCell: UICollectionViewCell {
     
     private func setUpCell() {
         self.layer.cornerRadius = cornerRadius
-        self.layer.borderColor = borderColor
         self.layer.borderWidth = CGFloat(borderWidth)
         self.backgroundColor = .white
         setUpSubviews()
+        updateTheme()
     }
     
     private func setUpSubviews() {
@@ -141,7 +165,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
         
         // Edit button
         editButton.setTitle("Edit", for: UIControl.State.normal)
-        editButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         editButton.addTarget(self, action: #selector(editButtonPressed), for: UIControl.Event.touchUpInside)
         self.contentView.addSubview(editButton)
         editButton.translatesAutoresizingMaskIntoConstraints = false
@@ -150,7 +173,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
         
         // Set button
         setButton.setTitle("Set", for: UIControl.State.normal)
-        setButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         setButton.addTarget(self, action: #selector(setButtonPressed), for: UIControl.Event.touchUpInside)
         self.contentView.addSubview(setButton)
         setButton.translatesAutoresizingMaskIntoConstraints = false

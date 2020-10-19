@@ -22,6 +22,7 @@
 		C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */; };
 		C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */; };
 		C4130C2324C86E9A003EF047 /* TaskTypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */; };
+		C416E6BF251808000063309F /* SettingsPresentationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416E6BE251808000063309F /* SettingsPresentationView.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
@@ -50,6 +51,7 @@
 		C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC969243DEC3B0037C74C /* AnalysisView.swift */; };
 		C46DC96C243DEC420037C74C /* ManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96B243DEC420037C74C /* ManageView.swift */; };
 		C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96D243DEC480037C74C /* SettingsView.swift */; };
+		C46FD050253CE81300CE489E /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46FD04F253CE81300CE489E /* UINavigationController+Extensions.swift */; };
 		C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */; };
 		C47389992482CCB400462134 /* DayPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47389982482CCB400462134 /* DayPattern.swift */; };
 		C482233324BA57B000E6426E /* TaskTargetSetSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C482233224BA57B000E6426E /* TaskTargetSetSection.swift */; };
@@ -72,6 +74,8 @@
 		C4BD101224C9944A00CD8DAB /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */; };
 		C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */; };
 		C4C961C6250A432000C7EEEA /* DayBubbleLabelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabelsTests.swift */; };
+		C4D618ED252E9A65009A9751 /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618EC252E9A65009A9751 /* SettingsViewTests.swift */; };
+		C4D618F8252EA085009A9751 /* SettingsPresentationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */; };
 		C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */; };
 		C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */; };
@@ -85,6 +89,8 @@
 		C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */; };
 		C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */; };
 		C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */; };
+		C4FA83FF25323A3C0079BB81 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */; };
+		C4FC99D8253BF15200E2359F /* Notification.Name+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */; };
 		C4FE995124BB8E3F0050C217 /* SetDatePopupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +133,7 @@
 		C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowGreaterThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLessThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2224C86E9A003EF047 /* TaskTypeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTypeSection.swift; sourceTree = "<group>"; };
+		C416E6BE251808000063309F /* SettingsPresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationView.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +162,7 @@
 		C46DC969243DEC3B0037C74C /* AnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
 		C46DC96B243DEC420037C74C /* ManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageView.swift; sourceTree = "<group>"; };
 		C46DC96D243DEC480037C74C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C46FD04F253CE81300CE489E /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		C473898F2482C78100462134 /* TaskInstance+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskInstance+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C47389982482CCB400462134 /* DayPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPattern.swift; sourceTree = "<group>"; };
 		C482233224BA57B000E6426E /* TaskTargetSetSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetSection.swift; sourceTree = "<group>"; };
@@ -177,6 +185,8 @@
 		C4BD101124C9944A00CD8DAB /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddTagPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBubbleLabelsTests.swift; sourceTree = "<group>"; };
+		C4D618EC252E9A65009A9751 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
+		C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationDetailView.swift; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* DateExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTests.swift; sourceTree = "<group>"; };
 		C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopup.swift; sourceTree = "<group>"; };
@@ -191,6 +201,8 @@
 		C4E7C7AF24E8AC1F0005C9CB /* MuTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MuTests copy-Info.plist"; path = "/Users/vincentyoung/Documents/Work/Mu/MuTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRowsToggleable.swift; sourceTree = "<group>"; };
 		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
+		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extensions.swift"; sourceTree = "<group>"; };
 		C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopupUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,6 +315,7 @@
 		C405FA0224F15BE200F6A547 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				C42CE5E82515639A00044AC7 /* main-view-tests */,
 				C4C5FDE3250E7173004FAE47 /* popup-tests */,
 				C46C2BD72505DF1A000320B4 /* representable-tests */,
 				C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */,
@@ -326,6 +339,15 @@
 			path = "tag-tests";
 			sourceTree = "<group>";
 		};
+		C416E6BD251807EA0063309F /* settings-views */ = {
+			isa = PBXGroup;
+			children = (
+				C416E6BE251808000063309F /* SettingsPresentationView.swift */,
+				C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */,
+			);
+			path = "settings-views";
+			sourceTree = "<group>";
+		};
 		C41A73EB245207A2007007CB /* hosting */ = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +362,14 @@
 				C41D107724BDCBA800549CA1 /* DayBubbleLabels.swift */,
 			);
 			path = constants;
+			sourceTree = "<group>";
+		};
+		C42CE5E82515639A00044AC7 /* main-view-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C4D618EC252E9A65009A9751 /* SettingsViewTests.swift */,
+			);
+			path = "main-view-tests";
 			sourceTree = "<group>";
 		};
 		C430EEAA24BF820400BD98FD /* task-target-set-popup-ui-tests */ = {
@@ -380,6 +410,7 @@
 		C44C7F85243CA54A00072AD8 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				C416E6BD251807EA0063309F /* settings-views */,
 				C48F9763245B0B6B000339E9 /* popups */,
 				C41A73EB245207A2007007CB /* hosting */,
 				C436D34924505A10001ED468 /* representable */,
@@ -428,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				C466A7A424473A1100EC3E97 /* extensions */,
+				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -437,6 +469,8 @@
 			children = (
 				C466A7A524473A2500EC3E97 /* Date+Extensions.swift */,
 				C41F8732248F8FF2008AC18D /* Float+Extensions.swift */,
+				C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */,
+				C46FD04F253CE81300CE489E /* UINavigationController+Extensions.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -630,7 +664,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Vincent Young";
 				TargetAttributes = {
 					C4037A9324342E1F00150D47 = {
@@ -710,15 +744,19 @@
 				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
+				C4D618F8252EA085009A9751 /* SettingsPresentationDetailView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C47389932482C78100462134 /* TaskInstance+CoreDataProperties.swift in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry.swift in Sources */,
 				C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */,
+				C416E6BF251808000063309F /* SettingsPresentationView.swift in Sources */,
+				C4FA83FF25323A3C0079BB81 /* ThemeManager.swift in Sources */,
 				C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */,
 				C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */,
 				C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */,
 				C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */,
 				C41A73ED245207F7007007CB /* EditTaskHostingController.swift in Sources */,
+				C46FD050253CE81300CE489E /* UINavigationController+Extensions.swift in Sources */,
 				C41F8733248F8FF2008AC18D /* Float+Extensions.swift in Sources */,
 				C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */,
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
@@ -746,6 +784,7 @@
 				C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */,
 				C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */,
 				C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */,
+				C4FC99D8253BF15200E2359F /* Notification.Name+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,6 +803,7 @@
 				C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */,
 				C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetViewTests.swift in Sources */,
+				C4D618ED252E9A65009A9751 /* SettingsViewTests.swift in Sources */,
 				C4E5D5EE250426A000557373 /* Task-TagHandlingTests.swift in Sources */,
 				C4E5D5F525042F9400557373 /* Task-InstanceHandlingTests.swift in Sources */,
 				C4D8A34D249EB1D7008B3B9C /* DateExtensionTests.swift in Sources */,
@@ -833,6 +873,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -857,7 +898,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -893,6 +934,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -911,7 +953,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -930,6 +972,7 @@
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Mu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -950,6 +993,7 @@
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Mu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -969,7 +1013,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				INFOPLIST_FILE = MuTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -991,7 +1035,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				INFOPLIST_FILE = MuTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

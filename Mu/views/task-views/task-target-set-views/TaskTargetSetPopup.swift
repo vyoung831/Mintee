@@ -43,6 +43,9 @@ struct TaskTargetSetPopup: View {
     
     @Binding var isBeingPresented: Bool
     
+    // MARK: - Environment objects
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     // MARK: - Functions
     
     var save: (TaskTargetSetView) -> ()
@@ -236,9 +239,9 @@ struct TaskTargetSetPopup: View {
                         .disabled(self.maxOperator == .eq || self.minOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
-                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-text-colors") : .black )
-                        .border(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
-                        .background(self.maxOperator == .eq || self.minOperator == .na ? Color.init("default-disabled-fill-colors") : .clear)
+                        .border(themeManager.textFieldBorder, width: 2)
+                        .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
+                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
                         .cornerRadius(3)
                         .accessibility(identifier: "minimum-value")
                         .accessibility(label: Text("Minimum"))
@@ -264,9 +267,9 @@ struct TaskTargetSetPopup: View {
                         .disabled(self.minOperator == .eq || self.maxOperator == .na)
                         .keyboardType( .decimalPad )
                         .padding(10)
-                        .foregroundColor(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-text-colors") : .black )
-                        .border(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-border-colors") : Color.init("default-border-colors"), width: 2)
-                        .background(self.minOperator == .eq || self.maxOperator == .na ? Color.init("default-disabled-fill-colors") : .clear)
+                        .border(themeManager.textFieldBorder, width: 2)
+                        .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
+                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
                         .cornerRadius(3)
                         .accessibility(identifier: "maximum-value")
                         .accessibility(label: Text("Maximum"))
@@ -274,6 +277,9 @@ struct TaskTargetSetPopup: View {
                     
                 }.labelsHidden()
             }
-        }).padding(15)
+        })
+        .padding(15)
+        .background(themeManager.panel)
+        .foregroundColor(themeManager.panelContent)
     }
 }

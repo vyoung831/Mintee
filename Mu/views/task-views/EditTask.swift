@@ -35,6 +35,8 @@ struct EditTask: View {
     // For specific Tasks
     @State var dates: [Date] = []
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     private func saveTask() {
         
         task.name = self.taskName
@@ -224,5 +226,7 @@ struct EditTask: View {
             })
             .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
+        .background(themeManager.panel)
+        .foregroundColor(themeManager.panelContent)
     }
 }
