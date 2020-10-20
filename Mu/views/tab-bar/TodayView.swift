@@ -17,10 +17,24 @@ struct TodayView: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    func getLabel() -> String {
+        let daysToToday = date.daysToDate(Date())
+        switch daysToToday {
+        case 0:
+            return "Today"
+        case -1:
+            return "Tomorrow"
+        case 1:
+            return "Yesterday"
+        default:
+            return Date.toMDYPresent(date)
+        }
+    }
+    
     var body: some View {
         NavigationView {
             TodayCollectionViewControllerRepresentable(date: self.$date)
-                .navigationBarTitle("Today")
+                .navigationBarTitle(self.getLabel())
                 .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
                     Button(action: {
                         self.isPresentingAddTask = true
