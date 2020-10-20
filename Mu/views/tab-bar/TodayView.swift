@@ -19,7 +19,7 @@ struct TodayView: View {
     
     var body: some View {
         NavigationView {
-            TodayCollectionViewControllerRepresentable()
+            TodayCollectionViewControllerRepresentable(date: self.$date)
                 .navigationBarTitle("Today")
                 .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
                     Button(action: {
