@@ -50,7 +50,7 @@ struct ConfirmDeletePopup: View {
             // MARK: - Yes/No buttons
             GeometryReader { geometry in
                 HStack(alignment: .center, spacing: self.hstackSpacing) {
-                    
+                    Spacer()
                     Button(action: {
                         self.isBeingPresented = false
                         self.delete()
@@ -73,6 +73,7 @@ struct ConfirmDeletePopup: View {
                             .foregroundColor(themeManager.buttonText)
                             .cornerRadius(5)
                     })
+                    Spacer()
                     
                 }
             }
