@@ -42,6 +42,27 @@ extension Date {
     // MARK: - Date comparison
     
     /**
+     Using the current calendar, returns the number of calendar days from the current date to the endDate
+     - parameter endDate: End date to compare against
+     - returns: Number of calendar days to end date
+     */
+    func daysToDate(_ endDate: Date) -> Int {
+        
+        let startComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: self)
+        let endComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: endDate)
+        guard let startCalendarDate = Calendar.current.date(from: startComponents),
+              let endCalendarDate = Calendar.current.date(from: endComponents) else {
+            exit(-1)
+        }
+        
+        if let days = Calendar.current.dateComponents(Set(arrayLiteral: .day), from: startCalendarDate, to: endCalendarDate).day {
+            return days
+        }
+        
+        exit(-1)
+    }
+    
+    /**
      Using the current calendar, compares and returns if this Date's is on or before the provided end Date.
      This function only compares day, month, and year
      - parameter endDate: End date to compare against

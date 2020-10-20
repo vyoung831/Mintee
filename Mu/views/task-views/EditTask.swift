@@ -13,14 +13,16 @@ struct EditTask: View {
     let startDateLabel: String = "Start Date: "
     let endDateLabel: String = "End Date: "
     let taskTypes: [SaveFormatter.taskType] = SaveFormatter.taskType.allCases
-    let deleteMessage: String = "Because you changed your dates, task type, and/or target sets, you will lose data from the following dates. Are you sure you want to continue?"
+    let saveTaskDeleteMessage: String = "Because you changed your dates, task type, and/or target sets, you will lose data from the following dates. Are you sure you want to continue?"
+    let deleteTaskDeleteMessage: String = "Are you sure you want to delete this Task? You will lose all data that you have previously entered for it."
     
     var task: Task
     var dismiss: (() -> Void)
     @State var datesToDelete: [String] = []
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
-    @State var isPresentingConfirmDeletePopup: Bool = false
+    @State var isPresentingConfirmDeletePopupForSaveTask: Bool = false
+    @State var isPresentingConfirmDeletePopupForDeleteTask: Bool = false
     @State var taskName: String
     @State var taskType: SaveFormatter.taskType
     @State var saveErrorMessage: String = ""
@@ -81,13 +83,13 @@ struct EditTask: View {
         
     }
     
-    private func deleteTask() -> Bool {
+    private func deleteTask() {
         task.deleteSelf()
         do {
             try CDCoordinator.moc.save()
-            return true
+            self.dismiss()
         } catch {
-            return false
+            self.deleteErrorMessage = "Delete failed"
         }
     }
     
@@ -136,7 +138,7 @@ struct EditTask: View {
                             break
                         }
                         
-                        if self.datesToDelete.count > 0 { self.isPresentingConfirmDeletePopup = true }
+                        if self.datesToDelete.count > 0 { self.isPresentingConfirmDeletePopupForSaveTask = true }
                         else { self.saveTask() }
                         
                     }, label: {
@@ -146,11 +148,17 @@ struct EditTask: View {
                     .accessibility(label: Text("Save"))
                     .accessibility(hint: Text("Tap to save changes to task"))
                     .disabled(self.taskName == "")
-                    .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
-                        ConfirmDeletePopup(deleteMessage: self.deleteMessage,
+                    .sheet(isPresented: self.$isPresentingConfirmDeletePopupForSaveTask, content: {
+                        ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
                                            deleteList: self.datesToDelete,
                                            delete: self.saveTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopup)
+                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask)
+                    })
+                    .sheet(isPresented: self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
+                        ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
+                                           deleteList: [],
+                                           delete: self.deleteTask,
+                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
                     })
                     
                     Spacer()
@@ -205,11 +213,7 @@ struct EditTask: View {
                 
                 Group {
                     Button(action: {
-                        if self.deleteTask() {
-                            self.dismiss()
-                        } else {
-                            self.deleteErrorMessage = "Delete failed"
-                        }
+                        self.isPresentingConfirmDeletePopupForDeleteTask = true
                     }, label: {
                         Text("Delete Task")
                             .padding(.all, 10)

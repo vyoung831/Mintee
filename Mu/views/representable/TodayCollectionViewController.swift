@@ -13,7 +13,7 @@ class TodayCollectionViewController: UICollectionViewController {
     
     // MARK: - Properties
     
-    var fetchedResultsController: NSFetchedResultsController<Task>?
+    var fetchedResultsController: NSFetchedResultsController<TaskInstance>?
     
     // collectionView setup constants
     let taskCardReuseIdentifier = "task-card"
@@ -64,8 +64,12 @@ class TodayCollectionViewController: UICollectionViewController {
     
     // MARK: - NSFetchedResultsController setup
     
+    /**
+     Initializes fetchedResultsController by querying for all TaskInstances with date = today
+     */
     private func setUpFetchedResults() {
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let fetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", "date",SaveFormatter.dateToStoredString(Date()))
         fetchRequest.sortDescriptors = []
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.moc, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController?.delegate = self
@@ -95,7 +99,7 @@ extension TodayCollectionViewController {
      */
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
-            if let task = fetchedResultsController?.fetchedObjects?[indexPath.item] {
+            if let task = fetchedResultsController?.fetchedObjects?[indexPath.item].task {
                 
                 cell.setTaskName(taskName: task.name ?? "")
                 cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
@@ -112,8 +116,12 @@ extension TodayCollectionViewController {
                     print("Set button pressed")
                 }
                 
+                return cell
+                
+            } else {
+                print("TodayCollectionViewController fetched a TaskInstance that had no Task")
+                exit(-1)
             }
-            return cell
         }
         return UICollectionViewCell()
     }

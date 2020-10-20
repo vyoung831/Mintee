@@ -20,6 +20,7 @@ struct TaskNameTextField: View {
                 .bold()
                 .accessibility(identifier: "task-name-label")
             TextField("Task name", text: self.$taskName)
+                .foregroundColor(.primary)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .accessibility(identifier: "task-name-text-field")
                 .accessibility(label: Text("Name"))
