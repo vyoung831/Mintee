@@ -1,0 +1,14 @@
+platform :ios, '14.0'
+
+def shared_pods
+    pod 'Firebase/Crashlytics'
+    pod 'Firebase/Analytics'
+end
+
+target 'Mu' do 
+    shared_pods
+end
+
+target 'MuTests' do
+    shared_pods
+end
