@@ -1,5 +1,5 @@
 //
-//  TaskTagHandlingTests.swift
+//  Task-TagHandling-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 9/5/20.
@@ -10,7 +10,7 @@
 import CoreData
 import XCTest
 
-class Task_TagHandlingTests: XCTestCase {
+class Task_TagHandling_Tests: XCTestCase {
     
     override func setUpWithError() throws {
         CDCoordinator.moc = TestContainer.testMoc
@@ -23,7 +23,7 @@ class Task_TagHandlingTests: XCTestCase {
     /**
      Test that updateTags() adds new Tags where if none with the same name already exist
      */
-    func testUpdateTags_addNewTags() throws {
+    func test_updateTags_addNewTags() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
         task.updateTags(newTagNames: ["Tag1","Tag2"])
@@ -38,7 +38,7 @@ class Task_TagHandlingTests: XCTestCase {
     /**
      Test that updateTags() reuses Tags with the same name
      */
-    func testUpdateTags_existingTagReuse() throws {
+    func test_updateTags_existingTagReuse() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
         task.updateTags(newTagNames: ["Tag1","Tag2"])
@@ -54,7 +54,7 @@ class Task_TagHandlingTests: XCTestCase {
     /**
      Test that updateTags() deletes any newly-unassociated Tags that are no longer associated with any Task
      */
-    func testUpdateTags_deadTagDeletion() throws {
+    func test_updateTags_deadTagDeletion() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
         task.updateTags(newTagNames: ["Tag1","Tag2","Tag3"])
@@ -71,12 +71,12 @@ class Task_TagHandlingTests: XCTestCase {
 
 // MARK: - Performance tests
 
-extension Task_TagHandlingTests {
+extension Task_TagHandling_Tests {
     
     /**
      Test the time it takes updateTags to add 1,000 new Tags to the MOC
      */
-    func testUpdateTagsAdd1000() throws {
+    func testPerformance_updateTags_add1000() throws {
         
         var task: Task, tags: [String] = []
         task = Task(context: CDCoordinator.moc)
@@ -91,7 +91,7 @@ extension Task_TagHandlingTests {
     /**
      Test the time it takes updateTags to delete 1,000 dead Tags from the MOC
      */
-    func testUpdateTagsDelete1000() throws {
+    func testPerformance_updateTags_delete1000() throws {
         
         var task: Task, tags: [String] = []
         task = Task(context: CDCoordinator.moc)

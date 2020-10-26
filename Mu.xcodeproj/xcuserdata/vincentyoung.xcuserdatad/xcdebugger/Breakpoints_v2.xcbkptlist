@@ -15,9 +15,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "test_getNumberOfRows_oneFullRow_twoExtra()"
-            landmarkType = "7">
+            endingLineNumber = "44">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -31,9 +29,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "test_getNumberOfRows_oneFullRow()"
-            landmarkType = "7">
+            endingLineNumber = "27">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -47,9 +43,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "test_getNumberOfRows_twoFullRows()"
-            landmarkType = "7">
+            endingLineNumber = "53">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -63,9 +57,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "test_getNumberOfRows_twoFullRows_oneExtra()"
-            landmarkType = "7">
+            endingLineNumber = "65">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -79,9 +71,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "test_getCardsPerRow_defaultCardWidth()"
-            landmarkType = "7">
+            endingLineNumber = "69">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -95,9 +85,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "test_getCardsPerRow_tooNarrow_cardWidthUpdate()"
-            landmarkType = "7">
+            endingLineNumber = "90">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

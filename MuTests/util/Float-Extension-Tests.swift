@@ -1,5 +1,5 @@
 //
-//  FloatExtensionTests.swift
+//  Float-Extension-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 9/6/20.
@@ -9,23 +9,23 @@
 @testable import Mu
 import XCTest
 
-class FloatExtensionTests: XCTestCase {
+class Float_Extension_Tests: XCTestCase {
 
     override func setUpWithError() throws {}
 
     override func tearDownWithError() throws {}
 
-    func testClean_TrimToWholeNumber() throws {
+    func test_clean_TrimToWholeNumber() throws {
         let someFloat = Float(3.0)
         XCTAssert(someFloat.clean == "3")
     }
     
-    func testClean_TrimInsignificantZeroes() throws {
+    func test_clean_TrimInsignificantZeroes() throws {
         let someFloat = Float(3.50)
         XCTAssert(someFloat.clean == "3.5")
     }
     
-    func testClean_KeepSignificantZeroes() throws {
+    func test_clean_KeepSignificantZeroes() throws {
         let someFloat = Float(30.0)
         XCTAssert(someFloat.clean == "30")
     }

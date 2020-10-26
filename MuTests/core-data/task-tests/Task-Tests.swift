@@ -1,5 +1,5 @@
 //
-//  TaskTests.swift
+//  Task-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 6/21/20.
@@ -25,7 +25,7 @@ class Task_Tests: XCTestCase {
     /**
      Test that two Tasks with the same name can't be saved to the MOC
      */
-    func testTaskNameRestraint() {
+    func test_restraint_taskNameUnique() {
         let task1 = Task(context: CDCoordinator.moc); task1.name = "Task"
         let task2 = Task(context: CDCoordinator.moc); task2.name = "Task"
         do { try CDCoordinator.moc.save() } catch {
@@ -39,7 +39,7 @@ class Task_Tests: XCTestCase {
     /**
      Test that deleteSelf deletes the Task, its Tags, its TaskInstances, and its TaskTargetSets
      */
-    func testDeleteTask() throws {
+    func test_deleteSelf() throws {
         let startDate = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2019, month: 3, day: 1))!
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,

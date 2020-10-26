@@ -1,5 +1,5 @@
 //
-//  DayBubbleLabelsTests.swift
+//  DayBubbleLabels-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 9/10/20.
@@ -9,7 +9,7 @@
 @testable import Mu
 import XCTest
 
-class DayBubbleLabelsTests: XCTestCase {
+class DayBubbleLabels_Tests: XCTestCase {
     
     static let daysOfWeek: [String] = ["M","T","W","R","F","S","U"]
     static let weeksOfMonth: [String] = ["1st","2nd","3rd","4th","Last"]
@@ -22,13 +22,13 @@ class DayBubbleLabelsTests: XCTestCase {
 
     override func tearDownWithError() throws {}
 
-    func testGetDividedBubbleLabels_singleSubarray() throws {
+    func test_getDividedBubbleLabels_singleSubarray() throws {
         let dividedLabels = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7, patternType: .dow)
         XCTAssert(dividedLabels.count == 1)
         XCTAssert(dividedLabels[0] == ["M","T","W","R","F","S","U"])
     }
     
-    func testGetDividedBubbleLabels_multipleSubarray() throws {
+    func test_getDividedBubbleLabels_multipleSubarray() throws {
         let dividedLabels = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 3, patternType: .dow)
         XCTAssert(dividedLabels.count == 3)
         XCTAssert(dividedLabels[0] == ["M","T","W"])
