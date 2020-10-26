@@ -38,6 +38,9 @@ struct ErrorManager {
     enum Error: Int {
         case bundleIdentifierWasNil = 1
         case ttsvWomNil = 2
+        case invalidThemeSaved = 3
+        case invalidThemeRead = 4
+        case updateTodayCollectionViewControllerFailed = 5
     }
     
     

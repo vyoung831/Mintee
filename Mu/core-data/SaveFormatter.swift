@@ -193,8 +193,8 @@ class SaveFormatter {
     static func storedStringToDate(_ storedString: String) -> Date {
         if let date = storedStringToDateFormatter.date(from: storedString) { return date }
         else {
-            print("SaveFormatter could not convert a stored date string to Date")
-            exit(-1)
+            Crashlytics.crashlytics().log("SaveFormatter could not convert a stored date string to Date")
+            fatalError()
         }
     }
     

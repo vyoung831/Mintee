@@ -48,7 +48,9 @@ public class Tag: NSManagedObject {
                 return first
             }
         } catch {
-            print(error.localizedDescription)
+            Crashlytics.crashlytics().log("FetchRequest for Tag failed in Tag.getOrCreateTag()")
+            Crashlytics.crashlytics().setValue(error.localizedDescription, forKey: "Error localized description")
+            fatalError()
         }
         
         // No tag already exists in MOC. Return Tag from initiaizlier

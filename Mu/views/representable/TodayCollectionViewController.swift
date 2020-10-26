@@ -77,7 +77,8 @@ class TodayCollectionViewController: UICollectionViewController {
         do {
             try fetchedResultsController?.performFetch()
         } catch {
-            print("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
+            Crashlytics.crashlytics().log("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
+            fatalError()
         }
     }
     
@@ -114,7 +115,6 @@ extension TodayCollectionViewController {
                 
                 cell.handleSetButtonPressed = {
                     // TO-DO: Present SetCountPopup
-                    print("Set button pressed")
                 }
                 
                 return cell
