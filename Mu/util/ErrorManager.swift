@@ -41,6 +41,7 @@ struct ErrorManager {
         case invalidThemeSaved = 3
         case invalidThemeRead = 4
         case updateTodayCollectionViewControllerFailed = 5
+        case ttsvGetTargetInvalidValues = 6
     }
     
     

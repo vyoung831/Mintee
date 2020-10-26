@@ -55,7 +55,9 @@ class SaveFormatter {
         case 1:
             return .specific
         default:
-            exit(-1)
+            Crashlytics.crashlytics().log("SaveFormatter.storedToTaskType() attempted to convert an invalid Int16 to value of type taskType")
+            Crashlytics.crashlytics().setValue(storedType, forKey: "Saved Int16")
+            fatalError()
         }
     }
     
@@ -94,8 +96,9 @@ class SaveFormatter {
         case 2: return .lte
         case 3: return .eq
         default:
-            // TO-DO: Crash report
-            exit(-1)
+            Crashlytics.crashlytics().log("SaveFormatter.getOperatorString() attempted to convert an invalid Int16 to value of type equalityOperator")
+            Crashlytics.crashlytics().setValue(op, forKey: "Saved Int16")
+            fatalError()
         }
     }
     
@@ -113,7 +116,9 @@ class SaveFormatter {
         case "3rd": return 3
         case "4th": return 4
         case "Last": return 5
-        default: exit(-1)
+        default:
+            Crashlytics.crashlytics().log("SaveFormatter.getWeekOfMonthNumber() attempted to convert an invalid String")
+            fatalError()
         }
     }
     
@@ -129,7 +134,9 @@ class SaveFormatter {
         case 3: return "3rd"
         case 4: return "4th"
         case 5: return "Last"
-        default: exit(-1)
+        default:
+            Crashlytics.crashlytics().log("SaveFormatter.getWeekOfMonthString() attempted to convert an invalid Int16")
+            fatalError()
         }
     }
     
@@ -148,8 +155,8 @@ class SaveFormatter {
         case "F": return Int16(6)
         case "S": return Int16(7)
         default:
-            // TO-DO: Crash reporting
-            exit(-1)
+            Crashlytics.crashlytics().log("SaveFormatter.getWeekdayNumber() attempted to convert an invalid String")
+            fatalError()
         }
     }
     
@@ -168,8 +175,8 @@ class SaveFormatter {
         case 6: return "F"
         case 7: return "S"
         default:
-            // TO-DO: Crash reporting
-            exit(-1)
+            Crashlytics.crashlytics().log("SaveFormatter.getWeekdayString() attempted to convert an invalid String")
+            fatalError()
         }
     }
     
@@ -179,8 +186,11 @@ class SaveFormatter {
      - returns: Int16 to store in DayPattern's dow; U=1
      */
     static func getDayOfMonthInt(_ dayOfMonth: String) -> Int16 {
-        if let dom = Int16(dayOfMonth), dom <= 31, dom >= 0 { return dom }
-        exit(-1)
+        if let dom = Int16(dayOfMonth), dom <= 31, dom >= 0 {
+            return dom
+        }
+        Crashlytics.crashlytics().log("SaveFormatter.getDayOfMonthInt() attempted to convert an invalid String")
+        fatalError()
     }
     
     // MARK: - Date conversion

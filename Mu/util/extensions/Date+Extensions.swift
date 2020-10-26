@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 extension Date {
     
@@ -52,14 +53,21 @@ extension Date {
         let endComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: endDate)
         guard let startCalendarDate = Calendar.current.date(from: startComponents),
               let endCalendarDate = Calendar.current.date(from: endComponents) else {
-            exit(-1)
+            Crashlytics.crashlytics().log("Date.daysToDate() could not convert the start date's and/or end date's components to Dates")
+            Crashlytics.crashlytics().setValue(startComponents, forKey: "Start date components")
+            Crashlytics.crashlytics().setValue(endComponents, forKey: "End date components")
+            fatalError()
         }
         
         if let days = Calendar.current.dateComponents(Set(arrayLiteral: .day), from: startCalendarDate, to: endCalendarDate).day {
             return days
+        } else {
+            Crashlytics.crashlytics().log("Date.daysToDate() could not get amount of days between start date and end date")
+            Crashlytics.crashlytics().setValue(startCalendarDate, forKey: "Start date")
+            Crashlytics.crashlytics().setValue(endCalendarDate, forKey: "End date")
+            fatalError()
         }
         
-        exit(-1)
     }
     
     /**

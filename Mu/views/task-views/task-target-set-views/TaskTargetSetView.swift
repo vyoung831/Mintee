@@ -89,7 +89,10 @@ struct TaskTargetSetView: View {
         if minOperator != .na { return "Target \(minOperator.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
         if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
-        // TO-DO: Send error report
+        ErrorManager.recordNonFatal(.ttsvGetTargetInvalidValues, ["minOperator": minOperator.rawValue,
+                                                                  "maxOperator": maxOperator.rawValue,
+                                                                  "minTarget": minTarget,
+                                                                  "maxTarget": maxTarget])
         return ""
     }
     
