@@ -62,7 +62,7 @@ class TaskTargetSetView_Tests: XCTestCase {
     // MARK: - getTarget tests
     
     func test_getTarget_minLessThan_maxLessThan() {
-        var ttsv = TaskTargetSetView(type: .dom,
+        let ttsv = TaskTargetSetView(type: .dom,
                                      minTarget: 1,
                                      minOperator: .lt,
                                      maxTarget: 2,
