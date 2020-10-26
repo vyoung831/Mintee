@@ -10,6 +10,7 @@
 import Foundation
 import CoreData
 import SwiftUI
+import Firebase
 
 @objc(Task)
 public class Task: NSManagedObject {
@@ -55,8 +56,8 @@ public class Task: NSManagedObject {
             for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
             for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
         } else {
-            print("Error deleting TaskTargetSets and TaskInstances from \(self.debugDescription)")
-            exit(-1)
+            Crashlytics.crashlytics().log("deleteSelf() in Task found targetSets and/or instances to be nil")
+            fatalError()
         }
         
         CDCoordinator.moc.delete(self)
@@ -107,8 +108,8 @@ extension Task {
             for case let tag as Tag in tags {
                 
                 guard let tagName = tag.name else {
-                    print("Error: tagName found with tagName = nil")
-                    exit(-1)
+                    Crashlytics.crashlytics().log("removeUnrelatedTags() in Task found tag with name = nil")
+                    fatalError()
                 }
                 
                 // If new tags don't contain an existing Tag's tagName, remove it from tags. After, if the Tag has no Tasks left, delete it
@@ -150,7 +151,8 @@ extension Task {
      */
     func getDeltaInstancesSpecific(dates: Set<Date>) -> [String] {
         guard let instances = self.instances as? Set<TaskInstance> else {
-            print("getdeltainstancesspecific() in Task could not retrieve existing instances"); exit(-1)
+            Crashlytics.crashlytics().log("getDeltaInstancesSpecific() in Task could not retrieve existing instances")
+            fatalError()
         }
         
         var datesDelta: [String] = []
@@ -176,21 +178,28 @@ extension Task {
         var datesDelta: [Date] = []
         
         guard let instances = self.instances as? Set<TaskInstance> else {
-            print("getDeltaInstancesRecurring() in Task could not retrieve existing instances"); exit(-1)
+            Crashlytics.crashlytics().log("getDeltaInstancesRecurring() in Task could not retrieve existing instances")
+            fatalError()
         }
         
         // Filter existing TaskInstances for ones before the proposed start date
         let instancesBefore = instances.filter({
             if let date = $0.date {
                 return SaveFormatter.storedStringToDate(date).lessThanDate(startDate)
-            } else { print("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value"); exit(-1) }
+            } else {
+                Crashlytics.crashlytics().log("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value")
+                fatalError()
+            }
         })
         
         // Filter existing TaskInstances for ones after the proposed end date
         let instancesAfter = instances.filter({
             if let date = $0.date {
                 return endDate.lessThanDate(SaveFormatter.storedStringToDate(date))
-            } else { print("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value"); exit(-1) }
+            } else {
+                Crashlytics.crashlytics().log("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value")
+                fatalError()
+            }
         })
         
         let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
@@ -213,7 +222,10 @@ extension Task {
                     break
                 case .wom:
                     let day = Int16(Calendar.current.component(.day, from: dateCounter))
-                    guard let daysInMonth = Calendar.current.range(of: .day, in: .month, for: dateCounter) else { exit(-1) }
+                    guard let daysInMonth = Calendar.current.range(of: .day, in: .month, for: dateCounter) else {
+                        Crashlytics.crashlytics().log("getDeltaInstancesRecurring() in Task found daysInMonth equal to nil in a Task of type .wom")
+                        fatalError()
+                    }
                     
                     if pattern.daysOfWeek.contains(Int16(Calendar.current.component(.weekday, from: dateCounter))) {
                         if pattern.weeksOfMonth.contains(Int16(ceil(Float(day)/7))) { matched = true }
@@ -244,7 +256,10 @@ extension Task {
             // Increment dateCounter
             if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
                 dateCounter = newDate
-            } else { print("An error occurred in getDeltaInstancesRecurring() when incrementing dateCounter"); exit(-1) }
+            } else {
+                Crashlytics.crashlytics().log("An error occurred in getDeltaInstancesRecurring() when incrementing dateCounter")
+                fatalError()
+            }
             
             matched = false
             
@@ -284,7 +299,10 @@ extension Task {
          */
         let newDatesStrings = Set(dates.map{ SaveFormatter.dateToStoredString($0) })
         var datesToBeAdded: Set<String> = newDatesStrings
-        guard let existingInstances = self.instances as? Set<TaskInstance> else { exit(-1) }
+        guard let existingInstances = self.instances as? Set<TaskInstance> else {
+            Crashlytics.crashlytics().log("updateSpecificInstances() in Task could not retrieve instances")
+            fatalError()
+        }
         for existingInstance in existingInstances {
             if let existingDate = existingInstance.date {
                 if !newDatesStrings.contains(existingDate) {
@@ -293,7 +311,11 @@ extension Task {
                     datesToBeAdded.remove(existingDate)
                 }
             }
-            else { exit(-1) }
+            else {
+                Crashlytics.crashlytics().log("updateSpecificInstances() in Task found a TaskInstance with nil date value")
+                Crashlytics.crashlytics().setValue(existingInstance, forKey: "TaskInstance")
+                fatalError()
+            }
         }
         
         // Generate TaskInstances for the remaining dates that don't already exist for this Task
@@ -344,8 +366,8 @@ extension Task {
                 }
             }
         } else {
-            print("Error deleting TaskTargetSets from \(self.debugDescription)")
-            exit(-1)
+            Crashlytics.crashlytics().log("updateRecurringInstances() in Task failed to delete TaskTargetSets")
+            fatalError()
         }
         
         // Set new targetSets and update instances
@@ -360,13 +382,13 @@ extension Task {
     private func generateAndPruneInstances() {
         
         guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0.priority < $1.priority} ) else {
-            print("updateInstances() call from \(self.debugDescription) could not get and sort targetSets")
-            exit(-1)
+            Crashlytics.crashlytics().log("generateAndPruneInstances() in Task failed to get and/or sort targetSets")
+            fatalError()
         }
         
         guard let sd = self.startDate, let ed = self.endDate else {
-            print("setNewTargetSets was called but startDate and/or endDate were nil")
-            exit(-1)
+            Crashlytics.crashlytics().log("generateAndPruneInstances was called but startDate and/or endDate were nil")
+            fatalError()
         }
         var dateCounter = SaveFormatter.storedStringToDate(sd)
         let endDate = SaveFormatter.storedStringToDate(ed)
@@ -394,7 +416,10 @@ extension Task {
             // Increment dateCounter
             if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
                 dateCounter = newDate
-            } else { print("An error occurred in setNewTargetSets() when incrementing dateCounter"); exit(-1) }
+            } else {
+                Crashlytics.crashlytics().log("An error occurred in generateAndPruneInstances() when incrementing dateCounter")
+                fatalError()
+            }
         }
         
         /*

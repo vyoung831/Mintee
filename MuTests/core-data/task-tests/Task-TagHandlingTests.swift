@@ -30,7 +30,7 @@ class Task_TagHandlingTests: XCTestCase {
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
-            exit(-1)
+            XCTFail()
         }
         XCTAssert(tags.count == 2)
     }
@@ -46,7 +46,7 @@ class Task_TagHandlingTests: XCTestCase {
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
-            exit(-1)
+            XCTFail()
         }
         XCTAssert(tags.count == 3)
     }
@@ -62,7 +62,7 @@ class Task_TagHandlingTests: XCTestCase {
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
-            exit(-1)
+            XCTFail()
         }
         XCTAssert(tags.count == 2)
     }

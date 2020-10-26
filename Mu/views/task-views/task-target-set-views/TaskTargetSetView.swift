@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct TaskTargetSetView: View {
     
@@ -57,7 +58,8 @@ struct TaskTargetSetView: View {
             return "Every week"
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
-                print("TaskTargetSetView was set to type .wom but selectedWeeksOfMonth was false"); exit(-1)
+                ErrorManager.recordNonFatal(.ttsvWomNil, [:])
+                return "Weekdays of month"
             }
             
             let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.getWeekOfMonthNumber(wom: $0) < SaveFormatter.getWeekOfMonthNumber(wom: $1) })

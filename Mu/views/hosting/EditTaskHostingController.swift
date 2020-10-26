@@ -9,6 +9,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 class EditTaskHostingController: UIHostingController<EditTask> {
     
@@ -28,7 +29,9 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             for idx in 0 ..< ttsArray.count {
                 
                 guard let pattern = ttsArray[idx].pattern as? DayPattern else {
-                    print("EditTaskHostingController could not read pattern from a TaskTargetSet \(ttsArray[idx].debugDescription)"); exit(-1)
+                    Crashlytics.crashlytics().log("EditTaskHostingController could not read pattern from a TaskTargetSet \(ttsArray[idx].debugDescription)")
+                    Crashlytics.crashlytics().setCustomValue(ttsvArray[idx], forKey: "TaskTargetSet")
+                    fatalError()
                 }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,
@@ -67,15 +70,18 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                                         taskTargetSetViews: ttsvArray)
                 super.init(rootView: editTask)
             } else {
-                print("Nil value found in Task's dates")
-                exit(-1)
+                Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a recurring Task that had startDate and/or endDate equal to nil")
+                Crashlytics.crashlytics().setCustomValue(task.startDate as Any, forKey: "Start date")
+                Crashlytics.crashlytics().setCustomValue(task.endDate as Any, forKey: "End date")
+                fatalError()
             }
             break
         case .specific:
             
             var dates: [Date] = []
             guard let instances = task.instances else {
-                print("EditTaskHostingController found nil value when accessing Task's instances"); exit(-1)
+                Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a specific Task that had nil instances")
+                fatalError()
             }
             for case let instance as TaskInstance in instances {
                 if let dateString = instance.date {

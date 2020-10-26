@@ -35,6 +35,7 @@
 		C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
 		C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */; };
 		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
+		C442AE0D2546D71000A9EB72 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C442AE0C2546D71000A9EB72 /* ErrorManager.swift */; };
 		C44940C92498D713009FE818 /* SaveFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940C82498D713009FE818 /* SaveFormatterTests.swift */; };
 		C44940CD2498F113009FE818 /* BubbleRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940CC2498F113009FE818 /* BubbleRowsTests.swift */; };
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
@@ -152,6 +153,7 @@
 		C43205F424A0B7C0004D3AA1 /* TestContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestContainer.swift; sourceTree = "<group>"; };
 		C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
 		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
+		C442AE0C2546D71000A9EB72 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C44940C82498D713009FE818 /* SaveFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatterTests.swift; sourceTree = "<group>"; };
 		C44940CC2498F113009FE818 /* BubbleRowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRowsTests.swift; sourceTree = "<group>"; };
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 			children = (
 				C466A7A424473A1100EC3E97 /* extensions */,
 				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
+				C442AE0C2546D71000A9EB72 /* ErrorManager.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -840,6 +843,7 @@
 			files = (
 				C48F02482448A5730088227F /* Tag.swift in Sources */,
 				C47389992482CCB400462134 /* DayPattern.swift in Sources */,
+				C442AE0D2546D71000A9EB72 /* ErrorManager.swift in Sources */,
 				C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */,
 				C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */,
 				C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */,

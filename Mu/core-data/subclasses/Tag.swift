@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import Firebase
 
 @objc(Tag)
 public class Tag: NSManagedObject {
@@ -23,7 +24,8 @@ public class Tag: NSManagedObject {
             self.init(entity: entity, insertInto: CDCoordinator.moc)
             self.name = tagName
         } else {
-            exit(-1)
+            Crashlytics.crashlytics().log("Could not get NSEntityDescription for Tag")
+            fatalError()
         }
     }
     

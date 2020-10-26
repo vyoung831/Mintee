@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import Firebase
 
 @objc(TaskTargetSet)
 public class TaskTargetSet: NSManagedObject {
@@ -39,11 +40,14 @@ public class TaskTargetSet: NSManagedObject {
     func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) -> Bool {
         
         guard let pattern = self.pattern as? DayPattern else {
-            print("TaskTargetSet \(self.description) was unable to retrieve its DayPattern"); exit(-1)
+            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
+            fatalError()
         }
         
         if daysInMonth < 28 {
-            print("checkDay() in TaskTargetSet received an invalid number of daysInMonth: \(daysInMonth)"); exit(-1)
+            Crashlytics.crashlytics().log("checkDay() in TaskTargetSet received an invalid number of daysInMonth")
+            Crashlytics.crashlytics().setValue(daysInMonth, forKey: "Days in month")
+            fatalError()
         }
         
         switch pattern.type {
@@ -72,8 +76,8 @@ public class TaskTargetSet: NSManagedObject {
      */
     func getDaysOfWeek() -> Set<Int16> {
         guard let pattern = self.pattern as? DayPattern else {
-            print("TaskTargetSet \(self.description) was unable to retrieve its DayPattern")
-            exit(-1)
+            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
+            fatalError()
         }
         return Set(pattern.daysOfWeek)
     }
@@ -83,8 +87,8 @@ public class TaskTargetSet: NSManagedObject {
      */
     func getWeeksOfMonth() -> Set<Int16> {
         guard let pattern = self.pattern as? DayPattern else {
-            print("TaskTargetSet \(self.description) was unable to retrieve its DayPattern")
-            exit(-1)
+            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
+            fatalError()
         }
         return Set(pattern.weeksOfMonth)
     }
@@ -94,8 +98,8 @@ public class TaskTargetSet: NSManagedObject {
      */
     func getDaysOfMonth() -> Set<Int16> {
         guard let pattern = self.pattern as? DayPattern else {
-            print("TaskTargetSet \(self.description) was unable to retrieve its DayPattern")
-            exit(-1)
+            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
+            fatalError()
         }
         return Set(pattern.daysOfMonth)
     }

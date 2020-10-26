@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreData
+import Firebase
 
 class TodayCollectionViewController: UICollectionViewController {
     
@@ -119,8 +120,8 @@ extension TodayCollectionViewController {
                 return cell
                 
             } else {
-                print("TodayCollectionViewController fetched a TaskInstance that had no Task")
-                exit(-1)
+                Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
+                fatalError()
             }
         }
         return UICollectionViewCell()

@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import Firebase
 
 class DayPattern: NSObject, NSSecureCoding {
     
@@ -46,14 +47,17 @@ class DayPattern: NSObject, NSSecureCoding {
             let wom = decoder.decodeObject(of: [DayPattern.self], forKey: "weeksOfMonth") as? Set<Int16>,
             let dom = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfMonth") as? Set<Int16>,
             let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: "type") as? Int8 else {
-            exit(-1)
+            Crashlytics.crashlytics().log("Could not decode DayPattern")
+            fatalError()
         }
         
         // Exit if the decoded type cannot be converted back into an enum value of type DayPattern.patternType
         if let type = patternType(rawValue: typeValue) {
             self.type = type
         } else {
-            exit(-1)
+            Crashlytics.crashlytics().log("DayPattern decoded an Int8 saved to type that could not be converted to a value of type patternType")
+            Crashlytics.crashlytics().setValue(typeValue, forKey: "Saved type raw value")
+            fatalError()
         }
         
         self.daysOfWeek = dow
