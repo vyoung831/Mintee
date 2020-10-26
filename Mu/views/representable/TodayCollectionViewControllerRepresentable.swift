@@ -28,8 +28,8 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
                 uiViewController.fetchedResultsController?.fetchRequest.predicate = newPredicate
                 try uiViewController.fetchedResultsController?.performFetch()
                 uiViewController.collectionView.reloadData()
-            } catch  {
-                print("Error")
+            } catch {
+                ErrorManager.recordNonFatal(.updateTodayCollectionViewControllerFailed, [:])
             }
         }
         

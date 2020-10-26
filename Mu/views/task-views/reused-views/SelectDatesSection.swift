@@ -26,7 +26,6 @@ struct SelectDatesSection: View {
                     .bold()
                 Button(action: {
                     self.isPresentingAddDatePopup = true
-                    print("Add date")
                 }, label: {
                     Image(systemName: "plus.circle")
                         .resizable()

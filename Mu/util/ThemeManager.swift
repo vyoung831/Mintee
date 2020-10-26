@@ -113,7 +113,7 @@ class ThemeManager: NSObject, ObservableObject {
                 self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
                 NotificationCenter.default.post(name: .themeChanged, object: nil)
             } else {
-                print("ThemeManager observed a change to \"Theme\" in UserDefaults that could not be converted to a value of type Theme")
+                ErrorManager.recordNonFatal(.invalidThemeSaved, ["New Theme raw value": newKey])
             }
         }
     }
@@ -154,7 +154,7 @@ class ThemeManager: NSObject, ObservableObject {
             if let theme = ThemeManager.Theme.init(rawValue: savedTheme) {
                 return theme
             } else {
-                print("Found invalid value \(savedTheme) for key \"Theme\" in UserDefaults")
+                ErrorManager.recordNonFatal(.invalidThemeRead, ["Saved Theme raw value": savedTheme])
                 UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
                 return .system
             }

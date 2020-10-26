@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreData
+import Firebase
 
 class TodayCollectionViewController: UICollectionViewController {
     
@@ -76,7 +77,8 @@ class TodayCollectionViewController: UICollectionViewController {
         do {
             try fetchedResultsController?.performFetch()
         } catch {
-            print("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
+            Crashlytics.crashlytics().log("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
+            fatalError()
         }
     }
     
@@ -113,14 +115,13 @@ extension TodayCollectionViewController {
                 
                 cell.handleSetButtonPressed = {
                     // TO-DO: Present SetCountPopup
-                    print("Set button pressed")
                 }
                 
                 return cell
                 
             } else {
-                print("TodayCollectionViewController fetched a TaskInstance that had no Task")
-                exit(-1)
+                Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
+                fatalError()
             }
         }
         return UICollectionViewCell()
