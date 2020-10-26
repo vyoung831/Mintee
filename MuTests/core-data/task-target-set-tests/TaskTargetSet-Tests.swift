@@ -1,5 +1,5 @@
 //
-//  TaskTargetSetTests.swift
+//  TaskTargetSet-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 6/29/20.
@@ -10,7 +10,7 @@ import XCTest
 import CoreData
 @testable import Mu
 
-class TaskTargetSetTests: XCTestCase {
+class TaskTargetSet_Tests: XCTestCase {
     
     override func setUpWithError() throws {
         CDCoordinator.moc = TestContainer.testMoc
@@ -22,7 +22,7 @@ class TaskTargetSetTests: XCTestCase {
     
     // MARK: - checkDay tests
     
-    func testCheckDay_dow() {
+    func test_checkDay_dow() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -33,7 +33,7 @@ class TaskTargetSetTests: XCTestCase {
         XCTAssertFalse(tts.checkDay(day: 3, weekday: 2, daysInMonth: 30))
     }
     
-    func testCheckDay_wom_rightWeekday_wrongWeek() {
+    func test_checkDay_wom_rightWeekday_wrongWeek() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -43,7 +43,7 @@ class TaskTargetSetTests: XCTestCase {
         XCTAssertFalse(tts.checkDay(day: 8, weekday: 7, daysInMonth: 31))
     }
     
-    func testCheckDay_wom_rightWeekday_rightWeek() {
+    func test_checkDay_wom_rightWeekday_rightWeek() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -53,7 +53,7 @@ class TaskTargetSetTests: XCTestCase {
         XCTAssert(tts.checkDay(day: 15, weekday: 7, daysInMonth: 31))
     }
     
-    func testCheckDay_wom_wrongWeekday_wrongWeek() {
+    func test_checkDay_wom_wrongWeekday_wrongWeek() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -63,7 +63,7 @@ class TaskTargetSetTests: XCTestCase {
         XCTAssertFalse(tts.checkDay(day: 8, weekday: 6, daysInMonth: 31))
     }
     
-    func testCheckDay_wom_wrongWeekday_rightWeek() {
+    func test_checkDay_wom_wrongWeekday_rightWeek() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -76,7 +76,7 @@ class TaskTargetSetTests: XCTestCase {
     /**
      Test that even though the weekday is the 4th of the month, checkDay returns true because 5 (last of month) was in WOM
      */
-    func testCheckDay_wom_lastOfMonth() {
+    func test_checkDay_wom_lastOfMonth() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -86,7 +86,7 @@ class TaskTargetSetTests: XCTestCase {
         XCTAssert(tts.checkDay(day: 24, weekday: 7, daysInMonth: 30))
     }
     
-    func testCheckDay_dom() {
+    func test_checkDay_dom() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,
@@ -97,7 +97,7 @@ class TaskTargetSetTests: XCTestCase {
         XCTAssert(tts.checkDay(day: 15, weekday: 1, daysInMonth: 31))
     }
     
-    func testCheckDay_dom_lastDayOfMonth() {
+    func test_checkDay_dom_lastDayOfMonth() {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: 1, maxOperator: 1, priority: 0,

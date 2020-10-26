@@ -1,5 +1,5 @@
 //
-//  SettingsViewTests.swift
+//  SettingsView-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 10/7/20.
@@ -9,7 +9,7 @@
 @testable import Mu
 import XCTest
 
-class SettingsViewTests: XCTestCase {
+class SettingsView_Tests: XCTestCase {
 
     override func setUpWithError() throws {}
 

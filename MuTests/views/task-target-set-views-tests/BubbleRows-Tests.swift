@@ -1,5 +1,5 @@
 //
-//  BubbleRowsTests.swift
+//  BubbleRows-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 6/16/20.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import Mu
 
-class BubbleRowsTests: XCTestCase {
+class BubbleRows_Tests: XCTestCase {
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -22,7 +22,7 @@ class BubbleRowsTests: XCTestCase {
     /**
      Test that BubbleRows respects the maxBubbleRadius provided
      */
-    func testGetBubbleRadius_maxBubbleRadius_respected() {
+    func test_getBubbleRadius_maxBubbleRadius_respected() {
         
         var bubbleRows = BubbleRows(type: .dow,
                                     selected: Set<String>())
@@ -41,7 +41,7 @@ class BubbleRowsTests: XCTestCase {
     /**
      Test that BubbleRows shrinks bubbles to respect the minimumInterBubblespacing
      */
-    func testGetBubbleRadius_minimumInterBubbleSpacing_respected() {
+    func test_getBubbleRadius_minimumInterBubbleSpacing_respected() {
         
         var bubbleRows = BubbleRows(type: .dow,
                                     selected: Set<String>())
@@ -57,7 +57,7 @@ class BubbleRowsTests: XCTestCase {
         XCTAssert(radius < maxBubbleRadius)
     }
     
-    func testGetGeometryReaderHeight() {
+    func test_getGeometryReaderHeight() {
         let totalWidth: CGFloat = 200
         
         let bubbleRows = BubbleRows(type: .dow,
@@ -75,7 +75,7 @@ class BubbleRowsTests: XCTestCase {
     /**
      Test that getHStackSpacing returns an increased HStack spacing (inter-bubble spacing) when the totalWidth is enough for bubbles to reach maxBubbleRadius
      */
-    func testGetHstackSpacing_increasesHStackSpacing() {
+    func test_getHstackSpacing_increasesHStackSpacing() {
         
         let bubbleRows = BubbleRows(type: .dow,
                                     selected: Set<String>())
@@ -92,7 +92,7 @@ class BubbleRowsTests: XCTestCase {
     /**
      Test that getHStackSpacing returns minimumInterBubbleSpacing when totalWidth is not enough to accomodate the desired bubbleRadius
      */
-    func testGetHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
+    func test_getHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
         
         let bubbleRows = BubbleRows(type: .dow,
                                     selected: Set<String>())

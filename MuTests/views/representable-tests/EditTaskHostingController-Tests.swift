@@ -1,5 +1,5 @@
 //
-//  EditTaskHostingControllerTests.swift
+//  EditTaskHostingController-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 9/6/20.
@@ -10,7 +10,7 @@
 import CoreData
 import XCTest
 
-class EditTaskHostingControllerTests: XCTestCase {
+class EditTaskHostingController_Tests: XCTestCase {
     
     let dowMin: Float = 1, dowMax: Float = 2
     
@@ -33,7 +33,7 @@ class EditTaskHostingControllerTests: XCTestCase {
         CDCoordinator.moc.rollback()
     }
     
-    func testExtractTTSVArray() throws {
+    func test_extractTTSVArray() throws {
         
         let targetSets: Set<TaskTargetSet> = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc))
         let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,

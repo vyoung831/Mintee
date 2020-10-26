@@ -1,5 +1,5 @@
 //
-//  TagTests.swift
+//  Tag-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 6/29/20.
@@ -23,7 +23,7 @@ class Tag_Tests: XCTestCase {
     /**
      Test that getOrCreateTag creates a new Tag if one doesn't already exist
      */
-    func testGetOrCreateTagNew() throws {
+    func test_getOrCreateTag_newTag() throws {
         
         var tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 0)
@@ -37,7 +37,7 @@ class Tag_Tests: XCTestCase {
     /**
      Test that getOrCreateTag doesn't create new Tags when an existing tagName is requested
      */
-    func testGetOrCreateTagExisting() throws {
+    func test_getOrCreateTag_reuseExisting() throws {
         
         let tag1 = Tag(entity: Tag.getEntityDescription(CDCoordinator.moc)!, insertInto: CDCoordinator.moc); tag1.name = "Tag"
         var tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
@@ -58,7 +58,7 @@ extension Tag_Tests {
     /**
      Test uniqueness of Tag's name
      */
-    func testTagNameRestraint() {
+    func test_restraint_tagNameUnique() {
         
         let tag1 = Tag(entity: Tag.getEntityDescription(CDCoordinator.moc)!, insertInto: CDCoordinator.moc); tag1.name = "Tag"
         let tag2 = Tag(entity: Tag.getEntityDescription(CDCoordinator.moc)!, insertInto: CDCoordinator.moc); tag2.name = "Tag"

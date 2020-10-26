@@ -1,5 +1,5 @@
 //
-//  SaveFormatterTests.swift
+//  SaveFormatter-Tests.swift
 //  MuTests
 //
 //  Created by Vincent Young on 6/16/20.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import Mu
 
-class SaveFormatterTests: XCTestCase {
+class SaveFormatter_Tests: XCTestCase {
     
     override func setUpWithError() throws {}
 
@@ -18,7 +18,7 @@ class SaveFormatterTests: XCTestCase {
     /**
      Test the storedStringToDate function
      */
-    func testStoredStringToDate() {
+    func test_storedStringToDate() {
         let dateString = "2020-06-07"
         let date = SaveFormatter.storedStringToDate(dateString)
         XCTAssert( Calendar.current.component(.year, from: date) == 2020)
@@ -29,7 +29,7 @@ class SaveFormatterTests: XCTestCase {
     /**
      Test the dateToStoredString function
      */
-    func testDateToStoredString() {
+    func test_dateToStoredString() {
         let date = Date(timeIntervalSince1970: 920000)
         let year = Calendar.current.component(.year, from: date)
         
