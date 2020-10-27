@@ -101,30 +101,42 @@ extension TodayCollectionViewController {
      */
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
-            if let task = fetchedResultsController?.fetchedObjects?[indexPath.item].task {
-                
-                cell.setTaskName(taskName: task.name ?? "")
-                cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
-                
-                cell.handleEditButtonPressed = {
-                    let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
-                        self.dismiss(animated: true, completion: nil)
-                    })
-                    self.present(ethvc, animated: true, completion: nil)
+            
+            if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
+                if let task = instance.task {
+                    cell.setTaskName(taskName: task.name ?? "")
+                    cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
+                    
+                    cell.handleEditButtonPressed = {
+                        let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        self.present(ethvc, animated: true, completion: nil)
+                    }
+                    
+                    cell.handleSetButtonPressed = {
+                        let scphc =
+                            SetCountPopupHostingController(count: instance.completion, done: { [unowned self] in
+                                instance.completion = $0
+                                CDCoordinator.shared.saveContext()
+                                self.dismiss(animated: true, completion: nil)
+                            }, cancel: { [unowned self] in
+                                self.dismiss(animated: true, completion: nil)
+                            })
+                        self.modalPresentationStyle = .overCurrentContext
+                        self.present(scphc, animated: true, completion: nil)
+                    }
+                } else {
+                    Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
+                    fatalError()
                 }
-                
-                cell.handleSetButtonPressed = {
-                    // TO-DO: Present SetCountPopup
-                }
-                
-                return cell
-                
-            } else {
-                Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
-                fatalError()
             }
+            
+            return cell
+        } else {
+            ErrorManager.recordNonFatal(.collectionViewCouldNotDequeueResuableCell, ["Collection View": "TodayCollectionViewController"])
+            return UICollectionViewCell()
         }
-        return UICollectionViewCell()
     }
     
 }
