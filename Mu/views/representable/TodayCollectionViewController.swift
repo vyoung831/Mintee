@@ -104,9 +104,9 @@ extension TodayCollectionViewController {
             
             if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
                 if let task = instance.task {
-                    cell.setTaskName(taskName: task.name ?? "")
-                    cell.updateCompletionMeter(newCompletionPercentage: CGFloat(Float(arc4random()) / Float(UINT32_MAX)))
                     
+                    cell.setTaskName(taskName: task.name ?? "")
+                    cell.updateCompletionMeter(instance: instance)
                     cell.handleEditButtonPressed = {
                         let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
                             self.dismiss(animated: true, completion: nil)
@@ -116,7 +116,7 @@ extension TodayCollectionViewController {
                     
                     cell.handleSetButtonPressed = {
                         let scphc =
-                            SetCountPopupHostingController(count: instance.completion, done: { [unowned self] in
+                            SetCountPopupHostingController(count: instance.completion, done: { [unowned self, instance] in
                                 instance.completion = $0
                                 CDCoordinator.shared.saveContext()
                                 self.dismiss(animated: true, completion: nil)

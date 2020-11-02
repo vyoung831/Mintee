@@ -65,6 +65,7 @@
 		C48F02562448A5730088227F /* Analysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis.swift */; };
 		C48F9762245ADBC3000339E9 /* SetDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F9761245ADBC3000339E9 /* SetDatePopup.swift */; };
 		C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4908D27253E20A100B51ADF /* SelectDatePopup.swift */; };
+		C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */; };
 		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
 		C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
@@ -185,6 +186,7 @@
 		C48F02422448A5730088227F /* Analysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analysis.swift; sourceTree = "<group>"; };
 		C48F9761245ADBC3000339E9 /* SetDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopup.swift; sourceTree = "<group>"; };
 		C4908D27253E20A100B51ADF /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
+		C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayCollectionViewCell-Tests.swift"; sourceTree = "<group>"; };
 		C499FFEC247364DF00ABB64C /* SaveFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatter.swift; sourceTree = "<group>"; };
 		C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSet.swift; sourceTree = "<group>"; };
 		C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarUITests.swift; path = MuUITests/MainTabBarUITests.swift; sourceTree = SOURCE_ROOT; };
@@ -358,9 +360,10 @@
 		C405FA0224F15BE200F6A547 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				C4925034254F940900A3C424 /* representable-tests */,
 				C42CE5E82515639A00044AC7 /* main-view-tests */,
 				C4C5FDE3250E7173004FAE47 /* popup-tests */,
-				C46C2BD72505DF1A000320B4 /* representable-tests */,
+				C46C2BD72505DF1A000320B4 /* hosting-tests */,
 				C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */,
 			);
 			path = views;
@@ -528,12 +531,12 @@
 			path = transformable;
 			sourceTree = "<group>";
 		};
-		C46C2BD72505DF1A000320B4 /* representable-tests */ = {
+		C46C2BD72505DF1A000320B4 /* hosting-tests */ = {
 			isa = PBXGroup;
 			children = (
 				C46C2BD92505DF62000320B4 /* EditTaskHostingController-Tests.swift */,
 			);
-			path = "representable-tests";
+			path = "hosting-tests";
 			sourceTree = "<group>";
 		};
 		C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */ = {
@@ -581,6 +584,14 @@
 				C4D9DB6325475771002F0B40 /* SetCountPopup.swift */,
 			);
 			path = popups;
+			sourceTree = "<group>";
+		};
+		C4925034254F940900A3C424 /* representable-tests */ = {
+			isa = PBXGroup;
+			children = (
+				C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */,
+			);
+			path = "representable-tests";
 			sourceTree = "<group>";
 		};
 		C49D666524E8991B0030DB54 /* test-util */ = {
@@ -915,6 +926,7 @@
 				C49D666724E8992B0030DB54 /* Extensions.swift in Sources */,
 				C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */,
 				C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */,
+				C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */,
 				C4E5D5F225042F6C00557373 /* Task-InstanceDelta-Tests.swift in Sources */,
 				C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */,
 				C4C961C6250A432000C7EEEA /* DayBubbleLabels-Tests.swift in Sources */,

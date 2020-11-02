@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class TodayCollectionViewCell: UICollectionViewCell {
     
@@ -16,7 +17,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
     let borderColor = UIColor.black.cgColor
     let borderWidth: CGFloat = 3
     let cornerRadius: CGFloat = 6
-    private var completionPercentage: CGFloat = 0
     private var completionMeterHeightConstraint = NSLayoutConstraint()
     
     // Subviews
@@ -91,19 +91,109 @@ class TodayCollectionViewCell: UICollectionViewCell {
     }
     
     /**
-     This function replaces the completion meter's old height constraint with one with the updated completion percentage.
+     Deactivates, updates, and activates completionMeterHeightConstraint.
+     completionMeter's height is constrained to represent the completion of instance against its minimum and/or maximum target(s).
+     - parameter instance: TaskInstance whose completion (Float) is used to update completionMeter's constraints
      */
-    public func updateCompletionMeter(newCompletionPercentage: CGFloat) {
-        completionPercentage = newCompletionPercentage
-        removeConstraint(completionMeterHeightConstraint)
+    public func updateCompletionMeter(instance: TaskInstance) {
+        
+        guard let minOpInt = instance.targetSet?.minOperator,
+              let maxOpInt = instance.targetSet?.maxOperator,
+              let maxTarget = instance.targetSet?.max,
+              let minTarget = instance.targetSet?.min else {
+            // TO-DO: Implement presentation of completionMeter for Specific-type Tasks
+            completionMeterHeightConstraint.isActive = false
+            completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
+                                                                 attribute: .height,
+                                                                 relatedBy: .equal,
+                                                                 toItem: self,
+                                                                 attribute: .height,
+                                                                 multiplier: instance.completion > 0 ? 1 : 0,
+                                                                 constant: 0)
+            completionMeterHeightConstraint.isActive = true
+            completionMeter.backgroundColor = instance.completion > 0 ? .green : .red
+            return
+        }
+        let minOp = SaveFormatter.getOperatorString(minOpInt)
+        let maxOp = SaveFormatter.getOperatorString(maxOpInt)
+        
+        completionMeterHeightConstraint.isActive = false
         completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
                                                              attribute: .height,
                                                              relatedBy: .equal,
-                                                             toItem: self.contentView,
+                                                             toItem: self,
                                                              attribute: .height,
-                                                             multiplier: completionPercentage,
+                                                             multiplier: CGFloat(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance.completion)),
                                                              constant: 0)
         completionMeterHeightConstraint.isActive = true
+        completionMeter.backgroundColor = TodayCollectionViewCell.getCompletionMeterColor(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance.completion)
+    }
+    
+    /**
+     For a Recurring-type Task, returns the percentage of a TodayCollectionViewCell's height that its completionMeter should be constrained to
+     Evaluates the completion of a TaskInstance against the minimum operator and maximum operator of its targetSet's values.
+     - parameter minOp: The minimum value operator for the TaskInstances's minimum target
+     - parameter maxOp: The maximum value operator for the TaskInstances's maximum target
+     - parameter minTarget: The TaskInstance's minimum target
+     - parameter maxTarget: The TaskInstance's maximum target
+     - parameter completion: The TaskInstance's current completion
+     - returns: UIColor to set a TodayCollectionViewCell's completionMeter to
+     */
+    static func getCompletionMeterPercentage(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float, completion: Float) -> Float {
+        switch minOp {
+        case .na:
+            switch maxOp {
+            case .na:
+                Crashlytics.crashlytics().log("TodayCollectionViewCell.getCompletionMeterPercentage accessed a TaskInstance whose targetSet had (minOperator == .na && maxOperator == .na)")
+                exit(-1)
+            default:
+                return min(completion / maxTarget, 1)
+            }
+        default:
+            switch maxOp {
+            case .na:
+                return min(completion / minTarget, 1)
+            default:
+                return min(completion / maxTarget, 1)
+            }
+        }
+    }
+    
+    /**
+     For a Recurring-type Task, returns the UIColor that a TodayCollectionViewCell's completionMeter's background should be set to.
+     Red/green are used to represent the target not being met or being met, respectively.
+     Yellow is returned if one of the operators is non-inclusvie and the current completion is equal to that target
+     - parameter minOp: The minimum value operator for the TaskInstances's minimum target
+     - parameter maxOp: The maximum value operator for the TaskInstances's maximum target
+     - parameter minTarget: The TaskInstance's minimum target
+     - parameter maxTarget: The TaskInstance's maximum target
+     - parameter completion: The TaskInstance's current completion
+     - returns: UIColor to set a TodayCollectionViewCell's completionMeter to
+     */
+    static func getCompletionMeterColor(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float, completion: Float) -> UIColor {
+        
+        var minSatisfied: Bool = true
+        var maxSatisfied: Bool = true
+        
+        switch minOp {
+        case .lt:
+            if completion == minTarget { return .yellow }
+            minSatisfied = (completion > minTarget); break
+        case .lte: minSatisfied = (completion >= minTarget); break
+        case .eq: return (completion == minTarget) ? .green : .red
+        default: break
+        }
+        
+        switch maxOp {
+        case .lt:
+            if completion == maxTarget { return .yellow }
+            maxSatisfied = (completion < maxTarget); break
+        case .lte: maxSatisfied = completion <= maxTarget; break
+        case .eq: return (completion == maxTarget) ? .green : .red
+        default: break
+        }
+        
+        return (minSatisfied && maxSatisfied) ? .green : .red
     }
     
     // MARK: - UI setup
@@ -182,7 +272,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
     }
     
     /**
-     This function sets up all of completionMeter's autolayout constraints except for its height. This class expects that height constraint to be calculated when updateCompletionPercentage()
+     This function sets up all of completionMeter's autolayout constraints except for its height. This class expects that height constraint to be calculated when updateCompletionMeter() is called
      */
     private func setUpCompletionMeter() {
         completionMeter.layer.cornerRadius = cornerRadius
