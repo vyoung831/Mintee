@@ -156,7 +156,7 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(type: self.type,
+                BubbleRows(type: self.type == .dow || self.type == .wom ? .dow : .dom,
                            selected: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>())
                     .accessibilityElement(children: .ignore)
                 
