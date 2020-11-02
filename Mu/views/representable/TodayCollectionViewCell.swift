@@ -85,18 +85,12 @@ class TodayCollectionViewCell: UICollectionViewCell {
         self.taskName.text = taskName
     }
     
-    public func updateTaskStatus(newTarget: String, newStatus: CGFloat) {
-        target.text = newTarget
-        status.text = String(Float(newStatus))
-    }
-    
     /**
      Deactivates, updates, and activates completionMeterHeightConstraint.
      completionMeter's height is constrained to represent the completion of instance against its minimum and/or maximum target(s).
      - parameter instance: TaskInstance whose completion (Float) is used to update completionMeter's constraints
      */
-    public func updateCompletionMeter(instance: TaskInstance) {
-        
+    public func updateAppearance(instance: TaskInstance) {
         guard let minOpInt = instance.targetSet?.minOperator,
               let maxOpInt = instance.targetSet?.maxOperator,
               let maxTarget = instance.targetSet?.max,
@@ -117,6 +111,15 @@ class TodayCollectionViewCell: UICollectionViewCell {
         let minOp = SaveFormatter.getOperatorString(minOpInt)
         let maxOp = SaveFormatter.getOperatorString(maxOpInt)
         
+        // Update target
+        if minOp != .na && maxOp != .na { target.text = "\(minTarget.clean) \(minOp.rawValue) Target \(maxOp.rawValue) \(maxTarget.clean)" }
+        if minOp != .na { target.text = "Target \(minOp.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
+        if maxOp != .na { target.text = "\(maxOp.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
+        
+        // Update status
+        self.status.text = String(instance.completion.clean)
+        
+        // Update completionMeter
         completionMeterHeightConstraint.isActive = false
         completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
                                                              attribute: .height,
@@ -127,6 +130,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                              constant: 0)
         completionMeterHeightConstraint.isActive = true
         completionMeter.backgroundColor = TodayCollectionViewCell.getCompletionMeterColor(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance.completion)
+        
     }
     
     /**

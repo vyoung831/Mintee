@@ -106,7 +106,7 @@ extension TodayCollectionViewController {
                 if let task = instance.task {
                     
                     cell.setTaskName(taskName: task.name ?? "")
-                    cell.updateCompletionMeter(instance: instance)
+                    cell.updateAppearance(instance: instance)
                     cell.handleEditButtonPressed = {
                         let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
                             self.dismiss(animated: true, completion: nil)
