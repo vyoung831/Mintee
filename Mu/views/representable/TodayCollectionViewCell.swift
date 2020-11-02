@@ -106,6 +106,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                                  constant: 0)
             completionMeterHeightConstraint.isActive = true
             completionMeter.backgroundColor = instance.completion > 0 ? .green : .red
+            self.status.text = instance.completion > 0 ? "Done" : "To-do"
             return
         }
         let minOp = SaveFormatter.getOperatorString(minOpInt)
