@@ -80,20 +80,34 @@ struct TaskTargetSetView: View {
     }
     
     /**
-     Builds the target String to be displayed
-     - returns: String to display as target
+     Builds a String representing a TaskTargetSet or minimum and maximum operators and target values
+     - parameter minOperator: The minimum value equality operator
+     - parameter maxOperator: The maximum value equality operator
+     - parameter minValue: The minimum target value
+     - parameter maxValue: The maximum target value
+     - returns: String representing the target value(s)
      */
-    func getTarget() -> String {
-        
+    static func getTargetString(minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float) -> String {
         if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.rawValue) Target \(maxOperator.rawValue) \(maxTarget.clean)" }
         if minOperator != .na { return "Target \(minOperator.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
         if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
-        ErrorManager.recordNonFatal(.ttsvGetTargetInvalidValues, ["minOperator": minOperator.rawValue,
+        ErrorManager.recordNonFatal(.ttsvGetTargetStringInvalidValues, ["minOperator": minOperator.rawValue,
                                                                   "maxOperator": maxOperator.rawValue,
                                                                   "minTarget": minTarget,
                                                                   "maxTarget": maxTarget])
         return ""
+    }
+    
+    /**
+     Returns a String representing this TaskTargetSetView's target value(s)
+     - returns: String to be displayed as a target
+     */
+    func getTarget() -> String {
+        return TaskTargetSetView.getTargetString(minOperator: self.minOperator,
+                                                 maxOperator: self.maxOperator,
+                                                 minTarget: self.minTarget,
+                                                 maxTarget: self.maxTarget)
     }
     
     // MARK: - View
