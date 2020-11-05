@@ -151,17 +151,16 @@ struct EditTask: View {
                     .accessibility(label: Text("Save"))
                     .accessibility(hint: Text("Tap to save changes to task"))
                     .disabled(self.taskName == "")
-                    .sheet(isPresented: self.$isPresentingConfirmDeletePopupForSaveTask, content: {
-                        ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
-                                           deleteList: self.datesToDelete,
-                                           delete: self.saveTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask)
-                    })
-                    .sheet(isPresented: self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
-                        ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
-                                           deleteList: [],
-                                           delete: self.deleteTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
+                    .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ? self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
+                        self.isPresentingConfirmDeletePopupForSaveTask ?
+                            ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
+                                               deleteList: self.datesToDelete,
+                                               delete: self.saveTask,
+                                               isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask) :
+                            ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
+                                               deleteList: [],
+                                               delete: self.deleteTask,
+                                               isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
                     })
                     
                     Spacer()
