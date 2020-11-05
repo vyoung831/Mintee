@@ -178,6 +178,7 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.done()
                         }, label: { Text("Done") })
+                        .foregroundColor(.accentColor)
                         .accessibility(identifier: "task-target-set-popup-done-button")
                         .accessibility(label: Text("Done"))
                         .accessibility(hint: Text("Tap to finish setting target set"))
@@ -191,6 +192,7 @@ struct TaskTargetSetPopup: View {
                         Button(action: {
                             self.isBeingPresented = false
                         }, label: { Text("Cancel") })
+                        .foregroundColor(.accentColor)
                         .accessibility(identifier: "task-target-set-popup-cancel-button")
                         .accessibility(label: Text("Cancel"))
                         .accessibility(hint: Text("Tap to cancel setting target set"))
@@ -226,6 +228,7 @@ struct TaskTargetSetPopup: View {
                             Text( self.dayPatternTypeLabels[pt] ?? "")
                         }
                     }
+                    .foregroundColor(.accentColor)
                     .accessibility(identifier: "task-target-set-popup-pattern-type-picker")
                     .frame(height: typePickerHeight)
                     
@@ -251,6 +254,7 @@ struct TaskTargetSetPopup: View {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
                             Text(op.rawValue)
                         }}
+                        .foregroundColor(.accentColor)
                         .frame(width: operationWidth, height: operationHeight)
                         .clipped()
                     
@@ -260,6 +264,7 @@ struct TaskTargetSetPopup: View {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
                             Text(op.rawValue)
                         }}
+                        .foregroundColor(.accentColor)
                         .frame(width: operationWidth, height: operationHeight)
                         .clipped()
                     
@@ -281,5 +286,6 @@ struct TaskTargetSetPopup: View {
         .padding(15)
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
+        .accentColor(themeManager.accent)
     }
 }

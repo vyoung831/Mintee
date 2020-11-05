@@ -26,7 +26,7 @@ struct SettingsPresentationDetailView: View {
                 savedValue = value
             }, label: {
                 HStack {
-                    Text(value)
+                    Text(value) // TO-DO: Add foregroundColor modifier when List background is able to be set to themeManager.panel
                     Spacer()
                     if savedValue == value {
                         Image(systemName: "checkmark")

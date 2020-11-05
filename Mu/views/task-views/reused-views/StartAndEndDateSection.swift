@@ -35,8 +35,8 @@ struct StartAndEndDateSection: View {
                 self.isPresentingSetStartDatePopup = true
             }, label: {
                 Text(startDateLabel + Date.toMDYPresent(self.startDate))
-                    .foregroundColor(.accentColor)
             })
+            .foregroundColor(.accentColor)
             .popover(isPresented: self.$isPresentingSetStartDatePopup, content: {
                         SetDatePopup.init(
                             isBeingPresented: self.$isPresentingSetStartDatePopup,
@@ -50,8 +50,8 @@ struct StartAndEndDateSection: View {
                 self.isPresentingSetEndDatePopup = true
             }, label: {
                 Text(endDateLabel + Date.toMDYPresent(self.endDate))
-                    .foregroundColor(.accentColor)
             })
+            .foregroundColor(.accentColor)
             .popover(isPresented: self.$isPresentingSetEndDatePopup, content: {
                         SetDatePopup.init(
                             isBeingPresented: self.$isPresentingSetEndDatePopup,

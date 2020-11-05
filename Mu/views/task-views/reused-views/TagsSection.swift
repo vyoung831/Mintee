@@ -31,22 +31,22 @@ struct TagsSection: View {
                     Image(systemName: "plus.circle")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(themeManager.panelContent)
                         .accessibility(identifier: "add-tag-button")
                         .accessibility(label: Text("Add"))
                         .accessibility(hint: Text("Tap to add a tag"))
                 })
-                    .sheet(isPresented: self.$isPresentingAddTagPopup, content: {
-                        AddTagPopup(isBeingPresented: self.$isPresentingAddTagPopup, addTag: { newTagName in
-                            if self.tags.contains(where: {$0.lowercased() == newTagName.lowercased()}) {
-                                return "Tag \(newTagName) already exists for this task"
-                            } else {
-                                self.tags.append(newTagName)
-                                self.tags.sort()
-                                return nil
-                            }
-                        }).environment(\.managedObjectContext, CDCoordinator.moc)
-                    })
+                .foregroundColor(themeManager.panelContent)
+                .sheet(isPresented: self.$isPresentingAddTagPopup, content: {
+                    AddTagPopup(isBeingPresented: self.$isPresentingAddTagPopup, addTag: { newTagName in
+                        if self.tags.contains(where: {$0.lowercased() == newTagName.lowercased()}) {
+                            return "Tag \(newTagName) already exists for this task"
+                        } else {
+                            self.tags.append(newTagName)
+                            self.tags.sort()
+                            return nil
+                        }
+                    }).environment(\.managedObjectContext, CDCoordinator.moc)
+                })
             }
             
             ForEach(0 ..< self.tags.count, id: \.self) { idx in
@@ -58,11 +58,10 @@ struct TagsSection: View {
                         self.tags.remove(at: idx)
                     }, label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(themeManager.buttonText)
                     })
-                        .accessibility(identifier: "tag-remove-button")
-                        .accessibility(label: Text("Remove tag"))
-                        .accessibility(hint: Text("Tap to remove tag"))
+                    .accessibility(identifier: "tag-remove-button")
+                    .accessibility(label: Text("Remove tag"))
+                    .accessibility(hint: Text("Tap to remove tag"))
                 }
                 .padding(12)
                 .foregroundColor(themeManager.buttonText)

@@ -107,6 +107,7 @@ struct SettingsView: View {
             .background(themeManager.panel)
             .navigationTitle(Text("Settings"))
         }
+        .accentColor(themeManager.accent)
         
     }
 }

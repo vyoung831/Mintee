@@ -32,6 +32,7 @@ struct SetCountPopup: View {
                 GeometryReader { gr in
                     HStack(alignment: .center, spacing: 10) {
                         Spacer()
+                        
                         Button(action: {
                             if let countCast = Float(count){
                                 count = String((countCast.rounded(.up) - 1).clean)
@@ -42,6 +43,7 @@ struct SetCountPopup: View {
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(themeManager.panelContent)
                         })
+                        
                         TextField("", text: self.$count)
                             .keyboardType( .decimalPad )
                             .frame(width: gr.size.width/2)
@@ -59,6 +61,7 @@ struct SetCountPopup: View {
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(themeManager.panelContent)
                         })
+                        
                         Spacer()
                     }
                 }
@@ -67,16 +70,20 @@ struct SetCountPopup: View {
             .padding(25)
             .background(themeManager.panel)
             .navigationTitle("Set Count")
-            .navigationBarItems(leading: Button("Done", action: {
-                if let valueToSave = Float(count){
-                    done(valueToSave)
-                } else {
-                    errorMessage = "Please remove invalid input"
-                }
-            }), trailing: Button("Cancel", action: {
-                cancel()
-            }))
+            .navigationBarItems(leading:
+                                    Button("Done", action: {
+                                        if let valueToSave = Float(count){ done(valueToSave) }
+                                        else { errorMessage = "Please remove invalid input" }
+                                    })
+                                    .foregroundColor(.accentColor),
+                                trailing:
+                                    Button("Cancel", action: {
+                                        cancel()
+                                    })
+                                    .foregroundColor(.accentColor)
+            )
             
         }
+        .accentColor(themeManager.accent)
     }
 }

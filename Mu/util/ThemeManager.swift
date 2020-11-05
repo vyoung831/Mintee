@@ -25,6 +25,7 @@ class ThemeManager: NSObject, ObservableObject {
     }
     
     enum ThemedUIElement: String, CaseIterable {
+        case accent = "accent"
         case panel = "panel"
         case panelContent = "panelContent"
         case button = "button"
@@ -44,6 +45,8 @@ class ThemeManager: NSObject, ObservableObject {
         tms.observeUserDefaults()
         return tms
     }()
+    
+    @Published var accent: Color
     
     @Published var panel: Color
     @Published var panelContent: Color
@@ -75,6 +78,7 @@ class ThemeManager: NSObject, ObservableObject {
      */
     override init() {
         let savedTheme = ThemeManager.getUserDefaultsTheme()
+        self.accent = ThemeManager.getElementColor(.accent, savedTheme)
         self.panel = ThemeManager.getElementColor(.panel, savedTheme)
         self.panelContent = ThemeManager.getElementColor(.panelContent, savedTheme)
         self.button = ThemeManager.getElementColor(.button, savedTheme)
@@ -101,6 +105,7 @@ class ThemeManager: NSObject, ObservableObject {
         guard let unwrappedChanges = change else { return }
         if let newKey = unwrappedChanges[.newKey] as? String {
             if let newTheme = ThemeManager.Theme.init(rawValue: newKey) {
+                self.accent = ThemeManager.getElementColor(.accent, newTheme)
                 self.panel = ThemeManager.getElementColor(.panel, newTheme)
                 self.panelContent = ThemeManager.getElementColor(.panelContent, newTheme)
                 self.button = ThemeManager.getElementColor(.button, newTheme)
@@ -135,10 +140,12 @@ class ThemeManager: NSObject, ObservableObject {
             switch element {
             case .panel:
                 return .clear
+            case .accent:
+                return .accentColor
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
             case .collectionItemBorder:
-                return .primary
+                return .secondary
             default:
                 return .primary
             }

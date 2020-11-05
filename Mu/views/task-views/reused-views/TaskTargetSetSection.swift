@@ -32,14 +32,16 @@ struct TaskTargetSetSection: View {
                     Image(systemName: "plus.circle")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(themeManager.panelContent)
                         .accessibility(identifier: "add-task-target-set-button")
                         .accessibility(label: Text("Add"))
                         .accessibility(hint: Text("Tap to add a target set"))
-                }).sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
-                            TaskTargetSetPopup.init(title: "Add Target Set",
-                                                    isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
-                                                    save: { ttsv in self.taskTargetSetViews.append(ttsv) })})
+                })
+                .foregroundColor(themeManager.panelContent)
+                .sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
+                    TaskTargetSetPopup.init(title: "Add Target Set",
+                                            isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
+                                            save: { ttsv in self.taskTargetSetViews.append(ttsv) })
+                })
             }
             
             ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in

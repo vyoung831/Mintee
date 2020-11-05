@@ -30,12 +30,12 @@ struct SelectDatesSection: View {
                     Image(systemName: "plus.circle")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(themeManager.panelContent)
                 })
                 .accessibility(identifier: "add-date-button")
                 .accessibility(label: Text("Add"))
                 .accessibility(hint: Text("Tap to add a date"))
             }
+            .foregroundColor(themeManager.panelContent)
             
             ForEach(0 ..< dates.count, id: \.self) { idx in
                 HStack {
@@ -45,8 +45,8 @@ struct SelectDatesSection: View {
                         self.dates.remove(at: idx)
                     }, label: {
                         Image(systemName: "trash")
-                            .foregroundColor(themeManager.buttonText)
                     })
+                    .foregroundColor(themeManager.buttonText)
                     .accessibility(identifier: "date-delete-button")
                     .accessibility(label: Text("Delete date"))
                     .accessibility(hint: Text("Tap to delete date"))

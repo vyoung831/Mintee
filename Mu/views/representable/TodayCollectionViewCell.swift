@@ -113,9 +113,10 @@ class TodayCollectionViewCell: UICollectionViewCell {
         let maxOp = SaveFormatter.getOperatorString(maxOpInt)
         
         // Update target
-        if minOp != .na && maxOp != .na { target.text = "\(minTarget.clean) \(minOp.rawValue) Target \(maxOp.rawValue) \(maxTarget.clean)" }
-        if minOp != .na { target.text = "Target \(minOp.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
-        if maxOp != .na { target.text = "\(maxOp.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
+        target.text = TaskTargetSetView.getTargetString(minOperator: minOp,
+                                                        maxOperator: maxOp,
+                                                        minTarget: minTarget,
+                                                        maxTarget: maxTarget)
         
         // Update status
         self.status.text = String(instance.completion.clean)

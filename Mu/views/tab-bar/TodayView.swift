@@ -34,6 +34,7 @@ struct TodayView: View {
     var body: some View {
         NavigationView {
             TodayCollectionViewControllerRepresentable(date: self.$date)
+                .accentColor(themeManager.accent)
                 .navigationBarTitle(self.getLabel())
                 .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
                     Button(action: {
@@ -53,7 +54,8 @@ struct TodayView: View {
                     Button(action: {
                         self.isPresentingSelectDate = true
                     }) {
-                        Image(systemName: "calendar").frame(width: 30, height: 30, alignment: .center)
+                        Image(systemName: "calendar")
+                            .frame(width: 30, height: 30, alignment: .center)
                             .foregroundColor(themeManager.panelContent)
                     }
                     .sheet(isPresented: $isPresentingSelectDate, content:  {

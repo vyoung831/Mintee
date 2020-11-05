@@ -41,7 +41,7 @@ struct ErrorManager {
         case invalidThemeSaved = 3
         case invalidThemeRead = 4
         case updateTodayCollectionViewControllerFailed = 5
-        case ttsvGetTargetInvalidValues = 6
+        case ttsvGetTargetStringInvalidValues = 6
         case collectionViewCouldNotDequeueResuableCell = 7
     }
     

@@ -50,6 +50,7 @@ struct AddTagPopup: View {
                     }, label: {
                         Text("Cancel")
                     })
+                    .foregroundColor(.accentColor)
                     .accessibility(identifier: "add-tag-popup-cancel-button")
                     .accessibility(hint: Text("Tap to cancel adding tag"))
                     
@@ -59,14 +60,19 @@ struct AddTagPopup: View {
                     Spacer()
                     
                     Button(action: {
-                        if let closureErrorMessage = self.addTag(self.tagText) {
+                        
+                        if self.tagText.count == 0 {
+                            self.isBeingPresented = false
+                        } else if let closureErrorMessage = self.addTag(self.tagText) {
                             self.errorMessage = closureErrorMessage
                         } else {
                             self.isBeingPresented = false
                         }
+                        
                     }, label: {
                         Text("Done")
                     })
+                    .foregroundColor(.accentColor)
                     .accessibility(identifier: "add-tag-popup-done-button")
                     .accessibility(label: Text("Tap to finish adding tag"))
                 }
@@ -89,7 +95,7 @@ struct AddTagPopup: View {
                 if let tagName = tag.name {
                     Button(tagName) {
                         // Sets the TextField value to the tapped Tag
-                        self.tagText = tagName
+                        self.tagText = tagName // TO-DO: Add foregroundColor modifier when List background is able to be set to themeManager.panel
                     }
                 }
             }
@@ -97,6 +103,7 @@ struct AddTagPopup: View {
             Spacer()
         }
         .padding(15)
+        .accentColor(themeManager.accent)
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
         
