@@ -35,22 +35,24 @@ struct SetDatePopup: View {
             }
             .navigationBarTitle(label ?? "Set \(isStartDate ? "Start": "End" ) Date")
             .navigationBarItems(trailing:
-                Button(action: {
-                    // If the start date was changed and moved ahead of end date, "fast-forward" end date to match start date
-                    if self.isStartDate && self.startDate > self.endDate {
-                        self.endDate = self.startDate
-                    } else if !self.isStartDate && self.endDate < self.startDate {
-                        self.startDate = self.endDate
-                    }
-                    self.isBeingPresented = false
-                }, label: {
-                    Text("Done")
-                })
-                    .accessibility(identifier: "set-date-popup-done-button")
-                    .accessibility(label: Text("Tap to finish setting \(isStartDate ? "start": "end" ) date"))
+                                    Button(action: {
+                                        // If the start date was changed and moved ahead of end date, "fast-forward" end date to match start date
+                                        if self.isStartDate && self.startDate > self.endDate {
+                                            self.endDate = self.startDate
+                                        } else if !self.isStartDate && self.endDate < self.startDate {
+                                            self.startDate = self.endDate
+                                        }
+                                        self.isBeingPresented = false
+                                    }, label: {
+                                        Text("Done")
+                                    })
+                                    .foregroundColor(.accentColor)
+                                    .accessibility(identifier: "set-date-popup-done-button")
+                                    .accessibility(label: Text("Tap to finish setting \(isStartDate ? "start": "end" ) date"))
             )
             
         }
+        .accentColor(themeManager.accent)
         
     }
 }

@@ -22,20 +22,21 @@ struct SelectDatePopup: View {
             VStack {
                 DatePicker("", selection: self.$date, displayedComponents: .date)
                     .labelsHidden()
-                    .accessibility(identifier: "end-date-picker")
             }
             .navigationBarTitle(label)
             .navigationBarItems(trailing:
-                Button(action: {
-                    self.isBeingPresented = false
-                }, label: {
-                    Text("Done")
-                })
-                    .accessibility(identifier: "select-date-popup-done-button")
-                    .accessibility(label: Text("Tap to finish selecting date"))
+                                    Button(action: {
+                                        self.isBeingPresented = false
+                                    }, label: {
+                                        Text("Done")
+                                    })
+                                    .foregroundColor(.accentColor)
+                                    .accessibility(identifier: "select-date-popup-done-button")
+                                    .accessibility(label: Text("Tap to finish selecting date"))
             )
             
         }
+        .accentColor(themeManager.accent)
         
     }
 }

@@ -113,6 +113,7 @@ struct AddTask: View {
                         Text("Save")
                             .accessibilityElement(children: .ignore)
                     })
+                    .foregroundColor(.accentColor)
                     .accessibility(label: Text("Save button"))
                     .accessibility(hint: Text("Tap to save new task"))
                     .accessibility(identifier: "add-task-save-button")
@@ -130,6 +131,7 @@ struct AddTask: View {
                     }, label: {
                         Text("Cancel")
                     })
+                    .foregroundColor(.accentColor)
                 }
                 
                 // MARK: - Task name text field
@@ -167,8 +169,10 @@ struct AddTask: View {
                 
             }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
+        .accentColor(themeManager.accent)
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
+        
     }
 }
 

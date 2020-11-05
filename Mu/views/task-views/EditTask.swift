@@ -138,12 +138,15 @@ struct EditTask: View {
                             break
                         }
                         
-                        if self.datesToDelete.count > 0 { self.isPresentingConfirmDeletePopupForSaveTask = true }
+                        if self.datesToDelete.count > 0 {
+                            self.isPresentingConfirmDeletePopupForSaveTask = true
+                        }
                         else { self.saveTask() }
                         
                     }, label: {
                         Text("Save")
                     })
+                    .foregroundColor(.accentColor)
                     .accessibility(identifier: "edit-task-save-button")
                     .accessibility(label: Text("Save"))
                     .accessibility(hint: Text("Tap to save changes to task"))
@@ -174,6 +177,7 @@ struct EditTask: View {
                     }, label: {
                         Text("Cancel")
                     })
+                    .foregroundColor(.accentColor)
                 }
                 
                 // MARK: - Task name text field
@@ -230,6 +234,7 @@ struct EditTask: View {
             })
             .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
         })
+        .accentColor(themeManager.accent)
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
     }
