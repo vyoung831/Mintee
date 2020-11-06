@@ -2,7 +2,7 @@
 //  DayBubbleLabels.swift
 //  Mu
 //
-//  This class handles the content that is displayed in BubbleRows and BubbleRowsToggleable.
+//  This class handles the content that is displayed in BubbleRows.
 //  Because the bubbles labels must be able to be translated the following ways, this class' APIs/functions are centered around labels' short representations
 //  - Converted to save data to persist to storage
 //  - Converted to long representations for accessibility labels
@@ -25,7 +25,7 @@ class DayBubbleLabels {
                                         "30","31","Last"]
     
     /**
-     Returns a representation of day bubbles that BubbleRows and BubbleRowsToggleable need to display their content
+     Returns a representation of day bubbles that BubbleRows needs to display content
      - parameter bubblesPerRow: The max number of bubbles to be in each sub-array
      - parameter patternType: The type of labels to return
      - returns: An array of arrays of Strings, with each sub-array representing a row of bubble labels

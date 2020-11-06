@@ -17,7 +17,6 @@
 		C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */; };
 		C406563724AA08E9002926EB /* Tag-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563624AA08E9002926EB /* Tag-Tests.swift */; };
 		C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C409257B248664A600E463DA /* TaskTargetSetPopup.swift */; };
-		C40F6D872487BD74008114E5 /* BubbleRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F6D862487BD74008114E5 /* BubbleRows.swift */; };
 		C4130C1924C6FB4F003EF047 /* LowOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */; };
 		C4130C1B24C6FB56003EF047 /* HighOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */; };
 		C4130C1D24C6FB6B003EF047 /* LowEqualToHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */; };
@@ -95,7 +94,7 @@
 		C4E73FC5245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB1245DFD0D007ADD34 /* LegendEntry+CoreDataProperties.swift */; };
 		C4E73FCB245DFD0D007ADD34 /* Tag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */; };
 		C4E73FCF245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */; };
-		C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */; };
+		C4EADF7324889D1C0080CD01 /* BubbleRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EADF7224889D1C0080CD01 /* BubbleRows.swift */; };
 		C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */; };
 		C4FA83FF25323A3C0079BB81 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */; };
 		C4FC99D8253BF15200E2359F /* Notification.Name+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */; };
@@ -138,7 +137,6 @@
 		C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet-Tests.swift"; sourceTree = "<group>"; };
 		C406563624AA08E9002926EB /* Tag-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag-Tests.swift"; sourceTree = "<group>"; };
 		C409257B248664A600E463DA /* TaskTargetSetPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopup.swift; sourceTree = "<group>"; };
-		C40F6D862487BD74008114E5 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
 		C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowOnlyTests.swift; sourceTree = "<group>"; };
 		C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighOnlyTests.swift; sourceTree = "<group>"; };
 		C4130C1C24C6FB6B003EF047 /* LowEqualToHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEqualToHighTests.swift; sourceTree = "<group>"; };
@@ -217,7 +215,7 @@
 		C4E73FB7245DFD0D007ADD34 /* Tag+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E73FBB245DFD0D007ADD34 /* TaskSummaryAnalysis+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskSummaryAnalysis+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C4E7C7AF24E8AC1F0005C9CB /* MuTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MuTests copy-Info.plist"; path = "/Users/vincentyoung/Documents/Work/Mu/MuTests copy-Info.plist"; sourceTree = "<absolute>"; };
-		C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRowsToggleable.swift; sourceTree = "<group>"; };
+		C4EADF7224889D1C0080CD01 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
 		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
 		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extensions.swift"; sourceTree = "<group>"; };
@@ -552,8 +550,7 @@
 		C48719A224891999004463F4 /* task-target-set-views */ = {
 			isa = PBXGroup;
 			children = (
-				C40F6D862487BD74008114E5 /* BubbleRows.swift */,
-				C4EADF7224889D1C0080CD01 /* BubbleRowsToggleable.swift */,
+				C4EADF7224889D1C0080CD01 /* BubbleRows.swift */,
 				C409257B248664A600E463DA /* TaskTargetSetPopup.swift */,
 				C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */,
 			);
@@ -900,9 +897,8 @@
 				C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */,
 				C4D9DB6425475771002F0B40 /* SetCountPopup.swift in Sources */,
 				C482233324BA57B000E6426E /* TaskTargetSetSection.swift in Sources */,
-				C40F6D872487BD74008114E5 /* BubbleRows.swift in Sources */,
 				C48F024E2448A5730088227F /* Task.swift in Sources */,
-				C4EADF7324889D1C0080CD01 /* BubbleRowsToggleable.swift in Sources */,
+				C4EADF7324889D1C0080CD01 /* BubbleRows.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
 				C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */,
 				C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */,

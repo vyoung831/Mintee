@@ -93,9 +93,9 @@ struct TaskTargetSetView: View {
         if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
         ErrorManager.recordNonFatal(.ttsvGetTargetStringInvalidValues, ["minOperator": minOperator.rawValue,
-                                                                  "maxOperator": maxOperator.rawValue,
-                                                                  "minTarget": minTarget,
-                                                                  "maxTarget": maxTarget])
+                                                                        "maxOperator": maxOperator.rawValue,
+                                                                        "minTarget": minTarget,
+                                                                        "maxTarget": maxTarget])
         return ""
     }
     
@@ -168,10 +168,13 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(type: self.type == .dow || self.type == .wom ? .dow : .dom,
-                           selected: (self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : self.selectedDaysOfMonth) ?? Set<String>())
+                BubbleRows(bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7,
+                                                                           patternType: self.type == .wom || self.type == .dow ? .dow : .dom),
+                           toggleable: false,
+                           selectedBubbles: .constant((self.type == .dow || self.type == .wom
+                                                        ? self.selectedDaysOfWeek : self.selectedDaysOfMonth)
+                                                        ?? Set<String>()))
                     .accessibilityElement(children: .ignore)
-                
             }
             
             // MARK: - Frequency
