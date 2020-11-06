@@ -17,25 +17,13 @@ struct BubbleRows: View {
     
     var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
-    var selectedBubbles: Set<String>
+    
+    var toggleable: Bool
+    @Binding var selectedBubbles: Set<String>
     
     @State var grHeight: CGFloat = 0
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
-    
-    // MARK: - Initializers
-    
-    init(type: DayPattern.patternType, selected: Set<String>) {
-        switch type {
-        case .dow:
-            self.bubbles = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7, patternType: .dow); break
-        case .wom:
-            self.bubbles = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 5, patternType: .wom); break
-        case .dom:
-            self.bubbles = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7, patternType: .dom); break
-        }
-        self.selectedBubbles = selected
-    }
     
     // MARK: - UI functions
     
@@ -46,7 +34,7 @@ struct BubbleRows: View {
      - returns: Bubble radius
      */
     func getBubbleRadius(totalWidth: CGFloat) -> CGFloat {
-        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubbles[0].count)-1)*BubbleRows.minimumInterBubbleSpacing
+        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubbles[0].count)-1) * BubbleRows.minimumInterBubbleSpacing
         let fullBubbleRadius = (bubblesCumulativeWidth/CGFloat(bubbles[0].count))/2
         return min(fullBubbleRadius, maxBubbleRadius)
     }
@@ -59,7 +47,7 @@ struct BubbleRows: View {
      */
     func getGeometryReaderHeight(totalWidth: CGFloat) -> CGFloat {
         let bubbleHeight = 2*getBubbleRadius(totalWidth: totalWidth)
-        let spacing = CGFloat(self.bubbles.count-1)*BubbleRows.rowSpacing
+        let spacing = CGFloat(self.bubbles.count-1) * BubbleRows.rowSpacing
         let totalHeight = bubbleHeight*(CGFloat(self.bubbles.count)) + spacing
         return totalHeight
     }
@@ -102,11 +90,21 @@ struct BubbleRows: View {
                                            height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                            alignment: .center)
                                 Text(String(bubbleText)).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                                            ? themeManager.buttonText : themeManager.button )
+                                                                            ? themeManager.buttonText : themeManager.button)
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
                             .accessibility(label: Text("\(DayBubbleLabels.getLongLabel(bubbleText))"))
                             .accessibility(hint: Text("Tap to toggle this day"))
+                            .onTapGesture {
+                                // Add or remove the bubbleText from selectedBubbles
+                                if self.toggleable {
+                                    if !self.selectedBubbles.contains(bubbleText) {
+                                        self.selectedBubbles.insert(bubbleText)
+                                    } else {
+                                        self.selectedBubbles = self.selectedBubbles.filter { $0 != bubbleText }
+                                    }
+                                }
+                            }
                         }
                     }
                     

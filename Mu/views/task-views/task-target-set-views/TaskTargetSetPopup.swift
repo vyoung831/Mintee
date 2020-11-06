@@ -210,15 +210,17 @@ struct TaskTargetSetPopup: View {
                 Group {
                     
                     // Days of week/month
-                    BubbleRowsToggleable(maxBubbleRadius: 32,
-                                         bubbles: self.type == .dom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow),
-                                         selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
+                    BubbleRows(maxBubbleRadius: 32,
+                               bubbles: self.type == .dom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow),
+                               toggleable: true,
+                               selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
                     
                     // Weeks of month
                     if self.type == .wom {
-                        BubbleRowsToggleable(maxBubbleRadius: 32,
-                                             bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .wom),
-                                             selectedBubbles: self.$selectedWeeks)
+                        BubbleRows(maxBubbleRadius: 32,
+                                   bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .wom),
+                                   toggleable: true,
+                                   selectedBubbles: self.$selectedWeeks)
                     }
                     
                     Picker(selection: self.$type,

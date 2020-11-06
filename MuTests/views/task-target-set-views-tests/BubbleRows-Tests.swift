@@ -24,8 +24,9 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getBubbleRadius_maxBubbleRadius_respected() {
         
-        var bubbleRows = BubbleRows(type: .dow,
-                                    selected: Set<String>())
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow: Int = bubbleRows.bubbles[0].count
         let maxBubbleRadius: CGFloat = 30
         
@@ -43,8 +44,9 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getBubbleRadius_minimumInterBubbleSpacing_respected() {
         
-        var bubbleRows = BubbleRows(type: .dow,
-                                    selected: Set<String>())
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow: Int = bubbleRows.bubbles[0].count
         let maxBubbleRadius: CGFloat = 30
         
@@ -60,8 +62,9 @@ class BubbleRows_Tests: XCTestCase {
     func test_getGeometryReaderHeight() {
         let totalWidth: CGFloat = 200
         
-        let bubbleRows = BubbleRows(type: .dow,
-                                    selected: Set<String>())
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
         let rowCount = bubbleRows.bubbles.count
         
         // Given totalWidth and the default maxBubbleRadius, calculate the bubbleRadius and total GeometryReader height
@@ -77,8 +80,9 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHstackSpacing_increasesHStackSpacing() {
         
-        let bubbleRows = BubbleRows(type: .dow,
-                                    selected: Set<String>())
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
         
         // Calculate the totalWidth needed with the maxBubbleRadius, then add 1 to overflow the width
@@ -94,8 +98,9 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
         
-        let bubbleRows = BubbleRows(type: .dow,
-                                    selected: Set<String>())
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
         
         // Calculate the totalWidth needed with the maxBubbleRadius, then add 1 to overflow the width
