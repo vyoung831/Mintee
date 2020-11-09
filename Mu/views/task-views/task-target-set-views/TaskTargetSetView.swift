@@ -88,6 +88,10 @@ struct TaskTargetSetView: View {
      - returns: String representing the target value(s)
      */
     static func getTargetString(minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float) -> String {
+        
+        if minOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.rawValue) \(minTarget.clean)"}
+        if maxOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.rawValue) \(maxTarget.clean)"}
+        
         if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.rawValue) Target \(maxOperator.rawValue) \(maxTarget.clean)" }
         if minOperator != .na { return "Target \(minOperator.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
         if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
