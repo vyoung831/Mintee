@@ -52,14 +52,14 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     init(task: Task, dismiss: @escaping (() -> Void)) {
         
         // TO-DO: Add startDate and endDate getters and setters to Task
-        let taskType = SaveFormatter.storedToTaskType(storedType: task.taskType)
+        let taskType = SaveFormatter.storedToTaskType(storedType: task.getTaskType)
         switch taskType {
         case .recurring:
             
             // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
             let ttsvArray: [TaskTargetSetView] = EditTaskHostingController.extractTTSVArray(task: task)
             
-            if let startDateString = task.startDate, let endDateString = task.endDate {
+            if let startDateString = task.getStartDate, let endDateString = task.getEndDate {
                 let editTask = EditTask(task: task,
                                         dismiss: dismiss,
                                         taskName: task.name ?? "",
@@ -71,8 +71,8 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 super.init(rootView: editTask)
             } else {
                 Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a recurring Task that had startDate and/or endDate equal to nil")
-                Crashlytics.crashlytics().setCustomValue(task.startDate as Any, forKey: "Start date")
-                Crashlytics.crashlytics().setCustomValue(task.endDate as Any, forKey: "End date")
+                Crashlytics.crashlytics().setCustomValue(task.getStartDate as Any, forKey: "Start date")
+                Crashlytics.crashlytics().setCustomValue(task.getEndDate as Any, forKey: "End date")
                 fatalError()
             }
             break

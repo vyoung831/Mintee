@@ -15,6 +15,28 @@ import Firebase
 @objc(Task)
 public class Task: NSManagedObject {
     
+    @NSManaged private var startDate: String?
+    @NSManaged private var endDate: String?
+    @NSManaged private var taskType: Int16
+    
+    var getStartDate: String? {
+        get {
+            return startDate
+        }
+    }
+    
+    var getEndDate: String? {
+        get {
+            return endDate
+        }
+    }
+    
+    var getTaskType: Int16 {
+        get {
+            return taskType
+        }
+    }
+    
     /**
      Convenience init for recurring-type Task
      */
