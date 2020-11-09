@@ -17,10 +17,6 @@ extension TaskTargetSet {
         return NSFetchRequest<TaskTargetSet>(entityName: "TaskTargetSet")
     }
 
-    @NSManaged public var max: Float
-    @NSManaged public var maxOperator: Int16
-    @NSManaged public var min: Float
-    @NSManaged public var minOperator: Int16
     @NSManaged public var pattern: NSObject?
     @NSManaged public var priority: Int16
     @NSManaged public var instances: NSSet?

@@ -35,10 +35,10 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,
-                                             minTarget: ttsArray[idx].min,
-                                             minOperator: SaveFormatter.getOperatorString(ttsArray[idx].minOperator),
-                                             maxTarget: ttsArray[idx].max,
-                                             maxOperator: SaveFormatter.getOperatorString(ttsArray[idx].maxOperator),
+                                             minTarget: ttsArray[idx].getMin,
+                                             minOperator: SaveFormatter.getOperatorString(ttsArray[idx].getMinOperator),
+                                             maxTarget: ttsArray[idx].getMax,
+                                             maxOperator: SaveFormatter.getOperatorString(ttsArray[idx].getMaxOperator),
                                              selectedDaysOfWeek: Set(ttsArray[idx].getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
                                              selectedWeeksOfMonth: Set(ttsArray[idx].getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
                                              selectedDaysOfMonth: Set(ttsArray[idx].getDaysOfMonth().map{ String($0) }))
