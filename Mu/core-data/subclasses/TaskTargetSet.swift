@@ -27,7 +27,7 @@ public class TaskTargetSet: NSManagedObject {
     
     var getMax: Float {
         get {
-            return min
+            return max
         }
     }
     
