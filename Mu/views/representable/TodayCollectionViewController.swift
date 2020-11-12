@@ -103,9 +103,9 @@ extension TodayCollectionViewController {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
             
             if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
-                if let task = instance.task {
+                if let task = instance._task {
                     
-                    cell.setTaskName(taskName: task.name ?? "")
+                    cell.setTaskName(taskName: task._name ?? "")
                     cell.updateAppearance(instance: instance)
                     cell.handleEditButtonPressed = {
                         let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
@@ -116,8 +116,8 @@ extension TodayCollectionViewController {
                     
                     cell.handleSetButtonPressed = {
                         let scphc =
-                            SetCountPopupHostingController(count: instance.completion, done: { [unowned self, instance] in
-                                instance.completion = $0
+                            SetCountPopupHostingController(count: instance._completion, done: { [unowned self, instance] in
+                                instance._completion = $0
                                 CDCoordinator.shared.saveContext()
                                 self.dismiss(animated: true, completion: nil)
                             }, cancel: { [unowned self] in

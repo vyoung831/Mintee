@@ -91,10 +91,10 @@ class TodayCollectionViewCell: UICollectionViewCell {
      - parameter instance: TaskInstance whose completion (Float) is used to update completionMeter's constraints
      */
     public func updateAppearance(instance: TaskInstance) {
-        guard let minOpInt = instance.targetSet?.getMinOperator,
-              let maxOpInt = instance.targetSet?.getMaxOperator,
-              let maxTarget = instance.targetSet?.getMin,
-              let minTarget = instance.targetSet?.getMax else {
+        guard let minOpInt = instance._targetSet?._minOperator,
+              let maxOpInt = instance._targetSet?._maxOperator,
+              let maxTarget = instance._targetSet?._min,
+              let minTarget = instance._targetSet?._max else {
             // TO-DO: Implement presentation of completionMeter for Specific-type Tasks
             completionMeterHeightConstraint.isActive = false
             completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
@@ -102,11 +102,11 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                                  relatedBy: .equal,
                                                                  toItem: self,
                                                                  attribute: .height,
-                                                                 multiplier: instance.completion > 0 ? 1 : 0,
+                                                                 multiplier: instance._completion > 0 ? 1 : 0,
                                                                  constant: 0)
             completionMeterHeightConstraint.isActive = true
-            completionMeter.backgroundColor = instance.completion > 0 ? .green : .red
-            self.status.text = instance.completion > 0 ? "Done" : "To-do"
+            completionMeter.backgroundColor = instance._completion > 0 ? .green : .red
+            self.status.text = instance._completion > 0 ? "Done" : "To-do"
             return
         }
         let minOp = SaveFormatter.getOperatorString(minOpInt)
@@ -119,7 +119,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                         maxTarget: maxTarget)
         
         // Update status
-        self.status.text = String(instance.completion.clean)
+        self.status.text = String(instance._completion.clean)
         
         // Update completionMeter
         completionMeterHeightConstraint.isActive = false
@@ -128,10 +128,10 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                              relatedBy: .equal,
                                                              toItem: self,
                                                              attribute: .height,
-                                                             multiplier: CGFloat(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance.completion)),
+                                                             multiplier: CGFloat(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion)),
                                                              constant: 0)
         completionMeterHeightConstraint.isActive = true
-        completionMeter.backgroundColor = TodayCollectionViewCell.getCompletionMeterColor(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance.completion)
+        completionMeter.backgroundColor = TodayCollectionViewCell.getCompletionMeterColor(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion)
         
     }
     

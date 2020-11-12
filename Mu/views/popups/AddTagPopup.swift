@@ -16,8 +16,9 @@ struct AddTagPopup: View {
     @State var errorMessage: String = ""
     
     @FetchRequest(
+        // TO-DO: Update NSSortDescriptor to use more robust way to sort Tag name 
         entity: Tag.entity(),
-        sortDescriptors: [NSSortDescriptor(key: #keyPath(Tag.name), ascending: true)]
+        sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]
     ) var tagsFetch: FetchedResults<Tag>
     
     // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
@@ -31,7 +32,7 @@ struct AddTagPopup: View {
      - returns: True if tag's name is
      */
     func tagShouldBeDisplayed(_ tag: Tag) -> Bool {
-        if let tagName = tag.name {
+        if let tagName = tag._name {
             if tagName.lowercased().contains(self.tagText.lowercased()) || self.tagText.count == 0 {
                 return true
             }
@@ -92,7 +93,7 @@ struct AddTagPopup: View {
             List(tagsFetch.filter{
                 tagShouldBeDisplayed($0)
             }, id: \.self) { tag in
-                if let tagName = tag.name {
+                if let tagName = tag._name {
                     Button(tagName) {
                         // Sets the TextField value to the tapped Tag
                         self.tagText = tagName // TO-DO: Add foregroundColor modifier when List background is able to be set to themeManager.panel

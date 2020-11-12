@@ -88,8 +88,8 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_startDateEarlier() throws {
         
         let newStart = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
-        let targetSets = Set((task.targetSets as! Set<TaskTargetSet>))
-        let delta = Set(task.getDeltaInstancesRecurring(startDate: newStart, endDate: endDate, dayPatterns: Set(targetSets.map{$0.pattern! as! DayPattern}) ))
+        let targetSets = Set((task._targetSets as! Set<TaskTargetSet>))
+        let delta = Set(task.getDeltaInstancesRecurring(startDate: newStart, endDate: endDate, dayPatterns: Set(targetSets.map{$0._pattern! as! DayPattern}) ))
         XCTAssert(delta.count == 0)
         
     }
@@ -104,8 +104,8 @@ extension Task_InstanceDelta_Tests {
         ).subtracting(newWomDates).subtracting(newDowDates)
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 7, day: 1))!
         
-        let targetSets = Set((task.targetSets as! Set<TaskTargetSet>))
-        var delta = Set(task.getDeltaInstancesRecurring(startDate: newStart, endDate: endDate, dayPatterns: Set(targetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)} )
+        let targetSets = Set((task._targetSets as! Set<TaskTargetSet>))
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: newStart, endDate: endDate, dayPatterns: Set(targetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)} )
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newDowDates).subtracting(newWomDates).subtracting(newDomDates)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -124,8 +124,8 @@ extension Task_InstanceDelta_Tests {
         let newDomDates: Set<String> = Set(["2019-11-01", "2019-11-02", "2019-11-03", "2019-11-04", "2019-11-05", "2019-11-06", "2019-11-07", "2019-11-08", "2019-11-09", "2019-11-10", "2019-11-30", "2019-12-01", "2019-12-02", "2019-12-03", "2019-12-04", "2019-12-05", "2019-12-06", "2019-12-07", "2019-12-08", "2019-12-09", "2019-12-10", "2019-12-31", "2020-01-01", "2020-01-02", "2020-01-03", "2020-01-04", "2020-01-05", "2020-01-06", "2020-01-07", "2020-01-08", "2020-01-09", "2020-01-10", "2020-01-31", "2020-02-01", "2020-02-02", "2020-02-03", "2020-02-04", "2020-02-05", "2020-02-06", "2020-02-07", "2020-02-08", "2020-02-09", "2020-02-10", "2020-02-29", "2020-03-01", "2020-03-02", "2020-03-03", "2020-03-04", "2020-03-05", "2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09", "2020-03-10", "2020-03-31", "2020-04-01", "2020-04-02", "2020-04-03", "2020-04-04", "2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08", "2020-04-09", "2020-04-10", "2020-04-30", "2020-05-01", "2020-05-02", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-05-07", "2020-05-08", "2020-05-09", "2020-05-10", "2020-05-31", "2020-06-01", "2020-06-02", "2020-06-03", "2020-06-04", "2020-06-05", "2020-06-06", "2020-06-07", "2020-06-08", "2020-06-09", "2020-06-10", "2020-06-30"]).subtracting(newWomDates).subtracting(newDowDates)
         let newEnd = Calendar.current.date(from: DateComponents(year: 2020, month: 6, day: 30))!
         
-        let targetSets = Set((task.targetSets as! Set<TaskTargetSet>))
-        var delta = Set( task.getDeltaInstancesRecurring(startDate: startDate, endDate: newEnd, dayPatterns: Set(targetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)} )
+        let targetSets = Set((task._targetSets as! Set<TaskTargetSet>))
+        var delta = Set( task.getDeltaInstancesRecurring(startDate: startDate, endDate: newEnd, dayPatterns: Set(targetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)} )
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newDowDates).subtracting(newWomDates).subtracting(newDomDates)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -140,8 +140,8 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_endDateLater() throws {
         
         let newEnd = Calendar.current.date(from: DateComponents(year: 2022, month: 1, day: 1))!
-        let targetSets = Set((task.targetSets as! Set<TaskTargetSet>))
-        let delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: newEnd, dayPatterns: Set(targetSets.map{$0.pattern! as! DayPattern}) ))
+        let targetSets = Set((task._targetSets as! Set<TaskTargetSet>))
+        let delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: newEnd, dayPatterns: Set(targetSets.map{$0._pattern! as! DayPattern}) ))
         XCTAssert(delta.count == 0)
         
     }
@@ -154,7 +154,7 @@ extension Task_InstanceDelta_Tests {
         let newDomDates: Set<String> = globalDomDates.subtracting(newWomDates)
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
         
-        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newWomDates).subtracting(newDomDates)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -172,7 +172,7 @@ extension Task_InstanceDelta_Tests {
         let newDomDates: Set<String> = globalDomDates.subtracting(newDowDates)
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
         
-        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newDowDates).subtracting(newDomDates)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -190,7 +190,7 @@ extension Task_InstanceDelta_Tests {
         let newWomDates: Set<String> = globalWomDates.subtracting(newDowDates)
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc))
         
-        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newDowDates).subtracting(newWomDates)
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -205,7 +205,7 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_deleteAllTargetSets() throws {
         
         let newTargetSets: Set<TaskTargetSet> = []
-        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates))
         for dateToDelete in delta {
             XCTAssert(expectedDelta.contains(dateToDelete))
@@ -232,7 +232,7 @@ extension Task_InstanceDelta_Tests {
                                       pattern: DayPattern(dow: Set([2]), wom: Set(), dom: Set()))
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowDatesSet)
         
-        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)}
+        let delta = task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
         
     }
@@ -269,7 +269,7 @@ extension Task_InstanceDelta_Tests {
         let oldDomDates: Set<String> = globalDomDates.subtracting(newDomDates).subtracting(oldWomDates).subtracting(newDowDates).subtracting(newWomDates)
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowDatesSet,newWomDatesSet,newDomDatesSet)
-        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern})).map{Date.toYMDTest($0)})
+        var delta = Set(task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern})).map{Date.toYMDTest($0)})
         let datesStillExisting = newWomDates.union(newDowDates).union(oldWomDates).union(newDomDates).union(oldDomDates)
         var expectedDelta = globalDowDates.subtracting( datesStillExisting )
         for dateToDelete in delta {
@@ -298,7 +298,7 @@ extension Task_InstanceDelta_Tests {
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern}))
+            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern}))
         }
         
     }
@@ -311,7 +311,7 @@ extension Task_InstanceDelta_Tests {
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern}))
+            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern}))
         }
         
     }
@@ -324,7 +324,7 @@ extension Task_InstanceDelta_Tests {
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0.pattern! as! DayPattern}))
+            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern! as! DayPattern}))
         }
         
     }

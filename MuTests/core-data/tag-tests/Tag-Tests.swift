@@ -39,35 +39,13 @@ class Tag_Tests: XCTestCase {
      */
     func test_getOrCreateTag_reuseExisting() throws {
         
-        let tag1 = Tag(entity: Tag.getEntityDescription(CDCoordinator.moc)!, insertInto: CDCoordinator.moc); tag1.name = "Tag"
+        let _ = Tag.getOrCreateTag(tagName: "Tag")
         var tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
         
         let _ = Tag.getOrCreateTag(tagName: "Tag")
         tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
-        
-    }
-    
-}
-
-// MARK: - Core Data Restraint tests
-
-extension Tag_Tests {
-    
-    /**
-     Test uniqueness of Tag's name
-     */
-    func test_restraint_tagNameUnique() {
-        
-        let tag1 = Tag(entity: Tag.getEntityDescription(CDCoordinator.moc)!, insertInto: CDCoordinator.moc); tag1.name = "Tag"
-        let tag2 = Tag(entity: Tag.getEntityDescription(CDCoordinator.moc)!, insertInto: CDCoordinator.moc); tag2.name = "Tag"
-        do {
-            try CDCoordinator.moc.save()
-            XCTFail()
-        } catch {
-            // Succeeded
-        }
         
     }
     

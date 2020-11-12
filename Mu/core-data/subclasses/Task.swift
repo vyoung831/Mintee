@@ -18,24 +18,20 @@ public class Task: NSManagedObject {
     @NSManaged private var startDate: String?
     @NSManaged private var endDate: String?
     @NSManaged private var taskType: Int16
+    @NSManaged private var name: String?
+    @NSManaged private var instances: NSSet?
+    @NSManaged private var tags: NSSet?
+    @NSManaged private var targetSets: NSSet?
+    @NSManaged private var taskSummaryAnalysis: TaskSummaryAnalysis?
     
-    var getStartDate: String? {
-        get {
-            return startDate
-        }
-    }
-    
-    var getEndDate: String? {
-        get {
-            return endDate
-        }
-    }
-    
-    var getTaskType: Int16 {
-        get {
-            return taskType
-        }
-    }
+    var _startDate: String? { get { return self.startDate } }
+    var _endDate: String? { get { return self.endDate } }
+    var _taskType: Int16 { get { return self.taskType } }
+    var _name: String? { get { return self.name } set { self.name = newValue } }
+    var _instances: NSSet? { get { return self.instances } }
+    var _tags: NSSet? { get { return self.tags } }
+    var _targetSets: NSSet? { get { return self.targetSets } }
+    var _taskSummaryAnalysis: TaskSummaryAnalysis? { get { return self.taskSummaryAnalysis } }
     
     /**
      Convenience init for recurring-type Task
@@ -87,6 +83,58 @@ public class Task: NSManagedObject {
     
 }
 
+// MARK: Generated accessors for instances
+extension Task {
+    
+    @objc(addInstancesObject:)
+    @NSManaged private func addToInstances(_ value: TaskInstance)
+    
+    @objc(removeInstancesObject:)
+    @NSManaged private func removeFromInstances(_ value: TaskInstance)
+    
+    @objc(addInstances:)
+    @NSManaged private func addToInstances(_ values: NSSet)
+    
+    @objc(removeInstances:)
+    @NSManaged private func removeFromInstances(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for tags
+extension Task {
+    
+    @objc(addTagsObject:)
+    @NSManaged private func addToTags(_ value: Tag)
+    
+    @objc(removeTagsObject:)
+    @NSManaged private func removeFromTags(_ value: Tag)
+    
+    @objc(addTags:)
+    @NSManaged private func addToTags(_ values: NSSet)
+    
+    @objc(removeTags:)
+    @NSManaged private func removeFromTags(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for targetSets
+extension Task {
+    
+    @objc(addTargetSetsObject:)
+    @NSManaged private func addToTargetSets(_ value: TaskTargetSet)
+    
+    @objc(removeTargetSetsObject:)
+    @NSManaged private func removeFromTargetSets(_ value: TaskTargetSet)
+    
+    @objc(addTargetSets:)
+    @NSManaged private func addToTargetSets(_ values: NSSet)
+    
+    @objc(removeTargetSets:)
+    @NSManaged private func removeFromTargetSets(_ values: NSSet)
+    
+}
+
+
 // MARK: - Tag handling
 
 extension Task {
@@ -96,7 +144,7 @@ extension Task {
      */
     public func getTagNames() -> Set<String> {
         if let tags = self.tags as? Set<Tag> {
-            let tagNames = Set(tags.map({$0.name ?? ""}))
+            let tagNames = Set(tags.map({$0._name ?? ""}))
             return tagNames
         }
         return Set<String>()
@@ -129,7 +177,7 @@ extension Task {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 
-                guard let tagName = tag.name else {
+                guard let tagName = tag._name else {
                     Crashlytics.crashlytics().log("removeUnrelatedTags() in Task found tag with name = nil")
                     fatalError()
                 }
@@ -137,7 +185,7 @@ extension Task {
                 // If new tags don't contain an existing Tag's tagName, remove it from tags. After, if the Tag has no Tasks left, delete it
                 if !newTagNames.contains(tagName) {
                     self.removeFromTags(tag)
-                    if tag.tasks?.count == 0 {
+                    if tag._tasks?.count == 0 {
                         CDCoordinator.moc.delete(tag)
                     }
                 }
@@ -153,7 +201,7 @@ extension Task {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 self.removeFromTags(tag)
-                if tag.tasks?.count == 0 {
+                if tag._tasks?.count == 0 {
                     CDCoordinator.moc.delete(tag)
                 }
             }
@@ -180,7 +228,7 @@ extension Task {
         var datesDelta: [String] = []
         let newDateStrings = dates.map{SaveFormatter.dateToStoredString($0)}
         for instance in instances {
-            if let existingDate = instance.date {
+            if let existingDate = instance._date {
                 !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
             }
         }
@@ -206,7 +254,7 @@ extension Task {
         
         // Filter existing TaskInstances for ones before the proposed start date
         let instancesBefore = instances.filter({
-            if let date = $0.date {
+            if let date = $0._date {
                 return SaveFormatter.storedStringToDate(date).lessThanDate(startDate)
             } else {
                 Crashlytics.crashlytics().log("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value")
@@ -216,7 +264,7 @@ extension Task {
         
         // Filter existing TaskInstances for ones after the proposed end date
         let instancesAfter = instances.filter({
-            if let date = $0.date {
+            if let date = $0._date {
                 return endDate.lessThanDate(SaveFormatter.storedStringToDate(date))
             } else {
                 Crashlytics.crashlytics().log("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value")
@@ -224,8 +272,8 @@ extension Task {
             }
         })
         
-        let beforeSorted = instancesBefore.map({ $0.date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
-        let afterSorted = instancesAfter.map({ $0.date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
+        let beforeSorted = instancesBefore.map({ $0._date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
+        let afterSorted = instancesAfter.map({ $0._date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
         datesDelta.append(contentsOf: beforeSorted)
         
         // Loop through each of the days from startDate to endDate to evaluate if TaskInstances for each day would be created, deleted, or carried over
@@ -271,7 +319,7 @@ extension Task {
             }
             
             // If none of the proposed DayPatterns matched with the date and a TaskInstance already exists for that date, add it to datesDelta since it would be deleted
-            if !matched && instances.contains(where: { $0.date == SaveFormatter.dateToStoredString(dateCounter)}) {
+            if !matched && instances.contains(where: { $0._date == SaveFormatter.dateToStoredString(dateCounter)}) {
                 datesDelta.append(dateCounter)
             }
             
@@ -326,7 +374,7 @@ extension Task {
             fatalError()
         }
         for existingInstance in existingInstances {
-            if let existingDate = existingInstance.date {
+            if let existingDate = existingInstance._date {
                 if !newDatesStrings.contains(existingDate) {
                     CDCoordinator.moc.delete(existingInstance)
                 } else {
@@ -403,7 +451,7 @@ extension Task {
      */
     private func generateAndPruneInstances() {
         
-        guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0.priority < $1.priority} ) else {
+        guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0._priority < $1._priority} ) else {
             Crashlytics.crashlytics().log("generateAndPruneInstances() in Task failed to get and/or sort targetSets")
             fatalError()
         }
@@ -424,10 +472,11 @@ extension Task {
                                                   weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
                                                   daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
-                    // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from its TaskTargetSet or a new one in the MOC
+                    // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from this Task's instances or a new one in the MOC
                     let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))
+                    
                     newInstances.insert(ti)
-                    ti.targetSet = sortedTargetSets[idx]
+                    ti.updateTargetSet(sortedTargetSets[idx])
                     
                     matched = true
                 }
@@ -467,14 +516,15 @@ extension Task {
     private func extractInstance(date: String) -> TaskInstance {
         if let instances = self.instances {
             for case let instance as TaskInstance in instances {
-                if instance.date == date {
+                if instance._date == date {
                     removeFromInstances(instance)
                     return instance
                 }
             }
         }
-        let instance = TaskInstance(context: CDCoordinator.moc)
-        instance.date = date
+        let instance = TaskInstance(entity: TaskInstance.entity(),
+                                    insertInto: CDCoordinator.moc,
+                                    date: date)
         return instance
     }
     

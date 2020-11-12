@@ -77,7 +77,7 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateSpecificInstances_confirmTaskType() throws {
         task.updateSpecificInstances(dates: [])
-        XCTAssert(task.getTaskType == SaveFormatter.taskTypeToStored(type: .specific))
+        XCTAssert(task._taskType == SaveFormatter.taskTypeToStored(type: .specific))
     }
     
     // MARK: - TaskInstance generation
@@ -93,7 +93,7 @@ extension Task_InstanceHandling_Tests {
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         XCTAssert(instances.count == 3)
         for instance in instances {
-            XCTAssert(dates.contains(SaveFormatter.storedStringToDate(instance.date!)))
+            XCTAssert(dates.contains(SaveFormatter.storedStringToDate(instance._date!)))
         }
         
     }
@@ -108,12 +108,12 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateRecurringInstances_withoutTargetSets_confirmTaskType() throws {
         task.updateRecurringInstances(startDate: Date(), endDate: Date())
-        XCTAssert(task.getTaskType == SaveFormatter.taskTypeToStored(type: .recurring))
+        XCTAssert(task._taskType == SaveFormatter.taskTypeToStored(type: .recurring))
     }
     
     func test_updateRecurringInstances_withTargetSets_confirmTaskType() throws {
         task.updateRecurringInstances(startDate: Date(), endDate: Date(), targetSets: Set<TaskTargetSet>())
-        XCTAssert(task.getTaskType == SaveFormatter.taskTypeToStored(type: .recurring))
+        XCTAssert(task._taskType == SaveFormatter.taskTypeToStored(type: .recurring))
     }
     
     // MARK: - Start or end date updates
@@ -129,16 +129,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                newDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                newWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                newDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                newDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                newWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                newDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -164,16 +164,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                newDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                newWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                newDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                newDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                newWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                newDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -196,16 +196,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                newDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                newWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                newDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                newDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                newWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                newDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -231,16 +231,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                newDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                newWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                newDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                newDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                newWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                newDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -264,9 +264,9 @@ extension Task_InstanceHandling_Tests {
         var expectedDowDates = globalDowDates
         
         for instance in instances {
-            if expectedDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                expectedDowDates.remove(instance.date!)
+            if expectedDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                expectedDowDates.remove(instance._date!)
             }
         }
         
@@ -285,9 +285,9 @@ extension Task_InstanceHandling_Tests {
         var expectedWomDates = globalWomDates
         
         for instance in instances {
-            if expectedWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                expectedWomDates.remove(instance.date!)
+            if expectedWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                expectedWomDates.remove(instance._date!)
             }
         }
         
@@ -306,9 +306,9 @@ extension Task_InstanceHandling_Tests {
         var expectedDomDates = globalDomDates
         
         for instance in instances {
-            if expectedDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                expectedDomDates.remove(instance.date!)
+            if expectedDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                expectedDomDates.remove(instance._date!)
             }
         }
         
@@ -330,13 +330,13 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                newWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                newDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                newWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                newDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -359,13 +359,13 @@ extension Task_InstanceHandling_Tests {
         
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                newDowDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                newDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                newDowDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                newDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -388,13 +388,13 @@ extension Task_InstanceHandling_Tests {
         
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                newDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                newWomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                newDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                newWomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -442,19 +442,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if oldDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                oldDowDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if oldDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                oldDowDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -491,19 +491,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if oldDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                oldDowDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if oldDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                oldDowDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -540,19 +540,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if oldDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                oldDowDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if oldDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                oldDowDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -589,19 +589,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if oldDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                oldDowDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if oldDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                oldDowDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -650,25 +650,25 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if oldDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                oldDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newWomMin) && instance.targetSet!.getMax == Float(newWomMax))
-                newWomDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDomMin) && instance.targetSet!.getMax == Float(newDomMax))
-                newDomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if oldDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                oldDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newWomMin) && instance._targetSet!._max == Float(newWomMax))
+                newWomDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDomMin) && instance._targetSet!._max == Float(newDomMax))
+                newDomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -720,25 +720,25 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if oldDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(dowMin) && instance.targetSet!.getMax == Float(dowMax))
-                oldDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newWomMin) && instance.targetSet!.getMax == Float(newWomMax))
-                newWomDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDomMin) && instance.targetSet!.getMax == Float(newDomMax))
-                newDomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if oldDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
+                oldDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newWomMin) && instance._targetSet!._max == Float(newWomMax))
+                newWomDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDomMin) && instance._targetSet!._max == Float(newDomMax))
+                newDomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         
@@ -791,22 +791,22 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDowMin) && instance.targetSet!.getMax == Float(newDowMax))
-                newDowDates.remove(instance.date!)
-            } else if newWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newWomMin) && instance.targetSet!.getMax == Float(newWomMax))
-                newWomDates.remove(instance.date!)
-            } else if oldWomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(womMin) && instance.targetSet!.getMax == Float(womMax))
-                oldWomDates.remove(instance.date!)
-            } else if newDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(newDomMin) && instance.targetSet!.getMax == Float(newDomMax))
-                newDomDates.remove(instance.date!)
-            } else if oldDomDates.contains(instance.date!) {
-                XCTAssert(instance.targetSet!.getMin == Float(domMin) && instance.targetSet!.getMax == Float(domMax))
-                oldDomDates.remove(instance.date!)
-            } else { print(instance.date!); XCTFail() }
+            if newDowDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
+                newDowDates.remove(instance._date!)
+            } else if newWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newWomMin) && instance._targetSet!._max == Float(newWomMax))
+                newWomDates.remove(instance._date!)
+            } else if oldWomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
+                oldWomDates.remove(instance._date!)
+            } else if newDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(newDomMin) && instance._targetSet!._max == Float(newDomMax))
+                newDomDates.remove(instance._date!)
+            } else if oldDomDates.contains(instance._date!) {
+                XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
+                oldDomDates.remove(instance._date!)
+            } else { print(instance._date!); XCTFail() }
             CDCoordinator.moc.delete(instance)
         }
         

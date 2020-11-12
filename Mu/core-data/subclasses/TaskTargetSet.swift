@@ -18,30 +18,63 @@ public class TaskTargetSet: NSManagedObject {
     @NSManaged private var maxOperator: Int16
     @NSManaged private var min: Float
     @NSManaged private var minOperator: Int16
+    @NSManaged private var pattern: NSObject?
+    @NSManaged private var priority: Int16
+    @NSManaged private var instances: NSSet?
+    @NSManaged private var task: Task?
     
-    var getMin: Float {
-        get {
-            return min
+    var _max: Float { get { return self.max } }
+    var _maxOperator: Int16 { get { return self.maxOperator } }
+    var _min: Float { get { return self.min } }
+    var _minOperator: Int16 { get { return self.minOperator } }
+    var _pattern: NSObject? { get { return self.pattern } }
+    var _priority: Int16 { get { return self.priority } }
+    var _instances: NSSet? { get { return self.instances } }
+    var _task: Task? { get { return self.task } }
+    
+    convenience init(entity: NSEntityDescription,
+                     insertInto context: NSManagedObjectContext?,
+                     min: Float,
+                     max: Float,
+                     minOperator: Int16,
+                     maxOperator: Int16,
+                     priority: Int16,
+                     pattern: DayPattern) {
+        if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
+            self.init(entity: entity, insertInto: context)
+            self.minOperator = validatedValues.minOp
+            self.maxOperator = validatedValues.maxOp
+            self.min = validatedValues.min
+            self.max = validatedValues.max
+            self.priority = priority
+            self.pattern = pattern
+        } else {
+            Crashlytics.crashlytics().log("An attempt was made to instantiate a TaskTargetSet with invalid data")
+            fatalError()
         }
     }
     
-    var getMax: Float {
-        get {
-            return max
-        }
-    }
+}
+
+// MARK:- Generated accessors for instances
+
+extension TaskTargetSet {
     
-    var getMinOperator: Int16 {
-        get {
-            return minOperator
-        }
-    }
+    @objc(addInstancesObject:)
+    @NSManaged private func addToInstances(_ value: TaskInstance)
     
-    var getMaxOperator: Int16 {
-        get {
-            return maxOperator
-        }
-    }
+    @objc(removeInstancesObject:)
+    @NSManaged private func removeFromInstances(_ value: TaskInstance)
+    
+    @objc(addInstances:)
+    @NSManaged private func addToInstances(_ values: NSSet)
+    
+    @objc(removeInstances:)
+    @NSManaged private func removeFromInstances(_ values: NSSet)
+    
+}
+
+extension TaskTargetSet {
     
     /**
      Calls function of the same name in TaskTargetSet that takes minOp and maxOp as Int16 instead of SaveFormatter.EqualityOperator.
@@ -132,28 +165,6 @@ public class TaskTargetSet: NSManagedObject {
                 (nil, (na, maxOp, 0, max))
         }
         
-    }
-    
-    convenience init(entity: NSEntityDescription,
-                     insertInto context: NSManagedObjectContext?,
-                     min: Float,
-                     max: Float,
-                     minOperator: Int16,
-                     maxOperator: Int16,
-                     priority: Int16,
-                     pattern: DayPattern) {
-        if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
-            self.init(entity: entity, insertInto: context)
-            self.minOperator = validatedValues.minOp
-            self.maxOperator = validatedValues.maxOp
-            self.min = validatedValues.min
-            self.max = validatedValues.max
-            self.priority = priority
-            self.pattern = pattern
-        } else {
-            Crashlytics.crashlytics().log("An attempt was made to instantiate a TaskTargetSet with invalid data")
-            fatalError()
-        }
     }
     
     /**
