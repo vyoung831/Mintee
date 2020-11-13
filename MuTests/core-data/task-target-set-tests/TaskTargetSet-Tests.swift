@@ -114,3 +114,310 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
 }
+
+// MARK: - validateOperators tests where min < max
+
+extension TaskTargetSet_Tests {
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThan_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .lt, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lt, .lt, 3, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThan_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .lte, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lt, .lte, 3, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThan_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .eq, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThan_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .na, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lt, .na, 3, 0))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThanEqual_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .lt, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lte, .lt, 3, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThanEqual_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .lte, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lte, .lte, 3, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThanEqual_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .eq, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorLessThanEqual_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .na, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lte, .na, 3, 0))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorEqual_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .lt, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 3, 3))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorEqual_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .lte, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 3, 3))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorEqual_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .eq, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorEqual_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .na, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 3, 3))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorNotApplicable_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .lt, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.na, .lt, 0, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorNotApplicable_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .lte, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.na, .lte, 0, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorNotApplicable_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .eq, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minLessThanMax_minOperatorNotApplicable_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .na, min: 3, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+}
+
+// MARK: - validateOperators tests where min = max
+
+extension TaskTargetSet_Tests {
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThan_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .lt, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThan_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .lte, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThan_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .eq, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThan_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .na, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lt, .na, 4, 0))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThanEqual_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .lt, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThanEqual_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .lte, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThanEqual_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .eq, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorLessThanEqual_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .na, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lte, .na, 4, 0))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorEqual_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .lt, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorEqual_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .lte, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorEqual_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .eq, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorEqual_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .na, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorNotApplicable_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .lt, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.na, .lt, 0, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorNotApplicable_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .lte, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.na, .lte, 0, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorNotApplicable_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .eq, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minEqualToMax_minOperatorNotApplicable_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .na, min: 4, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+}
+
+// MARK: - validateOperators tests where min > max
+
+extension TaskTargetSet_Tests {
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThan_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .lt, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThan_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .lte, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThan_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .eq, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThan_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lt, maxOperator: .na, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lt, .na, 5, 0))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThanEqual_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .lt, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThanEqual_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .lte, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThanEqual_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .eq, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorLessThanEqual_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .lte, maxOperator: .na, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.lte, .na, 5, 0))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorEqual_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .lt, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 5, 5))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorEqual_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .lte, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 5, 5))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorEqual_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .eq, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorEqual_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .eq, maxOperator: .na, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 5, 5))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorNotApplicable_maxOperatorLessThan() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .lt, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.na, .lt, 0, 4))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorNotApplicable_maxOperatorLessThanEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .lte, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.na, .lte, 0, 4))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorNotApplicable_maxOperatorEqual() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .eq, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage == nil)
+        XCTAssert(validateResults.operators! == (.eq, .eq, 4, 4))
+    }
+    
+    func test_checkOperators_minGreaterThanMax_minOperatorNotApplicable_maxOperatorNotApplicable() throws {
+        let validateResults = TaskTargetSet.validateOperators(minOperator: .na, maxOperator: .na, min: 5, max: 4)
+        XCTAssert(validateResults.errorMessage!.count > 0)
+        XCTAssert(validateResults.operators == nil)
+    }
+    
+}
+

@@ -41,7 +41,7 @@ struct EditTask: View {
     
     private func saveTask() {
         
-        task.name = self.taskName
+        task._name = self.taskName
         task.updateTags(newTagNames: self.tags)
         
         // Update the Task's taskType, dates, targetSets and instances.

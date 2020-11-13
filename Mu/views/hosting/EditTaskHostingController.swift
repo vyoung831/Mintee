@@ -25,20 +25,20 @@ class EditTaskHostingController: UIHostingController<EditTask> {
      */
     static func extractTTSVArray(task: Task) -> [TaskTargetSetView] {
         var ttsvArray: [TaskTargetSetView] = []
-        if let ttsArray = task.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
+        if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
                 
-                guard let pattern = ttsArray[idx].pattern as? DayPattern else {
+                guard let pattern = ttsArray[idx]._pattern as? DayPattern else {
                     Crashlytics.crashlytics().log("EditTaskHostingController could not read pattern from a TaskTargetSet \(ttsArray[idx].debugDescription)")
                     Crashlytics.crashlytics().setCustomValue(ttsvArray[idx], forKey: "TaskTargetSet")
                     fatalError()
                 }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,
-                                             minTarget: ttsArray[idx].min,
-                                             minOperator: SaveFormatter.getOperatorString(ttsArray[idx].minOperator),
-                                             maxTarget: ttsArray[idx].max,
-                                             maxOperator: SaveFormatter.getOperatorString(ttsArray[idx].maxOperator),
+                                             minTarget: ttsArray[idx]._min,
+                                             minOperator: SaveFormatter.getOperatorString(ttsArray[idx]._minOperator),
+                                             maxTarget: ttsArray[idx]._max,
+                                             maxOperator: SaveFormatter.getOperatorString(ttsArray[idx]._maxOperator),
                                              selectedDaysOfWeek: Set(ttsArray[idx].getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
                                              selectedWeeksOfMonth: Set(ttsArray[idx].getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
                                              selectedDaysOfMonth: Set(ttsArray[idx].getDaysOfMonth().map{ String($0) }))
@@ -52,17 +52,17 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     init(task: Task, dismiss: @escaping (() -> Void)) {
         
         // TO-DO: Add startDate and endDate getters and setters to Task
-        let taskType = SaveFormatter.storedToTaskType(storedType: task.taskType)
+        let taskType = SaveFormatter.storedToTaskType(storedType: task._taskType)
         switch taskType {
         case .recurring:
             
             // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
             let ttsvArray: [TaskTargetSetView] = EditTaskHostingController.extractTTSVArray(task: task)
             
-            if let startDateString = task.startDate, let endDateString = task.endDate {
+            if let startDateString = task._startDate, let endDateString = task._endDate {
                 let editTask = EditTask(task: task,
                                         dismiss: dismiss,
-                                        taskName: task.name ?? "",
+                                        taskName: task._name ?? "",
                                         taskType: taskType,
                                         tags: task.getTagNames().sorted{$0 < $1},
                                         startDate: SaveFormatter.storedStringToDate(startDateString),
@@ -71,27 +71,27 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 super.init(rootView: editTask)
             } else {
                 Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a recurring Task that had startDate and/or endDate equal to nil")
-                Crashlytics.crashlytics().setCustomValue(task.startDate as Any, forKey: "Start date")
-                Crashlytics.crashlytics().setCustomValue(task.endDate as Any, forKey: "End date")
+                Crashlytics.crashlytics().setCustomValue(task._startDate as Any, forKey: "Start date")
+                Crashlytics.crashlytics().setCustomValue(task._endDate as Any, forKey: "End date")
                 fatalError()
             }
             break
         case .specific:
             
             var dates: [Date] = []
-            guard let instances = task.instances else {
+            guard let instances = task._instances else {
                 Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a specific Task that had nil instances")
                 fatalError()
             }
             for case let instance as TaskInstance in instances {
-                if let dateString = instance.date {
+                if let dateString = instance._date {
                     dates.append(SaveFormatter.storedStringToDate(dateString))
                 }
             }
             
             let editTask = EditTask(task: task,
                                     dismiss: dismiss,
-                                    taskName: task.name ?? "",
+                                    taskName: task._name ?? "",
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
                                     dates: dates.sorted())

@@ -75,52 +75,6 @@ struct TaskTargetSetPopup: View {
     }
     
     /**
-     Checks minOperator, maxOperator, and provided min/max values to see if combination is valid.
-     This function expects the caller to have un-wrapped min and max to check if they are valid Floats
-     - parameter min: minValueString unwrapped to Float
-     - parameter max: maxValueString unwrapped to Float
-     - returns: True if combination of operators and provided values are valid
-     */
-    func checkOperators(min: Float, max: Float) -> Bool {
-        
-        switch minOperator {
-        case .lt:
-            if maxOperator == .lt || maxOperator == .lte {
-                if min >= max {
-                    errorMessage = "Please set max value greater than min value"
-                    announceError()
-                    return false
-                }
-            }
-            break
-        case .lte:
-            if maxOperator == .lt && min >= max {
-                errorMessage = "Please set max value greater than min value"
-                announceError()
-                return false
-            } else if maxOperator == .lte {
-                if min == max {
-                    // Both minOperator and maxOperator are set to .lte the same value, so treat it as .eq
-                    minOperator = .eq; return true
-                } else if min > max {
-                    errorMessage = "Please set max value greater than min value"
-                    announceError()
-                    return false
-                }
-            }
-            return true
-        case .eq:
-            if maxOperator == .eq {
-                errorMessage = "Only one operator can be set to ="
-                announceError()
-                return false
-            }
-        case .na: break
-        }
-        return true
-    }
-    
-    /**
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      - returns: True if TaskTargetSetView save was successful
      */
@@ -137,12 +91,19 @@ struct TaskTargetSetPopup: View {
             if let maxu = validateMaxValue() { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
         } else { maxOperator = .na; max = 0 }
         
-        if !checkOperators(min: min, max: max) { return }
+        let ttsValidation = TaskTargetSet.validateOperators(minOperator: minOperator, maxOperator: maxOperator, min: min, max: max)
+        guard let validatedValues = ttsValidation.operators else {
+            if let message = ttsValidation.errorMessage {
+                self.errorMessage = message
+            }
+            return
+        }
+        
         let ttsv = TaskTargetSetView(type: self.type,
-                                     minTarget: maxOperator == .eq || minOperator == .na ? 0 : min,
-                                     minOperator: maxOperator == .eq || minOperator == .na ? .na : minOperator,
-                                     maxTarget: minOperator == .eq || maxOperator == .na ? 0 : max,
-                                     maxOperator: minOperator == .eq || maxOperator == .na ? .na : maxOperator,
+                                     minTarget: validatedValues.min,
+                                     minOperator: validatedValues.minOp,
+                                     maxTarget: validatedValues.max,
+                                     maxOperator: validatedValues.maxOp,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
