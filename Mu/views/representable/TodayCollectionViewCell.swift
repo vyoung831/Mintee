@@ -93,8 +93,8 @@ class TodayCollectionViewCell: UICollectionViewCell {
     public func updateAppearance(instance: TaskInstance) {
         guard let minOpInt = instance._targetSet?._minOperator,
               let maxOpInt = instance._targetSet?._maxOperator,
-              let maxTarget = instance._targetSet?._min,
-              let minTarget = instance._targetSet?._max else {
+              let maxTarget = instance._targetSet?._max,
+              let minTarget = instance._targetSet?._min else {
             // TO-DO: Implement presentation of completionMeter for Specific-type Tasks
             completionMeterHeightConstraint.isActive = false
             completionMeterHeightConstraint = NSLayoutConstraint(item: completionMeter,
