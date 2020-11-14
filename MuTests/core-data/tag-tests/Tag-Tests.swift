@@ -39,13 +39,15 @@ class Tag_Tests: XCTestCase {
      */
     func test_getOrCreateTag_reuseExisting() throws {
         
-        let _ = Tag.getOrCreateTag(tagName: "Tag")
+        let tag1 = Tag.getOrCreateTag(tagName: "Tag")
         var tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
         
-        let _ = Tag.getOrCreateTag(tagName: "Tag")
+        let tag2 = Tag.getOrCreateTag(tagName: "Tag")
         tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
+        
+        XCTAssert(tag1 == tag2)
         
     }
     

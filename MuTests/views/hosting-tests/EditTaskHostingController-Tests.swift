@@ -39,7 +39,7 @@ class EditTaskHostingController_Tests: XCTestCase {
         let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                         insertInto: CDCoordinator.moc,
                         name: "Name",
-                        tags: ["Tag1"],
+                        tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!]),
                         startDate: Date(),
                         endDate: Date(),
                         targetSets: targetSets)

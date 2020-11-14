@@ -260,7 +260,7 @@ extension Task_InstanceHandling_Tests {
                                       targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
-        var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
+        let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         var expectedDowDates = globalDowDates
         
         for instance in instances {
@@ -281,7 +281,7 @@ extension Task_InstanceHandling_Tests {
                                       targetSets: Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
-        var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
+        let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         var expectedWomDates = globalWomDates
         
         for instance in instances {
@@ -302,7 +302,7 @@ extension Task_InstanceHandling_Tests {
                                       targetSets: Set(arrayLiteral: getDomTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
-        var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
+        let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         var expectedDomDates = globalDomDates
         
         for instance in instances {

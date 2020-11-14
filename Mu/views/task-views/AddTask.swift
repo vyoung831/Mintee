@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import Firebase
 
 struct AddTask: View {
     
@@ -35,6 +36,16 @@ struct AddTask: View {
     
     private func saveTask() -> Bool {
         
+        var tagObjects: Set<Tag> = Set()
+        for idx in 0 ..< self.tags.count {
+            if let tag = Tag.getOrCreateTag(tagName: self.tags[idx]) {
+                tagObjects.insert(tag)
+            } else {
+                self.errorMessage = "Save failed. An attempt was made to create a Tag with an empty name."
+                return false
+            }
+        }
+        
         var taskTargetSets: [TaskTargetSet] = []
         for i in 0 ..< taskTargetSetViews.count {
             let ttsv = taskTargetSetViews[i]
@@ -56,7 +67,7 @@ struct AddTask: View {
             let _ = Task(entity: Task.entity(),
                          insertInto: CDCoordinator.moc,
                          name: self.taskName,
-                         tags: self.tags,
+                         tags: tagObjects,
                          startDate: self.startDate,
                          endDate: self.endDate,
                          targetSets: Set(taskTargetSets))
@@ -65,7 +76,7 @@ struct AddTask: View {
             let _ = Task(entity: Task.entity(),
                          insertInto: CDCoordinator.moc,
                          name: self.taskName,
-                         tags: self.tags,
+                         tags: tagObjects,
                          dates: self.dates)
             break
         }
@@ -74,6 +85,7 @@ struct AddTask: View {
             try CDCoordinator.moc.save()
             return true
         } catch {
+            self.errorMessage = "Save failed. Please check if another Task with this name already exists"
             CDCoordinator.moc.rollback()
             return false
         }
@@ -103,8 +115,6 @@ struct AddTask: View {
                         if self.saveTask() {
                             self.isBeingPresented = false
                         } else {
-                            // Display failure message in UI if saveTask() failed
-                            self.errorMessage = "Save failed. Please check if another Task with this name already exists"
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                 UIAccessibility.post(notification: .announcement, argument: self.errorMessage)
                             }

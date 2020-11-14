@@ -62,7 +62,7 @@ class BubbleRows_Tests: XCTestCase {
     func test_getGeometryReaderHeight() {
         let totalWidth: CGFloat = 200
         
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let rowCount = bubbleRows.bubbles.count
@@ -80,7 +80,7 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHstackSpacing_increasesHStackSpacing() {
         
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
@@ -98,7 +98,7 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
         
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count

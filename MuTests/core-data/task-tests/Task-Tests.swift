@@ -48,7 +48,8 @@ class Task_Tests: XCTestCase {
         
         let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                         insertInto: CDCoordinator.moc,
-                        name: "Task", tags: ["Tag1","Tag2"],
+                        name: "Task", tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                                      Tag.getOrCreateTag(tagName: "Tag2")!]),
                         startDate: startDate, endDate: endDate,
                         targetSets: [tts])
         
