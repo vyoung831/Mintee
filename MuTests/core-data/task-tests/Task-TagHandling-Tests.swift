@@ -26,7 +26,8 @@ class Task_TagHandling_Tests: XCTestCase {
     func test_updateTags_addNewTags() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
-        task.updateTags(newTagNames: ["Tag1","Tag2"])
+        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                           Tag.getOrCreateTag(tagName: "Tag2")!]))
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
@@ -41,8 +42,11 @@ class Task_TagHandling_Tests: XCTestCase {
     func test_updateTags_existingTagReuse() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
-        task.updateTags(newTagNames: ["Tag1","Tag2"])
-        task.updateTags(newTagNames: ["Tag1","Tag2","Tag3"])
+        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                           Tag.getOrCreateTag(tagName: "Tag2")!]))
+        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                           Tag.getOrCreateTag(tagName: "Tag2")!,
+                                           Tag.getOrCreateTag(tagName: "Tag3")!]))
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
@@ -57,8 +61,11 @@ class Task_TagHandling_Tests: XCTestCase {
     func test_updateTags_deadTagDeletion() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
-        task.updateTags(newTagNames: ["Tag1","Tag2","Tag3"])
-        task.updateTags(newTagNames: ["Tag1","Tag2"])
+        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                           Tag.getOrCreateTag(tagName: "Tag2")!,
+                                           Tag.getOrCreateTag(tagName: "Tag3")!]))
+        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                           Tag.getOrCreateTag(tagName: "Tag2")!]))
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
@@ -78,12 +85,12 @@ extension Task_TagHandling_Tests {
      */
     func testPerformance_updateTags_add1000() throws {
         
-        var task: Task, tags: [String] = []
+        var task: Task, tags: Set<Tag> = Set()
         task = Task(context: CDCoordinator.moc)
-        for i in 1 ... 1000 { tags.append(String(i)) }
+        for i in 1 ... 1000 { tags.insert( Tag.getOrCreateTag(tagName: String(i))! ) }
         
         self.measure {
-            task.updateTags(newTagNames: tags)
+            task.updateTags(newTags: tags)
         }
         
     }
@@ -93,13 +100,13 @@ extension Task_TagHandling_Tests {
      */
     func testPerformance_updateTags_delete1000() throws {
         
-        var task: Task, tags: [String] = []
+        var task: Task, tags: Set<Tag> = Set()
         task = Task(context: CDCoordinator.moc)
-        for i in 1 ... 1000 { tags.append(String(i)) }
-        task.updateTags(newTagNames: tags)
+        for i in 1 ... 1000 { tags.insert( Tag.getOrCreateTag(tagName: String(i))! ) }
+        task.updateTags(newTags: tags)
         
         self.measure {
-            task.updateTags(newTagNames: [])
+            task.updateTags(newTags: Set())
         }
         
     }

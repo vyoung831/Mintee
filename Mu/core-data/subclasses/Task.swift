@@ -39,13 +39,13 @@ public class Task: NSManagedObject {
     convenience init(entity: NSEntityDescription,
                      insertInto context: NSManagedObjectContext?,
                      name: String,
-                     tags: [String],
+                     tags: Set<Tag>,
                      startDate: Date,
                      endDate: Date,
                      targetSets: Set<TaskTargetSet>) {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.updateTags(newTagNames: tags)
+        self.updateTags(newTags: tags)
         self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
     }
     
@@ -55,11 +55,11 @@ public class Task: NSManagedObject {
     convenience init(entity: NSEntityDescription,
                      insertInto context: NSManagedObjectContext?,
                      name: String,
-                     tags: [String],
+                     tags: Set<Tag>,
                      dates: [Date]) {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.updateTags(newTagNames: tags)
+        self.updateTags(newTags: tags)
         self.updateSpecificInstances(dates: dates)
     }
     
@@ -151,39 +151,28 @@ extension Task {
     }
     
     /**
-     Takes an array of tag names and adds those as Tags to this Task's tags relationship. Of the tags passed in,
-     - Unrelated Tags are removed and checked for deletion
-     - New Tags that don't exist in the MOC are created
-     - Existing Tags are added to this task's tags
-     - parameter newTagNames: Array of tag names to associate with this Task
+     Updates this Task's tags relationship to contain only the Tags passed in.
+     Tags that were already associated with this Task but that don't exist in the new tags passed in are removed and checked for possible deletion.
+     - parameter newTags: Set of Tags to set as this Task's tags relationship
      */
-    public func updateTags(newTagNames: [String]) {
+    public func updateTags(newTags: Set<Tag>) {
         
         // Remove unrelated tags and check for deletion
-        self.removeUnrelatedTags(newTagNames: newTagNames)
-        
-        for newTagName in newTagNames {
-            self.addToTags(Tag.getOrCreateTag(tagName: newTagName))
-        }
+        self.removeUnrelatedTags(newTags: newTags)
+        self.addToTags( NSSet(set: newTags) )
         
     }
     
     /**
-     Takes in an array of tag names to associate with this Task and loops through the existing tags relationship
-     Tags that are no longer to be associated are removed and checked for deletion
-     - parameter newTagNames: Array of tag names to associate with this Task
+     Removes Tags that are no longer would be associated with this Task if only Tags passed in are to be associated with this Task.
+     Tags that were already associated with this Task but that don't exist in the new tags passed in are removed and checked for possible deletion.
+     - parameter newTags: Set of Tags to be set as this Task's tags relationship
      */
-    private func removeUnrelatedTags(newTagNames: [String]) {
+    private func removeUnrelatedTags(newTags: Set<Tag>) {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 
-                guard let tagName = tag._name else {
-                    Crashlytics.crashlytics().log("removeUnrelatedTags() in Task found tag with name = nil")
-                    fatalError()
-                }
-                
-                // If new tags don't contain an existing Tag's tagName, remove it from tags. After, if the Tag has no Tasks left, delete it
-                if !newTagNames.contains(tagName) {
+                if !newTags.contains(tag) {
                     self.removeFromTags(tag)
                     if tag._tasks?.count == 0 {
                         CDCoordinator.moc.delete(tag)

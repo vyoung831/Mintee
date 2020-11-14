@@ -51,7 +51,6 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     
     init(task: Task, dismiss: @escaping (() -> Void)) {
         
-        // TO-DO: Add startDate and endDate getters and setters to Task
         let taskType = SaveFormatter.storedToTaskType(storedType: task._taskType)
         switch taskType {
         case .recurring:

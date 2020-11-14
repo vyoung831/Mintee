@@ -45,7 +45,13 @@ public class Tag: NSManagedObject {
      - returns:
      - Tag NSManagedObject with its tagName set to the input parm tagName
      */
-    static func getOrCreateTag ( tagName : String ) -> Tag {
+    static func getOrCreateTag ( tagName : String ) -> Tag? {
+        
+        if tagName.count < 1 {
+            ErrorManager.recordNonFatal(.attemptedToCreateTagWithEmptyName, [:])
+            return nil
+        }
+        
         // Set up case and diacritic insensitive predicate
         let request = NSFetchRequest<Tag>(entityName: "Tag")
         request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
