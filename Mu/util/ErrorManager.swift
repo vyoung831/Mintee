@@ -16,7 +16,7 @@ struct ErrorManager {
      - parameter errorCode: Value of type enum ErrorManager.muError to report as NSError code
      - parameter userInfo: [String:Any] pairs to be reported with error record
      */
-    static func recordNonFatal(_ errorCode: ErrorManager.CrashlyticsError,
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,
                                _ userInfo: [String:Any]) {
         
         var domain: String
@@ -25,7 +25,7 @@ struct ErrorManager {
         } else {
             domain = "Mu"
             Crashlytics.crashlytics().record(error: NSError(domain: domain,
-                                                            code: CrashlyticsError.bundleIdentifierWasNil.rawValue,
+                                                            code: NonFatal.bundleIdentifierWasNil.rawValue,
                                                             userInfo: [:]))
         }
         
@@ -35,7 +35,7 @@ struct ErrorManager {
         
     }
     
-    enum CrashlyticsError: Int {
+    enum NonFatal: Int {
         case bundleIdentifierWasNil = 1
         case ttsvWomNil = 2
         case invalidThemeSaved = 3
@@ -44,6 +44,7 @@ struct ErrorManager {
         case ttsvGetTargetStringInvalidValues = 6
         case collectionViewCouldNotDequeueResuableCell = 7
         case attemptedToCreateTagWithEmptyName = 8
+        case collectionSizerReceivedTotalWidthTooSmall = 9
     }
     
 }

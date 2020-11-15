@@ -18,10 +18,8 @@ class TodayCollectionViewController: UICollectionViewController {
     
     // collectionView setup constants
     let taskCardReuseIdentifier = "task-card"
-    let itemSize = CGSize(width: 150, height: 200)
-    let insets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    let minimumLineSpacing: CGFloat = 20
-    let minimumInteritemSpacing: CGFloat = 20
+    let itemTaskCardWidth: CGFloat = 150
+    let taskCardHeightMultiplier: CGFloat = (4/3)
     
     // MARK: - Initializers
     
@@ -49,18 +47,12 @@ class TodayCollectionViewController: UICollectionViewController {
     // MARK: - UI setup
     
     private func setUpCollectionView() {
+        
         collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: taskCardReuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
-        
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.itemSize = self.itemSize
-        collectionViewLayout.sectionInset = self.insets
-        collectionViewLayout.minimumInteritemSpacing = self.minimumInteritemSpacing
-        collectionViewLayout.minimumLineSpacing = self.minimumLineSpacing
-        collectionView.collectionViewLayout = collectionViewLayout
-        
         updateTheme()
+        
     }
     
     // MARK: - NSFetchedResultsController setup
@@ -136,6 +128,22 @@ extension TodayCollectionViewController {
         } else {
             ErrorManager.recordNonFatal(.collectionViewCouldNotDequeueResuableCell, ["Collection View": "TodayCollectionViewController"])
             return UICollectionViewCell()
+        }
+    }
+    
+    /**
+     The system calls this method when the iOS interface environment changes.
+     Implement this method in view controllers and views, according to your app’s needs, to respond to such changes.
+     For example, you might adjust the layout of the subviews of a view controller when an iPhone is rotated from portrait to landscape orientation.
+     The default implementation of this method is empty.
+     */
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if collectionView.frame.width > 0 {
+            collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView.collectionViewLayout =  CollectionSizer.getCollectionViewFlowLayout(widthAvailable: self.collectionView.frame.width,
+                                                                                                    idealItemWidth: itemTaskCardWidth,
+                                                                                                    heightMultiplier: taskCardHeightMultiplier)
         }
     }
     
