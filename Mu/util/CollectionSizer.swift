@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import SwiftUI
 
 class CollectionSizer {
     
@@ -34,10 +35,11 @@ class CollectionSizer {
      */
     static func getCollectionViewFlowLayout(widthAvailable: CGFloat,
                                             idealItemWidth: CGFloat,
-                                            heightMultiplier: CGFloat) -> UICollectionViewFlowLayout {
+                                            heightMultiplier: CGFloat) -> (layout: UICollectionViewFlowLayout, itemsPerRow: Int) {
         
         let flowLayout = UICollectionViewFlowLayout()
         let idealItemHeight = idealItemWidth * heightMultiplier
+        var itemCount: Int = 0
         
         if idealItemWidth + (2 * idealSideInset) > widthAvailable {
             
@@ -54,6 +56,7 @@ class CollectionSizer {
                 flowLayout.sectionInset = UIEdgeInsets(top: 20, left: trueSideInset, bottom: 20, right: trueSideInset)
                 flowLayout.itemSize = CGSize(width: idealItemWidth, height: idealItemHeight)
             }
+            itemCount = 1
             
         } else if (2 * idealItemWidth) + (2 * idealSideInset) + idealInterItemSpacing > widthAvailable {
             
@@ -69,6 +72,7 @@ class CollectionSizer {
                 flowLayout.sectionInset = UIEdgeInsets(top: 20, left: trueSideInset, bottom: 20, right: trueSideInset)
                 flowLayout.itemSize = CGSize(width: idealItemWidth, height: idealItemHeight)
             }
+            itemCount = 1
             
         } else {
             
@@ -77,10 +81,10 @@ class CollectionSizer {
              After finding the max number of items that can be fit per row with ideal insets and interitem spacing, the remaining width available is distributed equally to insets and spacing, ensuring that left/right insets are still greater than interitem spacing by 10 pixels.
              */
             let idealWidthAvailable = (widthAvailable - idealItemWidth - (2 * idealSideInset))
-            let idealCardCount = floor(idealWidthAvailable / (idealItemWidth + idealInterItemSpacing)) + 1
+            itemCount = Int( floor(idealWidthAvailable / (idealItemWidth + idealInterItemSpacing)) + 1 )
             
-            let insetAndSpacingAvailable = widthAvailable - (idealCardCount * idealItemWidth)
-            let trueSpacing = (insetAndSpacingAvailable - 20)/(idealCardCount + 1)
+            let insetAndSpacingAvailable = widthAvailable - (CGFloat(itemCount) * idealItemWidth)
+            let trueSpacing = (insetAndSpacingAvailable - 20)/(CGFloat(itemCount) + 1)
             let trueSideInset = trueSpacing + 10
             
             flowLayout.itemSize = CGSize(width: idealItemWidth, height: idealItemHeight)
@@ -90,7 +94,27 @@ class CollectionSizer {
         }
         
         flowLayout.minimumLineSpacing = 20
-        return flowLayout
+        return (layout: flowLayout, itemsPerRow: itemCount)
+        
+    }
+    
+    /**
+     Converts the return value from CollectionSizer.getCollectionViewFlowLayout to a tuple of values for SwiftUI LazyVGrids to use
+     - parameter totalWidth: Total width of View that can be used for sizing items, spacing, and left/right insets.
+     - parameter idealItemWidth: The ideal width of each item in the mock collection
+     - returns: Tuple containing array of GridItem with fixed item widths and spacing, itemWidth, and horizontal insets for the mock collection view
+     */
+    static func getVGridLayout(widthAvailable: CGFloat, idealItemWidth: CGFloat) -> ( grid: [GridItem], itemWidth: CGFloat, leftRightInset: CGFloat) {
+        
+        let layoutTuple = CollectionSizer.getCollectionViewFlowLayout(widthAvailable: widthAvailable,
+                                                                      idealItemWidth: idealItemWidth,
+                                                                      heightMultiplier: 0)
+        
+        var gridItems: [GridItem] = []
+        for _ in 0 ..< layoutTuple.itemsPerRow {
+            gridItems.append(GridItem(.fixed(layoutTuple.layout.itemSize.width), spacing: layoutTuple.layout.minimumInteritemSpacing))
+        }
+        return (gridItems, layoutTuple.layout.itemSize.width, layoutTuple.layout.sectionInset.left)
         
     }
     

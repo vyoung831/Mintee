@@ -143,7 +143,7 @@ extension TodayCollectionViewController {
             collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.collectionViewLayout =  CollectionSizer.getCollectionViewFlowLayout(widthAvailable: self.collectionView.frame.width,
                                                                                                     idealItemWidth: itemTaskCardWidth,
-                                                                                                    heightMultiplier: taskCardHeightMultiplier)
+                                                                                                    heightMultiplier: taskCardHeightMultiplier).layout
         }
     }
     

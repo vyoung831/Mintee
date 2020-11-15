@@ -79,7 +79,6 @@
 		C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */; };
 		C4C961C6250A432000C7EEEA /* DayBubbleLabels-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */; };
 		C4D443E6253F5DE00035156D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D443D3253F5DA00035156D /* GoogleService-Info.plist */; };
-		C4D618ED252E9A65009A9751 /* SettingsView-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618EC252E9A65009A9751 /* SettingsView-Tests.swift */; };
 		C4D618F8252EA085009A9751 /* SettingsPresentationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* Date-Extension-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* Date-Extension-Tests.swift */; };
 		C4D9DB6425475771002F0B40 /* SetCountPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D9DB6325475771002F0B40 /* SetCountPopup.swift */; };
@@ -195,7 +194,6 @@
 		C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddTagPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayBubbleLabels-Tests.swift"; sourceTree = "<group>"; };
 		C4D443D3253F5DA00035156D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C4D618EC252E9A65009A9751 /* SettingsView-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView-Tests.swift"; sourceTree = "<group>"; };
 		C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationDetailView.swift; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* Date-Extension-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date-Extension-Tests.swift"; sourceTree = "<group>"; };
 		C4D9DB6325475771002F0B40 /* SetCountPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCountPopup.swift; sourceTree = "<group>"; };
@@ -405,7 +403,6 @@
 		C42CE5E82515639A00044AC7 /* main-view-tests */ = {
 			isa = PBXGroup;
 			children = (
-				C4D618EC252E9A65009A9751 /* SettingsView-Tests.swift */,
 			);
 			path = "main-view-tests";
 			sourceTree = "<group>";
@@ -906,7 +903,6 @@
 				C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */,
 				C44940C92498D713009FE818 /* SaveFormatter-Tests.swift in Sources */,
 				C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift in Sources */,
-				C4D618ED252E9A65009A9751 /* SettingsView-Tests.swift in Sources */,
 				C4E5D5EE250426A000557373 /* Task-TagHandling-Tests.swift in Sources */,
 				C4E5D5F525042F9400557373 /* Task-InstanceHandling-Tests.swift in Sources */,
 				C4D8A34D249EB1D7008B3B9C /* Date-Extension-Tests.swift in Sources */,
