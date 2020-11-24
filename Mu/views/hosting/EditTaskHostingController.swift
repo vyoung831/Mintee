@@ -28,7 +28,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
                 
-                guard let pattern = ttsArray[idx]._pattern as? DayPattern else {
+                guard let pattern = ttsArray[idx]._pattern else {
                     Crashlytics.crashlytics().log("EditTaskHostingController could not read pattern from a TaskTargetSet \(ttsArray[idx].debugDescription)")
                     Crashlytics.crashlytics().setCustomValue(ttsvArray[idx], forKey: "TaskTargetSet")
                     fatalError()

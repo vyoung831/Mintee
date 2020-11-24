@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Analysis" representedClassName="Analysis" syncable="YES">
         <attribute name="analysisType" optional="YES" attributeType="String"/>
         <attribute name="endDate" optional="YES" attributeType="String"/>
@@ -66,7 +66,7 @@
         <attribute name="maxOperator" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="min" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="minOperator" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
-        <attribute name="pattern" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="pattern" optional="YES" attributeType="Transformable" valueTransformerName="DayPatternTransformer" customClassName="DayPattern"/>
         <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskInstance" inverseName="targetSet" inverseEntity="TaskInstance"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
