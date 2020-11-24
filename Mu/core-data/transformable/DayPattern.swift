@@ -12,6 +12,13 @@ import Firebase
 
 class DayPattern: NSObject, NSSecureCoding {
     
+    enum Keys: String {
+        case daysOfWeek = "DaysOfWeek"
+        case weeksOfMonth = "WeeksOfMonth"
+        case daysOfMonth = "DaysOfMonth"
+        case type = "Type"
+    }
+    
     static var supportsSecureCoding: Bool = true
     
     enum patternType: Int8, CaseIterable {
@@ -36,17 +43,18 @@ class DayPattern: NSObject, NSSecureCoding {
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(self.daysOfWeek, forKey: "daysOfWeek")
-        coder.encode(self.weeksOfMonth, forKey: "weeksOfMonth")
-        coder.encode(self.daysOfMonth, forKey: "daysOfMonth")
-        coder.encode(self.type.rawValue, forKey: "type")
+        coder.encode(NSSet(set: self.daysOfWeek), forKey: DayPattern.Keys.daysOfWeek.rawValue)
+        coder.encode(NSSet(set: self.weeksOfMonth), forKey: DayPattern.Keys.weeksOfMonth.rawValue)
+        coder.encode(NSSet(set: self.daysOfMonth), forKey: DayPattern.Keys.daysOfMonth.rawValue)
+        coder.encode(self.type.rawValue, forKey: DayPattern.Keys.type.rawValue)
     }
     
     required init(coder decoder: NSCoder) {
-        guard let dow = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfWeek") as? Set<Int16>,
-            let wom = decoder.decodeObject(of: [DayPattern.self], forKey: "weeksOfMonth") as? Set<Int16>,
-            let dom = decoder.decodeObject(of: [DayPattern.self], forKey: "daysOfMonth") as? Set<Int16>,
-            let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: "type") as? Int8 else {
+        
+        guard let dow = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue) as? Set<Int16>,
+              let wom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue) as? Set<Int16>,
+              let dom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue) as? Set<Int16>,
+              let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: DayPattern.Keys.type.rawValue) as? Int8 else {
             Crashlytics.crashlytics().log("Could not decode DayPattern")
             fatalError()
         }
@@ -64,6 +72,27 @@ class DayPattern: NSObject, NSSecureCoding {
         self.weeksOfMonth = wom
         self.daysOfMonth = dom
         super.init()
+    }
+    
+}
+
+// Subclass from `NSSecureUnarchiveFromDataTransformer`
+@objc(DayPatternTransformer)
+final class DayPatternTransformer: NSSecureUnarchiveFromDataTransformer {
+    
+    // The name of the transformer. This is the name used to register the transformer using `ValueTransformer.setValueTrandformer(_"forName:)`.
+    static let name = NSValueTransformerName(rawValue: String(describing: DayPatternTransformer.self))
+    
+    /**
+     Registers the transformer.
+     */
+    public static func register() {
+        let transformer = DayPatternTransformer()
+        ValueTransformer.setValueTransformer(transformer, forName: name)
+    }
+    
+    public override static var allowedTopLevelClasses: [AnyClass] {
+        return [DayPattern.self]
     }
     
 }

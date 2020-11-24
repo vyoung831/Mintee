@@ -18,7 +18,7 @@ public class TaskTargetSet: NSManagedObject {
     @NSManaged private var maxOperator: Int16
     @NSManaged private var min: Float
     @NSManaged private var minOperator: Int16
-    @NSManaged private var pattern: NSObject?
+    @NSManaged private var pattern: DayPattern?
     @NSManaged private var priority: Int16
     @NSManaged private var instances: NSSet?
     @NSManaged private var task: Task?
@@ -27,7 +27,7 @@ public class TaskTargetSet: NSManagedObject {
     var _maxOperator: Int16 { get { return self.maxOperator } }
     var _min: Float { get { return self.min } }
     var _minOperator: Int16 { get { return self.minOperator } }
-    var _pattern: NSObject? { get { return self.pattern } }
+    var _pattern: DayPattern? { get { return self.pattern } }
     var _priority: Int16 { get { return self.priority } }
     var _instances: NSSet? { get { return self.instances } }
     var _task: Task? { get { return self.task } }
@@ -175,7 +175,7 @@ extension TaskTargetSet {
      */
     func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) -> Bool {
         
-        guard let pattern = self.pattern as? DayPattern else {
+        guard let pattern = self.pattern else {
             Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
             fatalError()
         }
@@ -211,33 +211,33 @@ extension TaskTargetSet {
      - returns: A Set of Int16, representing the day value of each DayOfWeek in this object's daysOfWeek relationship
      */
     func getDaysOfWeek() -> Set<Int16> {
-        guard let pattern = self.pattern as? DayPattern else {
+        guard let pattern = self.pattern else {
             Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
             fatalError()
         }
-        return Set(pattern.daysOfWeek)
+        return pattern.daysOfWeek
     }
     
     /**
      - returns: A Set of Int16, representing the week value of each WeekOfMonth in this object's weeksOfMonth relationship
      */
     func getWeeksOfMonth() -> Set<Int16> {
-        guard let pattern = self.pattern as? DayPattern else {
+        guard let pattern = self.pattern else {
             Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
             fatalError()
         }
-        return Set(pattern.weeksOfMonth)
+        return pattern.weeksOfMonth
     }
     
     /**
      - returns: A Set of Int16, representing the day value of each DayOfMonth in this object's daysOfMonth relationship
      */
     func getDaysOfMonth() -> Set<Int16> {
-        guard let pattern = self.pattern as? DayPattern else {
+        guard let pattern = self.pattern else {
             Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
             fatalError()
         }
-        return Set(pattern.daysOfMonth)
+        return pattern.daysOfMonth
     }
     
 }
