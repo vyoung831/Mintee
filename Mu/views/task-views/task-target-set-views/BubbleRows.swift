@@ -10,6 +10,13 @@ import SwiftUI
 
 struct BubbleRows: View {
     
+    // MARK: - Presentation options
+    
+    enum PresentationOption {
+        case none
+        case centerLastRow
+    }
+    
     // MARK: - Properties
     
     static let rowSpacing: CGFloat = 12
@@ -18,6 +25,7 @@ struct BubbleRows: View {
     var maxBubbleRadius: CGFloat = 28
     var bubbles: [[String]]
     
+    var presentation: BubbleRows.PresentationOption
     var toggleable: Bool
     @Binding var selectedBubbles: Set<String>
     
@@ -26,6 +34,23 @@ struct BubbleRows: View {
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     // MARK: - UI functions
+    
+    /**
+     Determines whether a row of bubbles in an HStack needs Spacers on each side in order to center the bubbles.
+     Returns true if spaceLastRow is set to true AND the row in question is the last row AND the row has less bubbles than previous row.
+     This function was implemented because placing Spacers on the sides of bubble rows that already took up the GeometryReader's full width pushed the rows off-screen. It is unclear from documentation if this is intended in SwiftUI or a bug.
+     - parameter rowNumber: Row to be evaluated for spacers
+     - returns: True if the row in question needs spacers in its HStack
+     */
+    func rowNeedsSpacers(_ rowNumber: Int) -> Bool {
+        if self.presentation != .centerLastRow { return false }
+        if (rowNumber == self.bubbles.count - 1) &&
+            (rowNumber > 0) &&
+            (self.bubbles[rowNumber].count < self.bubbles[rowNumber - 1].count) {
+            return true
+        }
+        return false
+    }
     
     /**
      Calculates the radius of a bubble, given the width of the View containing the bubbles.
@@ -80,6 +105,9 @@ struct BubbleRows: View {
                     
                     // Calculate the HStack spacing now that GeometryReader has the available width
                     HStack(alignment: .center, spacing: self.getHStackSpacing(totalWidth: gr.size.width)) {
+                        
+                        if rowNeedsSpacers(row) { Spacer() }
+                        
                         ForEach(self.bubbles[row], id: \.self) { bubbleText in
                             ZStack {
                                 Circle()
@@ -105,7 +133,11 @@ struct BubbleRows: View {
                                     }
                                 }
                             }
+                            
                         }
+                        
+                        if rowNeedsSpacers(row) { Spacer() }
+                        
                     }
                     
                 }

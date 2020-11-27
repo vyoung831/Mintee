@@ -15,7 +15,7 @@
 
 import Foundation
 
-class DayBubbleLabels {
+struct DayBubbleLabels {
     
     static let daysOfWeek: [String] = ["M","T","W","R","F","S","U"]
     static let weeksOfMonth: [String] = ["1st","2nd","3rd","4th","Last"]
