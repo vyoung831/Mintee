@@ -25,6 +25,7 @@ class BubbleRows_Tests: XCTestCase {
     func test_getBubbleRadius_maxBubbleRadius_respected() {
         
         var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    presentation: .none,
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow: Int = bubbleRows.bubbles[0].count
@@ -45,6 +46,7 @@ class BubbleRows_Tests: XCTestCase {
     func test_getBubbleRadius_minimumInterBubbleSpacing_respected() {
         
         var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    presentation: .none,
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow: Int = bubbleRows.bubbles[0].count
@@ -63,6 +65,7 @@ class BubbleRows_Tests: XCTestCase {
         let totalWidth: CGFloat = 200
         
         let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    presentation: .none,
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let rowCount = bubbleRows.bubbles.count
@@ -81,6 +84,7 @@ class BubbleRows_Tests: XCTestCase {
     func test_getHstackSpacing_increasesHStackSpacing() {
         
         let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    presentation: .none,
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
@@ -99,6 +103,7 @@ class BubbleRows_Tests: XCTestCase {
     func test_getHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
         
         let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    presentation: .none,
                                     toggleable: false,
                                     selectedBubbles: .constant(Set<String>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
@@ -109,6 +114,113 @@ class BubbleRows_Tests: XCTestCase {
         let horizontalSpacing = bubbleRows.getHStackSpacing(totalWidth: compressedWidth)
         
         XCTAssert(BubbleRows.minimumInterBubbleSpacing == horizontalSpacing)
+    }
+    
+}
+
+// MARK: - RowNeedsSpacers tests
+
+extension BubbleRows_Tests {
+    
+    func test_rowNeedsSpacers_oneRow() {
+        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+    }
+    
+    func test_rowNeedsSpacers_twoRows_firstRowMoreBubbles() {
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
+                                              ["M","T","W","R","F","S"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssert(bubbleRows.rowNeedsSpacers(1))
+        
+        bubbleRows.presentation = .none
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+    }
+    
+    func test_rowNeedsSpacers_twoRows_equalAmountOfBubbles() {
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
+                                              ["M","T","W","R","F","S","U"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        
+        bubbleRows.presentation = .none
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+    }
+    
+    func test_rowNeedsSpacers_twoRows_secondRowMoreBubbles() {
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S"],
+                                              ["M","T","W","R","F","S","U"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        
+        bubbleRows.presentation = .none
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+    }
+    
+    func test_rowNeedsSpacers_threeRows_equalAmountOfBubbles() {
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
+                                              ["M","T","W","R","F","S","U"],
+                                              ["M","T","W","R","F","S","U"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
+        
+        bubbleRows.presentation = .none
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
+    }
+    
+    func test_rowNeedsSpacers_threeRows_lastRowMostBubbles() {
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S"],
+                                              ["M","T","W","R","F","S"],
+                                              ["M","T","W","R","F","S","U"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
+        
+        bubbleRows.presentation = .none
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
+    }
+    
+    func test_rowNeedsSpacers_threeRows_lastRowLeastBubbles() {
+        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
+                                              ["M","T","W","R","F","S","U"],
+                                              ["M","T","W","R","F","S"]],
+                                    presentation: .centerLastRow,
+                                    toggleable: false,
+                                    selectedBubbles: .constant(Set<String>()))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        XCTAssert(bubbleRows.rowNeedsSpacers(2))
+        
+        bubbleRows.presentation = .none
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
+        XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
     }
     
 }

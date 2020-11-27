@@ -24,7 +24,7 @@ struct TaskTargetSetPopup: View {
     let operationHeight: CGFloat = 100
     
     var title: String
-    let bubblesPerRow: Int = 7
+    let bubblesPerRow: Int = 5
     
     // MARK: - State variables
     
@@ -173,6 +173,7 @@ struct TaskTargetSetPopup: View {
                     // Days of week/month
                     BubbleRows(maxBubbleRadius: 32,
                                bubbles: self.type == .dom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow),
+                               presentation: self.type == .dom ? .none : .centerLastRow,
                                toggleable: true,
                                selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
                     
@@ -180,6 +181,7 @@ struct TaskTargetSetPopup: View {
                     if self.type == .wom {
                         BubbleRows(maxBubbleRadius: 32,
                                    bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .wom),
+                                   presentation: .centerLastRow,
                                    toggleable: true,
                                    selectedBubbles: self.$selectedWeeks)
                     }

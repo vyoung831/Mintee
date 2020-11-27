@@ -174,6 +174,7 @@ struct TaskTargetSetView: View {
             Group {
                 BubbleRows(bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7,
                                                                            patternType: self.type == .wom || self.type == .dow ? .dow : .dom),
+                           presentation: .none,
                            toggleable: false,
                            selectedBubbles: .constant((self.type == .dow || self.type == .wom
                                                         ? self.selectedDaysOfWeek : self.selectedDaysOfMonth)

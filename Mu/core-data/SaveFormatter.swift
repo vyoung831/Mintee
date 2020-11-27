@@ -188,6 +188,8 @@ class SaveFormatter {
     static func getDayOfMonthInt(_ dayOfMonth: String) -> Int16 {
         if let dom = Int16(dayOfMonth), dom <= 31, dom >= 0 {
             return dom
+        } else if dayOfMonth == "Last" {
+            return 0
         }
         Crashlytics.crashlytics().log("SaveFormatter.getDayOfMonthInt() attempted to convert an invalid String")
         fatalError()
