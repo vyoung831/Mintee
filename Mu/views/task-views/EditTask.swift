@@ -192,7 +192,7 @@ struct EditTask: View {
                 
                 // MARK: - Task name text field
                 
-                TaskNameTextField(taskName: self.$taskName)
+                TaskNameTextFieldSection(taskName: self.$taskName)
                 if (saveErrorMessage.count > 0) {
                     Text(saveErrorMessage)
                         .foregroundColor(.red)

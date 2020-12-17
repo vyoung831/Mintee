@@ -146,7 +146,7 @@ struct AddTask: View {
                 
                 // MARK: - Task name text field
                 
-                TaskNameTextField(taskName: self.$taskName)
+                TaskNameTextFieldSection(taskName: self.$taskName)
                 if (errorMessage.count > 0) {
                     Text(errorMessage)
                         .foregroundColor(.red)

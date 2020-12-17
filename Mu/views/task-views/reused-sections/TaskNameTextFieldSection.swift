@@ -1,5 +1,5 @@
 //
-//  TaskNameTextField.swift
+//  TaskNameTextFieldSection.swift
 //  Mu
 //
 //  Text field for entering task name, re-used in AddTask and EditTask
@@ -10,7 +10,7 @@
 
 import SwiftUI
 
-struct TaskNameTextField: View {
+struct TaskNameTextFieldSection: View {
     
     @Binding var taskName: String
     

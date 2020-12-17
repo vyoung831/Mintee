@@ -2,7 +2,7 @@
 //  SaveFormatter.swift
 //  Mu
 //
-//  This class provides util functions for converting Core Data save data to/from data that Views expect to use
+//  This class provides utility functions for converting Core Data save data to/from data that Views expect to use
 //
 //  Created by Vincent Young on 5/18/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
