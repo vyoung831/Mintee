@@ -311,9 +311,9 @@
 		C4037AB024342E2300150D47 /* MuTests */ = {
 			isa = PBXGroup;
 			children = (
-				C45790AC249FE72A002E16D5 /* core-data */,
-				C405FA0224F15BE200F6A547 /* views */,
-				C405FA0124F15BDB00F6A547 /* util */,
+				C45790AC249FE72A002E16D5 /* core-data-tests */,
+				C405FA0224F15BE200F6A547 /* view-tests */,
+				C405FA0124F15BDB00F6A547 /* util-tests */,
 				C49D666524E8991B0030DB54 /* test-util */,
 				C4037AB324342E2300150D47 /* Info.plist */,
 			);
@@ -334,7 +334,7 @@
 			path = MuUITests;
 			sourceTree = "<group>";
 		};
-		C405FA0124F15BDB00F6A547 /* util */ = {
+		C405FA0124F15BDB00F6A547 /* util-tests */ = {
 			isa = PBXGroup;
 			children = (
 				C4D8A34C249EB1D7008B3B9C /* Date-Extension-Tests.swift */,
@@ -342,10 +342,10 @@
 				C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */,
 				C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */,
 			);
-			path = util;
+			path = "util-tests";
 			sourceTree = "<group>";
 		};
-		C405FA0224F15BE200F6A547 /* views */ = {
+		C405FA0224F15BE200F6A547 /* view-tests */ = {
 			isa = PBXGroup;
 			children = (
 				C4925034254F940900A3C424 /* representable-tests */,
@@ -354,7 +354,7 @@
 				C46C2BD72505DF1A000320B4 /* hosting-tests */,
 				C46C2BD82505DF3A000320B4 /* task-target-set-views-tests */,
 			);
-			path = views;
+			path = "view-tests";
 			sourceTree = "<group>";
 		};
 		C406563224AA0199002926EB /* task-target-set-tests */ = {
@@ -466,7 +466,7 @@
 			path = "reused-sections";
 			sourceTree = "<group>";
 		};
-		C45790AC249FE72A002E16D5 /* core-data */ = {
+		C45790AC249FE72A002E16D5 /* core-data-tests */ = {
 			isa = PBXGroup;
 			children = (
 				C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */,
@@ -474,7 +474,7 @@
 				C462099824A1FE3D00F52F16 /* task-tests */,
 				C406563224AA0199002926EB /* task-target-set-tests */,
 			);
-			path = "core-data";
+			path = "core-data-tests";
 			sourceTree = "<group>";
 		};
 		C462099824A1FE3D00F52F16 /* task-tests */ = {
