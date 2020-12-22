@@ -78,7 +78,8 @@
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */; };
 		C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */; };
 		C4C961C6250A432000C7EEEA /* DayBubbleLabels-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */; };
-		C4D443E6253F5DE00035156D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D443D3253F5DA00035156D /* GoogleService-Info.plist */; };
+		C4CFC59B259259F3000BA4DA /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = C429D08D25912C99008A46BC /* GoogleService-Info-Debug.plist */; };
+		C4CFC59C259259F3000BA4DA /* GoogleService-Info-Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = C429D08E25912C99008A46BC /* GoogleService-Info-Release.plist */; };
 		C4D618F8252EA085009A9751 /* SettingsPresentationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* Date-Extension-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* Date-Extension-Tests.swift */; };
 		C4D9DB6425475771002F0B40 /* SetCountPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D9DB6325475771002F0B40 /* SetCountPopup.swift */; };
@@ -145,6 +146,8 @@
 		C41A73EC245207F7007007CB /* EditTaskHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskHostingController.swift; sourceTree = "<group>"; };
 		C41D107724BDCBA800549CA1 /* DayBubbleLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBubbleLabels.swift; sourceTree = "<group>"; };
 		C41F8732248F8FF2008AC18D /* Float+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+Extensions.swift"; sourceTree = "<group>"; };
+		C429D08D25912C99008A46BC /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
+		C429D08E25912C99008A46BC /* GoogleService-Info-Release.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Release.plist"; sourceTree = "<group>"; };
 		C430EEAB24BF822A00BD98FD /* InsufficientInputUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientInputUITests.swift; sourceTree = "<group>"; };
 		C43205F424A0B7C0004D3AA1 /* TestContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestContainer.swift; sourceTree = "<group>"; };
 		C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -193,7 +196,6 @@
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddTagPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayBubbleLabels-Tests.swift"; sourceTree = "<group>"; };
-		C4D443D3253F5DA00035156D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C4D618F7252EA085009A9751 /* SettingsPresentationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationDetailView.swift; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* Date-Extension-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date-Extension-Tests.swift"; sourceTree = "<group>"; };
 		C4D9DB6325475771002F0B40 /* SetCountPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCountPopup.swift; sourceTree = "<group>"; };
@@ -204,7 +206,6 @@
 		C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests.swift"; sourceTree = "<group>"; };
 		C4E5D5F125042F6C00557373 /* Task-InstanceDelta-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests.swift"; sourceTree = "<group>"; };
 		C4E5D5F425042F9400557373 /* Task-InstanceHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests.swift"; sourceTree = "<group>"; };
-		C4E7C7AF24E8AC1F0005C9CB /* MuTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MuTests copy-Info.plist"; path = "/Users/vincentyoung/Documents/Work/Mu/MuTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		C4EADF7224889D1C0080CD01 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
 		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
 		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
@@ -268,7 +269,6 @@
 				C4037AB024342E2300150D47 /* MuTests */,
 				C4037ABB24342E2300150D47 /* MuUITests */,
 				C4037A9524342E1F00150D47 /* Products */,
-				C4E7C7AF24E8AC1F0005C9CB /* MuTests copy-Info.plist */,
 				1A157D2107AFEF5B8A419F40 /* Pods */,
 				8AD43B30ED9F77EA07670B70 /* Frameworks */,
 			);
@@ -295,7 +295,6 @@
 				C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */,
 				C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */,
 				C4037AA024342E2300150D47 /* Assets.xcassets */,
-				C4D443D3253F5DA00035156D /* GoogleService-Info.plist */,
 				C4037AA824342E2300150D47 /* Info.plist */,
 			);
 			path = Mu;
@@ -492,6 +491,7 @@
 		C466A7A324473A0400EC3E97 /* util */ = {
 			isa = PBXGroup;
 			children = (
+				C4E8A83F25905BA4001BB09D /* plists */,
 				C466A7A424473A1100EC3E97 /* extensions */,
 				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
 				C442AE0C2546D71000A9EB72 /* ErrorManager.swift */,
@@ -649,6 +649,15 @@
 			path = util;
 			sourceTree = "<group>";
 		};
+		C4E8A83F25905BA4001BB09D /* plists */ = {
+			isa = PBXGroup;
+			children = (
+				C429D08D25912C99008A46BC /* GoogleService-Info-Debug.plist */,
+				C429D08E25912C99008A46BC /* GoogleService-Info-Release.plist */,
+			);
+			path = plists;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -660,7 +669,8 @@
 				C4037A9024342E1F00150D47 /* Sources */,
 				C4037A9124342E1F00150D47 /* Frameworks */,
 				C4037A9224342E1F00150D47 /* Resources */,
-				C4D443B7253F43E60035156D /* ShellScript */,
+				C4E8A833259053DB001BB09D /* Update GoogleService-Info.plist */,
+				C4D443B7253F43E60035156D /* Run Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -758,7 +768,8 @@
 			files = (
 				C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */,
 				C4037AA124342E2300150D47 /* Assets.xcassets in Resources */,
-				C4D443E6253F5DE00035156D /* GoogleService-Info.plist in Resources */,
+				C4CFC59B259259F3000BA4DA /* GoogleService-Info-Debug.plist in Resources */,
+				C4CFC59C259259F3000BA4DA /* GoogleService-Info-Release.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,7 +812,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C4D443B7253F43E60035156D /* ShellScript */ = {
+		C4D443B7253F43E60035156D /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -811,6 +822,7 @@
 			inputPaths = (
 				"",
 			);
+			name = "Run Crashlytics";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -818,6 +830,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/FirebaseCrashlytics/run\n";
+		};
+		C4E8A833259053DB001BB09D /* Update GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Update GoogleService-Info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PATH_TO_GOOGLE_PLISTS=\"${PROJECT_DIR}/${TARGET_NAME}/util/plists\"\nAPP_BUILD_OUTPUT=${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.app\n\ncase \"${CONFIGURATION}\" in\n\n   \"Debug\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Debug.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n    \n    \"Release\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Release.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n        \nesac\n\necho $BUILT_PRODUCTS_DIR > cat.txt\n";
 		};
 		F387FFE611351F940F403E1A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1088,6 +1118,11 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Mu/Preview Content\"";
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
+					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
+				);
 				INFOPLIST_FILE = Mu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1110,6 +1145,11 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Mu/Preview Content\"";
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
+					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
+				);
 				INFOPLIST_FILE = Mu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (

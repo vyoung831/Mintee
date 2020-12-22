@@ -372,7 +372,7 @@ extension Task {
             }
             else {
                 Crashlytics.crashlytics().log("updateSpecificInstances() in Task found a TaskInstance with nil date value")
-                Crashlytics.crashlytics().setValue(existingInstance, forKey: "TaskInstance")
+                Crashlytics.crashlytics().setCustomValue(existingInstance, forKey: "TaskInstance")
                 fatalError()
             }
         }

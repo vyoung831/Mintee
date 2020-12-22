@@ -63,7 +63,7 @@ public class Tag: NSManagedObject {
             }
         } catch {
             Crashlytics.crashlytics().log("FetchRequest for Tag failed in Tag.getOrCreateTag()")
-            Crashlytics.crashlytics().setValue(error.localizedDescription, forKey: "Error localized description")
+            Crashlytics.crashlytics().setCustomValue(error.localizedDescription, forKey: "Error localized description")
             fatalError()
         }
         

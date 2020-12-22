@@ -182,7 +182,7 @@ extension TaskTargetSet {
         
         if daysInMonth < 28 {
             Crashlytics.crashlytics().log("checkDay() in TaskTargetSet received an invalid number of daysInMonth")
-            Crashlytics.crashlytics().setValue(daysInMonth, forKey: "Days in month")
+            Crashlytics.crashlytics().setCustomValue(daysInMonth, forKey: "Days in month")
             fatalError()
         }
         

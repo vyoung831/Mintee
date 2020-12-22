@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1057930907003-bn6qh8ggs8g0n6ghf5k86h37epunat5o.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1057930907003-bn6qh8ggs8g0n6ghf5k86h37epunat5o</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDNx3pyGQ3WVjoa9WGMCfgczD9czb8JCH4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1057930907003</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Leko.Mu</string>
+	<key>PROJECT_ID</key>
+	<string>leko-mu-debug</string>
+	<key>STORAGE_BUCKET</key>
+	<string>leko-mu-debug.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1057930907003:ios:3400a3f5c892a77bb981de</string>
+</dict>
+</plist>

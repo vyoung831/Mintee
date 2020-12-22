@@ -56,7 +56,7 @@ class SaveFormatter {
             return .specific
         default:
             Crashlytics.crashlytics().log("SaveFormatter.storedToTaskType() attempted to convert an invalid Int16 to value of type taskType")
-            Crashlytics.crashlytics().setValue(storedType, forKey: "Saved Int16")
+            Crashlytics.crashlytics().setCustomValue(storedType, forKey: "Saved Int16")
             fatalError()
         }
     }
@@ -97,7 +97,7 @@ class SaveFormatter {
         case 3: return .eq
         default:
             Crashlytics.crashlytics().log("SaveFormatter.getOperatorString() attempted to convert an invalid Int16 to value of type equalityOperator")
-            Crashlytics.crashlytics().setValue(op, forKey: "Saved Int16")
+            Crashlytics.crashlytics().setCustomValue(op, forKey: "Saved Int16")
             fatalError()
         }
     }

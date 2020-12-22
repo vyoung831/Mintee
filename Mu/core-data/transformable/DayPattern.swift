@@ -64,7 +64,7 @@ class DayPattern: NSObject, NSSecureCoding {
             self.type = type
         } else {
             Crashlytics.crashlytics().log("DayPattern decoded an Int8 saved to type that could not be converted to a value of type patternType")
-            Crashlytics.crashlytics().setValue(typeValue, forKey: "Saved type raw value")
+            Crashlytics.crashlytics().setCustomValue(typeValue, forKey: "Saved type raw value")
             fatalError()
         }
         
