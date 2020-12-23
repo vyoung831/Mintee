@@ -866,7 +866,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "APP_BUILD_OUTPUT=${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.app\n\ncase \"${CONFIGURATION}\" in\n\n   \"Debug\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Debug.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n    \n    \"Release\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Release.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n        \nesac\n\necho $BUILT_PRODUCTS_DIR > cat.txt\n";
+			shellScript = "APP_BUILD_OUTPUT=${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.app\n\ncase \"${CONFIGURATION}\" in\n\n   \"Debug\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Debug.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n    \n    \"Release\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Release.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n        \nesac\n";
 		};
 		F387FFE611351F940F403E1A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
