@@ -665,6 +665,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C4037AC124342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu" */;
 			buildPhases = (
+				C4CFC5C72592C696000BA4DA /* Log Build Variables */,
 				3AB9327A9A597B79B798D49C /* [CP] Check Pods Manifest.lock */,
 				C4037A9024342E1F00150D47 /* Sources */,
 				C4037A9124342E1F00150D47 /* Frameworks */,
@@ -812,6 +813,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C4CFC5C72592C696000BA4DA /* Log Build Variables */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Log Build Variables";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport\n";
+		};
 		C4D443B7253F43E60035156D /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -847,7 +866,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH_TO_GOOGLE_PLISTS=\"${PROJECT_DIR}/${TARGET_NAME}/util/plists\"\nAPP_BUILD_OUTPUT=${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.app\n\ncase \"${CONFIGURATION}\" in\n\n   \"Debug\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Debug.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n    \n    \"Release\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Release.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n        \nesac\n\necho $BUILT_PRODUCTS_DIR > cat.txt\n";
+			shellScript = "APP_BUILD_OUTPUT=${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.app\n\ncase \"${CONFIGURATION}\" in\n\n   \"Debug\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Debug.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n    \n    \"Release\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Release.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n        \nesac\n\necho $BUILT_PRODUCTS_DIR > cat.txt\n";
 		};
 		F387FFE611351F940F403E1A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

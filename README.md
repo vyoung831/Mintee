@@ -25,5 +25,5 @@ For fatal crash reporting, `ErrorManager` is not used. Instead, code that detect
 In order to separate testing and release data, Mu's usage is captured in 2 separate Firebase applications using the following build phases:  
 1. The `Copy Bundle Resources` phase copies plists for the Firebase applications to the built product bundle.
 1. The `Update GoogleService-Info.plist` build phase copies and renames the appropriate Firebase plist to `GoogleService-Info.plist` in the built `.app` product. The resulting app reports data to Firebase based on the following:  
-* Builds that use `GoogleService-Info-Debug.plist` report to the Firebase application `Leko-Mu-Debug`
-* Builds that use `GoogleService-Info-Release.plist` report to Firebase application `Leko-Mu`
+    * Builds that use `GoogleService-Info-Debug.plist` report to the Firebase application `Leko-Mu-Debug`
+    * Builds that use `GoogleService-Info-Release.plist` report to Firebase application `Leko-Mu`
