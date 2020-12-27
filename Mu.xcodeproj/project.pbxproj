@@ -3,8 +3,23 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
+
+/* Begin PBXAggregateTarget section */
+		C4EC7B8125958EB1003B6DD5 /* Versions */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C4EC7B8225958EB1003B6DD5 /* Build configuration list for PBXAggregateTarget "Versions" */;
+			buildPhases = (
+				C4EC76F82596A6180059AA71 /* Check Git changes */,
+				C4EC7B8B25958EC2003B6DD5 /* Update build versions */,
+			);
+			dependencies = (
+			);
+			name = Versions;
+			productName = Versions;
+		};
+/* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
 		0F85185D8A27A97C474C0E96 /* libPods-Mu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA76E983476A33165A4795E8 /* libPods-Mu.a */; };
@@ -111,6 +126,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C4037A9324342E1F00150D47;
 			remoteInfo = Mu;
+		};
+		C4EC7B8925958EB9003B6DD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4EC7B8125958EB1003B6DD5;
+			remoteInfo = Versions;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -676,6 +698,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C4EC7B8A25958EB9003B6DD5 /* PBXTargetDependency */,
 			);
 			name = Mu;
 			productName = Mu;
@@ -740,6 +763,9 @@
 						CreatedOnToolsVersion = 11.3.1;
 						TestTargetID = C4037A9324342E1F00150D47;
 					};
+					C4EC7B8125958EB1003B6DD5 = {
+						CreatedOnToolsVersion = 12.3;
+					};
 				};
 			};
 			buildConfigurationList = C4037A8F24342E1F00150D47 /* Build configuration list for PBXProject "Mu" */;
@@ -758,6 +784,7 @@
 				C4037A9324342E1F00150D47 /* Mu */,
 				C4037AAC24342E2300150D47 /* MuTests */,
 				C4037AB724342E2300150D47 /* MuUITests */,
+				C4EC7B8125958EB1003B6DD5 /* Versions */,
 			);
 		};
 /* End PBXProject section */
@@ -867,6 +894,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "APP_BUILD_OUTPUT=${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.app\n\ncase \"${CONFIGURATION}\" in\n\n   \"Debug\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Debug.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n    \n    \"Release\" )\n        cp -r \"${APP_BUILD_OUTPUT}/GoogleService-Info-Release.plist\" \"${APP_BUILD_OUTPUT}/GoogleService-Info.plist\" ;;\n        \nesac\n";
+		};
+		C4EC76F82596A6180059AA71 /* Check Git changes */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Check Git changes";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "case \"${CONFIGURATION}\" in\n\n    \"Release\" )\n        ${PROJECT_DIR}/Versions/check-git-changes.sh ;;\n        \n    * )\n        ;;\n\nesac\n";
+		};
+		C4EC7B8B25958EC2003B6DD5 /* Update build versions */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Update build versions";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR/Versions ; ./versions.sh\n";
 		};
 		F387FFE611351F940F403E1A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1009,6 +1073,11 @@
 			target = C4037A9324342E1F00150D47 /* Mu */;
 			targetProxy = C4037AB924342E2300150D47 /* PBXContainerItemProxy */;
 		};
+		C4EC7B8A25958EB9003B6DD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4EC7B8125958EB1003B6DD5 /* Versions */;
+			targetProxy = C4EC7B8925958EB9003B6DD5 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1063,6 +1132,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/Versions/versions.h";
+				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1118,6 +1189,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/Versions/versions.h";
+				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1270,6 +1343,24 @@
 			};
 			name = Release;
 		};
+		C4EC7B8325958EB1003B6DD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3X6BZVFX73;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C4EC7B8425958EB1003B6DD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3X6BZVFX73;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1305,6 +1396,15 @@
 			buildConfigurations = (
 				C4037AC824342E2300150D47 /* Debug */,
 				C4037AC924342E2300150D47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C4EC7B8225958EB1003B6DD5 /* Build configuration list for PBXAggregateTarget "Versions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4EC7B8325958EB1003B6DD5 /* Debug */,
+				C4EC7B8425958EB1003B6DD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
