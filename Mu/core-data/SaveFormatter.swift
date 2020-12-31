@@ -30,7 +30,7 @@ class SaveFormatter {
     }
     
     /**
-     Returns an Int16 from a member of enum taskType for persistent storage saving
+     Returns an Int16 from a member of enum taskType for saving to persistent store.
      - parameter type: Member of enum taskType to be used by objects in memory
      - returns: Int16 saved to persistent storage that is used to represent a task type
      */
@@ -44,11 +44,11 @@ class SaveFormatter {
     }
     
     /**
-     Returns a member of enum taskType from a stored Int
+     Returns a member of enum taskType from a stored Int16.
      - parameter storedType: Int16 saved to persistent storage that is used to represent a task type
      - returns: Member of enum taskType to be used by objects in memory
      */
-    static func storedToTaskType(storedType: Int16) -> taskType {
+    static func storedToTaskType(storedType: Int16) -> taskType? {
         switch storedType {
         case 0:
             return .recurring

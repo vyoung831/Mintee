@@ -66,6 +66,7 @@ struct TodayView: View {
                 .scaleEffect(1.5)
                 )
         }
+        .accentColor(themeManager.accent)
         
     }
 }

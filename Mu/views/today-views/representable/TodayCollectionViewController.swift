@@ -100,10 +100,13 @@ extension TodayCollectionViewController {
                     cell.setTaskName(taskName: task._name ?? "")
                     cell.updateAppearance(instance: instance)
                     cell.handleEditButtonPressed = {
-                        let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in
-                            self.dismiss(animated: true, completion: nil)
-                        })
-                        self.present(ethvc, animated: true, completion: nil)
+                        if let ethvc = EditTaskHostingController(task: task, dismiss: { [unowned self] in self.dismiss(animated: true, completion: nil) }) {
+                            self.present(ethvc, animated: true, completion: nil)
+                        } else {
+                            let evhc = ErrorViewHostingController()
+                            self.navigationController?.pushViewController(evhc, animated: true)
+                        }
+                        
                     }
                     
                     cell.handleSetButtonPressed = {
@@ -123,7 +126,6 @@ extension TodayCollectionViewController {
                     fatalError()
                 }
             }
-            
             return cell
         } else {
             ErrorManager.recordNonFatal(.collectionViewCouldNotDequeueResuableCell, ["Collection View": "TodayCollectionViewController"])

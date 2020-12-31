@@ -49,9 +49,19 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         return ttsvArray
     }
     
-    init(task: Task, dismiss: @escaping (() -> Void)) {
+    /**
+     Failable initializer. Returns nil if any data that is needed by EditTask cannot be converted from persistent store back to valid in-memory form.
+     - parameter task: Task for which to initialize an instance of EditTask.
+     - parameter dismiss: Escaping closure that is called when EditTask's save or cancel buttons are tapped.
+     */
+    init?(task: Task, dismiss: @escaping (() -> Void)) {
         
-        let taskType = SaveFormatter.storedToTaskType(storedType: task._taskType)
+        guard let taskType = SaveFormatter.storedToTaskType(storedType: task._taskType) else {
+            ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
+                                        ["Task": task])
+            return nil
+        }
+        
         switch taskType {
         case .recurring:
             

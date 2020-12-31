@@ -45,6 +45,7 @@ struct ErrorManager {
         case collectionViewCouldNotDequeueResuableCell = 7
         case attemptedToCreateTagWithEmptyName = 8
         case collectionSizerReceivedTotalWidthTooSmall = 9
+        case persistentStoreContainedInvalidData = 10
     }
     
 }
