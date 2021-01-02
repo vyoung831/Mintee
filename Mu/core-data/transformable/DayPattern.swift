@@ -30,7 +30,7 @@ class DayPattern: NSObject, NSSecureCoding {
     var daysOfWeek: Set<Int16>
     var weeksOfMonth: Set<Int16>
     var daysOfMonth: Set<Int16>
-    var type: patternType
+    var type: DayPattern.patternType
     
     init(dow: Set<Int16>, wom: Set<Int16>, dom: Set<Int16>) {
         self.daysOfWeek = dow

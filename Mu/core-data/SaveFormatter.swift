@@ -13,15 +13,6 @@ import Firebase
 
 class SaveFormatter {
     
-    // MARK: - DateFormatters
-    
-    // Static DateFormatter for converting stored date Strings to Dates
-    static let storedStringToDateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        return df
-    }()
-    
     // MARK: - Task type
     
     enum taskType: String, CaseIterable {
@@ -59,7 +50,11 @@ class SaveFormatter {
         }
     }
     
-    // MARK: - TaskTargetSet equality operators
+}
+
+// MARK: - TaskTargetSet equality operators
+
+extension SaveFormatter {
     
     enum equalityOperator: String, CaseIterable {
         case lt = "<"
@@ -73,7 +68,7 @@ class SaveFormatter {
      - parameter op: String used by a view to represent a target operator.
      - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator
      */
-    static func getOperatorNumber(_ op: equalityOperator) -> Int16 {
+    static func equalityOperatorToStored(_ op: equalityOperator) -> Int16 {
         switch op {
         case .na: return 0
         case .lt: return 1
@@ -87,20 +82,22 @@ class SaveFormatter {
      - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
      - returns: String for a View to use to represent a target operator.
      */
-    static func getOperatorString(_ op: Int16) -> equalityOperator {
+    static func storedToEqualityOperator(_ op: Int16) -> equalityOperator? {
         switch op {
         case 0: return .na
         case 1: return .lt
         case 2: return .lte
         case 3: return .eq
         default:
-            Crashlytics.crashlytics().log("SaveFormatter.getOperatorString() attempted to convert an invalid Int16 to value of type equalityOperator")
-            Crashlytics.crashlytics().setCustomValue(op, forKey: "Saved Int16")
-            fatalError()
+            return nil
         }
     }
     
-    // MARK: - DayPattern data conversion
+}
+
+// MARK: - DayPattern data conversion
+
+extension SaveFormatter {
     
     /**
      Returns an Int16 to append to a DayPattern's wom
@@ -193,7 +190,18 @@ class SaveFormatter {
         fatalError()
     }
     
-    // MARK: - Date conversion
+}
+
+// MARK: - Date conversion
+
+extension SaveFormatter {
+    
+    // Static DateFormatter for converting stored date Strings to Dates
+    static let storedStringToDateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df
+    }()
     
     /**
      Returns a Date object from a String representation that was saved to persistent storage

@@ -43,7 +43,7 @@ class Task_Tests: XCTestCase {
         let startDate = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2019, month: 3, day: 1))!
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                insertInto: CDCoordinator.moc, min: 0, max: 3, minOperator: 1, maxOperator: 1, priority: 0,
+                                insertInto: CDCoordinator.moc, min: 0, max: 3, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([1,2,3,4,5,6,7]), wom: Set([]), dom: Set([])))
         
         let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,

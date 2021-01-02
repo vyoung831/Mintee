@@ -91,7 +91,7 @@ struct TaskTargetSetPopup: View {
             if let maxu = validateMaxValue() { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
         } else { maxOperator = .na; max = 0 }
         
-        let ttsValidation = TaskTargetSet.validateOperators(minOperator: minOperator, maxOperator: maxOperator, min: min, max: max)
+        let ttsValidation = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)
         guard let validatedValues = ttsValidation.operators else {
             if let message = ttsValidation.errorMessage {
                 self.errorMessage = message
@@ -101,9 +101,9 @@ struct TaskTargetSetPopup: View {
         
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: validatedValues.min,
-                                     minOperator: validatedValues.minOp,
+                                     minOperator: minOperator,
                                      maxTarget: validatedValues.max,
-                                     maxOperator: validatedValues.maxOp,
+                                     maxOperator: maxOperator,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())

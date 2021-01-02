@@ -19,7 +19,7 @@ class Task_InstanceDelta_Tests: XCTestCase {
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: dowMin, max: dowMax,
-                             minOperator: 1, maxOperator: 1,
+                             minOperator: .lt, maxOperator: .lt,
                              priority: 3,
                              pattern: dowPattern)
     }
@@ -28,7 +28,7 @@ class Task_InstanceDelta_Tests: XCTestCase {
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: womMin, max: womMax,
-                             minOperator: 1, maxOperator: 1,
+                             minOperator: .lt, maxOperator: .lt,
                              priority: 6,
                              pattern: womPattern)
     }
@@ -37,7 +37,7 @@ class Task_InstanceDelta_Tests: XCTestCase {
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: domMin, max: domMax,
-                             minOperator: 1, maxOperator: 1,
+                             minOperator: .lt, maxOperator: .lt,
                              priority: 9,
                              pattern: domPattern)
     }
@@ -228,7 +228,7 @@ extension Task_InstanceDelta_Tests {
         let newDowDatesMin = dowMin + 100; let newDowDatesMax = dowMax + 100
         let newDowDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                            insertInto: CDCoordinator.moc,
-                                           min: newDowDatesMin, max: newDowDatesMax, minOperator: 1, maxOperator: 1, priority: 0,
+                                           min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
                                            pattern: DayPattern(dow: Set([2]), wom: Set(), dom: Set()))
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowDatesSet)
         
@@ -248,15 +248,15 @@ extension Task_InstanceDelta_Tests {
         let newDowDatesMin = dowMin + 100; let newDowDatesMax = dowMax + 100; let newWomDatesMin = womMin + 100; let newWomDatesMax = womMax + 100; let newDomDatesMin = domMin + 100; let newDomDatesMax = domMax + 100
         let newDowDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                            insertInto: CDCoordinator.moc,
-                                           min: newDowDatesMin, max: newDowDatesMax, minOperator: 1, maxOperator: 1, priority: 1,
+                                           min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 1,
                                            pattern: DayPattern(dow: Set([2]), wom: Set(), dom: Set()))
         let newWomDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                            insertInto: CDCoordinator.moc,
-                                           min: newWomDatesMin, max: newWomDatesMax, minOperator: 1, maxOperator: 1, priority: 0,
+                                           min: newWomDatesMin, max: newWomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
                                            pattern: DayPattern(dow: Set([2,6]), wom: Set([1,3,5]), dom: Set()))
         let newDomDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                            insertInto: CDCoordinator.moc,
-                                           min: newDomDatesMin, max: newDomDatesMax, minOperator: 1, maxOperator: 1, priority: 7,
+                                           min: newDomDatesMin, max: newDomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 7,
                                            pattern: DayPattern(dow: Set(), wom: Set(), dom: Set([3,6,9,12,15,18,21,24,27,30])))
         
         let newWomDates: Set<String> = Set(["2019-11-04", "2019-11-11", "2019-11-18", "2019-11-25", "2019-12-02", "2019-12-09", "2019-12-16", "2019-12-23", "2019-12-30", "2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28", "2021-01-04", "2021-01-11", "2021-01-18", "2021-01-25", "2021-02-01", "2021-02-08", "2021-02-15", "2021-02-22", "2021-03-01"]

@@ -19,26 +19,39 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     }
     
     /**
-     Extracts the TaskTargetSets associated with a Task and converts them into an array of TaskTargetSetViews
-     The Array's TaskTargetSetViews are sorted by priority
-     parm task:
+     Extracts the TaskTargetSets associated with a Task and converts them into an array of TaskTargetSetViews, sorted by priority.
+     - parameter task: The task whose TaskTargetSets to extract.
+     - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task. Returns nil if invalid data is found in the TaskTargetSets.
      */
-    static func extractTTSVArray(task: Task) -> [TaskTargetSetView] {
+    static func extractTTSVArray(task: Task) -> [TaskTargetSetView]? {
         var ttsvArray: [TaskTargetSetView] = []
         if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
                 
+                /*
+                 If the TaskTargetSet's DayPattern is nil or the TaskTargetSet's minOperator and/or maxOperator violate business logic, an error is reported with the Task, the TTS, and the Task's other TTSes
+                 */
                 guard let pattern = ttsArray[idx]._pattern else {
-                    Crashlytics.crashlytics().log("EditTaskHostingController could not read pattern from a TaskTargetSet \(ttsArray[idx].debugDescription)")
-                    Crashlytics.crashlytics().setCustomValue(ttsvArray[idx], forKey: "TaskTargetSet")
-                    fatalError()
+                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray found nil _pattern in a TaskTargetSet",
+                                                    "TaskTargetSet" : ttsArray[idx]]
+                    ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
+                                                task.mergeDebugDictionary(userInfo: userInfo))
+                    return nil
+                }
+                
+                guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
+                      let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
+                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray found invalid _minOperator or _maxOperator in a TaskTargetSet",
+                                                    "TaskTargetSet" : ttsArray[idx]]
+                    ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                    return nil
                 }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,
                                              minTarget: ttsArray[idx]._min,
-                                             minOperator: SaveFormatter.getOperatorString(ttsArray[idx]._minOperator),
+                                             minOperator: minOperator,
                                              maxTarget: ttsArray[idx]._max,
-                                             maxOperator: SaveFormatter.getOperatorString(ttsArray[idx]._maxOperator),
+                                             maxOperator: maxOperator,
                                              selectedDaysOfWeek: Set(ttsArray[idx].getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
                                              selectedWeeksOfMonth: Set(ttsArray[idx].getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
                                              selectedDaysOfMonth: Set(ttsArray[idx].getDaysOfMonth().map{ String($0) }))
@@ -57,8 +70,8 @@ class EditTaskHostingController: UIHostingController<EditTask> {
     init?(task: Task, dismiss: @escaping (() -> Void)) {
         
         guard let taskType = SaveFormatter.storedToTaskType(storedType: task._taskType) else {
-            ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
-                                        ["Task": task])
+            let userInfo: [String : Any] = ["Message": "EditTaskHostingController.init? found invalid _taskType in a Task"]
+            ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
             return nil
         }
         
@@ -66,7 +79,9 @@ class EditTaskHostingController: UIHostingController<EditTask> {
         case .recurring:
             
             // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
-            let ttsvArray: [TaskTargetSetView] = EditTaskHostingController.extractTTSVArray(task: task)
+            guard let ttsvArray: [TaskTargetSetView] = EditTaskHostingController.extractTTSVArray(task: task) else {
+                return nil
+            }
             
             if let startDateString = task._startDate, let endDateString = task._endDate {
                 let editTask = EditTask(task: task,

@@ -36,8 +36,8 @@ public class TaskTargetSet: NSManagedObject {
                      insertInto context: NSManagedObjectContext?,
                      min: Float,
                      max: Float,
-                     minOperator: Int16,
-                     maxOperator: Int16,
+                     minOperator: SaveFormatter.equalityOperator,
+                     maxOperator: SaveFormatter.equalityOperator,
                      priority: Int16,
                      pattern: DayPattern) {
         if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
@@ -77,92 +77,65 @@ extension TaskTargetSet {
 extension TaskTargetSet {
     
     /**
-     Calls function of the same name in TaskTargetSet that takes minOp and maxOp as Int16 instead of SaveFormatter.EqualityOperator.
-     Checks provided minOperator, maxOperator, and min/max values to determine if combination is valid. Corrects values where necessary, such as setting both operators to = and both values to the same value if = is present.
+     Checks provided minOperator, maxOperator, and min/max values to validate against business logic.
+     Corrects values where necessary, such as setting both operators to = and both values to the same value if = is present.
      Returns a tuple containing an optional error message and an optional tuple of corrected values to set in the TaskTargetSet.
-     - parameter minOp: EqualityOperator that is to be set as TaskTargetSet's minOperator
-     - parameter maxOp: EqualityOperator that is to be set as TaskTargetSet's maxOperator
-     - parameter minTarget: Float to set TaskTargetSet's min to
-     - parameter maxTarget: Float to set TaskTargetSet's max to
-     - returns: Tuple of optional errorMessage and optional tuple of correct values to set in TaskTargetSet. One and only one of the tuples will be non-nil
+     - parameter minOp: EqualityOperator that is to be set as TaskTargetSet's minOperator.
+     - parameter maxOp: EqualityOperator that is to be set as TaskTargetSet's maxOperator.
+     - parameter min: Float to set TaskTargetSet's min to.
+     - parameter max: Float to set TaskTargetSet's max to.
+     - returns: Tuple of optional errorMessage and optional tuple of correct values to set as TaskTargetSet's properties. One and only one of the tuples will be non-nil.
      */
-    static func validateOperators(minOperator: SaveFormatter.equalityOperator,
-                                  maxOperator: SaveFormatter.equalityOperator,
-                                  min: Float,
-                                  max: Float) -> (errorMessage: String?, operators: (minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, min: Float, max: Float)?) {
-        
-        let validatedValues = TaskTargetSet.validateOperators(minOp: SaveFormatter.getOperatorNumber(minOperator),
-                                                              maxOp: SaveFormatter.getOperatorNumber(maxOperator),
-                                                              min: min,
-                                                              max: max)
-        if let validatedOperators = validatedValues.operators {
-            return (validatedValues.errorMessage, (minOp: SaveFormatter.getOperatorString(validatedOperators.minOp),
-                                                   maxOp: SaveFormatter.getOperatorString(validatedOperators.maxOp),
-                                                   min: validatedOperators.min,
-                                                   max: validatedOperators.max))
-        }
-        return (validatedValues.errorMessage, nil)
-    }
-    
-    /**
-     Checks provided minOperator, maxOperator, and min/max values to determine if combination is valid. Corrects values where necessary, such as setting both operators to = and both values to the same value if = is present.
-     Returns a tuple containing an optional error message and an optional tuple of corrected values to set in the TaskTargetSet.
-     - parameter minOp: EqualityOperator whose Int16 equivalent is to be set as TaskTargetSet's minOperator
-     - parameter maxOp: EqualityOperator whose Int16 equivalent is to be set as TaskTargetSet's minOperator
-     - parameter minTarget: Float to set TaskTargetSet's min to
-     - parameter maxTarget: Float to set TaskTargetSet's max to
-     - returns: Tuple of optional errorMessage and optional tuple of correct values to set in TaskTargetSet. One and only one of the tuples will be non-nil
-     */
-    static func validateOperators(minOp: Int16,
-                                  maxOp: Int16,
+    static func validateOperators(minOp: SaveFormatter.equalityOperator,
+                                  maxOp: SaveFormatter.equalityOperator,
                                   min: Float,
                                   max: Float) -> (errorMessage: String?, operators: (minOp: Int16, maxOp: Int16, min: Float, max: Float)?) {
         
-        let minOperator = SaveFormatter.getOperatorString(minOp)
-        let maxOperator = SaveFormatter.getOperatorString(maxOp)
-        let eq = SaveFormatter.getOperatorNumber(.eq)
-        let na = SaveFormatter.getOperatorNumber(.na)
+        let minOpStore = SaveFormatter.equalityOperatorToStored(minOp)
+        let maxOpStore = SaveFormatter.equalityOperatorToStored(maxOp)
+        let eq = SaveFormatter.equalityOperatorToStored(.eq)
+        let na = SaveFormatter.equalityOperatorToStored(.na)
         
-        if minOperator == .eq && maxOperator == .eq && min != max {
+        if minOp == .eq && maxOp == .eq && min != max {
             return ("Both operators were set to equal but target values were different", nil)
         }
         
-        if minOperator == .eq {
+        if minOp == .eq {
             return (nil, (eq, eq, min, min))
-        }; if maxOperator == .eq {
+        }; if maxOp == .eq {
             return (nil, (eq, eq, max, max))
         }
         
-        switch minOperator {
+        switch minOp {
         case .lt:
-            if maxOperator == .lt || maxOperator == .lte {
+            if maxOp == .lt || maxOp == .lte {
                 return min >= max ?
                     ("Min/max were set to (lt, lt/lte) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                    (nil, (minOpStore, maxOpStore, min, max))
             } else {
-                return (nil, (minOp, na, min, 0))
+                return (nil, (minOpStore, na, min, 0))
             }
         case .lte:
-            switch maxOperator {
+            switch maxOp {
             case .lt:
                 return min >= max ?
                     ("Min/max were set to (lte, lt) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                    (nil, (minOpStore, maxOpStore, min, max))
             case .lte:
                 if min == max {
                     return (nil, (eq, eq, min, min))
                 } else {
                     return min > max ?
                         ("Min/max were set to (lte, lte) but min was greater than max", nil) :
-                        (nil, (minOp, maxOp, min, max))
+                        (nil, (minOpStore, maxOpStore, min, max))
                 }
             default:
-                return (nil, (minOp, na, min, 0))
+                return (nil, (minOpStore, na, min, 0))
             }
         default:
-            return maxOp == na ?
+            return maxOp == .na ?
                 ("Min and max operators were both N/A", nil) :
-                (nil, (na, maxOp, 0, max))
+                (nil, (na, maxOpStore, 0, max))
         }
         
     }

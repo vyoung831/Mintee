@@ -134,6 +134,43 @@ extension Task {
     
 }
 
+// MARK: Debug descriptions for error reporting
+extension Task {
+    
+    /**
+     Gathers debug descriptions of this Task and its TaskTargetSets.
+     - parameter userInfo: [String : Any] Dictionary containing existing debug info
+     - returns: Dictionary containing existing debug info and debug descriptions of this Task and its TaskTargetSets
+     */
+    func mergeDebugDictionary(userInfo: [String : Any]) -> [String : Any] {
+        
+        var debugDictionary: [String : Any] = [:]
+        debugDictionary["Task.debugDescription"] = self.debugDescription
+        
+        if let ttsArray = self.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
+            for idx in 0 ..< ttsArray.count {
+                
+                let ttsIdentifier = "Task.TaskTargetSet[\(idx)]"
+                debugDictionary["\(ttsIdentifier).debugDescription"] = ttsArray[idx].debugDescription
+                let patternIdentifier = "\(ttsIdentifier)._pattern"
+                if let pattern = ttsArray[idx]._pattern {
+                    debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
+                    debugDictionary["\(patternIdentifier).weeksOfMonth"] = pattern.weeksOfMonth
+                    debugDictionary["\(patternIdentifier).daysOfMonth"] = pattern.daysOfMonth
+                    debugDictionary["\(patternIdentifier).type"] = pattern.type
+                } else {
+                    debugDictionary["\(patternIdentifier)"] = nil
+                }
+            }
+        }
+            
+        debugDictionary.merge(userInfo, uniquingKeysWith: { return "Task.mergeDebugDictionary found clashing keys.\nValue 1 = \($0)\nValue 2 = \($1)" })
+        return debugDictionary
+        
+    }
+    
+}
+
 
 // MARK: - Tag handling
 

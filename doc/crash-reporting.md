@@ -14,9 +14,21 @@ This document describes the development guidelines that must be adhered to in re
 Depending on the type of error scenario, Mu expects patterns to be followed in determining which class/struct report errors and what data should be reported, in order to . The following table details the expected development patterns:  
 | Error scenario | Error type | Expected remediation | Class/struct that reports error | Additional data to report | \[Example(s)\] | Notes |
 |-|-|-|-|-|-|-|
-| Mu fails to convert persistent store data to valid data to use in-memory. | Non-fatal | Display `ErrorView` | The class/struct that reads the persistent store data. | <ul> <li> Persistent store objects whose properties contained the invalid data of interest. </li> <br/> <li> Related entities. </li> <ul/> | When `EditTaskHostingController` receives `nil` from calling `SaveFormatter.storedToTaskType` to convert a stored Int16 to SaveFormatter.TaskType, the error is reported by `EditTaskHostingController`. | Internal Mu classes that handle data conversion from persistent store to memory are expected to return optionals if there is input parameters could possibly be considered invalid. |
+| Mu finds persistent store data that violates business logic. | Non-fatal | Display `ErrorView` | The class/struct that either <br/> <ul> <li/> Finds the invalid persistent store data OR <li/> Calls a data conversion function and receives unusable in-memory return value. </ul> | <ul> <li/> Error message including class and function name (use key `Message`). <li/> Debug data from [base debug objects](#base-debug-objects). <li/> The specific Core Data entity that contained invalid data. <ul/> | When `EditTaskHostingController.extractTTSVArray` finds a TaskTargetSet with a nil DayPattern, an error is reported with the required data and messages. | Internal Mu classes that handle data conversion from persistent store to memory are expected to return optionals if there are input parameters could possibly be considered invalid. |
 
 The steps to reporting errors are found in [non-fatal reporting](#non-fatal-reporting-process) and [fatal reporting](#fatal-reporting-process).
+
+## Base debug objects
+When a Core Data entity from persistent store is found to have data that violates business logic, Mu's error reports must use APIs provided by certain entities to report a standard set of persistent store debug data (in addition to whatever other relevant debug data there is). The following table specifies which objects (base objects) provide such APIs.
+| Core Data entity | Is base object? | Base debug object |
+|-|-|-|
+| Task | Y | None |
+| Analysis | Y | None |
+| Tag | N | None |
+| TaskInstance | N | None |
+| TaskTargetSet | N | Task |
+| TaskSummaryAnalysis | N | Task |
+| LegendEntry | Y | Analysis |
 
 ## Non-fatal reporting process
 For non-fatal error reporting, Mu implements `ErrorManager`, a struct that classes must use to handle non-fatal reporting. Crashlytics APIs expect iOS applications to report non-fatals using instances of `NSError`.  

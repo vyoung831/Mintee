@@ -20,7 +20,7 @@ class EditTaskHostingController_Tests: XCTestCase {
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: dowMin, max: dowMax,
-                             minOperator: 1, maxOperator: 1,
+                             minOperator: .lt, maxOperator: .lt,
                              priority: 3,
                              pattern: dowPattern)
     }
@@ -45,7 +45,7 @@ class EditTaskHostingController_Tests: XCTestCase {
                         targetSets: targetSets)
         
         let ttsvArray = EditTaskHostingController.extractTTSVArray(task: task)
-        let ttsv = ttsvArray[0]
+        let ttsv = ttsvArray![0]
         
         XCTAssert(ttsv.minTarget == dowMin)
         XCTAssert(ttsv.minOperator == .lt)
