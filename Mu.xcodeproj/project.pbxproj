@@ -27,7 +27,6 @@
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
 		C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
-		C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA324342E2300150D47 /* Preview Assets.xcassets */; };
 		C4037ABD24342E2300150D47 /* AddTaskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* AddTaskUITests.swift */; };
 		C40416EF259E7AA400849E1D /* ErrorViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */; };
 		C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */; };
@@ -147,7 +146,6 @@
 		C4037A9724342E1F00150D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mu.xcdatamodel; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C4037AA324342E2300150D47 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4037AAD24342E2300150D47 /* MuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037AB324342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -313,7 +311,6 @@
 		C4037A9624342E1F00150D47 /* Mu */ = {
 			isa = PBXGroup;
 			children = (
-				C4037AA224342E2300150D47 /* Preview Content */,
 				C48F022F2448A4700088227F /* core-data */,
 				C466A7A324473A0400EC3E97 /* util */,
 				C44C7F85243CA54A00072AD8 /* views */,
@@ -324,14 +321,6 @@
 				C4037AA824342E2300150D47 /* Info.plist */,
 			);
 			path = Mu;
-			sourceTree = "<group>";
-		};
-		C4037AA224342E2300150D47 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C4037AA324342E2300150D47 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		C4037AB024342E2300150D47 /* MuTests */ = {
@@ -816,7 +805,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4037AA424342E2300150D47 /* Preview Assets.xcassets in Resources */,
 				C4037AA124342E2300150D47 /* Assets.xcassets in Resources */,
 				C4CFC59B259259F3000BA4DA /* GoogleService-Info-Debug.plist in Resources */,
 				C4CFC59C259259F3000BA4DA /* GoogleService-Info-Release.plist in Resources */,
@@ -1231,7 +1219,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Mu/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1258,7 +1246,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Mu/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (

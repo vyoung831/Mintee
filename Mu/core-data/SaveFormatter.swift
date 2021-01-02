@@ -55,9 +55,7 @@ class SaveFormatter {
         case 1:
             return .specific
         default:
-            Crashlytics.crashlytics().log("SaveFormatter.storedToTaskType() attempted to convert an invalid Int16 to value of type taskType")
-            Crashlytics.crashlytics().setCustomValue(storedType, forKey: "Saved Int16")
-            fatalError()
+            return nil
         }
     }
     
