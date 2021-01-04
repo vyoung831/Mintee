@@ -16,3 +16,7 @@ end
 target 'Mu_AUT_Function' do 
     shared_pods
 end
+
+target 'Mu_AUT_Performance' do 
+    shared_pods
+end

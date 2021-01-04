@@ -52,6 +52,16 @@
                ReferencedContainer = "container:Mu.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C465839225A2ACAB00E4418D"
+               BuildableName = "Mu_AUT_Performance.xctest"
+               BlueprintName = "Mu_AUT_Performance"
+               ReferencedContainer = "container:Mu.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

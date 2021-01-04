@@ -14,7 +14,7 @@
 		<key>SharedTestUtils.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>17</integer>
 		</dict>
 		<key>TestLib.xcscheme_^#shared#^_</key>
 		<dict>
