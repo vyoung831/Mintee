@@ -7,6 +7,7 @@
 //
 
 @testable import Mu
+@testable import SharedTestUtils
 import CoreData
 import XCTest
 

@@ -22,8 +22,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0F85185D8A27A97C474C0E96 /* libPods-Mu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA76E983476A33165A4795E8 /* libPods-Mu.a */; };
-		112EAC33C4B9A387067D4700 /* libPods-MuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9E97437F2F74924AC5694E2 /* libPods-MuTests.a */; };
+		1A04A4E0A489675CD86B84A3 /* libPods-SharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */; };
+		33F3B41306E2C2951B94D6AB /* libPods-Mu_AUT_Performance.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF89AF04D4AA33CDE73C14A /* libPods-Mu_AUT_Performance.a */; };
+		B88C10F4211188FBDB41B44E /* libPods-Mu_AUT_Function.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */; };
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
 		C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
@@ -47,7 +48,6 @@
 		C41F8733248F8FF2008AC18D /* Float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41F8732248F8FF2008AC18D /* Float+Extensions.swift */; };
 		C42B5B4D259ACD6E00E6A093 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B5B4C259ACD6E00E6A093 /* ErrorView.swift */; };
 		C430EEAC24BF822A00BD98FD /* InsufficientInputUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C430EEAB24BF822A00BD98FD /* InsufficientInputUITests.swift */; };
-		C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
 		C436D34C24505CAD001ED468 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C436D34B24505CAD001ED468 /* TodayCollectionViewCell.swift */; };
 		C43AE1C1256075D200F1D560 /* CollectionSizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43AE1C0256075D200F1D560 /* CollectionSizer.swift */; };
 		C43AE1D42560C12700F1D560 /* CollectionSizer-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */; };
@@ -61,6 +61,18 @@
 		C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */; };
 		C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45790AD249FE74C002E16D5 /* Task-Tests.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
+		C465819425A27D7300E4418D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C465819325A27D7300E4418D /* XCTest.framework */; };
+		C46581B325A289FD00E4418D /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
+		C46581B425A289FD00E4418D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49D666624E8992B0030DB54 /* Extensions.swift */; };
+		C465821425A2920C00E4418D /* libSharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C465818025A27D6800E4418D /* libSharedTestUtils.a */; };
+		C46582ED25A2A86700E4418D /* libPods-Mu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C46582EC25A2A86700E4418D /* libPods-Mu.a */; };
+		C465839625A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */; };
+		C46583C625A2ACE500E4418D /* libSharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C465818025A27D6800E4418D /* libSharedTestUtils.a */; };
+		C46583E025A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */; };
+		C46583E825A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583E725A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift */; };
+		C46583FE25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583FD25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift */; };
+		C465840C25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */; };
+		C465841A25A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */; };
 		C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C466A7A524473A2500EC3E97 /* Date+Extensions.swift */; };
 		C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4697EE124561BEF00B028A2 /* CDCoordinator.swift */; };
 		C46C2BD62505D69C000320B4 /* Float-Extension-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C2BD52505D69C000320B4 /* Float-Extension-Tests.swift */; };
@@ -85,7 +97,6 @@
 		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
 		C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */; };
 		C49B3464243921FE00CF3FCD /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49B3463243921FE00CF3FCD /* MainTabBarUITests.swift */; };
-		C49D666724E8992B0030DB54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49D666624E8992B0030DB54 /* Extensions.swift */; };
 		C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */; };
 		C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */; };
 		C4ACD3C9250D6FCB00D56277 /* AddTagPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */; };
@@ -114,19 +125,47 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C4037AAE24342E2300150D47 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C4037A9324342E1F00150D47;
-			remoteInfo = Mu;
-		};
 		C4037AB924342E2300150D47 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C4037A9324342E1F00150D47;
 			remoteInfo = Mu;
+		};
+		C465819A25A27DC400E4418D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C465817F25A27D6800E4418D;
+			remoteInfo = SharedTestUtils;
+		};
+		C465822425A292C600E4418D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4037A9324342E1F00150D47;
+			remoteInfo = Mu;
+		};
+		C465822825A292E000E4418D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4037A9324342E1F00150D47;
+			remoteInfo = Mu;
+		};
+		C465839825A2ACAB00E4418D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4037A9324342E1F00150D47;
+			remoteInfo = Mu;
+		};
+		C46583A925A2ACBC00E4418D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C465817F25A27D6800E4418D;
+			remoteInfo = SharedTestUtils;
 		};
 		C4EC7B8925958EB9003B6DD5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -137,17 +176,35 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C465817E25A27D6800E4418D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		0A93995FCB40A15E5C2A858D /* Pods-MuTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.debug.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3D4F1CF94A1FB534B21EBE6B /* Pods-MuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.release.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.release.xcconfig"; sourceTree = "<group>"; };
+		042008483E20CEA767F7324A /* Pods-MuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.release.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.release.xcconfig"; sourceTree = "<group>"; };
+		290DCD335251535455118312 /* Pods-SharedTestUtils.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.debug.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.debug.xcconfig"; sourceTree = "<group>"; };
+		44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Function.release.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Function/Pods-Mu_AUT_Function.release.xcconfig"; sourceTree = "<group>"; };
+		51C447A60DCA459E4B8AB193 /* Pods-SharedTestUtils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.release.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.release.xcconfig"; sourceTree = "<group>"; };
+		52A0B081CA2AE527419E07AE /* Pods-Mu_AUT_Performance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Performance.release.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Performance/Pods-Mu_AUT_Performance.release.xcconfig"; sourceTree = "<group>"; };
+		7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Function.debug.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Function/Pods-Mu_AUT_Function.debug.xcconfig"; sourceTree = "<group>"; };
 		93F818CCB99A1927A9AB33BB /* Pods-Mu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu.release.xcconfig"; path = "Target Support Files/Pods-Mu/Pods-Mu.release.xcconfig"; sourceTree = "<group>"; };
-		AA76E983476A33165A4795E8 /* libPods-Mu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D80B2B3F73CC235806A8E18 /* Pods-MuTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.debug.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A42EEF8790153313551F5B71 /* Pods-Mu_AUT_Performance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Performance.debug.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Performance/Pods-Mu_AUT_Performance.debug.xcconfig"; sourceTree = "<group>"; };
+		B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SharedTestUtils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037A9424342E1F00150D47 /* Mu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037A9724342E1F00150D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mu.xcdatamodel; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4037AAD24342E2300150D47 /* MuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mu_AUT_Function.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037AB324342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* AddTaskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskUITests.swift; sourceTree = "<group>"; };
@@ -187,6 +244,17 @@
 		C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartAndEndDateSection.swift; sourceTree = "<group>"; };
 		C45790AD249FE74C002E16D5 /* Task-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-Tests.swift"; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
+		C465818025A27D6800E4418D /* libSharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSharedTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C465819325A27D7300E4418D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C46582EC25A2A86700E4418D /* libPods-Mu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-Mu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mu_AUT_Performance.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests-Performance.swift"; sourceTree = "<group>"; };
+		C465839725A2ACAB00E4418D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests-Util.swift"; sourceTree = "<group>"; };
+		C46583E725A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests-Util.swift"; sourceTree = "<group>"; };
+		C46583FD25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests-Performance.swift"; sourceTree = "<group>"; };
+		C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests-Util.swift"; sourceTree = "<group>"; };
+		C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests-Performance.swift"; sourceTree = "<group>"; };
 		C466A7A524473A2500EC3E97 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		C4697EE124561BEF00B028A2 /* CDCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCoordinator.swift; sourceTree = "<group>"; };
 		C46C2BD52505D69C000320B4 /* Float-Extension-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float-Extension-Tests.swift"; sourceTree = "<group>"; };
@@ -235,8 +303,9 @@
 		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extensions.swift"; sourceTree = "<group>"; };
 		C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopupUITests.swift; sourceTree = "<group>"; };
+		CDF89AF04D4AA33CDE73C14A /* libPods-Mu_AUT_Performance.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mu_AUT_Performance.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mu_AUT_Function.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3152598BE06FF5A4A09550D /* Pods-Mu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu.debug.xcconfig"; path = "Target Support Files/Pods-Mu/Pods-Mu.debug.xcconfig"; sourceTree = "<group>"; };
-		F9E97437F2F74924AC5694E2 /* libPods-MuTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MuTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,7 +313,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F85185D8A27A97C474C0E96 /* libPods-Mu.a in Frameworks */,
+				C46582ED25A2A86700E4418D /* libPods-Mu.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +321,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				112EAC33C4B9A387067D4700 /* libPods-MuTests.a in Frameworks */,
+				C465821425A2920C00E4418D /* libSharedTestUtils.a in Frameworks */,
+				B88C10F4211188FBDB41B44E /* libPods-Mu_AUT_Function.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +330,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C465817D25A27D6800E4418D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C465819425A27D7300E4418D /* XCTest.framework in Frameworks */,
+				1A04A4E0A489675CD86B84A3 /* libPods-SharedTestUtils.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C465839025A2ACAB00E4418D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C46583C625A2ACE500E4418D /* libSharedTestUtils.a in Frameworks */,
+				33F3B41306E2C2951B94D6AB /* libPods-Mu_AUT_Performance.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,8 +359,14 @@
 			children = (
 				F3152598BE06FF5A4A09550D /* Pods-Mu.debug.xcconfig */,
 				93F818CCB99A1927A9AB33BB /* Pods-Mu.release.xcconfig */,
-				0A93995FCB40A15E5C2A858D /* Pods-MuTests.debug.xcconfig */,
-				3D4F1CF94A1FB534B21EBE6B /* Pods-MuTests.release.xcconfig */,
+				9D80B2B3F73CC235806A8E18 /* Pods-MuTests.debug.xcconfig */,
+				042008483E20CEA767F7324A /* Pods-MuTests.release.xcconfig */,
+				290DCD335251535455118312 /* Pods-SharedTestUtils.debug.xcconfig */,
+				51C447A60DCA459E4B8AB193 /* Pods-SharedTestUtils.release.xcconfig */,
+				7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */,
+				44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */,
+				A42EEF8790153313551F5B71 /* Pods-Mu_AUT_Performance.debug.xcconfig */,
+				52A0B081CA2AE527419E07AE /* Pods-Mu_AUT_Performance.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -280,8 +374,11 @@
 		8AD43B30ED9F77EA07670B70 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F9E97437F2F74924AC5694E2 /* libPods-MuTests.a */,
-				AA76E983476A33165A4795E8 /* libPods-Mu.a */,
+				C46582EC25A2A86700E4418D /* libPods-Mu.a */,
+				C465819325A27D7300E4418D /* XCTest.framework */,
+				B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */,
+				D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */,
+				CDF89AF04D4AA33CDE73C14A /* libPods-Mu_AUT_Performance.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -290,7 +387,9 @@
 			isa = PBXGroup;
 			children = (
 				C4037A9624342E1F00150D47 /* Mu */,
-				C4037AB024342E2300150D47 /* MuTests */,
+				C465818125A27D6800E4418D /* SharedTestUtils */,
+				C4037AB024342E2300150D47 /* Mu_AUT_Function */,
+				C465839425A2ACAB00E4418D /* Mu_AUT_Performance */,
 				C4037ABB24342E2300150D47 /* MuUITests */,
 				C4037A9524342E1F00150D47 /* Products */,
 				1A157D2107AFEF5B8A419F40 /* Pods */,
@@ -302,8 +401,10 @@
 			isa = PBXGroup;
 			children = (
 				C4037A9424342E1F00150D47 /* Mu.app */,
-				C4037AAD24342E2300150D47 /* MuTests.xctest */,
+				C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */,
 				C4037AB824342E2300150D47 /* MuUITests.xctest */,
+				C465818025A27D6800E4418D /* libSharedTestUtils.a */,
+				C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -323,16 +424,15 @@
 			path = Mu;
 			sourceTree = "<group>";
 		};
-		C4037AB024342E2300150D47 /* MuTests */ = {
+		C4037AB024342E2300150D47 /* Mu_AUT_Function */ = {
 			isa = PBXGroup;
 			children = (
 				C45790AC249FE72A002E16D5 /* core-data-tests */,
 				C405FA0224F15BE200F6A547 /* view-tests */,
 				C405FA0124F15BDB00F6A547 /* util-tests */,
-				C49D666524E8991B0030DB54 /* test-util */,
 				C4037AB324342E2300150D47 /* Info.plist */,
 			);
-			path = MuTests;
+			path = Mu_AUT_Function;
 			sourceTree = "<group>";
 		};
 		C4037ABB24342E2300150D47 /* MuUITests */ = {
@@ -521,6 +621,29 @@
 			path = "task-tests";
 			sourceTree = "<group>";
 		};
+		C465818125A27D6800E4418D /* SharedTestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
+				C49D666624E8992B0030DB54 /* Extensions.swift */,
+				C46583E725A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift */,
+				C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */,
+				C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */,
+			);
+			path = SharedTestUtils;
+			sourceTree = "<group>";
+		};
+		C465839425A2ACAB00E4418D /* Mu_AUT_Performance */ = {
+			isa = PBXGroup;
+			children = (
+				C46583FD25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift */,
+				C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */,
+				C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */,
+				C465839725A2ACAB00E4418D /* Info.plist */,
+			);
+			path = Mu_AUT_Performance;
+			sourceTree = "<group>";
+		};
 		C466A7A324473A0400EC3E97 /* util */ = {
 			isa = PBXGroup;
 			children = (
@@ -614,15 +737,6 @@
 			path = "representable-tests";
 			sourceTree = "<group>";
 		};
-		C49D666524E8991B0030DB54 /* test-util */ = {
-			isa = PBXGroup;
-			children = (
-				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
-				C49D666624E8992B0030DB54 /* Extensions.swift */,
-			);
-			path = "test-util";
-			sourceTree = "<group>";
-		};
 		C4BEA99B25894F370079818B /* today-views */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,8 +812,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C4037AC124342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu" */;
 			buildPhases = (
-				C4CFC5C72592C696000BA4DA /* Log Build Variables */,
 				3AB9327A9A597B79B798D49C /* [CP] Check Pods Manifest.lock */,
+				C4CFC5C72592C696000BA4DA /* Log Build Variables */,
 				C4037A9024342E1F00150D47 /* Sources */,
 				C4037A9124342E1F00150D47 /* Frameworks */,
 				C4037A9224342E1F00150D47 /* Resources */,
@@ -716,11 +830,11 @@
 			productReference = C4037A9424342E1F00150D47 /* Mu.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C4037AAC24342E2300150D47 /* MuTests */ = {
+		C4037AAC24342E2300150D47 /* Mu_AUT_Function */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "MuTests" */;
+			buildConfigurationList = C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu_AUT_Function" */;
 			buildPhases = (
-				F387FFE611351F940F403E1A /* [CP] Check Pods Manifest.lock */,
+				B32CA8E36345B60628BB2E3C /* [CP] Check Pods Manifest.lock */,
 				C4037AA924342E2300150D47 /* Sources */,
 				C4037AAA24342E2300150D47 /* Frameworks */,
 				C4037AAB24342E2300150D47 /* Resources */,
@@ -728,11 +842,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				C4037AAF24342E2300150D47 /* PBXTargetDependency */,
+				C465822925A292E000E4418D /* PBXTargetDependency */,
+				C465819B25A27DC400E4418D /* PBXTargetDependency */,
 			);
-			name = MuTests;
+			name = Mu_AUT_Function;
 			productName = MuTests;
-			productReference = C4037AAD24342E2300150D47 /* MuTests.xctest */;
+			productReference = C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		C4037AB724342E2300150D47 /* MuUITests */ = {
@@ -753,13 +868,52 @@
 			productReference = C4037AB824342E2300150D47 /* MuUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		C465817F25A27D6800E4418D /* SharedTestUtils */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C465818625A27D6800E4418D /* Build configuration list for PBXNativeTarget "SharedTestUtils" */;
+			buildPhases = (
+				E690887B66FED480F2EEBD53 /* [CP] Check Pods Manifest.lock */,
+				C465817C25A27D6800E4418D /* Sources */,
+				C465817D25A27D6800E4418D /* Frameworks */,
+				C465817E25A27D6800E4418D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C465822525A292C600E4418D /* PBXTargetDependency */,
+			);
+			name = SharedTestUtils;
+			productName = SharedTestUtils;
+			productReference = C465818025A27D6800E4418D /* libSharedTestUtils.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C465839225A2ACAB00E4418D /* Mu_AUT_Performance */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C465839A25A2ACAB00E4418D /* Build configuration list for PBXNativeTarget "Mu_AUT_Performance" */;
+			buildPhases = (
+				08AAC4007367673123253B9F /* [CP] Check Pods Manifest.lock */,
+				C465838F25A2ACAB00E4418D /* Sources */,
+				C465839025A2ACAB00E4418D /* Frameworks */,
+				C465839125A2ACAB00E4418D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C46583AA25A2ACBC00E4418D /* PBXTargetDependency */,
+				C465839925A2ACAB00E4418D /* PBXTargetDependency */,
+			);
+			name = Mu_AUT_Performance;
+			productName = Mu_AUT_Performance;
+			productReference = C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		C4037A8C24342E1F00150D47 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1210;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Vincent Young";
 				TargetAttributes = {
@@ -772,6 +926,13 @@
 					};
 					C4037AB724342E2300150D47 = {
 						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = C4037A9324342E1F00150D47;
+					};
+					C465817F25A27D6800E4418D = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					C465839225A2ACAB00E4418D = {
+						CreatedOnToolsVersion = 12.3;
 						TestTargetID = C4037A9324342E1F00150D47;
 					};
 					C4EC7B8125958EB1003B6DD5 = {
@@ -793,7 +954,9 @@
 			projectRoot = "";
 			targets = (
 				C4037A9324342E1F00150D47 /* Mu */,
-				C4037AAC24342E2300150D47 /* MuTests */,
+				C465817F25A27D6800E4418D /* SharedTestUtils */,
+				C4037AAC24342E2300150D47 /* Mu_AUT_Function */,
+				C465839225A2ACAB00E4418D /* Mu_AUT_Performance */,
 				C4037AB724342E2300150D47 /* MuUITests */,
 				C4EC7B8125958EB1003B6DD5 /* Versions */,
 			);
@@ -825,9 +988,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C465839125A2ACAB00E4418D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		08AAC4007367673123253B9F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mu_AUT_Performance-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3AB9327A9A597B79B798D49C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -844,6 +1036,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Mu-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B32CA8E36345B60628BB2E3C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mu_AUT_Function-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -942,7 +1156,7 @@
 			shellPath = /bin/sh;
 			shellScript = "cd $PROJECT_DIR/Versions ; ./versions.sh\n";
 		};
-		F387FFE611351F940F403E1A /* [CP] Check Pods Manifest.lock */ = {
+		E690887B66FED480F2EEBD53 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -957,7 +1171,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MuTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SharedTestUtils-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1032,9 +1246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C49D666724E8992B0030DB54 /* Extensions.swift in Sources */,
 				C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */,
-				C43205F524A0B7C0004D3AA1 /* TestContainer.swift in Sources */,
 				C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */,
 				C4E5D5F225042F6C00557373 /* Task-InstanceDelta-Tests.swift in Sources */,
 				C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */,
@@ -1072,18 +1284,60 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C465817C25A27D6800E4418D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C465840C25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift in Sources */,
+				C46583E825A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift in Sources */,
+				C46581B325A289FD00E4418D /* TestContainer.swift in Sources */,
+				C46581B425A289FD00E4418D /* Extensions.swift in Sources */,
+				C46583E025A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C465838F25A2ACAB00E4418D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C465839625A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift in Sources */,
+				C465841A25A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift in Sources */,
+				C46583FE25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C4037AAF24342E2300150D47 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C4037A9324342E1F00150D47 /* Mu */;
-			targetProxy = C4037AAE24342E2300150D47 /* PBXContainerItemProxy */;
-		};
 		C4037ABA24342E2300150D47 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C4037A9324342E1F00150D47 /* Mu */;
 			targetProxy = C4037AB924342E2300150D47 /* PBXContainerItemProxy */;
+		};
+		C465819B25A27DC400E4418D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C465817F25A27D6800E4418D /* SharedTestUtils */;
+			targetProxy = C465819A25A27DC400E4418D /* PBXContainerItemProxy */;
+		};
+		C465822525A292C600E4418D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4037A9324342E1F00150D47 /* Mu */;
+			targetProxy = C465822425A292C600E4418D /* PBXContainerItemProxy */;
+		};
+		C465822925A292E000E4418D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4037A9324342E1F00150D47 /* Mu */;
+			targetProxy = C465822825A292E000E4418D /* PBXContainerItemProxy */;
+		};
+		C465839925A2ACAB00E4418D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4037A9324342E1F00150D47 /* Mu */;
+			targetProxy = C465839825A2ACAB00E4418D /* PBXContainerItemProxy */;
+		};
+		C46583AA25A2ACBC00E4418D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C465817F25A27D6800E4418D /* SharedTestUtils */;
+			targetProxy = C46583A925A2ACBC00E4418D /* PBXContainerItemProxy */;
 		};
 		C4EC7B8A25958EB9003B6DD5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1269,21 +1523,21 @@
 		};
 		C4037AC524342E2300150D47 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A93995FCB40A15E5C2A858D /* Pods-MuTests.debug.xcconfig */;
+			baseConfigurationReference = 7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"${PODS_ROOT}/Firebase/CoreOnly/Sources\"/**";
-				INFOPLIST_FILE = MuTests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.MuTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu_AUT_Function;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1293,21 +1547,21 @@
 		};
 		C4037AC624342E2300150D47 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D4F1CF94A1FB534B21EBE6B /* Pods-MuTests.release.xcconfig */;
+			baseConfigurationReference = 44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"${PODS_ROOT}/Firebase/CoreOnly/Sources\"/**";
-				INFOPLIST_FILE = MuTests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.MuTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu_AUT_Function;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1321,7 +1575,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				INFOPLIST_FILE = MuUITests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1341,7 +1595,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				INFOPLIST_FILE = MuUITests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1352,6 +1606,82 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Mu;
+			};
+			name = Release;
+		};
+		C465818425A27D6800E4418D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 290DCD335251535455118312 /* Pods-SharedTestUtils.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3X6BZVFX73;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C465818525A27D6800E4418D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 51C447A60DCA459E4B8AB193 /* Pods-SharedTestUtils.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3X6BZVFX73;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C465839B25A2ACAB00E4418D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A42EEF8790153313551F5B71 /* Pods-Mu_AUT_Performance.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3X6BZVFX73;
+				INFOPLIST_FILE = Mu_AUT_Performance/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Test.Mu-AUT-Performance";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mu.app/Mu";
+			};
+			name = Debug;
+		};
+		C465839C25A2ACAB00E4418D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52A0B081CA2AE527419E07AE /* Pods-Mu_AUT_Performance.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3X6BZVFX73;
+				INFOPLIST_FILE = Mu_AUT_Performance/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Test.Mu-AUT-Performance";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mu.app/Mu";
 			};
 			name = Release;
 		};
@@ -1394,7 +1724,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "MuTests" */ = {
+		C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu_AUT_Function" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037AC524342E2300150D47 /* Debug */,
@@ -1408,6 +1738,24 @@
 			buildConfigurations = (
 				C4037AC824342E2300150D47 /* Debug */,
 				C4037AC924342E2300150D47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C465818625A27D6800E4418D /* Build configuration list for PBXNativeTarget "SharedTestUtils" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C465818425A27D6800E4418D /* Debug */,
+				C465818525A27D6800E4418D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C465839A25A2ACAB00E4418D /* Build configuration list for PBXNativeTarget "Mu_AUT_Performance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C465839B25A2ACAB00E4418D /* Debug */,
+				C465839C25A2ACAB00E4418D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

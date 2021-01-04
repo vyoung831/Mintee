@@ -7,17 +7,18 @@
 //
 
 @testable import Mu
+@testable import SharedTestUtils
 import CoreData
 import XCTest
 
 class Task_TagHandling_Tests: XCTestCase {
     
     override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+        Task_TagHandling_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
-        CDCoordinator.moc.rollback()
+        Task_TagHandling_Tests_Util.tearDown()
     }
     
     /**
@@ -75,41 +76,3 @@ class Task_TagHandling_Tests: XCTestCase {
     }
     
 }
-
-// MARK: - Performance tests
-
-extension Task_TagHandling_Tests {
-    
-    /**
-     Test the time it takes updateTags to add 1,000 new Tags to the MOC
-     */
-    func testPerformance_updateTags_add1000() throws {
-        
-        var task: Task, tags: Set<Tag> = Set()
-        task = Task(context: CDCoordinator.moc)
-        for i in 1 ... 1000 { tags.insert( Tag.getOrCreateTag(tagName: String(i))! ) }
-        
-        self.measure {
-            task.updateTags(newTags: tags)
-        }
-        
-    }
-    
-    /**
-     Test the time it takes updateTags to delete 1,000 dead Tags from the MOC
-     */
-    func testPerformance_updateTags_delete1000() throws {
-        
-        var task: Task, tags: Set<Tag> = Set()
-        task = Task(context: CDCoordinator.moc)
-        for i in 1 ... 1000 { tags.insert( Tag.getOrCreateTag(tagName: String(i))! ) }
-        task.updateTags(newTags: tags)
-        
-        self.measure {
-            task.updateTags(newTags: Set())
-        }
-        
-    }
-    
-}
-

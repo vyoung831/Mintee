@@ -6,9 +6,10 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
+@testable import Mu
+@testable import SharedTestUtils
 import XCTest
 import CoreData
-@testable import Mu
 
 class Task_Tests: XCTestCase {
     
