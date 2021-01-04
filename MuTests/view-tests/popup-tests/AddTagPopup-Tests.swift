@@ -7,9 +7,9 @@
 //
 
 @testable import Mu
+@testable import SharedTestUtils
 import XCTest
 import SwiftUI
-import CoreData
 
 class AddTagPopup_Tests: XCTestCase {
     

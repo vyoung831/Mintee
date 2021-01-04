@@ -9,6 +9,10 @@ target 'Mu' do
     shared_pods
 end
 
-target 'MuTests' do
-    shared_pods 
+target 'SharedTestUtils' do 
+    shared_pods
+end
+
+target 'MuTests' do 
+    shared_pods
 end
