@@ -13,6 +13,6 @@ target 'SharedTestUtils' do
     shared_pods
 end
 
-target 'MuTests' do 
+target 'Mu_AUT_Function' do 
     shared_pods
 end

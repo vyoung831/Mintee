@@ -47,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C4037AAC24342E2300150D47"
-               BuildableName = "MuTests.xctest"
-               BlueprintName = "MuTests"
+               BuildableName = "Mu_AUT_Function.xctest"
+               BlueprintName = "Mu_AUT_Function"
                ReferencedContainer = "container:Mu.xcodeproj">
             </BuildableReference>
          </TestableReference>

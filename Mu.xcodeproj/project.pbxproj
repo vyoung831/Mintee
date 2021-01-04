@@ -23,6 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		1A04A4E0A489675CD86B84A3 /* libPods-SharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */; };
+		B88C10F4211188FBDB41B44E /* libPods-Mu_AUT_Function.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */; };
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
 		C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
@@ -168,7 +169,9 @@
 /* Begin PBXFileReference section */
 		042008483E20CEA767F7324A /* Pods-MuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.release.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.release.xcconfig"; sourceTree = "<group>"; };
 		290DCD335251535455118312 /* Pods-SharedTestUtils.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.debug.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.debug.xcconfig"; sourceTree = "<group>"; };
+		44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Function.release.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Function/Pods-Mu_AUT_Function.release.xcconfig"; sourceTree = "<group>"; };
 		51C447A60DCA459E4B8AB193 /* Pods-SharedTestUtils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.release.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.release.xcconfig"; sourceTree = "<group>"; };
+		7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Function.debug.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Function/Pods-Mu_AUT_Function.debug.xcconfig"; sourceTree = "<group>"; };
 		93F818CCB99A1927A9AB33BB /* Pods-Mu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu.release.xcconfig"; path = "Target Support Files/Pods-Mu/Pods-Mu.release.xcconfig"; sourceTree = "<group>"; };
 		9D80B2B3F73CC235806A8E18 /* Pods-MuTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.debug.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SharedTestUtils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,7 +180,7 @@
 		C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mu.xcdatamodel; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4037AAD24342E2300150D47 /* MuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mu_AUT_Function.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037AB324342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* AddTaskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskUITests.swift; sourceTree = "<group>"; };
@@ -268,6 +271,7 @@
 		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C4FC99D7253BF15200E2359F /* Notification.Name+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extensions.swift"; sourceTree = "<group>"; };
 		C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopupUITests.swift; sourceTree = "<group>"; };
+		D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mu_AUT_Function.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3152598BE06FF5A4A09550D /* Pods-Mu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu.debug.xcconfig"; path = "Target Support Files/Pods-Mu/Pods-Mu.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -285,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C465821425A2920C00E4418D /* libSharedTestUtils.a in Frameworks */,
+				B88C10F4211188FBDB41B44E /* libPods-Mu_AUT_Function.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +321,8 @@
 				042008483E20CEA767F7324A /* Pods-MuTests.release.xcconfig */,
 				290DCD335251535455118312 /* Pods-SharedTestUtils.debug.xcconfig */,
 				51C447A60DCA459E4B8AB193 /* Pods-SharedTestUtils.release.xcconfig */,
+				7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */,
+				44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -326,6 +333,7 @@
 				C46582EC25A2A86700E4418D /* libPods-Mu.a */,
 				C465819325A27D7300E4418D /* XCTest.framework */,
 				B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */,
+				D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -335,7 +343,7 @@
 			children = (
 				C4037A9624342E1F00150D47 /* Mu */,
 				C465818125A27D6800E4418D /* SharedTestUtils */,
-				C4037AB024342E2300150D47 /* MuTests */,
+				C4037AB024342E2300150D47 /* Mu_AUT_Function */,
 				C4037ABB24342E2300150D47 /* MuUITests */,
 				C4037A9524342E1F00150D47 /* Products */,
 				1A157D2107AFEF5B8A419F40 /* Pods */,
@@ -347,7 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				C4037A9424342E1F00150D47 /* Mu.app */,
-				C4037AAD24342E2300150D47 /* MuTests.xctest */,
+				C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */,
 				C4037AB824342E2300150D47 /* MuUITests.xctest */,
 				C465818025A27D6800E4418D /* libSharedTestUtils.a */,
 			);
@@ -369,7 +377,7 @@
 			path = Mu;
 			sourceTree = "<group>";
 		};
-		C4037AB024342E2300150D47 /* MuTests */ = {
+		C4037AB024342E2300150D47 /* Mu_AUT_Function */ = {
 			isa = PBXGroup;
 			children = (
 				C45790AC249FE72A002E16D5 /* core-data-tests */,
@@ -377,7 +385,7 @@
 				C405FA0124F15BDB00F6A547 /* util-tests */,
 				C4037AB324342E2300150D47 /* Info.plist */,
 			);
-			path = MuTests;
+			path = Mu_AUT_Function;
 			sourceTree = "<group>";
 		};
 		C4037ABB24342E2300150D47 /* MuUITests */ = {
@@ -761,9 +769,9 @@
 			productReference = C4037A9424342E1F00150D47 /* Mu.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C4037AAC24342E2300150D47 /* MuTests */ = {
+		C4037AAC24342E2300150D47 /* Mu_AUT_Function */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "MuTests" */;
+			buildConfigurationList = C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu_AUT_Function" */;
 			buildPhases = (
 				B32CA8E36345B60628BB2E3C /* [CP] Check Pods Manifest.lock */,
 				C4037AA924342E2300150D47 /* Sources */,
@@ -776,9 +784,9 @@
 				C465822925A292E000E4418D /* PBXTargetDependency */,
 				C465819B25A27DC400E4418D /* PBXTargetDependency */,
 			);
-			name = MuTests;
+			name = Mu_AUT_Function;
 			productName = MuTests;
-			productReference = C4037AAD24342E2300150D47 /* MuTests.xctest */;
+			productReference = C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		C4037AB724342E2300150D47 /* MuUITests */ = {
@@ -862,7 +870,7 @@
 			targets = (
 				C4037A9324342E1F00150D47 /* Mu */,
 				C465817F25A27D6800E4418D /* SharedTestUtils */,
-				C4037AAC24342E2300150D47 /* MuTests */,
+				C4037AAC24342E2300150D47 /* Mu_AUT_Function */,
 				C4037AB724342E2300150D47 /* MuUITests */,
 				C4EC7B8125958EB1003B6DD5 /* Versions */,
 			);
@@ -934,7 +942,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MuTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Mu_AUT_Function-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1377,21 +1385,21 @@
 		};
 		C4037AC524342E2300150D47 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D80B2B3F73CC235806A8E18 /* Pods-MuTests.debug.xcconfig */;
+			baseConfigurationReference = 7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"${PODS_ROOT}/Firebase/CoreOnly/Sources\"/**";
-				INFOPLIST_FILE = MuTests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.MuTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu_AUT_Function;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1401,21 +1409,21 @@
 		};
 		C4037AC624342E2300150D47 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 042008483E20CEA767F7324A /* Pods-MuTests.release.xcconfig */;
+			baseConfigurationReference = 44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"${PODS_ROOT}/Firebase/CoreOnly/Sources\"/**";
-				INFOPLIST_FILE = MuTests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.MuTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu_AUT_Function;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1429,7 +1437,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				INFOPLIST_FILE = MuUITests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1449,7 +1457,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				INFOPLIST_FILE = MuUITests/Info.plist;
+				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1533,7 +1541,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "MuTests" */ = {
+		C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu_AUT_Function" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037AC524342E2300150D47 /* Debug */,
