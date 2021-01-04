@@ -66,8 +66,13 @@
 		C46581B425A289FD00E4418D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49D666624E8992B0030DB54 /* Extensions.swift */; };
 		C465821425A2920C00E4418D /* libSharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C465818025A27D6800E4418D /* libSharedTestUtils.a */; };
 		C46582ED25A2A86700E4418D /* libPods-Mu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C46582EC25A2A86700E4418D /* libPods-Mu.a */; };
-		C465839625A2ACAB00E4418D /* Mu_AUT_Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465839525A2ACAB00E4418D /* Mu_AUT_Performance.swift */; };
+		C465839625A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */; };
 		C46583C625A2ACE500E4418D /* libSharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C465818025A27D6800E4418D /* libSharedTestUtils.a */; };
+		C46583E025A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */; };
+		C46583E825A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583E725A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift */; };
+		C46583FE25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583FD25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift */; };
+		C465840C25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */; };
+		C465841A25A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */; };
 		C466A7A624473A2500EC3E97 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C466A7A524473A2500EC3E97 /* Date+Extensions.swift */; };
 		C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4697EE124561BEF00B028A2 /* CDCoordinator.swift */; };
 		C46C2BD62505D69C000320B4 /* Float-Extension-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C2BD52505D69C000320B4 /* Float-Extension-Tests.swift */; };
@@ -243,8 +248,13 @@
 		C465819325A27D7300E4418D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C46582EC25A2A86700E4418D /* libPods-Mu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-Mu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mu_AUT_Performance.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C465839525A2ACAB00E4418D /* Mu_AUT_Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mu_AUT_Performance.swift; sourceTree = "<group>"; };
+		C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests-Performance.swift"; sourceTree = "<group>"; };
 		C465839725A2ACAB00E4418D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests-Util.swift"; sourceTree = "<group>"; };
+		C46583E725A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests-Util.swift"; sourceTree = "<group>"; };
+		C46583FD25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests-Performance.swift"; sourceTree = "<group>"; };
+		C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests-Util.swift"; sourceTree = "<group>"; };
+		C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests-Performance.swift"; sourceTree = "<group>"; };
 		C466A7A524473A2500EC3E97 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		C4697EE124561BEF00B028A2 /* CDCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCoordinator.swift; sourceTree = "<group>"; };
 		C46C2BD52505D69C000320B4 /* Float-Extension-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float-Extension-Tests.swift"; sourceTree = "<group>"; };
@@ -616,6 +626,9 @@
 			children = (
 				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
 				C49D666624E8992B0030DB54 /* Extensions.swift */,
+				C46583E725A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift */,
+				C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */,
+				C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */,
 			);
 			path = SharedTestUtils;
 			sourceTree = "<group>";
@@ -623,7 +636,9 @@
 		C465839425A2ACAB00E4418D /* Mu_AUT_Performance */ = {
 			isa = PBXGroup;
 			children = (
-				C465839525A2ACAB00E4418D /* Mu_AUT_Performance.swift */,
+				C46583FD25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift */,
+				C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */,
+				C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */,
 				C465839725A2ACAB00E4418D /* Info.plist */,
 			);
 			path = Mu_AUT_Performance;
@@ -1273,8 +1288,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C465840C25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift in Sources */,
+				C46583E825A2B04000E4418D /* Task-InstanceDelta-Tests-Util.swift in Sources */,
 				C46581B325A289FD00E4418D /* TestContainer.swift in Sources */,
 				C46581B425A289FD00E4418D /* Extensions.swift in Sources */,
+				C46583E025A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1282,7 +1300,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C465839625A2ACAB00E4418D /* Mu_AUT_Performance.swift in Sources */,
+				C465839625A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift in Sources */,
+				C465841A25A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift in Sources */,
+				C46583FE25A2B0B500E4418D /* Task-InstanceDelta-Tests-Performance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
