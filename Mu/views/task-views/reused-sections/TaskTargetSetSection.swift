@@ -59,9 +59,9 @@ struct TaskTargetSetSection: View {
                                   delete: { self.taskTargetSetViews.remove(at: idx) })
                     .sheet(isPresented: self.$isPresentingEditTaskTargetSetPopup, content: {
                             TaskTargetSetPopup.init(title: "Edit Target Set",
-                                                    selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set<String>(),
-                                                    selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set<String>(),
-                                                    selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set<String>(),
+                                                    selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set(),
+                                                    selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set(),
+                                                    selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set(),
                                                     type: self.taskTargetSetViews[idx].type,
                                                     minOperator: self.taskTargetSetViews[idx].minOperator,
                                                     maxOperator: self.taskTargetSetViews[idx].maxOperator,

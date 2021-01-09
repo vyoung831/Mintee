@@ -163,7 +163,7 @@ extension TaskTargetSet {
         case .dow:
             return pattern.daysOfWeek.contains(weekday)
         case .wom:
-            if pattern.weeksOfMonth.contains(SaveFormatter.getWeekOfMonthNumber(wom: "Last")) {
+            if pattern.weeksOfMonth.contains(SaveFormatter.weekOfMonthToStored(.last)) {
                 return pattern.daysOfWeek.contains(weekday) &&
                     (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ) || day + 7 > daysInMonth)
             }

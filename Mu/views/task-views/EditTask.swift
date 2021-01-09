@@ -69,9 +69,9 @@ struct EditTask: View {
                                             minOperator: ttsv.minOperator,
                                             maxOperator: ttsv.maxOperator,
                                             priority: Int16(i),
-                                            pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
-                                                                wom: Set((ttsv.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
-                                                                dom: Set((ttsv.selectedDaysOfMonth ?? []).map{ SaveFormatter.getDayOfMonthInt($0) })))
+                                            pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                dom: Set((ttsv.selectedDaysOfMonth ?? []))))
                     taskTargetSets.append(tts)
                 }
             }
@@ -137,9 +137,10 @@ struct EditTask: View {
                             for tts in newTaskTargetSets {
                                 
                                 // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
-                                let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
-                                                    wom: Set((tts.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
-                                                    dom: Set((tts.selectedDaysOfMonth ?? []).map{ Int16($0) ?? 0 }))
+                                let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? [])),
+                                                    wom: Set((tts.selectedWeeksOfMonth ?? [])),
+                                                    dom: Set((tts.selectedDaysOfMonth ?? [])))
+                                
                                 dayPatterns.insert(dp)
                             }
                             self.datesToDelete = self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }

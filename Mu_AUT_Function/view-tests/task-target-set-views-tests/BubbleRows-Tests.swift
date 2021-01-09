@@ -24,15 +24,15 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getBubbleRadius_maxBubbleRadius_respected() {
         
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
-                                    presentation: .none,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .none,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         let bubblesPerRow: Int = bubbleRows.bubbles[0].count
         let maxBubbleRadius: CGFloat = 30
         
         // Calculate the totalWidth needed with the maxBubbleRadius, then add 1 and ensure that the calculated bubbleRadius isn't increased to fit the totalWdith
-        let totalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * BubbleRows.minimumInterBubbleSpacing
+        let totalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * bubbleRows.minimumInterBubbleSpacing
         let totalWidth = (2 * maxBubbleRadius * CGFloat(bubblesPerRow)) + totalSpacing + 1
         bubbleRows.maxBubbleRadius = maxBubbleRadius
         let radius = bubbleRows.getBubbleRadius(totalWidth: totalWidth)
@@ -45,15 +45,15 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getBubbleRadius_minimumInterBubbleSpacing_respected() {
         
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
-                                    presentation: .none,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .none,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         let bubblesPerRow: Int = bubbleRows.bubbles[0].count
         let maxBubbleRadius: CGFloat = 30
         
         // Calculate the totalWidth needed with the minimumInterBubbleSpacing, then sub 1 and ensure that the calculated bubbleRadius is decreased to respect minimumInterBubbleSpacing
-        let totalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * BubbleRows.minimumInterBubbleSpacing
+        let totalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * bubbleRows.minimumInterBubbleSpacing
         let totalWidth = (2 * maxBubbleRadius * CGFloat(bubblesPerRow)) + totalSpacing - 1
         bubbleRows.maxBubbleRadius = maxBubbleRadius
         let radius = bubbleRows.getBubbleRadius(totalWidth: totalWidth)
@@ -64,17 +64,17 @@ class BubbleRows_Tests: XCTestCase {
     func test_getGeometryReaderHeight() {
         let totalWidth: CGFloat = 200
         
-        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
-                                    presentation: .none,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .none,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         let rowCount = bubbleRows.bubbles.count
         
         // Given totalWidth and the default maxBubbleRadius, calculate the bubbleRadius and total GeometryReader height
         let radius = bubbleRows.getBubbleRadius(totalWidth: totalWidth)
         let grHeight = bubbleRows.getGeometryReaderHeight(totalWidth: totalWidth)
         
-        let expectedHeight = ((2 * radius) * CGFloat(rowCount)) + (CGFloat(rowCount - 1) * BubbleRows.rowSpacing)
+        let expectedHeight = ((2 * radius) * CGFloat(rowCount)) + (CGFloat(rowCount - 1) * bubbleRows.rowSpacing)
         XCTAssert(grHeight == expectedHeight)
     }
     
@@ -83,18 +83,18 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHstackSpacing_increasesHStackSpacing() {
         
-        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
-                                    presentation: .none,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .none,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
         
         // Calculate the totalWidth needed with the maxBubbleRadius, then add 1 to overflow the width
-        let minimumTotalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * BubbleRows.minimumInterBubbleSpacing
+        let minimumTotalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * bubbleRows.minimumInterBubbleSpacing
         let overflowWidth = (2 * bubbleRows.maxBubbleRadius * CGFloat(bubbleRows.bubbles[0].count)) + minimumTotalSpacing + 1
         let horizontalSpacing = bubbleRows.getHStackSpacing(totalWidth: overflowWidth)
         
-        XCTAssert(BubbleRows.minimumInterBubbleSpacing < horizontalSpacing)
+        XCTAssert(bubbleRows.minimumInterBubbleSpacing < horizontalSpacing)
     }
     
     /**
@@ -102,18 +102,18 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
         
-        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
-                                    presentation: .none,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .none,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         let bubblesPerRow = bubbleRows.bubbles[0].count
         
         // Calculate the totalWidth needed with the maxBubbleRadius, then add 1 to overflow the width
-        let maxTotalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * BubbleRows.minimumInterBubbleSpacing
+        let maxTotalSpacing: CGFloat = CGFloat(bubblesPerRow - 1) * bubbleRows.minimumInterBubbleSpacing
         let compressedWidth = (2 * bubbleRows.maxBubbleRadius * CGFloat(bubbleRows.bubbles[0].count)) + maxTotalSpacing - 1
         let horizontalSpacing = bubbleRows.getHStackSpacing(totalWidth: compressedWidth)
         
-        XCTAssert(BubbleRows.minimumInterBubbleSpacing == horizontalSpacing)
+        XCTAssert(bubbleRows.minimumInterBubbleSpacing == horizontalSpacing)
     }
     
 }
@@ -123,19 +123,19 @@ class BubbleRows_Tests: XCTestCase {
 extension BubbleRows_Tests {
     
     func test_rowNeedsSpacers_oneRow() {
-        let bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
     }
     
     func test_rowNeedsSpacers_twoRows_firstRowMoreBubbles() {
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
-                                              ["M","T","W","R","F","S"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
         XCTAssert(bubbleRows.rowNeedsSpacers(1))
         
@@ -145,11 +145,11 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_twoRows_equalAmountOfBubbles() {
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
-                                              ["M","T","W","R","F","S","U"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
         
@@ -159,11 +159,11 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_twoRows_secondRowMoreBubbles() {
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S"],
-                                              ["M","T","W","R","F","S","U"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
         
@@ -173,12 +173,12 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_threeRows_equalAmountOfBubbles() {
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
-                                              ["M","T","W","R","F","S","U"],
-                                              ["M","T","W","R","F","S","U"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
@@ -190,12 +190,12 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_threeRows_lastRowMostBubbles() {
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S"],
-                                              ["M","T","W","R","F","S"],
-                                              ["M","T","W","R","F","S","U"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(2))
@@ -207,12 +207,12 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_threeRows_lastRowLeastBubbles() {
-        var bubbleRows = BubbleRows(bubbles: [["M","T","W","R","F","S","U"],
-                                              ["M","T","W","R","F","S","U"],
-                                              ["M","T","W","R","F","S"]],
-                                    presentation: .centerLastRow,
-                                    toggleable: false,
-                                    selectedBubbles: .constant(Set<String>()))
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                                                                       [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday]],
+                                                             presentation: .centerLastRow,
+                                                             toggleable: false,
+                                                             selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(0))
         XCTAssertFalse(bubbleRows.rowNeedsSpacers(1))
         XCTAssert(bubbleRows.rowNeedsSpacers(2))

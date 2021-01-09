@@ -15,7 +15,9 @@ class Task_InstanceHandling_Tests_Util {
     static let dowMin: Float = 1, dowMax: Float = 2, womMin: Float = 3, womMax: Float = 4, domMin: Float = 5, domMax: Float = 6
     
     static func getDowTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
-        let dowPattern = DayPattern(dow: Set<Int16>([1,2,3,6]), wom: Set<Int16>(), dom: Set<Int16>())
+        let dowPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .monday, .tuesday, .friday]),
+                                    wom: Set<SaveFormatter.weekOfMonth>(),
+                                    dom: Set<SaveFormatter.dayOfMonth>())
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: dowMin, max: dowMax,
@@ -25,7 +27,9 @@ class Task_InstanceHandling_Tests_Util {
     }
     
     static func getWomTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
-        let womPattern = DayPattern(dow: Set<Int16>([2,4]), wom: Set<Int16>([1,3,5]), dom: Set<Int16>())
+        let womPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .wednesday]),
+                                    wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
+                                    dom: Set<SaveFormatter.dayOfMonth>())
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: womMin, max: womMax,
@@ -35,7 +39,9 @@ class Task_InstanceHandling_Tests_Util {
     }
     
     static func getDomTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
-        let domPattern = DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([0,1,2,3,4,5,6,7,8,9,10]))
+        let domPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
+                                    wom: Set<SaveFormatter.weekOfMonth>(),
+                                    dom: Set<SaveFormatter.dayOfMonth>([.last, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten]))
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: domMin, max: domMax,

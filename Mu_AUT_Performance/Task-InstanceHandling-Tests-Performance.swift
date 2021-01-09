@@ -138,7 +138,12 @@ extension Task_InstanceHandling_Tests_Performance {
         let newDomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                       insertInto: CDCoordinator.moc,
                                       min: 0, max: 1, minOperator: .lt, maxOperator: .lt, priority: 9,
-                                      pattern: DayPattern(dow: Set<Int16>(), wom: Set<Int16>(), dom: Set<Int16>([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])))
+                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
+                                                          wom: Set<SaveFormatter.weekOfMonth>(),
+                                                          dom: Set<SaveFormatter.dayOfMonth>([.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten,
+                                                                                              .eleven, .twelve, .thirteen, .fourteen, .fifteen, .sixteen, .seventeen, .eighteen, .nineteen, .twenty,
+                                                                                              .twenty_one, .twenty_two, .twenty_three, .twenty_four, .twenty_five, .twenty_six, .twenty_seven, .twenty_eight, .twenty_nine, .thirty,
+                                                                                              .thirty_one])))
         let newTargetSets: Set<TaskTargetSet> = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), newDomSet)
         
         self.measure {

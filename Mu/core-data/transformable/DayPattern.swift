@@ -32,14 +32,25 @@ class DayPattern: NSObject, NSSecureCoding {
     var daysOfMonth: Set<Int16>
     var type: DayPattern.patternType
     
-    init(dow: Set<Int16>, wom: Set<Int16>, dom: Set<Int16>) {
-        self.daysOfWeek = dow
-        self.weeksOfMonth = wom
-        self.daysOfMonth = dom
+    init(dow: Set<SaveFormatter.dayOfWeek>,
+         wom: Set<SaveFormatter.weekOfMonth>,
+         dom: Set<SaveFormatter.dayOfMonth>) {
+        
+        self.daysOfWeek = Set( dow.map {
+            SaveFormatter.dayOfWeekToStored($0)
+        })
+        self.weeksOfMonth = Set( wom.map{
+            SaveFormatter.weekOfMonthToStored($0)
+        })
+        self.daysOfMonth = Set ( dom.map{
+            SaveFormatter.dayOfMonthToStored($0)
+        })
+        
         if dom.count > 0 { self.type = .dom } else {
             if wom.count > 0 { self.type = .wom }
             else { self.type = .dow }
         }
+        
     }
     
     func encode(with coder: NSCoder) {

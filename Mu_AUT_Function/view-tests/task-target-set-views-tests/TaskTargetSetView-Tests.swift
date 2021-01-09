@@ -36,7 +36,7 @@ class TaskTargetSetView_Tests: XCTestCase {
                                      minOperator: .lt,
                                      maxTarget: 2,
                                      maxOperator: .lt,
-                                     selectedWeeksOfMonth: Set<String>(["4th"]))
+                                     selectedWeeksOfMonth: Set<SaveFormatter.weekOfMonth>([.fourth]))
         XCTAssert( ttsv.getLabel() == "4th of each month")
     }
     
@@ -46,7 +46,7 @@ class TaskTargetSetView_Tests: XCTestCase {
                                      minOperator: .lt,
                                      maxTarget: 2,
                                      maxOperator: .lt,
-                                     selectedWeeksOfMonth: Set<String>(["Last","1st","3rd","2nd"]))
+                                     selectedWeeksOfMonth: Set<SaveFormatter.weekOfMonth>([.last, .first, .third, .second]))
         XCTAssert( ttsv.getLabel() == "1st, 2nd, 3rd, Last of each month")
     }
     

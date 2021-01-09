@@ -88,106 +88,157 @@ extension SaveFormatter {
         case 1: return .lt
         case 2: return .lte
         case 3: return .eq
-        default:
-            return nil
+        default: return nil
         }
     }
     
 }
 
-// MARK: - DayPattern data conversion
+// MARK: - DayPattern day enums
+
+protocol Day: Hashable {
+    var shortValue: String { get }
+    var longValue: String { get }
+}
 
 extension SaveFormatter {
     
-    /**
-     Returns an Int16 to append to a DayPattern's wom
-     - parameter weekDay: String used by a view to represent a week of month. Must be one of ["1st","2nd","3rd","4th","Last"]
-     - returns: Int16 to store in DayPattern's wom; "Last" = 5
-     */
-    static func getWeekOfMonthNumber(wom: String) -> Int16 {
-        switch wom {
-        case "1st": return 1
-        case "2nd": return 2
-        case "3rd": return 3
-        case "4th": return 4
-        case "Last": return 5
-        default:
-            Crashlytics.crashlytics().log("SaveFormatter.getWeekOfMonthNumber() attempted to convert an invalid String")
-            fatalError()
+    enum dayOfWeek: Int16, Day, CaseIterable {
+        
+        case monday = 2, tuesday = 3, wednesday = 4, thursday = 5, friday = 6, saturday = 7, sunday = 1
+        
+        var shortValue: String {
+            get {
+                switch self {
+                case .monday: return "M"
+                case .tuesday: return "T"
+                case .wednesday: return "W"
+                case .thursday: return "R"
+                case .friday: return "F"
+                case .saturday: return "S"
+                case .sunday: return "U"
+                }
+            }
         }
+        
+        var longValue: String {
+            get {
+                switch self {
+                case .monday: return "Monday"
+                case .tuesday: return "Tuesday"
+                case .wednesday: return "Wednesday"
+                case .thursday: return "Thursday"
+                case .friday: return "Friday"
+                case .saturday: return "Saturday"
+                case .sunday: return "Sunday"
+                }
+            }
+        }
+        
     }
     
     /**
-     Returns a String from a DayPattern's wom (Int16) for a View to use to represent a week of month
-     - parameter weekDay: Int16 in DayPattern's wom; 5 = "Last"
-     - returns: String for view to use to represent week of month
+     Returns persistent store format of a value of type SaveFormatter.dayOfWeek (stored in DayPattern).
+     - parameter dow: Value of type SaveFormatter.dayOfWeek obtain the Int16 persistent store value of.
+     - returns: Int16 representing provided SaveFormatter.dayOfWeek.
      */
-    static func getWeekOfMonthString(wom: Int16) -> String {
-        switch wom {
-        case 1: return "1st"
-        case 2: return "2nd"
-        case 3: return "3rd"
-        case 4: return "4th"
-        case 5: return "Last"
-        default:
-            Crashlytics.crashlytics().log("SaveFormatter.getWeekOfMonthString() attempted to convert an invalid Int16")
-            fatalError()
-        }
+    static func dayOfWeekToStored(_ dow: SaveFormatter.dayOfWeek) -> Int16 {
+        return dow.rawValue
     }
     
     /**
-     Returns an Int16 to insert into a DayPattern's dow
-     - parameter weekDay: String used by a view to represent weekday. Must be one of ["M","T","W","R","F","S","U"]
-     - returns: Int16 to store in DayPattern's dow; U=1
+     Converts a value from persistent store to the equivalent value of type SaveFormatter.dayOfWeek
+     - parameter dow: Int16 used by DayPattern's dow; 1 = Sunday
+     - returns: (Optional) Value of type SaveFormatter.dayOfWeek to be used by Views or Model objects.
      */
-    static func getWeekdayNumber(weekday: String) -> Int16 {
-        switch weekday {
-        case "U": return Int16(1)
-        case "M": return Int16(2)
-        case "T": return Int16(3)
-        case "W": return Int16(4)
-        case "R": return Int16(5)
-        case "F": return Int16(6)
-        case "S": return Int16(7)
-        default:
-            Crashlytics.crashlytics().log("SaveFormatter.getWeekdayNumber() attempted to convert an invalid String")
-            fatalError()
+    static func storedToDayOfWeek(_ dow: Int16) -> dayOfWeek? {
+        return SaveFormatter.dayOfWeek.init(rawValue: dow)
+    }
+    
+    enum weekOfMonth: Int16, Day, CaseIterable {
+        
+        case first = 1, second = 2, third = 3, fourth = 4, last = 5
+        
+        var shortValue: String {
+            get {
+                switch self {
+                case .first: return "1st"
+                case .second: return "2nd"
+                case .third: return "3rd"
+                case .fourth: return "4th"
+                case .last: return "Last"
+                }
+            }
         }
+        
+        var longValue: String {
+            get {
+                switch self {
+                case .first: return "First"
+                case .second: return "Second"
+                case .third: return "Third"
+                case .fourth: return "Fourth"
+                case .last: return "Last"
+                }
+            }
+        }
+        
     }
     
     /**
-     Returns a String from a DayPattern's dow (Int16) for a View to use to represent a day of week
-     - parameter weekDay: Int16 used by DayPattern's dow; U=1
-     - returns: String for view to use to represent weekday
+     Returns persistent store format of a value of type SaveFormatter.weekOfMonth (stored in DayPattern).
+     - parameter wom: Value of type SaveFormatter.weekOfMonth obtain the Int16 persistent store value of.
+     - returns: Int16 representing provided SaveFormatter.weekOfMonth.
      */
-    static func getWeekdayString(weekday: Int16) -> String {
-        switch weekday {
-        case 1: return "U"
-        case 2: return "M"
-        case 3: return "T"
-        case 4: return "W"
-        case 5: return "R"
-        case 6: return "F"
-        case 7: return "S"
-        default:
-            Crashlytics.crashlytics().log("SaveFormatter.getWeekdayString() attempted to convert an invalid String")
-            fatalError()
-        }
+    static func weekOfMonthToStored(_ wom: SaveFormatter.weekOfMonth) -> Int16 {
+        return wom.rawValue
     }
     
     /**
-     Returns an Int16 to insert into a DayPattern's dom
-     - parameter dayOfMonth: String used by a view to represent day of month
-     - returns: Int16 to store in DayPattern's dow; U=1
+     Converts a value from persistent store to the equivalent value of type SaveFormatter.weekOfMonth
+     - parameter wom: Int16 in DayPattern's wom; 5 = last week of month
+     - returns: (Optional) Value of type SaveFormatter.weekOfMonth to be used by Views or Model objects.
      */
-    static func getDayOfMonthInt(_ dayOfMonth: String) -> Int16 {
-        if let dom = Int16(dayOfMonth), dom <= 31, dom >= 0 {
-            return dom
-        } else if dayOfMonth == "Last" {
-            return 0
+    static func storedToWeekOfMonth(_ wom: Int16) -> SaveFormatter.weekOfMonth? {
+        return SaveFormatter.weekOfMonth.init(rawValue: wom)
+    }
+    
+    enum dayOfMonth: Int16, Day, CaseIterable {
+        
+        case one = 1, two = 2, three = 3, four = 4, five = 5
+        case six = 6, seven = 7, eight = 8, nine = 9, ten = 10
+        case eleven = 11, twelve = 12, thirteen = 13, fourteen = 14, fifteen = 15
+        case sixteen = 16, seventeen = 17, eighteen = 18, nineteen = 19, twenty = 20
+        case twenty_one = 21, twenty_two = 22, twenty_three = 23, twenty_four = 24, twenty_five = 25
+        case twenty_six = 26, twenty_seven = 27, twenty_eight = 28, twenty_nine = 29, thirty = 30
+        case thirty_one = 31, last = 0
+        
+        var shortValue: String {
+            return self == .last ? "last" : String(self.rawValue)
         }
-        Crashlytics.crashlytics().log("SaveFormatter.getDayOfMonthInt() attempted to convert an invalid String")
-        fatalError()
+        
+        var longValue: String {
+            return self == .last ? "last" : String(self.rawValue)
+        }
+        
+    }
+    
+    /**
+     Returns persistent store format of a value of type SaveFormatter.dayOfMonth (stored in DayPattern).
+     - parameter dom: Value of type SaveFormatter.dayOfMonth obtain the Int16 persistent store value of.
+     - returns: Int16 representing provided SaveFormatter.dayOfMonth.
+     */
+    static func dayOfMonthToStored(_ dom: SaveFormatter.dayOfMonth) -> Int16 {
+        return dom.rawValue
+    }
+    
+    /**
+     Converts a value from persistent store to the equivalent value of type SaveFormatter.dayOfMonth
+     - parameter dom: Int16 in DayPattern's dom; 0 = last day of month
+     - returns: (Optional) Value of type SaveFormatter.dayOfMonth to be used by Views or Model objects.
+     */
+    static func storedToDayOfMonth(_ dom: Int16) -> SaveFormatter.dayOfMonth? {
+        return SaveFormatter.dayOfMonth.init(rawValue: dom)
     }
     
 }

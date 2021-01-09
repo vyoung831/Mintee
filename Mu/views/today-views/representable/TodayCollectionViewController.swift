@@ -106,7 +106,6 @@ extension TodayCollectionViewController {
                             let evhc = ErrorViewHostingController()
                             self.navigationController?.pushViewController(evhc, animated: true)
                         }
-                        
                     }
                     
                     cell.handleSetButtonPressed = {

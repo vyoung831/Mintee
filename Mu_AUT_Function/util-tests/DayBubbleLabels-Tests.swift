@@ -23,17 +23,17 @@ class DayBubbleLabels_Tests: XCTestCase {
     override func tearDownWithError() throws {}
 
     func test_getDividedBubbleLabels_singleSubarray() throws {
-        let dividedLabels = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7, patternType: .dow)
+        let dividedLabels = DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7)
         XCTAssert(dividedLabels.count == 1)
-        XCTAssert(dividedLabels[0] == ["M","T","W","R","F","S","U"])
+        XCTAssert(dividedLabels[0] == [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
     }
     
     func test_getDividedBubbleLabels_multipleSubarray() throws {
-        let dividedLabels = DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 3, patternType: .dow)
+        let dividedLabels = DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 3)
         XCTAssert(dividedLabels.count == 3)
-        XCTAssert(dividedLabels[0] == ["M","T","W"])
-        XCTAssert(dividedLabels[1] == ["R","F","S"])
-        XCTAssert(dividedLabels[2] == ["U"])
+        XCTAssert(dividedLabels[0] == [.monday, .tuesday, .wednesday])
+        XCTAssert(dividedLabels[1] == [.thursday, .friday, .saturday])
+        XCTAssert(dividedLabels[2] == [.sunday])
     }
 
 }

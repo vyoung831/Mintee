@@ -32,7 +32,7 @@ class TaskTargetSet_Tests: XCTestCase {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set([1,3,5,7]),
+                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .tuesday, .thursday, .saturday]),
                                                     wom: Set([]),
                                                     dom: Set([])))
         XCTAssert(tts.checkDay(day: 5, weekday: 3, daysInMonth: 30))
@@ -43,8 +43,8 @@ class TaskTargetSet_Tests: XCTestCase {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set([7]),
-                                                    wom: Set([1,3,5]),
+                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
+                                                    wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
         XCTAssertFalse(tts.checkDay(day: 8, weekday: 7, daysInMonth: 31))
     }
@@ -53,8 +53,8 @@ class TaskTargetSet_Tests: XCTestCase {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set([7]),
-                                                    wom: Set([1,3,5]),
+                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
+                                                    wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
         XCTAssert(tts.checkDay(day: 15, weekday: 7, daysInMonth: 31))
     }
@@ -63,8 +63,8 @@ class TaskTargetSet_Tests: XCTestCase {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set([7]),
-                                                    wom: Set([1,3,5]),
+                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
+                                                    wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
         XCTAssertFalse(tts.checkDay(day: 8, weekday: 6, daysInMonth: 31))
     }
@@ -73,8 +73,8 @@ class TaskTargetSet_Tests: XCTestCase {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set([7]),
-                                                    wom: Set([1,3,5]),
+                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
+                                                    wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
         XCTAssertFalse(tts.checkDay(day: 1, weekday: 6, daysInMonth: 31))
     }
@@ -86,8 +86,8 @@ class TaskTargetSet_Tests: XCTestCase {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set([7]),
-                                                    wom: Set([1,3,5]),
+                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
+                                                    wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
         XCTAssert(tts.checkDay(day: 24, weekday: 7, daysInMonth: 30))
     }
@@ -98,7 +98,7 @@ class TaskTargetSet_Tests: XCTestCase {
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([]),
                                                     wom: Set([]),
-                                                    dom: Set([5,10,15])))
+                                                    dom: Set<SaveFormatter.dayOfMonth>([.five, .ten, .fifteen])))
         XCTAssertFalse(tts.checkDay(day: 1, weekday: 1, daysInMonth: 30))
         XCTAssert(tts.checkDay(day: 15, weekday: 1, daysInMonth: 31))
     }
@@ -109,7 +109,7 @@ class TaskTargetSet_Tests: XCTestCase {
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([]),
                                                     wom: Set([]),
-                                                    dom: Set([0])))
+                                                    dom: Set<SaveFormatter.dayOfMonth>([.last])))
         XCTAssertFalse(tts.checkDay(day: 28, weekday: 1, daysInMonth: 29))
         XCTAssertFalse(tts.checkDay(day: 29, weekday: 1, daysInMonth: 30))
         XCTAssertFalse(tts.checkDay(day: 29, weekday: 1, daysInMonth: 31))

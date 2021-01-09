@@ -325,7 +325,7 @@ extension Task {
                     
                     if pattern.daysOfWeek.contains(Int16(Calendar.current.component(.weekday, from: dateCounter))) {
                         if pattern.weeksOfMonth.contains(Int16(ceil(Float(day)/7))) { matched = true }
-                        else if pattern.weeksOfMonth.contains(SaveFormatter.getWeekOfMonthNumber(wom: "Last")) {
+                        else if pattern.weeksOfMonth.contains(SaveFormatter.weekOfMonthToStored(.last)) {
                             if day + 7 > daysInMonth.count { matched = true }
                         }
                     }

@@ -15,9 +15,9 @@ class EditTaskHostingController_Tests: XCTestCase {
     
     let dowMin: Float = 1, dowMax: Float = 2
     
-    let daysOfWeek: Set<Int16> = Set(arrayLiteral: 1,2,3,6)
+    let daysOfWeek: Set<SaveFormatter.dayOfWeek> = Set(arrayLiteral: .sunday, .monday, .tuesday, .friday)
     func getDowTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
-        let dowPattern = DayPattern(dow: daysOfWeek, wom: Set<Int16>(), dom: Set<Int16>())
+        let dowPattern = DayPattern(dow: daysOfWeek, wom: Set<SaveFormatter.weekOfMonth>(), dom: Set<SaveFormatter.dayOfMonth>())
         return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
                              insertInto: moc,
                              min: dowMin, max: dowMax,
@@ -33,6 +33,12 @@ class EditTaskHostingController_Tests: XCTestCase {
     override func tearDownWithError() throws {
         CDCoordinator.moc.rollback()
     }
+    
+}
+
+// MARK:- EditTaskHostingController functions
+
+extension EditTaskHostingController_Tests {
     
     func test_extractTTSVArray() throws {
         
@@ -56,7 +62,7 @@ class EditTaskHostingController_Tests: XCTestCase {
         
         XCTAssert(daysOfWeek.count == ttsv.selectedDaysOfWeek!.count)
         for dayOfWeek in daysOfWeek {
-            XCTAssert(ttsv.selectedDaysOfWeek!.contains(SaveFormatter.getWeekdayString(weekday: dayOfWeek)))
+            XCTAssert(ttsv.selectedDaysOfWeek!.contains(dayOfWeek))
         }
         
         XCTAssert(ttsv.selectedWeeksOfMonth!.count == 0)

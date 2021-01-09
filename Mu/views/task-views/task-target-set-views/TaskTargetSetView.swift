@@ -30,9 +30,9 @@ struct TaskTargetSetView: View {
     var minOperator: SaveFormatter.equalityOperator
     var maxTarget: Float
     var maxOperator: SaveFormatter.equalityOperator
-    var selectedDaysOfWeek: Set<String>?
-    var selectedWeeksOfMonth: Set<String>?
-    var selectedDaysOfMonth: Set<String>?
+    var selectedDaysOfWeek: Set<SaveFormatter.dayOfWeek>?
+    var selectedWeeksOfMonth: Set<SaveFormatter.weekOfMonth>?
+    var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth>?
     
     // MARK: - Closures
     
@@ -62,7 +62,7 @@ struct TaskTargetSetView: View {
                 return "Weekdays of month"
             }
             
-            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.getWeekOfMonthNumber(wom: $0) < SaveFormatter.getWeekOfMonthNumber(wom: $1) })
+            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.weekOfMonthToStored($0) < SaveFormatter.weekOfMonthToStored($1) }).map{ $0.shortValue }
             var label: String = ""
             for idx in 0 ..< orderedWeeks.count {
                 label.append(contentsOf: orderedWeeks[idx])
@@ -172,14 +172,21 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7,
-                                                                           patternType: self.type == .wom || self.type == .dow ? .dow : .dom),
-                           presentation: .none,
-                           toggleable: false,
-                           selectedBubbles: .constant((self.type == .dow || self.type == .wom
-                                                        ? self.selectedDaysOfWeek : self.selectedDaysOfMonth)
-                                                        ?? Set<String>()))
-                    .accessibilityElement(children: .ignore)
+                
+                if self.type == .dom {
+                    BubbleRows<SaveFormatter.dayOfMonth>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: 7),
+                                                         presentation: .none,
+                                                         toggleable: false,
+                                                         selectedBubbles: .constant(self.selectedDaysOfMonth ?? Set<SaveFormatter.dayOfMonth>()))
+                        .accessibilityElement(children: .ignore)
+                } else {
+                    BubbleRows<SaveFormatter.dayOfWeek>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7),
+                                                        presentation: .none,
+                                                        toggleable: false,
+                                                        selectedBubbles: .constant(self.selectedDaysOfWeek!))
+                        .accessibilityElement(children: .ignore)
+                }
+                
             }
             
             // MARK: - Frequency
@@ -204,6 +211,5 @@ struct TaskTargetSetView: View {
         .accessibilityElement(children: .combine)
         .accessibility(identifier: "task-target-set-view")
         .accessibility(label: Text("Target set"))
-        .accessibility(value: Text("\(selectedDaysOfWeek!.map{DayBubbleLabels.getLongLabel($0)}.joined(separator: ", ")). \(getLabel()). \(getTarget())"))
     }
 }

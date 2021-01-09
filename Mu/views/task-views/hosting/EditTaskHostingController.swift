@@ -47,14 +47,20 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                     return nil
                 }
                 
+                guard let selectedDow = Set( ttsArray[idx].getDaysOfWeek().map { SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
+                      let selectedWom = Set( ttsArray[idx].getWeeksOfMonth().map { SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
+                      let selectedDom = Set( ttsArray[idx].getDaysOfMonth().map { SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
+                    return nil
+                }
+                
                 let ttsv = TaskTargetSetView(type: pattern.type,
                                              minTarget: ttsArray[idx]._min,
                                              minOperator: minOperator,
                                              maxTarget: ttsArray[idx]._max,
                                              maxOperator: maxOperator,
-                                             selectedDaysOfWeek: Set(ttsArray[idx].getDaysOfWeek().map{ SaveFormatter.getWeekdayString(weekday: $0) }),
-                                             selectedWeeksOfMonth: Set(ttsArray[idx].getWeeksOfMonth().map{ SaveFormatter.getWeekOfMonthString(wom: $0) }),
-                                             selectedDaysOfMonth: Set(ttsArray[idx].getDaysOfMonth().map{ String($0) }))
+                                             selectedDaysOfWeek: selectedDow,
+                                             selectedWeeksOfMonth: selectedWom,
+                                             selectedDaysOfMonth: selectedDom)
                 ttsvArray.append(ttsv)
                 
             }

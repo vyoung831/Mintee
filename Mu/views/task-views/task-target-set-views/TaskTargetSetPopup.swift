@@ -28,9 +28,9 @@ struct TaskTargetSetPopup: View {
     
     // MARK: - State variables
     
-    @State var selectedDaysOfWeek: Set<String> = Set<String>()
-    @State var selectedWeeks: Set<String> = Set<String>()
-    @State var selectedDaysOfMonth: Set<String> = Set<String>()
+    @State var selectedDaysOfWeek: Set<SaveFormatter.dayOfWeek> = Set()
+    @State var selectedWeeks: Set<SaveFormatter.weekOfMonth> = Set()
+    @State var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth> = Set()
     
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
@@ -171,19 +171,27 @@ struct TaskTargetSetPopup: View {
                 Group {
                     
                     // Days of week/month
-                    BubbleRows(maxBubbleRadius: 32,
-                               bubbles: self.type == .dom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow),
-                               presentation: self.type == .dom ? .none : .centerLastRow,
-                               toggleable: true,
-                               selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
+                    if self.type == .dom {
+                        BubbleRows<SaveFormatter.dayOfMonth>(maxBubbleRadius: 32,
+                                                             bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: self.bubblesPerRow),
+                                                             presentation: .none,
+                                                             toggleable: true,
+                                                             selectedBubbles: self.$selectedDaysOfMonth)
+                    } else {
+                        BubbleRows<SaveFormatter.dayOfWeek>(maxBubbleRadius: 32,
+                                                            bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: self.bubblesPerRow),
+                                                            presentation: .centerLastRow,
+                                                            toggleable: true,
+                                                            selectedBubbles: self.$selectedDaysOfWeek )
+                    }
                     
                     // Weeks of month
                     if self.type == .wom {
-                        BubbleRows(maxBubbleRadius: 32,
-                                   bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .wom),
-                                   presentation: .centerLastRow,
-                                   toggleable: true,
-                                   selectedBubbles: self.$selectedWeeks)
+                        BubbleRows<SaveFormatter.weekOfMonth>(maxBubbleRadius: 32,
+                                                              bubbles: DayBubbleLabels.getDividedBubbles_weeksOfMonth(bubblesPerRow: self.bubblesPerRow),
+                                                              presentation: .centerLastRow,
+                                                              toggleable: true,
+                                                              selectedBubbles: self.$selectedWeeks)
                     }
                     
                     Picker(selection: self.$type,
