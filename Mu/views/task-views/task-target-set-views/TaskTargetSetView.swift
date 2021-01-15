@@ -89,12 +89,12 @@ struct TaskTargetSetView: View {
      */
     static func getTargetString(minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float) -> String {
         
-        if minOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.rawValue) \(minTarget.clean)"}
-        if maxOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.rawValue) \(maxTarget.clean)"}
+        if minOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.stringValue) \(minTarget.clean)"}
+        if maxOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.stringValue) \(maxTarget.clean)"}
         
-        if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.rawValue) Target \(maxOperator.rawValue) \(maxTarget.clean)" }
-        if minOperator != .na { return "Target \(minOperator.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
-        if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
+        if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.stringValue) Target \(maxOperator.stringValue) \(maxTarget.clean)" }
+        if minOperator != .na { return "Target \(minOperator.stringValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
+        if maxOperator != .na { return "Target \(maxOperator.stringValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
         ErrorManager.recordNonFatal(.ttsvGetTargetStringInvalidValues, ["minOperator": minOperator.rawValue,
                                                                         "maxOperator": maxOperator.rawValue,

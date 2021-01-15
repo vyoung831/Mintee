@@ -225,7 +225,7 @@ struct TaskTargetSetPopup: View {
                     
                     Picker("Low op", selection: self.$minOperator) {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                            Text(op.rawValue)
+                            Text(op.stringValue)
                         }}
                         .foregroundColor(.accentColor)
                         .frame(width: operationWidth, height: operationHeight)
@@ -235,7 +235,7 @@ struct TaskTargetSetPopup: View {
                     
                     Picker("High op", selection: self.$maxOperator) {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                            Text(op.rawValue)
+                            Text(op.stringValue)
                         }}
                         .foregroundColor(.accentColor)
                         .frame(width: operationWidth, height: operationHeight)

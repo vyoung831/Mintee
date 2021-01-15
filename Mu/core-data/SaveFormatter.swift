@@ -56,40 +56,39 @@ class SaveFormatter {
 
 extension SaveFormatter {
     
-    enum equalityOperator: String, CaseIterable {
-        case lt = "<"
-        case lte = "<="
-        case eq = "="
-        case na = "N/A"
+    enum equalityOperator: Int16, CaseIterable {
+        case lt = 1
+        case lte = 2
+        case eq = 3
+        case na = 0
+        
+        var stringValue: String {
+            switch self {
+            case .lt: return "<"
+            case .lte: return "<="
+            case .eq: return "="
+            case .na: return "N/A"
+            }
+        }
+        
     }
     
     /**
-     Returns an Int16 used to represent an operator in a TaskTargetSet
-     - parameter op: String used by a view to represent a target operator.
-     - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator
+     Returns persistent store format of a value of type SaveFormatter.equalityOperator (stored in TaskTargetSet).
+     - parameter op: SaveFormatter.equalityOperator being used in-memory.
+     - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator.
      */
     static func equalityOperatorToStored(_ op: equalityOperator) -> Int16 {
-        switch op {
-        case .na: return 0
-        case .lt: return 1
-        case .lte: return 2
-        case .eq: return 3
-        }
+        return op.rawValue
     }
     
     /**
-     Returns a String from a TaskTargetSet's minOperator/maxOperator for a View to use to represent a target operator
+     Converts a persistent store value to the equivalent value of type SaveFormatter.equalityOperator
      - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
-     - returns: String for a View to use to represent a target operator.
+     - returns: (Optional) Value of type SaveFormatter.equalityOperator to be used by Views or Model objects.
      */
     static func storedToEqualityOperator(_ op: Int16) -> equalityOperator? {
-        switch op {
-        case 0: return .na
-        case 1: return .lt
-        case 2: return .lte
-        case 3: return .eq
-        default: return nil
-        }
+        return equalityOperator.init(rawValue: op)
     }
     
 }
