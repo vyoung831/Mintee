@@ -47,7 +47,7 @@ The following figure illustrates how errors that are reported to Crashlytics are
 ![](./img/error-reporting-and-handling-throwing.png)
 
 ### Throwing in Core Data APIs
-To simply the failure detection in NSManagedObject subclasses, Mu requires that all failable functions in NSManagedObject subclasses be defined as throwing functions (including initializers).  
+To simplify failure detection in NSManagedObject subclasses, Mu requires that all failable functions in NSManagedObject subclasses be defined as throwing functions (including initializers).  
 Thus, when a function calls a throwing Core Data function, it is expected to either
 * (If UI) Handle the error OR
 * Re-throw error for UI to handle.
