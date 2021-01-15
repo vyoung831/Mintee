@@ -20,7 +20,7 @@ class SaveFormatter_Tests: XCTestCase {
      */
     func test_storedStringToDate() {
         let dateString = "2020-06-07"
-        let date = SaveFormatter.storedStringToDate(dateString)
+        let date = SaveFormatter.storedStringToDate(dateString)!
         XCTAssert( Calendar.current.component(.year, from: date) == 2020)
         XCTAssert( Calendar.current.component(.month, from: date) == 6)
         XCTAssert( Calendar.current.component(.day, from: date) == 7)

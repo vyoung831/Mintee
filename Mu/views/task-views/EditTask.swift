@@ -75,7 +75,14 @@ struct EditTask: View {
                     taskTargetSets.append(tts)
                 }
             }
-            task.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets))
+            
+            do {
+                try task.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets))
+            } catch {
+                self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
+                return
+            }
+            
             break
         case .specific:
             task.updateSpecificInstances(dates: [])
@@ -86,7 +93,8 @@ struct EditTask: View {
             try CDCoordinator.moc.save()
             self.dismiss()
         } catch {
-            self.saveErrorMessage = "Save failed. Please check if another Task with this name already exists."
+            CDCoordinator.moc.rollback()
+            self.saveErrorMessage = "Save failed. Please check that another task with this name doesn't already exist."
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 UIAccessibility.post(notification: .announcement, argument: self.saveErrorMessage)
             }
@@ -143,8 +151,16 @@ struct EditTask: View {
                                 
                                 dayPatterns.insert(dp)
                             }
-                            self.datesToDelete = self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
+                            
+                            // Attempt to get the TaskInstances that would be deleted given the new start date, end date, and target sets.
+                            do {
+                                self.datesToDelete = try self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
+                            } catch {
+                                self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
+                                return
+                            }
                             break
+                            
                         case .specific:
                             self.datesToDelete = self.task.getDeltaInstancesSpecific(dates: Set(self.dates))
                             break

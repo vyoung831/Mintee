@@ -23,7 +23,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
      - parameter task: The task whose TaskTargetSets to extract.
      - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task. Returns nil if invalid data is found in the TaskTargetSets.
      */
-    static func extractTTSVArray(task: Task) -> [TaskTargetSetView]? {
+    static func extractTTSVArray(task: Task) throws -> [TaskTargetSetView] {
         var ttsvArray: [TaskTargetSetView] = []
         if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
@@ -34,23 +34,26 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 guard let pattern = ttsArray[idx]._pattern else {
                     let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray found nil _pattern in a TaskTargetSet",
                                                     "TaskTargetSet" : ttsArray[idx]]
-                    ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
-                                                task.mergeDebugDictionary(userInfo: userInfo))
-                    return nil
+                    let error = ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
+                                                            task.mergeDebugDictionary(userInfo: userInfo))
+                    throw error
                 }
                 
                 guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
                       let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
                     let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray found invalid _minOperator or _maxOperator in a TaskTargetSet",
                                                     "TaskTargetSet" : ttsArray[idx]]
-                    ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                    return nil
+                    let error = ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                    throw error
                 }
                 
                 guard let selectedDow = Set( ttsArray[idx].getDaysOfWeek().map { SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
                       let selectedWom = Set( ttsArray[idx].getWeeksOfMonth().map { SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
                       let selectedDom = Set( ttsArray[idx].getDaysOfMonth().map { SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
-                    return nil
+                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
+                                                    "TaskTargetSet" : ttsArray[idx]]
+                    let error = ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                    throw error
                 }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,
@@ -73,38 +76,40 @@ class EditTaskHostingController: UIHostingController<EditTask> {
      - parameter task: Task for which to initialize an instance of EditTask.
      - parameter dismiss: Escaping closure that is called when EditTask's save or cancel buttons are tapped.
      */
-    init?(task: Task, dismiss: @escaping (() -> Void)) {
+    init(task: Task, dismiss: @escaping (() -> Void)) throws {
         
         guard let taskType = SaveFormatter.storedToTaskType(storedType: task._taskType) else {
             let userInfo: [String : Any] = ["Message": "EditTaskHostingController.init? found invalid _taskType in a Task"]
-            ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-            return nil
+            throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
         }
         
         switch taskType {
         case .recurring:
             
-            // Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring)
-            guard let ttsvArray: [TaskTargetSetView] = EditTaskHostingController.extractTTSVArray(task: task) else {
-                return nil
+            /*
+             Construct array of TaskTargetSetViews for EditTask to use (if Task is of type recurring).
+             Nil is returned here and no further debug data is reported because EditTaskHostingController.extractTTSVArray should have already provided needed userInfo to Crashlytics.
+             */
+            let ttsvArray: [TaskTargetSetView] = try EditTaskHostingController.extractTTSVArray(task: task)
+            
+            guard let startDateString = task._startDate,
+                  let endDateString = task._endDate,
+                  let startDate = SaveFormatter.storedStringToDate(startDateString),
+                  let endDate = SaveFormatter.storedStringToDate(endDateString) else {
+                let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.init? found a recurring type Task with invalid or nil startDate and/or endDate"]
+                throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
             }
             
-            if let startDateString = task._startDate, let endDateString = task._endDate {
-                let editTask = EditTask(task: task,
-                                        dismiss: dismiss,
-                                        taskName: task._name ?? "",
-                                        taskType: taskType,
-                                        tags: task.getTagNames().sorted{$0 < $1},
-                                        startDate: SaveFormatter.storedStringToDate(startDateString),
-                                        endDate: SaveFormatter.storedStringToDate(endDateString),
-                                        taskTargetSetViews: ttsvArray)
-                super.init(rootView: editTask)
-            } else {
-                Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a recurring Task that had startDate and/or endDate equal to nil")
-                Crashlytics.crashlytics().setCustomValue(task._startDate as Any, forKey: "Start date")
-                Crashlytics.crashlytics().setCustomValue(task._endDate as Any, forKey: "End date")
-                fatalError()
-            }
+            let editTask = EditTask(task: task,
+                                    dismiss: dismiss,
+                                    taskName: task._name ?? "",
+                                    taskType: taskType,
+                                    tags: task.getTagNames().sorted{$0 < $1},
+                                    startDate: startDate,
+                                    endDate: endDate,
+                                    taskTargetSetViews: ttsvArray)
+            super.init(rootView: editTask)
+            
             break
         case .specific:
             
@@ -114,9 +119,15 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 fatalError()
             }
             for case let instance as TaskInstance in instances {
-                if let dateString = instance._date {
-                    dates.append(SaveFormatter.storedStringToDate(dateString))
+                
+                guard let dateString = instance._date,
+                      let date = SaveFormatter.storedStringToDate(dateString) else {
+                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.init? found a TaskInstance with a nil or invalid date belonging to a specific type task",
+                                                    "TaskInstance" : instance]
+                    throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
                 }
+                dates.append(date)
+                
             }
             
             let editTask = EditTask(task: task,

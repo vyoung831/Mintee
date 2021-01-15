@@ -30,13 +30,13 @@ class Task_InstanceDelta_Tests_Performance: XCTestCase {
     var task: Task!
     
     override func setUpWithError() throws {
-        task = Task_InstanceDelta_Tests_Util.setUp()
+        task = try Task_InstanceDelta_Tests_Util.setUp()
     }
-
+    
     override func tearDownWithError() throws {
         Task_InstanceDelta_Tests_Util.tearDown()
     }
-
+    
 }
 
 // MARK: - getDeltaInstancesRecurring performance tests
@@ -46,42 +46,56 @@ extension Task_InstanceDelta_Tests_Performance {
     // MARK: - TTS deletion tests
     
     func testPerformance_getDeltaInstancesRecurring_performance_fiveYears_deleteOneTTS() {
-
+        
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
-
+        
+        XCTAssertNoThrow( try task.updateRecurringInstances(startDate: startDate, endDate: endDate) )
+        
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+            do {
+                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+            } catch {
+                XCTFail()
+            }
         }
-
+        
+        
     }
-
+    
     func testPerformance_getDeltaInstancesRecurring_performance_tenYears_deleteOneTTS() {
-
+        
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
-
+        XCTAssertNoThrow( try task.updateRecurringInstances(startDate: startDate, endDate: endDate) )
+        
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+            do {
+                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+            } catch {
+                XCTFail()
+            }
         }
-
+        
     }
-
+    
     func testPerformance_getDeltaInstancesRecurring_performance_twentyFiveYears_deleteOneTTS() {
-
+        
         let startDate = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate)
-
+        XCTAssertNoThrow( try task.updateRecurringInstances(startDate: startDate, endDate: endDate) )
+        
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
         self.measure {
-            task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+            do {
+                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+            } catch {
+                XCTFail()
+            }
         }
-
+        
     }
     
 }

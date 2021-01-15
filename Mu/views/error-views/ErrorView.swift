@@ -15,7 +15,7 @@ struct ErrorView: View {
     var body: some View {
         
         VStack {
-            Text("Oops! Something went wrong. The cows are hard at work fixing it!")
+            Text(ErrorManager.unexpectedErrorMessage)
         }
         .padding(EdgeInsets(top: 0, leading: 50, bottom: 0, trailing: 50))
         

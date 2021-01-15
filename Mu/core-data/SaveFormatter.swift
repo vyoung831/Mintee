@@ -255,25 +255,21 @@ extension SaveFormatter {
     }()
     
     /**
-     Returns a Date object from a String representation that was saved to persistent storage
-     - parameter storedString: String representation of a date in  "yyyy-MM-dd" format
-     - returns: Date representation of storedString
-     */
-    static func storedStringToDate(_ storedString: String) -> Date {
-        if let date = storedStringToDateFormatter.date(from: storedString) { return date }
-        else {
-            Crashlytics.crashlytics().log("SaveFormatter could not convert a stored date string to Date")
-            fatalError()
-        }
-    }
-    
-    /**
      Returns a "yyyy-MM-dd" String representation of a Date to be saved to persistent storage
      - parameter date: Date to convert
      - returns: String representation of a date in  "yyyy-MM-dd" format
      */
     static func dateToStoredString(_ date: Date) -> String {
         return storedStringToDateFormatter.string(from: date)
+    }
+    
+    /**
+     Returns a Date object from a String representation that was saved to persistent storage
+     - parameter storedString: String representation of a date in  "yyyy-MM-dd" format
+     - returns: (Optional) Date representation of the stored String representing a date
+     */
+    static func storedStringToDate(_ storedString: String) -> Date? {
+        return storedStringToDateFormatter.date(from: storedString)
     }
     
 }

@@ -31,7 +31,7 @@ class Task_InstanceHandling_Tests: XCTestCase {
     var task: Task!
     
     override func setUpWithError() throws {
-        task = Task_InstanceHandling_Tests_Util.setUp()
+        task = try Task_InstanceHandling_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
@@ -64,7 +64,7 @@ extension Task_InstanceHandling_Tests {
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
         XCTAssert(instances.count == 3)
         for instance in instances {
-            XCTAssert(dates.contains(SaveFormatter.storedStringToDate(instance._date!)))
+            XCTAssert(dates.contains(SaveFormatter.storedStringToDate(instance._date!)!))
         }
         
     }
@@ -78,12 +78,12 @@ extension Task_InstanceHandling_Tests {
     // MARK: - Task type updates
     
     func test_updateRecurringInstances_withoutTargetSets_confirmTaskType() throws {
-        task.updateRecurringInstances(startDate: Date(), endDate: Date())
+        try task.updateRecurringInstances(startDate: Date(), endDate: Date())
         XCTAssert(task._taskType == SaveFormatter.taskTypeToStored(type: .recurring))
     }
     
     func test_updateRecurringInstances_withTargetSets_confirmTaskType() throws {
-        task.updateRecurringInstances(startDate: Date(), endDate: Date(), targetSets: Set<TaskTargetSet>())
+        try task.updateRecurringInstances(startDate: Date(), endDate: Date(), targetSets: Set<TaskTargetSet>())
         XCTAssert(task._taskType == SaveFormatter.taskTypeToStored(type: .recurring))
     }
     
@@ -95,7 +95,7 @@ extension Task_InstanceHandling_Tests {
         var newWomDates: Set<String> = Set(["2019-01-02", "2019-01-07", "2019-01-16", "2019-01-21", "2019-01-28", "2019-01-30", "2019-02-04", "2019-02-06", "2019-02-18", "2019-02-20", "2019-02-25", "2019-02-27", "2019-03-04", "2019-03-06", "2019-03-18", "2019-03-20", "2019-03-25", "2019-03-27", "2019-04-01", "2019-04-03", "2019-04-15", "2019-04-17", "2019-04-24", "2019-04-29", "2019-05-01", "2019-05-06", "2019-05-15", "2019-05-20", "2019-05-27", "2019-05-29", "2019-06-03", "2019-06-05", "2019-06-17", "2019-06-19", "2019-06-24", "2019-06-26", "2019-07-01", "2019-07-03", "2019-07-15", "2019-07-17", "2019-07-29", "2019-07-31", "2019-08-05", "2019-08-07", "2019-08-19", "2019-08-21", "2019-08-26", "2019-08-28", "2019-09-02", "2019-09-04", "2019-09-16", "2019-09-18", "2019-09-25", "2019-09-30", "2019-10-02", "2019-10-07", "2019-10-16", "2019-10-21", "2019-10-28", "2019-10-30", "2019-11-04", "2019-11-06", "2019-11-18", "2019-11-20", "2019-11-25", "2019-11-27", "2019-12-02", "2019-12-04", "2019-12-16", "2019-12-18", "2019-12-25", "2019-12-30", "2020-01-01", "2020-01-06", "2020-01-15", "2020-01-20", "2020-01-27", "2020-01-29", "2020-02-03", "2020-02-05", "2020-02-17", "2020-02-19", "2020-02-24", "2020-02-26", "2020-03-02", "2020-03-04", "2020-03-16", "2020-03-18", "2020-03-25", "2020-03-30", "2020-04-01", "2020-04-06", "2020-04-15", "2020-04-20", "2020-04-27", "2020-04-29", "2020-05-04", "2020-05-06", "2020-05-18", "2020-05-20", "2020-05-25", "2020-05-27", "2020-06-01", "2020-06-03", "2020-06-15", "2020-06-17", "2020-06-24", "2020-06-29", "2020-07-01", "2020-07-06", "2020-07-15", "2020-07-20", "2020-07-27", "2020-07-29", "2020-08-03", "2020-08-05", "2020-08-17", "2020-08-19", "2020-08-26", "2020-08-31", "2020-09-02", "2020-09-07", "2020-09-16", "2020-09-21", "2020-09-28", "2020-09-30", "2020-10-05", "2020-10-07", "2020-10-19", "2020-10-21", "2020-10-26", "2020-10-28", "2020-11-02", "2020-11-04", "2020-11-16", "2020-11-18", "2020-11-25", "2020-11-30", "2020-12-02", "2020-12-07", "2020-12-16", "2020-12-21", "2020-12-28", "2020-12-30", "2021-01-04", "2021-01-06", "2021-01-18", "2021-01-20", "2021-01-25", "2021-01-27", "2021-02-01", "2021-02-03", "2021-02-15", "2021-02-17", "2021-02-22", "2021-02-24", "2021-03-01"]).union(globalWomDates).subtracting(newDowDates)
         var newDomDates: Set<String> = Set(["2019-01-01", "2019-01-02", "2019-01-03", "2019-01-04", "2019-01-05", "2019-01-06", "2019-01-07", "2019-01-08", "2019-01-09", "2019-01-10", "2019-01-31", "2019-02-01", "2019-02-02", "2019-02-03", "2019-02-04", "2019-02-05", "2019-02-06", "2019-02-07", "2019-02-08", "2019-02-09", "2019-02-10", "2019-02-28", "2019-03-01", "2019-03-02", "2019-03-03", "2019-03-04", "2019-03-05", "2019-03-06", "2019-03-07", "2019-03-08", "2019-03-09", "2019-03-10", "2019-03-31", "2019-04-01", "2019-04-02", "2019-04-03", "2019-04-04", "2019-04-05", "2019-04-06", "2019-04-07", "2019-04-08", "2019-04-09", "2019-04-10", "2019-04-30", "2019-05-01", "2019-05-02", "2019-05-03", "2019-05-04", "2019-05-05", "2019-05-06", "2019-05-07", "2019-05-08", "2019-05-09", "2019-05-10", "2019-05-31", "2019-06-01", "2019-06-02", "2019-06-03", "2019-06-04", "2019-06-05", "2019-06-06", "2019-06-07", "2019-06-08", "2019-06-09", "2019-06-10", "2019-06-30", "2019-07-01", "2019-07-02", "2019-07-03", "2019-07-04", "2019-07-05", "2019-07-06", "2019-07-07", "2019-07-08", "2019-07-09", "2019-07-10", "2019-07-31", "2019-08-01", "2019-08-02", "2019-08-03", "2019-08-04", "2019-08-05", "2019-08-06", "2019-08-07", "2019-08-08", "2019-08-09", "2019-08-10", "2019-08-31", "2019-09-01", "2019-09-02", "2019-09-03", "2019-09-04", "2019-09-05", "2019-09-06", "2019-09-07", "2019-09-08", "2019-09-09", "2019-09-10", "2019-09-30", "2019-10-01", "2019-10-02", "2019-10-03", "2019-10-04", "2019-10-05", "2019-10-06", "2019-10-07", "2019-10-08", "2019-10-09", "2019-10-10", "2019-10-31", "2019-11-01", "2019-11-02", "2019-11-03", "2019-11-04", "2019-11-05", "2019-11-06", "2019-11-07", "2019-11-08", "2019-11-09", "2019-11-10", "2019-11-30", "2019-12-01", "2019-12-02", "2019-12-03", "2019-12-04", "2019-12-05", "2019-12-06", "2019-12-07", "2019-12-08", "2019-12-09", "2019-12-10", "2019-12-31", "2020-01-01", "2020-01-02", "2020-01-03", "2020-01-04", "2020-01-05", "2020-01-06", "2020-01-07", "2020-01-08", "2020-01-09", "2020-01-10", "2020-01-31", "2020-02-01", "2020-02-02", "2020-02-03", "2020-02-04", "2020-02-05", "2020-02-06", "2020-02-07", "2020-02-08", "2020-02-09", "2020-02-10", "2020-02-29", "2020-03-01", "2020-03-02", "2020-03-03", "2020-03-04", "2020-03-05", "2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09", "2020-03-10", "2020-03-31", "2020-04-01", "2020-04-02", "2020-04-03", "2020-04-04", "2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08", "2020-04-09", "2020-04-10", "2020-04-30", "2020-05-01", "2020-05-02", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-05-07", "2020-05-08", "2020-05-09", "2020-05-10", "2020-05-31", "2020-06-01", "2020-06-02", "2020-06-03", "2020-06-04", "2020-06-05", "2020-06-06", "2020-06-07", "2020-06-08", "2020-06-09", "2020-06-10", "2020-06-30", "2020-07-01", "2020-07-02", "2020-07-03", "2020-07-04", "2020-07-05", "2020-07-06", "2020-07-07", "2020-07-08", "2020-07-09", "2020-07-10", "2020-07-31", "2020-08-01", "2020-08-02", "2020-08-03", "2020-08-04", "2020-08-05", "2020-08-06", "2020-08-07", "2020-08-08", "2020-08-09", "2020-08-10", "2020-08-31", "2020-09-01", "2020-09-02", "2020-09-03", "2020-09-04", "2020-09-05", "2020-09-06", "2020-09-07", "2020-09-08", "2020-09-09", "2020-09-10", "2020-09-30", "2020-10-01", "2020-10-02", "2020-10-03", "2020-10-04", "2020-10-05", "2020-10-06", "2020-10-07", "2020-10-08", "2020-10-09", "2020-10-10", "2020-10-31", "2020-11-01", "2020-11-02", "2020-11-03", "2020-11-04", "2020-11-05", "2020-11-06", "2020-11-07", "2020-11-08", "2020-11-09", "2020-11-10", "2020-11-30", "2020-12-01", "2020-12-02", "2020-12-03", "2020-12-04", "2020-12-05", "2020-12-06", "2020-12-07", "2020-12-08", "2020-12-09", "2020-12-10", "2020-12-31", "2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05", "2021-01-06", "2021-01-07", "2021-01-08", "2021-01-09", "2021-01-10", "2021-01-31", "2021-02-01", "2021-02-02", "2021-02-03", "2021-02-04", "2021-02-05", "2021-02-06", "2021-02-07", "2021-02-08", "2021-02-09", "2021-02-10", "2021-02-28", "2021-03-01"]).union(globalDomDates).subtracting(newWomDates).subtracting(newDowDates)
         let newStart = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
-        task.updateRecurringInstances(startDate: newStart, endDate: endDate)
+        try task.updateRecurringInstances(startDate: newStart, endDate: endDate)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -130,7 +130,7 @@ extension Task_InstanceHandling_Tests {
         var newDomDates: Set<String> = Set(["2020-02-01", "2020-02-02", "2020-02-03", "2020-02-04", "2020-02-05", "2020-02-06", "2020-02-07", "2020-02-08", "2020-02-09", "2020-02-10", "2020-02-29", "2020-03-01", "2020-03-02", "2020-03-03", "2020-03-04", "2020-03-05", "2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09", "2020-03-10", "2020-03-31", "2020-04-01", "2020-04-02", "2020-04-03", "2020-04-04", "2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08", "2020-04-09", "2020-04-10", "2020-04-30", "2020-05-01", "2020-05-02", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-05-07", "2020-05-08", "2020-05-09", "2020-05-10", "2020-05-31", "2020-06-01", "2020-06-02", "2020-06-03", "2020-06-04", "2020-06-05", "2020-06-06", "2020-06-07", "2020-06-08", "2020-06-09", "2020-06-10", "2020-06-30", "2020-07-01", "2020-07-02", "2020-07-03", "2020-07-04", "2020-07-05", "2020-07-06", "2020-07-07", "2020-07-08", "2020-07-09", "2020-07-10", "2020-07-31", "2020-08-01", "2020-08-02", "2020-08-03", "2020-08-04", "2020-08-05", "2020-08-06", "2020-08-07", "2020-08-08", "2020-08-09", "2020-08-10", "2020-08-31", "2020-09-01", "2020-09-02", "2020-09-03", "2020-09-04", "2020-09-05", "2020-09-06", "2020-09-07", "2020-09-08", "2020-09-09", "2020-09-10", "2020-09-30", "2020-10-01", "2020-10-02", "2020-10-03", "2020-10-04", "2020-10-05", "2020-10-06", "2020-10-07", "2020-10-08", "2020-10-09", "2020-10-10", "2020-10-31", "2020-11-01", "2020-11-02", "2020-11-03", "2020-11-04", "2020-11-05", "2020-11-06", "2020-11-07", "2020-11-08", "2020-11-09", "2020-11-10", "2020-11-30", "2020-12-01", "2020-12-02", "2020-12-03", "2020-12-04", "2020-12-05", "2020-12-06", "2020-12-07", "2020-12-08", "2020-12-09", "2020-12-10", "2020-12-31", "2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05", "2021-01-06", "2021-01-07", "2021-01-08", "2021-01-09", "2021-01-10", "2021-01-31", "2021-02-01", "2021-02-02", "2021-02-03", "2021-02-04", "2021-02-05", "2021-02-06", "2021-02-07", "2021-02-08", "2021-02-09", "2021-02-10", "2021-02-28", "2021-03-01"]
         ).subtracting(newWomDates).subtracting(newDowDates)
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 2, day: 1))!
-        task.updateRecurringInstances(startDate: newStart, endDate: endDate)
+        try task.updateRecurringInstances(startDate: newStart, endDate: endDate)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -162,7 +162,7 @@ extension Task_InstanceHandling_Tests {
         var newWomDates: Set<String> = Set(["2019-11-04", "2019-11-06", "2019-11-18", "2019-11-20", "2019-11-25", "2019-11-27", "2019-12-02", "2019-12-04", "2019-12-16", "2019-12-18", "2019-12-25", "2019-12-30", "2020-01-01", "2020-01-06", "2020-01-15", "2020-01-20", "2020-01-27", "2020-01-29", "2020-02-03", "2020-02-05", "2020-02-17", "2020-02-19", "2020-02-24", "2020-02-26", "2020-03-02", "2020-03-04", "2020-03-16", "2020-03-18", "2020-03-25", "2020-03-30", "2020-04-01", "2020-04-06", "2020-04-15", "2020-04-20", "2020-04-27", "2020-04-29", "2020-05-04", "2020-05-06", "2020-05-18", "2020-05-20", "2020-05-25", "2020-05-27", "2020-06-01", "2020-06-03", "2020-06-15", "2020-06-17", "2020-06-24", "2020-06-29"]).subtracting(newDowDates)
         var newDomDates: Set<String> = Set(["2019-11-01", "2019-11-02", "2019-11-03", "2019-11-04", "2019-11-05", "2019-11-06", "2019-11-07", "2019-11-08", "2019-11-09", "2019-11-10", "2019-11-30", "2019-12-01", "2019-12-02", "2019-12-03", "2019-12-04", "2019-12-05", "2019-12-06", "2019-12-07", "2019-12-08", "2019-12-09", "2019-12-10", "2019-12-31", "2020-01-01", "2020-01-02", "2020-01-03", "2020-01-04", "2020-01-05", "2020-01-06", "2020-01-07", "2020-01-08", "2020-01-09", "2020-01-10", "2020-01-31", "2020-02-01", "2020-02-02", "2020-02-03", "2020-02-04", "2020-02-05", "2020-02-06", "2020-02-07", "2020-02-08", "2020-02-09", "2020-02-10", "2020-02-29", "2020-03-01", "2020-03-02", "2020-03-03", "2020-03-04", "2020-03-05", "2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09", "2020-03-10", "2020-03-31", "2020-04-01", "2020-04-02", "2020-04-03", "2020-04-04", "2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08", "2020-04-09", "2020-04-10", "2020-04-30", "2020-05-01", "2020-05-02", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-05-07", "2020-05-08", "2020-05-09", "2020-05-10", "2020-05-31", "2020-06-01", "2020-06-02", "2020-06-03", "2020-06-04", "2020-06-05", "2020-06-06", "2020-06-07", "2020-06-08", "2020-06-09", "2020-06-10", "2020-06-30"]).subtracting(newWomDates).subtracting(newDowDates)
         let newEnd = Calendar.current.date(from: DateComponents(year: 2020, month: 6, day: 30))!
-        task.updateRecurringInstances(startDate: startDate, endDate: newEnd)
+        try task.updateRecurringInstances(startDate: startDate, endDate: newEnd)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -197,7 +197,7 @@ extension Task_InstanceHandling_Tests {
         var newDomDates: Set<String> = Set(["2019-11-01", "2019-11-02", "2019-11-03", "2019-11-04", "2019-11-05", "2019-11-06", "2019-11-07", "2019-11-08", "2019-11-09", "2019-11-10", "2019-11-30", "2019-12-01", "2019-12-02", "2019-12-03", "2019-12-04", "2019-12-05", "2019-12-06", "2019-12-07", "2019-12-08", "2019-12-09", "2019-12-10", "2019-12-31", "2020-01-01", "2020-01-02", "2020-01-03", "2020-01-04", "2020-01-05", "2020-01-06", "2020-01-07", "2020-01-08", "2020-01-09", "2020-01-10", "2020-01-31", "2020-02-01", "2020-02-02", "2020-02-03", "2020-02-04", "2020-02-05", "2020-02-06", "2020-02-07", "2020-02-08", "2020-02-09", "2020-02-10", "2020-02-29", "2020-03-01", "2020-03-02", "2020-03-03", "2020-03-04", "2020-03-05", "2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09", "2020-03-10", "2020-03-31", "2020-04-01", "2020-04-02", "2020-04-03", "2020-04-04", "2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08", "2020-04-09", "2020-04-10", "2020-04-30", "2020-05-01", "2020-05-02", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-05-07", "2020-05-08", "2020-05-09", "2020-05-10", "2020-05-31", "2020-06-01", "2020-06-02", "2020-06-03", "2020-06-04", "2020-06-05", "2020-06-06", "2020-06-07", "2020-06-08", "2020-06-09", "2020-06-10", "2020-06-30", "2020-07-01", "2020-07-02", "2020-07-03", "2020-07-04", "2020-07-05", "2020-07-06", "2020-07-07", "2020-07-08", "2020-07-09", "2020-07-10", "2020-07-31", "2020-08-01", "2020-08-02", "2020-08-03", "2020-08-04", "2020-08-05", "2020-08-06", "2020-08-07", "2020-08-08", "2020-08-09", "2020-08-10", "2020-08-31", "2020-09-01", "2020-09-02", "2020-09-03", "2020-09-04", "2020-09-05", "2020-09-06", "2020-09-07", "2020-09-08", "2020-09-09", "2020-09-10", "2020-09-30", "2020-10-01", "2020-10-02", "2020-10-03", "2020-10-04", "2020-10-05", "2020-10-06", "2020-10-07", "2020-10-08", "2020-10-09", "2020-10-10", "2020-10-31", "2020-11-01", "2020-11-02", "2020-11-03", "2020-11-04", "2020-11-05", "2020-11-06", "2020-11-07", "2020-11-08", "2020-11-09", "2020-11-10", "2020-11-30", "2020-12-01", "2020-12-02", "2020-12-03", "2020-12-04", "2020-12-05", "2020-12-06", "2020-12-07", "2020-12-08", "2020-12-09", "2020-12-10", "2020-12-31", "2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05", "2021-01-06", "2021-01-07", "2021-01-08", "2021-01-09", "2021-01-10", "2021-01-31", "2021-02-01", "2021-02-02", "2021-02-03", "2021-02-04", "2021-02-05", "2021-02-06", "2021-02-07", "2021-02-08", "2021-02-09", "2021-02-10", "2021-02-28", "2021-03-01", "2021-03-02", "2021-03-03", "2021-03-04", "2021-03-05", "2021-03-06", "2021-03-07", "2021-03-08", "2021-03-09", "2021-03-10", "2021-03-31", "2021-04-01", "2021-04-02", "2021-04-03", "2021-04-04", "2021-04-05", "2021-04-06", "2021-04-07", "2021-04-08", "2021-04-09", "2021-04-10", "2021-04-30", "2021-05-01", "2021-05-02", "2021-05-03", "2021-05-04", "2021-05-05", "2021-05-06", "2021-05-07", "2021-05-08", "2021-05-09", "2021-05-10", "2021-05-31", "2021-06-01", "2021-06-02", "2021-06-03", "2021-06-04", "2021-06-05", "2021-06-06", "2021-06-07", "2021-06-08", "2021-06-09", "2021-06-10", "2021-06-30", "2021-07-01", "2021-07-02", "2021-07-03", "2021-07-04", "2021-07-05", "2021-07-06", "2021-07-07", "2021-07-08", "2021-07-09", "2021-07-10", "2021-07-31", "2021-08-01", "2021-08-02", "2021-08-03", "2021-08-04", "2021-08-05", "2021-08-06", "2021-08-07", "2021-08-08", "2021-08-09", "2021-08-10", "2021-08-31", "2021-09-01", "2021-09-02", "2021-09-03", "2021-09-04", "2021-09-05", "2021-09-06", "2021-09-07", "2021-09-08", "2021-09-09", "2021-09-10", "2021-09-30", "2021-10-01", "2021-10-02", "2021-10-03", "2021-10-04", "2021-10-05", "2021-10-06", "2021-10-07", "2021-10-08", "2021-10-09", "2021-10-10", "2021-10-31", "2021-11-01", "2021-11-02", "2021-11-03", "2021-11-04", "2021-11-05", "2021-11-06", "2021-11-07", "2021-11-08", "2021-11-09", "2021-11-10", "2021-11-30", "2021-12-01", "2021-12-02", "2021-12-03", "2021-12-04", "2021-12-05", "2021-12-06", "2021-12-07", "2021-12-08", "2021-12-09", "2021-12-10", "2021-12-31", "2022-01-01", "2022-01-02", "2022-01-03", "2022-01-04", "2022-01-05", "2022-01-06", "2022-01-07", "2022-01-08", "2022-01-09", "2022-01-10", "2022-01-31", "2022-02-01", "2022-02-02", "2022-02-03", "2022-02-04", "2022-02-05", "2022-02-06", "2022-02-07", "2022-02-08", "2022-02-09", "2022-02-10", "2022-02-28", "2022-03-01", "2022-03-02", "2022-03-03", "2022-03-04", "2022-03-05", "2022-03-06", "2022-03-07", "2022-03-08", "2022-03-09", "2022-03-10", "2022-03-31", "2022-04-01", "2022-04-02", "2022-04-03", "2022-04-04", "2022-04-05", "2022-04-06", "2022-04-07", "2022-04-08", "2022-04-09", "2022-04-10", "2022-04-30", "2022-05-01", "2022-05-02", "2022-05-03", "2022-05-04", "2022-05-05", "2022-05-06", "2022-05-07", "2022-05-08", "2022-05-09", "2022-05-10", "2022-05-31", "2022-06-01", "2022-06-02", "2022-06-03", "2022-06-04", "2022-06-05", "2022-06-06", "2022-06-07", "2022-06-08", "2022-06-09", "2022-06-10", "2022-06-30", "2022-07-01", "2022-07-02", "2022-07-03", "2022-07-04", "2022-07-05", "2022-07-06", "2022-07-07", "2022-07-08", "2022-07-09", "2022-07-10", "2022-07-31", "2022-08-01", "2022-08-02", "2022-08-03", "2022-08-04", "2022-08-05", "2022-08-06", "2022-08-07", "2022-08-08", "2022-08-09", "2022-08-10", "2022-08-31", "2022-09-01"]
         ).union(globalDomDates).subtracting(newWomDates).subtracting(newDowDates)
         let newEnd = Calendar.current.date(from: DateComponents(year: 2022, month: 9, day: 1))!
-        task.updateRecurringInstances(startDate: startDate, endDate: newEnd)
+        try task.updateRecurringInstances(startDate: startDate, endDate: newEnd)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -226,7 +226,7 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateRecurringInstances_globalDow() throws {
         
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc)))
         
@@ -247,7 +247,7 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateRecurringInstances_globalWom() throws {
         
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc)))
         
@@ -268,7 +268,7 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateRecurringInstances_globalDom() throws {
         
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: Set(arrayLiteral: getDomTargetSet(CDCoordinator.moc)))
         
@@ -294,7 +294,7 @@ extension Task_InstanceHandling_Tests {
         var newWomDates: Set<String> = globalWomDates
         var newDomDates: Set<String> = globalDomDates.subtracting(newWomDates)
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: newTargetSets)
         
@@ -323,7 +323,7 @@ extension Task_InstanceHandling_Tests {
         var newDowDates: Set<String> = globalDowDates
         var newDomDates: Set<String> = globalDomDates.subtracting(newDowDates)
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -352,7 +352,7 @@ extension Task_InstanceHandling_Tests {
         var newDowDates: Set<String> = globalDowDates
         var newWomDates: Set<String> = globalWomDates.subtracting(newDowDates)
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc))
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -379,7 +379,7 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_deleteAllTargetSets() throws {
         
         let newTargetSets: Set<TaskTargetSet> = []
-        task.updateRecurringInstances(startDate: startDate,
+        try task.updateRecurringInstances(startDate: startDate,
                                       endDate: endDate,
                                       targetSets: newTargetSets)
         
@@ -408,7 +408,7 @@ extension Task_InstanceHandling_Tests {
         var oldDomDates: Set<String> = globalDomDates.subtracting(oldWomDates).subtracting(oldDowDates).subtracting(newDowDates)
         
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -457,7 +457,7 @@ extension Task_InstanceHandling_Tests {
         var oldDomDates: Set<String> = globalDomDates.subtracting(oldWomDates).subtracting(newDowDates).subtracting(oldDowDates)
         
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -506,7 +506,7 @@ extension Task_InstanceHandling_Tests {
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDowDates).subtracting(oldWomDates).subtracting(oldDowDates)
         
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -555,7 +555,7 @@ extension Task_InstanceHandling_Tests {
         ).subtracting(oldDomDates).subtracting(oldWomDates).subtracting(oldDowDates)
         
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -616,7 +616,7 @@ extension Task_InstanceHandling_Tests {
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDowDates).subtracting(oldWomDates).subtracting(newWomDates).subtracting(oldDowDates).subtracting(newDomDates)
         
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -686,7 +686,7 @@ extension Task_InstanceHandling_Tests {
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDomDates).subtracting(oldWomDates).subtracting(newDowDates).subtracting(oldDowDates).subtracting(newWomDates)
         
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -757,7 +757,7 @@ extension Task_InstanceHandling_Tests {
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDomDates).subtracting(oldWomDates).subtracting(newDowDates).subtracting(newWomDates)
         
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
-        task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
+        try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)

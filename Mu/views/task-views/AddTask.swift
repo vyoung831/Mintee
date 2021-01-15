@@ -64,13 +64,21 @@ struct AddTask: View {
         
         switch self.taskType {
         case .recurring:
-            let _ = Task(entity: Task.entity(),
-                         insertInto: CDCoordinator.moc,
-                         name: self.taskName,
-                         tags: tagObjects,
-                         startDate: self.startDate,
-                         endDate: self.endDate,
-                         targetSets: Set(taskTargetSets))
+            
+            do {
+                let _ =  try Task(entity: Task.entity(),
+                                  insertInto: CDCoordinator.moc,
+                                  name: self.taskName,
+                                  tags: tagObjects,
+                                  startDate: self.startDate,
+                                  endDate: self.endDate,
+                                  targetSets: Set(taskTargetSets))
+            } catch {
+                self.errorMessage = ErrorManager.unexpectedErrorMessage
+                CDCoordinator.moc.rollback()
+                return false
+            }
+            
             break
         case .specific:
             let _ = Task(entity: Task.entity(),
@@ -183,11 +191,5 @@ struct AddTask: View {
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
         
-    }
-}
-
-struct AddTask_Previews: PreviewProvider {
-    static var previews: some View {
-        AddTask(isBeingPresented: .constant(true))
     }
 }

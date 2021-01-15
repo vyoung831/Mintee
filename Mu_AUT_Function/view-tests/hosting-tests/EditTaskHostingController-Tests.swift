@@ -43,16 +43,16 @@ extension EditTaskHostingController_Tests {
     func test_extractTTSVArray() throws {
         
         let targetSets: Set<TaskTargetSet> = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc))
-        let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
-                        insertInto: CDCoordinator.moc,
-                        name: "Name",
-                        tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!]),
-                        startDate: Date(),
-                        endDate: Date(),
-                        targetSets: targetSets)
+        let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+                            insertInto: CDCoordinator.moc,
+                            name: "Name",
+                            tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!]),
+                            startDate: Date(),
+                            endDate: Date(),
+                            targetSets: targetSets)
         
-        let ttsvArray = EditTaskHostingController.extractTTSVArray(task: task)
-        let ttsv = ttsvArray![0]
+        let ttsvArray = try EditTaskHostingController.extractTTSVArray(task: task)
+        let ttsv = ttsvArray[0]
         
         XCTAssert(ttsv.minTarget == dowMin)
         XCTAssert(ttsv.minOperator == .lt)

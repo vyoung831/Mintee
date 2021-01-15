@@ -11,13 +11,16 @@ import Firebase
 
 struct ErrorManager {
     
+    // Error message to present if an unexpected interal error was found in Mu or its persistent storage.
+    static let unexpectedErrorMessage = "Oops! Something went wrong. The cows are hard at work fixing it!"
+    
     /**
      Records a non-fatal error to report to Crashlytics
      - parameter errorCode: Value of type enum ErrorManager.muError to report as NSError code
      - parameter userInfo: [String:Any] pairs to be reported with error record
      */
     static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,
-                               _ userInfo: [String:Any]) {
+                               _ userInfo: [String:Any]) -> NSError {
         
         var domain: String
         if let bundleID = Bundle.main.bundleIdentifier {
@@ -29,9 +32,9 @@ struct ErrorManager {
                                                             userInfo: [:]))
         }
         
-        Crashlytics.crashlytics().record(error: NSError(domain: domain,
-                                                        code: errorCode.rawValue,
-                                                        userInfo: userInfo))
+        let actualError = NSError(domain: domain, code: errorCode.rawValue, userInfo: userInfo)
+        Crashlytics.crashlytics().record(error: actualError)
+        return actualError
         
     }
     

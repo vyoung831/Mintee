@@ -49,7 +49,7 @@ class Task_Tests: XCTestCase {
                                                     wom: Set<SaveFormatter.weekOfMonth>([]),
                                                     dom: Set<SaveFormatter.dayOfMonth>([])))
         
-        let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+        let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                         insertInto: CDCoordinator.moc,
                         name: "Task",
                         tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
