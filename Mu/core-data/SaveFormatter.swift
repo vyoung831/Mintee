@@ -15,39 +15,35 @@ class SaveFormatter {
     
     // MARK: - Task type
     
-    enum taskType: String, CaseIterable {
-        case recurring = "Recurring"
-        case specific = "Specific"
+    enum taskType: Int16, CaseIterable {
+        case recurring = 0
+        case specific = 1
+        
+        var stringValue: String {
+            switch self {
+            case .recurring: return "Recurring"
+            case .specific: return "Specific"
+            }
+        }
+        
     }
     
     /**
-     Returns an Int16 from a member of enum taskType for saving to persistent store.
-     - parameter type: Member of enum taskType to be used by objects in memory
-     - returns: Int16 saved to persistent storage that is used to represent a task type
+     Returns persistent store format of a value of type SaveFormatter.taskType (stored in Task).
+     - parameter op: SaveFormatter.taskType being used in-memory.
+     - returns: Int16 to store to Task's taskType.
      */
     static func taskTypeToStored(type: taskType) -> Int16 {
-        switch type {
-        case .recurring:
-            return 0
-        case .specific:
-            return 1
-        }
+        return type.rawValue
     }
     
     /**
-     Returns a member of enum taskType from a stored Int16.
-     - parameter storedType: Int16 saved to persistent storage that is used to represent a task type
-     - returns: Member of enum taskType to be used by objects in memory
+     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.taskType
+     - parameter op: Int16 stored in Task's taskType
+     - returns: (Optional) Value of type SaveFormatter.taskType to be used by Views or Model objects.
      */
     static func storedToTaskType(storedType: Int16) -> taskType? {
-        switch storedType {
-        case 0:
-            return .recurring
-        case 1:
-            return .specific
-        default:
-            return nil
-        }
+        return taskType.init(rawValue: storedType)
     }
     
 }

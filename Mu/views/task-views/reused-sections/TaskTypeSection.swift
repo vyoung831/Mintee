@@ -26,7 +26,7 @@ struct TaskTypeSection: View {
                 .bold()
             
             ForEach(0 ..< self.taskTypes.count, id: \.self) { idx in
-                Button(self.taskTypes[idx].rawValue, action: {
+                Button(self.taskTypes[idx].stringValue, action: {
                     self.taskType = self.taskTypes[idx]
                 })
                 .padding(12)
