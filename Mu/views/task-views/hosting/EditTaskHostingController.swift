@@ -32,7 +32,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                  If the TaskTargetSet's DayPattern is nil or the TaskTargetSet's minOperator and/or maxOperator violate business logic, an error is reported with the Task, the TTS, and the Task's other TTSes
                  */
                 guard let pattern = ttsArray[idx]._pattern else {
-                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray found nil _pattern in a TaskTargetSet",
+                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found nil in a TaskTargetSet's _pattern",
                                                     "TaskTargetSet" : ttsArray[idx]]
                     let error = ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
                                                             task.mergeDebugDictionary(userInfo: userInfo))
@@ -47,10 +47,10 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                     throw error
                 }
                 
-                guard let selectedDow = Set( ttsArray[idx].getDaysOfWeek().map { SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
-                      let selectedWom = Set( ttsArray[idx].getWeeksOfMonth().map { SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
-                      let selectedDom = Set( ttsArray[idx].getDaysOfMonth().map { SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
-                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
+                guard let selectedDow = Set( pattern.daysOfWeek.map{ SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
+                      let selectedWom = Set( pattern.weeksOfMonth.map{ SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
+                      let selectedDom = Set( pattern.daysOfMonth.map{ SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
+                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
                                                     "TaskTargetSet" : ttsArray[idx]]
                     let error = ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
                     throw error

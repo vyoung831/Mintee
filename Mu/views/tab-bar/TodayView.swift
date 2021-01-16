@@ -18,7 +18,16 @@ struct TodayView: View {
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     func getLabel() -> String {
-        let daysToToday = date.daysToDate(Date())
+        
+        guard let daysToToday = date.daysToDate(Date()) else {
+            let userInfo: [String : Any] = ["Message" : "TodayView.getLabel() received nil return from call to Date.daysToDate()",
+                                            "date" : date.debugDescription,
+                                            "Date()" : Date().debugDescription,
+                                            "Calendar.current" : Calendar.current.debugDescription]
+            ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
+            return Date.toMDYPresent(date)
+        }
+        
         switch daysToToday {
         case 0:
             return "Today"
