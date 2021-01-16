@@ -50,14 +50,14 @@ class Task_Tests: XCTestCase {
                                                     dom: Set<SaveFormatter.dayOfMonth>([])))
         
         let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
-                        insertInto: CDCoordinator.moc,
-                        name: "Task",
-                        tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                        Tag.getOrCreateTag(tagName: "Tag2")!]),
-                        startDate: startDate, endDate: endDate,
-                        targetSets: [tts])
+                            insertInto: CDCoordinator.moc,
+                            name: "Task",
+                            tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                            Tag.getOrCreateTag(tagName: "Tag2")!]),
+                            startDate: startDate, endDate: endDate,
+                            targetSets: [tts])
         
-        task.deleteSelf()
+        try task.deleteSelf()
         let tasks = try CDCoordinator.moc.fetch(Task.fetchRequest()) as [Task]
         let tags = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         let targetSets = try CDCoordinator.moc.fetch(TaskTargetSet.fetchRequest()) as [TaskTargetSet]
@@ -72,14 +72,14 @@ class Task_Tests: XCTestCase {
      Test that deleteSelf successfully deletes a specific-type Task, its Tags, and its TaskInstances
      */
     func test_deleteSelf_specificTypeTask() throws {
-        let task = Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
-                        insertInto: CDCoordinator.moc,
-                        name: "Task",
-                        tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                        Tag.getOrCreateTag(tagName: "Tag2")!]),
-                        dates: [Date()])
+        let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+                            insertInto: CDCoordinator.moc,
+                            name: "Task",
+                            tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
+                                            Tag.getOrCreateTag(tagName: "Tag2")!]),
+                            dates: [Date()])
         
-        task.deleteSelf()
+        try task.deleteSelf()
         let tasks = try CDCoordinator.moc.fetch(Task.fetchRequest()) as [Task]
         let tags = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         let instances = try CDCoordinator.moc.fetch(TaskInstance.fetchRequest()) as [TaskInstance]

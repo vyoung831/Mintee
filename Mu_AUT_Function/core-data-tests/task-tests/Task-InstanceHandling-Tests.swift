@@ -47,7 +47,7 @@ extension Task_InstanceHandling_Tests {
     // MARK: - Task type updates
     
     func test_updateSpecificInstances_confirmTaskType() throws {
-        task.updateSpecificInstances(dates: [])
+        try task.updateSpecificInstances(dates: [])
         XCTAssert(task._taskType == SaveFormatter.taskTypeToStored(type: .specific))
     }
     
@@ -58,7 +58,7 @@ extension Task_InstanceHandling_Tests {
         let dates: [Date] = [Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!,
                              Calendar.current.date(from: DateComponents(year: 2021, month: 2, day: 1))!,
                              Calendar.current.date(from: DateComponents(year: 2022, month: 3, day: 1))!]
-        task.updateSpecificInstances(dates: dates)
+        try task.updateSpecificInstances(dates: dates)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -227,8 +227,8 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_globalDow() throws {
         
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc)))
+                                          endDate: endDate,
+                                          targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -248,8 +248,8 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_globalWom() throws {
         
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc)))
+                                          endDate: endDate,
+                                          targetSets: Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -269,8 +269,8 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_globalDom() throws {
         
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: Set(arrayLiteral: getDomTargetSet(CDCoordinator.moc)))
+                                          endDate: endDate,
+                                          targetSets: Set(arrayLiteral: getDomTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -295,8 +295,8 @@ extension Task_InstanceHandling_Tests {
         var newDomDates: Set<String> = globalDomDates.subtracting(newWomDates)
         let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: newTargetSets)
+                                          endDate: endDate,
+                                          targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -324,8 +324,8 @@ extension Task_InstanceHandling_Tests {
         var newDomDates: Set<String> = globalDomDates.subtracting(newDowDates)
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: newTargetSets)
+                                          endDate: endDate,
+                                          targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -353,8 +353,8 @@ extension Task_InstanceHandling_Tests {
         var newWomDates: Set<String> = globalWomDates.subtracting(newDowDates)
         let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc))
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: newTargetSets)
+                                          endDate: endDate,
+                                          targetSets: newTargetSets)
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         
         var instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -380,8 +380,8 @@ extension Task_InstanceHandling_Tests {
         
         let newTargetSets: Set<TaskTargetSet> = []
         try task.updateRecurringInstances(startDate: startDate,
-                                      endDate: endDate,
-                                      targetSets: newTargetSets)
+                                          endDate: endDate,
+                                          targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)

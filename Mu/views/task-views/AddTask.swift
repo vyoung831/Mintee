@@ -62,10 +62,9 @@ struct AddTask: View {
             taskTargetSets.append(tts)
         }
         
-        switch self.taskType {
-        case .recurring:
-            
-            do {
+        do {
+            switch self.taskType {
+            case .recurring:
                 let _ =  try Task(entity: Task.entity(),
                                   insertInto: CDCoordinator.moc,
                                   name: self.taskName,
@@ -73,20 +72,21 @@ struct AddTask: View {
                                   startDate: self.startDate,
                                   endDate: self.endDate,
                                   targetSets: Set(taskTargetSets))
-            } catch {
-                self.errorMessage = ErrorManager.unexpectedErrorMessage
-                CDCoordinator.moc.rollback()
-                return false
+                break
+                
+            case .specific:
+                let _ = try Task(entity: Task.entity(),
+                                 insertInto: CDCoordinator.moc,
+                                 name: self.taskName,
+                                 tags: tagObjects,
+                                 dates: self.dates)
+                break
+                
             }
-            
-            break
-        case .specific:
-            let _ = Task(entity: Task.entity(),
-                         insertInto: CDCoordinator.moc,
-                         name: self.taskName,
-                         tags: tagObjects,
-                         dates: self.dates)
-            break
+        } catch {
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
+            return false
         }
         
         do {

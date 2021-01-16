@@ -55,38 +55,39 @@ struct EditTask: View {
         }
         task.updateTags(newTags: tagObjects)
         
-        // Update the Task's taskType, dates, targetSets and instances.
-        switch self.taskType {
-        case .recurring:
-            var taskTargetSets: [TaskTargetSet] = []
-            if self.taskType == .recurring {
-                for i in 0 ..< taskTargetSetViews.count {
-                    let ttsv = taskTargetSetViews[i]
-                    let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            min: ttsv.minTarget,
-                                            max: ttsv.maxTarget,
-                                            minOperator: ttsv.minOperator,
-                                            maxOperator: ttsv.maxOperator,
-                                            priority: Int16(i),
-                                            pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
-                                                                wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
-                                                                dom: Set((ttsv.selectedDaysOfMonth ?? []))))
-                    taskTargetSets.append(tts)
+        do {
+            // Update the Task's taskType, dates, targetSets and instances.
+            switch self.taskType {
+            case .recurring:
+                var taskTargetSets: [TaskTargetSet] = []
+                if self.taskType == .recurring {
+                    for i in 0 ..< taskTargetSetViews.count {
+                        let ttsv = taskTargetSetViews[i]
+                        let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
+                                                insertInto: CDCoordinator.moc,
+                                                min: ttsv.minTarget,
+                                                max: ttsv.maxTarget,
+                                                minOperator: ttsv.minOperator,
+                                                maxOperator: ttsv.maxOperator,
+                                                priority: Int16(i),
+                                                pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                    wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                    dom: Set((ttsv.selectedDaysOfMonth ?? []))))
+                        taskTargetSets.append(tts)
+                    }
                 }
-            }
-            
-            do {
+                
                 try task.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets))
-            } catch {
-                self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
-                return
+                
+                break
+            case .specific:
+                try task.updateSpecificInstances(dates: self.dates)
+                break
             }
-            
-            break
-        case .specific:
-            task.updateSpecificInstances(dates: [])
-            break
+        } catch {
+            self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
+            return
         }
         
         do {
@@ -103,12 +104,13 @@ struct EditTask: View {
     }
     
     private func deleteTask() {
-        task.deleteSelf()
         do {
+            try task.deleteSelf()
             try CDCoordinator.moc.save()
             self.dismiss()
         } catch {
-            self.deleteErrorMessage = "Delete failed"
+            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
         }
     }
     
@@ -137,33 +139,35 @@ struct EditTask: View {
                          If returned count > 0, existing TaskInstances would be deleted, so ConfirmDeletePopup is presented with the closure to call saveTask() if the user confirms deletion
                          Otherwise, no TaskInstances would be deleted and saveTask is called directly
                          */
-                        switch self.taskType {
-                        case .recurring:
-                            // Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
-                            var dayPatterns: Set<DayPattern> = Set()
-                            let newTaskTargetSets: [TaskTargetSetView] = self.taskType == .recurring ? self.taskTargetSetViews : []
-                            for tts in newTaskTargetSets {
-                                
-                                // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
-                                let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? [])),
-                                                    wom: Set((tts.selectedWeeksOfMonth ?? [])),
-                                                    dom: Set((tts.selectedDaysOfMonth ?? [])))
-                                
-                                dayPatterns.insert(dp)
-                            }
+                        do {
                             
-                            // Attempt to get the TaskInstances that would be deleted given the new start date, end date, and target sets.
-                            do {
+                            switch self.taskType {
+                            case .recurring:
+                                // Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
+                                var dayPatterns: Set<DayPattern> = Set()
+                                let newTaskTargetSets: [TaskTargetSetView] = self.taskType == .recurring ? self.taskTargetSetViews : []
+                                for tts in newTaskTargetSets {
+                                    
+                                    // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
+                                    let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? [])),
+                                                        wom: Set((tts.selectedWeeksOfMonth ?? [])),
+                                                        dom: Set((tts.selectedDaysOfMonth ?? [])))
+                                    
+                                    dayPatterns.insert(dp)
+                                }
+                                
+                                // Attempt to get the TaskInstances that would be deleted given the new start date, end date, and target sets.
                                 self.datesToDelete = try self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
-                            } catch {
-                                self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
-                                return
+                                break
+                                
+                            case .specific:
+                                self.datesToDelete = try self.task.getDeltaInstancesSpecific(dates: Set(self.dates))
+                                break
                             }
-                            break
                             
-                        case .specific:
-                            self.datesToDelete = self.task.getDeltaInstancesSpecific(dates: Set(self.dates))
-                            break
+                        } catch {
+                            self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
+                            return
                         }
                         
                         if self.datesToDelete.count > 0 {

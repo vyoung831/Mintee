@@ -49,6 +49,7 @@ struct ErrorManager {
         case attemptedToCreateTagWithEmptyName = 8
         case collectionSizerReceivedTotalWidthTooSmall = 9
         case persistentStoreContainedInvalidData = 10
+        case dateOperationFailed = 11
     }
     
 }
