@@ -166,7 +166,8 @@ extension Task {
             }
         }
         
-        debugDictionary.merge(userInfo, uniquingKeysWith: { return "Task.mergeDebugDictionary found clashing keys.\nValue 1 = \($0)\nValue 2 = \($1)" })
+        debugDictionary.merge(userInfo,
+                              uniquingKeysWith: { return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)" })
         return debugDictionary
         
     }

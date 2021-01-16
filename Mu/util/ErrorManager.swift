@@ -41,6 +41,7 @@ struct ErrorManager {
     /*
      Enum representing the codes of NSErrors that are reported to Crashlytics and thrown to the UI
      - backendFunctionReceivedInvalidInputParameters: A non-UI function received invalid input that should have already been validated
+     - backendInitializerReceivedInvalidInputParameters: A non-UI initializer received invalid input that should have already been validated
      */
     enum NonFatal: Int {
         case bundleIdentifierWasNil = 1
@@ -55,6 +56,7 @@ struct ErrorManager {
         case persistentStoreContainedInvalidData = 10
         case dateOperationFailed = 11
         case backendFunctionReceivedInvalidInputParameters = 12
+        case backendInitializerReceivedInvalidInputParameters = 13
     }
     
 }

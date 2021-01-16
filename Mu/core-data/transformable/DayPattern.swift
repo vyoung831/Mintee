@@ -87,6 +87,29 @@ class DayPattern: NSObject, NSSecureCoding {
     
 }
 
+extension DayPattern {
+    
+    /**
+     Gathers debug descriptions of this DayPattern and its properties.
+     - parameter userInfo: [String : Any] Dictionary containing existing debug info
+     - returns: Dictionary containing existing debug info + debug descriptions of DayPattern
+     */
+    func mergeDebugDictionary(userInfo: [String : Any]) -> [String : Any] {
+        
+        var debugDictionary: [String : Any] = [:]
+        
+        debugDictionary["DayPattern.daysOfWeek"] = self.daysOfWeek
+        debugDictionary["DayPattern.weeksOfMonth"] = self.weeksOfMonth
+        debugDictionary["DayPattern.daysOfMonth"] = self.daysOfMonth
+        debugDictionary["DayPattern.type"] = self.type
+        
+        debugDictionary.merge(userInfo,
+                              uniquingKeysWith: { return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)" })
+        return debugDictionary
+    }
+    
+}
+
 // Subclass from `NSSecureUnarchiveFromDataTransformer`
 @objc(DayPatternTransformer)
 final class DayPatternTransformer: NSSecureUnarchiveFromDataTransformer {

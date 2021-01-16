@@ -39,7 +39,7 @@ public class TaskTargetSet: NSManagedObject {
                      minOperator: SaveFormatter.equalityOperator,
                      maxOperator: SaveFormatter.equalityOperator,
                      priority: Int16,
-                     pattern: DayPattern) {
+                     pattern: DayPattern) throws {
         if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
             self.init(entity: entity, insertInto: context)
             self.minOperator = validatedValues.minOp
@@ -49,8 +49,13 @@ public class TaskTargetSet: NSManagedObject {
             self.priority = priority
             self.pattern = pattern
         } else {
-            Crashlytics.crashlytics().log("An attempt was made to instantiate a TaskTargetSet with invalid data")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() received false from TaskTargetSet.validateOperators()",
+                                            "min" : min,
+                                            "max" : max,
+                                            "minOperator" : minOperator,
+                                            "maxOperator" : maxOperator,
+                                            "priority" : priority]
+            throw ErrorManager.recordNonFatal(.backendInitializerReceivedInvalidInputParameters, pattern.mergeDebugDictionary(userInfo: userInfo))
         }
     }
     

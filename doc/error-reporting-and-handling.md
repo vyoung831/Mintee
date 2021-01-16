@@ -17,11 +17,10 @@ The following definitions are used as such throughout the document:
     * [Base debug objects](#base-debug-objects)
 1. [Crashlytics configurations](#crashlytics-configurations)
 1. [Build versioning](#build-versioning)
-    * [Notes](#build-versioning-notes)
 
 # Failure handling
 In Mu, all failures must be handled by the UI and [reported to Crashlytics](#error-reporting).  
-The following table specifies how failable functions in the UI can be notified of failure and which object/struct is responsible for reporting to Crashlytics.
+The following table specifies how the UI can be notified of failures in other parts of Mu and which object/struct is responsible for reporting to Crashlytics.
 | How UI is notified of failure | Object/struct responsible for reporting |
 |-|-|
 | [Receives nil return value when expecting non-nil](#returning-optionals) | UI |
@@ -59,6 +58,7 @@ Based on the error reporting responsibility defined in [failure handling](#failu
 
 ## Base debug objects
 When a Core Data entity from persistent store is found to have data that violates business logic, error reporting must, in addition to reporting debug data that is relevant to the failure, use APIs provided by certain entities (base objects) to report an additional standard set of persistent store debug data.  
+If the base debug object is unavailable (ex. failure occurs in a Core Data initializer)
 The following table specifies base objects for each of Mu's model objects.
 | Core Data entity | Is base object? | Base debug object |
 |-|-|-|
@@ -91,6 +91,6 @@ Mu generates and updates the app's build version everytime the project is archiv
         1. The current epoch is taken and converted to minutes (8 characters until 2160).
         1. The bundle version is constructed using the format `<decimalized-short-commit>.<epoch-minutes>`, satisfying the 18-character limit of `CFBundleVersion`.
 
-## Build versioning notes
+__Note__
 * Properties in `Info.plist` are updated every time for builds using the `Release` build configuration. XCode actions that use the `Debug` build configuration - such as `Build`, `Run`, `Test`, and `Analyze` - require a full build for the built product to include updated version numbers.
 * For builds using the `Release` configuration, the `Check Git changes` build phase of `Versions` is used to verify that the current branch is up-to-date with and tracking from `master`, with no merge conflicts or uncommitted changes.

@@ -47,24 +47,24 @@ struct AddTask: View {
         }
         
         var taskTargetSets: [TaskTargetSet] = []
-        for i in 0 ..< taskTargetSetViews.count {
-            let ttsv = taskTargetSetViews[i]
-            let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
-                                    insertInto: CDCoordinator.moc,
-                                    min: ttsv.minTarget,
-                                    max: ttsv.maxTarget,
-                                    minOperator: ttsv.minOperator,
-                                    maxOperator: ttsv.maxOperator,
-                                    priority: Int16(i),
-                                    pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
-                                                        wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
-                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []))))
-            taskTargetSets.append(tts)
-        }
         
         do {
+            
             switch self.taskType {
             case .recurring:
+                
+                for i in 0 ..< taskTargetSetViews.count {
+                    let ttsv = taskTargetSetViews[i]
+                    let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: CDCoordinator.moc,
+                                                min: ttsv.minTarget, max: ttsv.maxTarget,
+                                                minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
+                                                priority: Int16(i),
+                                                pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                    wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                    dom: Set((ttsv.selectedDaysOfMonth ?? []))))
+                    taskTargetSets.append(tts)
+                }
+                
                 let _ =  try Task(entity: Task.entity(),
                                   insertInto: CDCoordinator.moc,
                                   name: self.taskName,
