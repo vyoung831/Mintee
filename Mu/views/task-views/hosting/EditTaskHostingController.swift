@@ -115,8 +115,8 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             
             var dates: [Date] = []
             guard let instances = task._instances else {
-                Crashlytics.crashlytics().log("EditTaskHostingController attempted to present a specific Task that had nil instances")
-                fatalError()
+                let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.init() found nil in specific-type Task's _instances"]
+                throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
             }
             for case let instance as TaskInstance in instances {
                 
