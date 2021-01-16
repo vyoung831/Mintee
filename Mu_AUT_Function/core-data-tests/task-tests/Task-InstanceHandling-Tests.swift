@@ -228,7 +228,7 @@ extension Task_InstanceHandling_Tests {
         
         try task.updateRecurringInstances(startDate: startDate,
                                           endDate: endDate,
-                                          targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc)))
+                                          targetSets: Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -249,7 +249,7 @@ extension Task_InstanceHandling_Tests {
         
         try task.updateRecurringInstances(startDate: startDate,
                                           endDate: endDate,
-                                          targetSets: Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc)))
+                                          targetSets: Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -270,7 +270,7 @@ extension Task_InstanceHandling_Tests {
         
         try task.updateRecurringInstances(startDate: startDate,
                                           endDate: endDate,
-                                          targetSets: Set(arrayLiteral: getDomTargetSet(CDCoordinator.moc)))
+                                          targetSets: Set(arrayLiteral: try getDomTargetSet(CDCoordinator.moc)))
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         let instances = try CDCoordinator.moc.fetch(instancesFetchRequest)
@@ -293,7 +293,7 @@ extension Task_InstanceHandling_Tests {
         
         var newWomDates: Set<String> = globalWomDates
         var newDomDates: Set<String> = globalDomDates.subtracting(newWomDates)
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         try task.updateRecurringInstances(startDate: startDate,
                                           endDate: endDate,
                                           targetSets: newTargetSets)
@@ -322,7 +322,7 @@ extension Task_InstanceHandling_Tests {
         
         var newDowDates: Set<String> = globalDowDates
         var newDomDates: Set<String> = globalDomDates.subtracting(newDowDates)
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         try task.updateRecurringInstances(startDate: startDate,
                                           endDate: endDate,
                                           targetSets: newTargetSets)
@@ -351,7 +351,7 @@ extension Task_InstanceHandling_Tests {
         
         var newDowDates: Set<String> = globalDowDates
         var newWomDates: Set<String> = globalWomDates.subtracting(newDowDates)
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc))
         try task.updateRecurringInstances(startDate: startDate,
                                           endDate: endDate,
                                           targetSets: newTargetSets)
@@ -397,17 +397,17 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addHighPriorityDow() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
         var newDowDates: Set<String> = Set(["2019-11-04", "2019-11-11", "2019-11-18", "2019-11-25", "2019-12-02", "2019-12-09", "2019-12-16", "2019-12-23", "2019-12-30", "2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28", "2021-01-04", "2021-01-11", "2021-01-18", "2021-01-25", "2021-02-01", "2021-02-08", "2021-02-15", "2021-02-22", "2021-03-01"]
         )
         var oldDowDates: Set<String> = globalDowDates.subtracting(newDowDates)
         var oldWomDates: Set<String> = globalWomDates.subtracting(oldDowDates).subtracting(newDowDates)
         var oldDomDates: Set<String> = globalDomDates.subtracting(oldWomDates).subtracting(oldDowDates).subtracting(newDowDates)
         
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc), newDowSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -445,10 +445,10 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addSecondPriorityDow() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 4,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 4,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
         
         var oldDowDates: Set<String> = globalDowDates
         var newDowDates: Set<String> = Set(["2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28"]
@@ -456,7 +456,7 @@ extension Task_InstanceHandling_Tests {
         var oldWomDates: Set<String> = globalWomDates.subtracting(newDowDates).subtracting(oldDowDates)
         var oldDomDates: Set<String> = globalDomDates.subtracting(oldWomDates).subtracting(newDowDates).subtracting(oldDowDates)
         
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc), newDowSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -494,10 +494,10 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addThirdPriorityDow() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 7,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 7,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
         
         var oldDowDates: Set<String> = globalDowDates
         var oldWomDates: Set<String> = globalWomDates.subtracting(oldDowDates)
@@ -505,7 +505,7 @@ extension Task_InstanceHandling_Tests {
         ).subtracting(oldWomDates).subtracting(oldDowDates)
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDowDates).subtracting(oldWomDates).subtracting(oldDowDates)
         
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc), newDowSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -543,10 +543,10 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addLowPriorityDow() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 7,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 7,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
         
         var oldDowDates: Set<String> = globalDowDates
         var oldWomDates: Set<String> = globalWomDates.subtracting(oldDowDates)
@@ -554,7 +554,7 @@ extension Task_InstanceHandling_Tests {
         var newDowDates: Set<String> = Set(["2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28"]
         ).subtracting(oldDomDates).subtracting(oldWomDates).subtracting(oldDowDates)
         
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowSet)
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc), newDowSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -592,18 +592,18 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addDomWomDowHigh() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100; let newWomMin = womMin + 100; let newWomMax = womMax + 100; let newDomMin = domMin + 100; let newDomMax = domMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 7,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
-        let newWomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newWomMin, max: newWomMax, minOperator: .lt, maxOperator: .lt, priority: 4,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
-        let newDomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDomMin, max: newDomMax, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                      pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 7,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newWomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newWomMin, max: newWomMax, minOperator: .lt, maxOperator: .lt, priority: 4,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
+        let newDomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDomMin, max: newDomMax, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                          pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
         
         var newDomDates: Set<String> = Set(["2019-11-03", "2019-11-06", "2019-11-09", "2019-11-12", "2019-11-15", "2019-11-18", "2019-11-21", "2019-11-24", "2019-11-27", "2019-11-30", "2019-12-03", "2019-12-06", "2019-12-09", "2019-12-12", "2019-12-15", "2019-12-18", "2019-12-21", "2019-12-24", "2019-12-27", "2019-12-30", "2020-01-03", "2020-01-06", "2020-01-09", "2020-01-12", "2020-01-15", "2020-01-18", "2020-01-21", "2020-01-24", "2020-01-27", "2020-01-30", "2020-02-03", "2020-02-06", "2020-02-09", "2020-02-12", "2020-02-15", "2020-02-18", "2020-02-21", "2020-02-24", "2020-02-27", "2020-03-03", "2020-03-06", "2020-03-09", "2020-03-12", "2020-03-15", "2020-03-18", "2020-03-21", "2020-03-24", "2020-03-27", "2020-03-30", "2020-04-03", "2020-04-06", "2020-04-09", "2020-04-12", "2020-04-15", "2020-04-18", "2020-04-21", "2020-04-24", "2020-04-27", "2020-04-30", "2020-05-03", "2020-05-06", "2020-05-09", "2020-05-12", "2020-05-15", "2020-05-18", "2020-05-21", "2020-05-24", "2020-05-27", "2020-05-30", "2020-06-03", "2020-06-06", "2020-06-09", "2020-06-12", "2020-06-15", "2020-06-18", "2020-06-21", "2020-06-24", "2020-06-27", "2020-06-30", "2020-07-03", "2020-07-06", "2020-07-09", "2020-07-12", "2020-07-15", "2020-07-18", "2020-07-21", "2020-07-24", "2020-07-27", "2020-07-30", "2020-08-03", "2020-08-06", "2020-08-09", "2020-08-12", "2020-08-15", "2020-08-18", "2020-08-21", "2020-08-24", "2020-08-27", "2020-08-30", "2020-09-03", "2020-09-06", "2020-09-09", "2020-09-12", "2020-09-15", "2020-09-18", "2020-09-21", "2020-09-24", "2020-09-27", "2020-09-30", "2020-10-03", "2020-10-06", "2020-10-09", "2020-10-12", "2020-10-15", "2020-10-18", "2020-10-21", "2020-10-24", "2020-10-27", "2020-10-30", "2020-11-03", "2020-11-06", "2020-11-09", "2020-11-12", "2020-11-15", "2020-11-18", "2020-11-21", "2020-11-24", "2020-11-27", "2020-11-30", "2020-12-03", "2020-12-06", "2020-12-09", "2020-12-12", "2020-12-15", "2020-12-18", "2020-12-21", "2020-12-24", "2020-12-27", "2020-12-30", "2021-01-03", "2021-01-06", "2021-01-09", "2021-01-12", "2021-01-15", "2021-01-18", "2021-01-21", "2021-01-24", "2021-01-27", "2021-01-30", "2021-02-03", "2021-02-06", "2021-02-09", "2021-02-12", "2021-02-15", "2021-02-18", "2021-02-21", "2021-02-24", "2021-02-27"]
         )
@@ -615,7 +615,7 @@ extension Task_InstanceHandling_Tests {
         ).subtracting(oldWomDates).subtracting(newWomDates).subtracting(oldDowDates).subtracting(newDomDates)
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDowDates).subtracting(oldWomDates).subtracting(newWomDates).subtracting(oldDowDates).subtracting(newDomDates)
         
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc),try getWomTargetSet(CDCoordinator.moc),try getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -662,18 +662,18 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addWomDowDomHigh() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100; let newWomMin = womMin + 100; let newWomMax = womMax + 100; let newDomMin = domMin + 100; let newDomMax = domMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 4,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
-        let newWomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newWomMin, max: newWomMax, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
-        let newDomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDomMin, max: newDomMax, minOperator: .lt, maxOperator: .lt, priority: 7,
-                                      pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 4,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newWomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newWomMin, max: newWomMax, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
+        let newDomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDomMin, max: newDomMax, minOperator: .lt, maxOperator: .lt, priority: 7,
+                                          pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
         
         var newWomDates: Set<String> = Set(["2019-11-01", "2019-11-04", "2019-11-15", "2019-11-18", "2019-11-25", "2019-11-29", "2019-12-02", "2019-12-06", "2019-12-16", "2019-12-20", "2019-12-27", "2019-12-30", "2020-01-03", "2020-01-06", "2020-01-17", "2020-01-20", "2020-01-27", "2020-01-31", "2020-02-03", "2020-02-07", "2020-02-17", "2020-02-21", "2020-02-24", "2020-02-28", "2020-03-02", "2020-03-06", "2020-03-16", "2020-03-20", "2020-03-27", "2020-03-30", "2020-04-03", "2020-04-06", "2020-04-17", "2020-04-20", "2020-04-24", "2020-04-27", "2020-05-01", "2020-05-04", "2020-05-15", "2020-05-18", "2020-05-25", "2020-05-29", "2020-06-01", "2020-06-05", "2020-06-15", "2020-06-19", "2020-06-26", "2020-06-29", "2020-07-03", "2020-07-06", "2020-07-17", "2020-07-20", "2020-07-27", "2020-07-31", "2020-08-03", "2020-08-07", "2020-08-17", "2020-08-21", "2020-08-28", "2020-08-31", "2020-09-04", "2020-09-07", "2020-09-18", "2020-09-21", "2020-09-25", "2020-09-28", "2020-10-02", "2020-10-05", "2020-10-16", "2020-10-19", "2020-10-26", "2020-10-30", "2020-11-02", "2020-11-06", "2020-11-16", "2020-11-20", "2020-11-27", "2020-11-30", "2020-12-04", "2020-12-07", "2020-12-18", "2020-12-21", "2020-12-25", "2020-12-28", "2021-01-01", "2021-01-04", "2021-01-15", "2021-01-18", "2021-01-25", "2021-01-29", "2021-02-01", "2021-02-05", "2021-02-15", "2021-02-19", "2021-02-22", "2021-02-26", "2021-03-01"]
         )
@@ -685,7 +685,7 @@ extension Task_InstanceHandling_Tests {
         ).subtracting(oldWomDates).subtracting(newDowDates).subtracting(oldDowDates).subtracting(newWomDates)
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDomDates).subtracting(oldWomDates).subtracting(newDowDates).subtracting(oldDowDates).subtracting(newWomDates)
         
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc),try getWomTargetSet(CDCoordinator.moc),try getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
@@ -734,18 +734,18 @@ extension Task_InstanceHandling_Tests {
     func test_updateRecurringInstances_addWomDowDom_deleteDow() throws {
         
         let newDowMin = dowMin + 100; let newDowMax = dowMax + 100; let newWomMin = womMin + 100; let newWomMax = womMax + 100; let newDomMin = domMin + 100; let newDomMax = domMax + 100
-        let newDowSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 1,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
-        let newWomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newWomMin, max: newWomMax, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
-        let newDomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: newDomMin, max: newDomMax, minOperator: .lt, maxOperator: .lt, priority: 7,
-                                      pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
+        let newDowSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDowMin, max: newDowMax, minOperator: .lt, maxOperator: .lt, priority: 1,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newWomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newWomMin, max: newWomMax, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
+        let newDomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: newDomMin, max: newDomMax, minOperator: .lt, maxOperator: .lt, priority: 7,
+                                          pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
         
         var newWomDates: Set<String> = Set(["2019-11-01", "2019-11-04", "2019-11-15", "2019-11-18", "2019-11-25", "2019-11-29", "2019-12-02", "2019-12-06", "2019-12-16", "2019-12-20", "2019-12-27", "2019-12-30", "2020-01-03", "2020-01-06", "2020-01-17", "2020-01-20", "2020-01-27", "2020-01-31", "2020-02-03", "2020-02-07", "2020-02-17", "2020-02-21", "2020-02-24", "2020-02-28", "2020-03-02", "2020-03-06", "2020-03-16", "2020-03-20", "2020-03-27", "2020-03-30", "2020-04-03", "2020-04-06", "2020-04-17", "2020-04-20", "2020-04-24", "2020-04-27", "2020-05-01", "2020-05-04", "2020-05-15", "2020-05-18", "2020-05-25", "2020-05-29", "2020-06-01", "2020-06-05", "2020-06-15", "2020-06-19", "2020-06-26", "2020-06-29", "2020-07-03", "2020-07-06", "2020-07-17", "2020-07-20", "2020-07-27", "2020-07-31", "2020-08-03", "2020-08-07", "2020-08-17", "2020-08-21", "2020-08-28", "2020-08-31", "2020-09-04", "2020-09-07", "2020-09-18", "2020-09-21", "2020-09-25", "2020-09-28", "2020-10-02", "2020-10-05", "2020-10-16", "2020-10-19", "2020-10-26", "2020-10-30", "2020-11-02", "2020-11-06", "2020-11-16", "2020-11-20", "2020-11-27", "2020-11-30", "2020-12-04", "2020-12-07", "2020-12-18", "2020-12-21", "2020-12-25", "2020-12-28", "2021-01-01", "2021-01-04", "2021-01-15", "2021-01-18", "2021-01-25", "2021-01-29", "2021-02-01", "2021-02-05", "2021-02-15", "2021-02-19", "2021-02-22", "2021-02-26", "2021-03-01"]
         )
@@ -756,7 +756,7 @@ extension Task_InstanceHandling_Tests {
         ).subtracting(oldWomDates).subtracting(newDowDates).subtracting(newWomDates)
         var oldDomDates: Set<String> = globalDomDates.subtracting(newDomDates).subtracting(oldWomDates).subtracting(newDowDates).subtracting(newWomDates)
         
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc),try getDomTargetSet(CDCoordinator.moc),newDowSet,newWomSet,newDomSet)
         try task.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: newTargetSets)
         
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()

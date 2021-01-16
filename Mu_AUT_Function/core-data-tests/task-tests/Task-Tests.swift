@@ -43,11 +43,11 @@ class Task_Tests: XCTestCase {
     func test_deleteSelf_recurringTypeTask() throws {
         let startDate = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2019, month: 3, day: 1))!
-        let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                insertInto: CDCoordinator.moc, min: 0, max: 3, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .tuesday, . monday, .wednesday, .thursday, .friday]),
-                                                    wom: Set<SaveFormatter.weekOfMonth>([]),
-                                                    dom: Set<SaveFormatter.dayOfMonth>([])))
+        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                    insertInto: CDCoordinator.moc, min: 0, max: 3, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                    pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .tuesday, . monday, .wednesday, .thursday, .friday]),
+                                                        wom: Set<SaveFormatter.weekOfMonth>([]),
+                                                        dom: Set<SaveFormatter.dayOfMonth>([])))
         
         let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                             insertInto: CDCoordinator.moc,

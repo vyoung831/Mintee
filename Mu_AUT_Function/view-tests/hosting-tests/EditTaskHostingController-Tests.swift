@@ -16,14 +16,14 @@ class EditTaskHostingController_Tests: XCTestCase {
     let dowMin: Float = 1, dowMax: Float = 2
     
     let daysOfWeek: Set<SaveFormatter.dayOfWeek> = Set(arrayLiteral: .sunday, .monday, .tuesday, .friday)
-    func getDowTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
+    func getDowTargetSet(_ moc: NSManagedObjectContext) throws -> TaskTargetSet {
         let dowPattern = DayPattern(dow: daysOfWeek, wom: Set<SaveFormatter.weekOfMonth>(), dom: Set<SaveFormatter.dayOfMonth>())
-        return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
-                             insertInto: moc,
-                             min: dowMin, max: dowMax,
-                             minOperator: .lt, maxOperator: .lt,
-                             priority: 3,
-                             pattern: dowPattern)
+        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+                                 insertInto: moc,
+                                 min: dowMin, max: dowMax,
+                                 minOperator: .lt, maxOperator: .lt,
+                                 priority: 3,
+                                 pattern: dowPattern)
     }
     
     override func setUpWithError() throws {
@@ -42,7 +42,7 @@ extension EditTaskHostingController_Tests {
     
     func test_extractTTSVArray() throws {
         
-        let targetSets: Set<TaskTargetSet> = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc))
+        let targetSets: Set<TaskTargetSet> = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc))
         let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                             insertInto: CDCoordinator.moc,
                             name: "Name",

@@ -14,40 +14,40 @@ class Task_InstanceHandling_Tests_Util {
     
     static let dowMin: Float = 1, dowMax: Float = 2, womMin: Float = 3, womMax: Float = 4, domMin: Float = 5, domMax: Float = 6
     
-    static func getDowTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
+    static func getDowTargetSet(_ moc: NSManagedObjectContext) throws -> TaskTargetSet {
         let dowPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .monday, .tuesday, .friday]),
                                     wom: Set<SaveFormatter.weekOfMonth>(),
                                     dom: Set<SaveFormatter.dayOfMonth>())
-        return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
-                             insertInto: moc,
-                             min: dowMin, max: dowMax,
-                             minOperator: .lt, maxOperator: .lt,
-                             priority: 3,
-                             pattern: dowPattern)
+        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+                                 insertInto: moc,
+                                 min: dowMin, max: dowMax,
+                                 minOperator: .lt, maxOperator: .lt,
+                                 priority: 3,
+                                 pattern: dowPattern)
     }
     
-    static func getWomTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
+    static func getWomTargetSet(_ moc: NSManagedObjectContext) throws -> TaskTargetSet {
         let womPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .wednesday]),
                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                     dom: Set<SaveFormatter.dayOfMonth>())
-        return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
-                             insertInto: moc,
-                             min: womMin, max: womMax,
-                             minOperator: .lt, maxOperator: .lt,
-                             priority: 6,
-                             pattern: womPattern)
+        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+                                 insertInto: moc,
+                                 min: womMin, max: womMax,
+                                 minOperator: .lt, maxOperator: .lt,
+                                 priority: 6,
+                                 pattern: womPattern)
     }
     
-    static func getDomTargetSet(_ moc: NSManagedObjectContext) -> TaskTargetSet {
+    static func getDomTargetSet(_ moc: NSManagedObjectContext) throws -> TaskTargetSet {
         let domPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
                                     wom: Set<SaveFormatter.weekOfMonth>(),
                                     dom: Set<SaveFormatter.dayOfMonth>([.last, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten]))
-        return TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
-                             insertInto: moc,
-                             min: domMin, max: domMax,
-                             minOperator: .lt, maxOperator: .lt,
-                             priority: 9,
-                             pattern: domPattern)
+        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+                                 insertInto: moc,
+                                 min: domMin, max: domMax,
+                                 minOperator: .lt, maxOperator: .lt,
+                                 priority: 9,
+                                 pattern: domPattern)
     }
     
     /*

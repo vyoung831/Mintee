@@ -121,7 +121,7 @@ extension Task_InstanceDelta_Tests {
         
         let newWomDates: Set<String> = globalWomDates
         let newDomDates: Set<String> = globalDomDates.subtracting(newWomDates)
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         
         var delta = Set(try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newWomDates).subtracting(newDomDates)
@@ -139,7 +139,7 @@ extension Task_InstanceDelta_Tests {
         
         let newDowDates: Set<String> = globalDowDates
         let newDomDates: Set<String> = globalDomDates.subtracting(newDowDates)
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         
         var delta = Set(try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newDowDates).subtracting(newDomDates)
@@ -157,7 +157,7 @@ extension Task_InstanceDelta_Tests {
         
         let newDowDates: Set<String> = globalDowDates
         let newWomDates: Set<String> = globalWomDates.subtracting(newDowDates)
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc))
         
         var delta = Set(try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!})).map{Date.toYMDTest($0)})
         var expectedDelta = (globalDowDates.union(globalWomDates).union(globalDomDates)).subtracting(newDowDates).subtracting(newWomDates)
@@ -195,13 +195,13 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_addTTS() throws {
         
         let newDowDatesMin = dowMin + 100; let newDowDatesMax = dowMax + 100
-        let newDowDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                           insertInto: CDCoordinator.moc,
-                                           min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                           pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]),
-                                                               wom: Set(),
-                                                               dom: Set()))
-        let newTargetSets = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), getDomTargetSet(CDCoordinator.moc), newDowDatesSet)
+        let newDowDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                               insertInto: CDCoordinator.moc,
+                                               min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                               pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]),
+                                                                   wom: Set(),
+                                                                   dom: Set()))
+        let newTargetSets = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc), try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc), newDowDatesSet)
         
         let delta = try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!})).map{Date.toYMDTest($0)}
         XCTAssert(delta.count == 0)
@@ -217,18 +217,18 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_addWomDowDom_deleteDow() throws {
         
         let newDowDatesMin = dowMin + 100; let newDowDatesMax = dowMax + 100; let newWomDatesMin = womMin + 100; let newWomDatesMax = womMax + 100; let newDomDatesMin = domMin + 100; let newDomDatesMax = domMax + 100
-        let newDowDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                           insertInto: CDCoordinator.moc,
-                                           min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 1,
-                                           pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
-        let newWomDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                           insertInto: CDCoordinator.moc,
-                                           min: newWomDatesMin, max: newWomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
-                                           pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
-        let newDomDatesSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                           insertInto: CDCoordinator.moc,
-                                           min: newDomDatesMin, max: newDomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 7,
-                                           pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
+        let newDowDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                               insertInto: CDCoordinator.moc,
+                                               min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 1,
+                                               pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
+        let newWomDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                               insertInto: CDCoordinator.moc,
+                                               min: newWomDatesMin, max: newWomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                               pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
+        let newDomDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                               insertInto: CDCoordinator.moc,
+                                               min: newDomDatesMin, max: newDomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 7,
+                                               pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))
         
         let newWomDates: Set<String> = Set(["2019-11-04", "2019-11-11", "2019-11-18", "2019-11-25", "2019-12-02", "2019-12-09", "2019-12-16", "2019-12-23", "2019-12-30", "2020-01-06", "2020-01-13", "2020-01-20", "2020-01-27", "2020-02-03", "2020-02-10", "2020-02-17", "2020-02-24", "2020-03-02", "2020-03-09", "2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06", "2020-04-13", "2020-04-20", "2020-04-27", "2020-05-04", "2020-05-11", "2020-05-18", "2020-05-25", "2020-06-01", "2020-06-08", "2020-06-15", "2020-06-22", "2020-06-29", "2020-07-06", "2020-07-13", "2020-07-20", "2020-07-27", "2020-08-03", "2020-08-10", "2020-08-17", "2020-08-24", "2020-08-31", "2020-09-07", "2020-09-14", "2020-09-21", "2020-09-28", "2020-10-05", "2020-10-12", "2020-10-19", "2020-10-26", "2020-11-02", "2020-11-09", "2020-11-16", "2020-11-23", "2020-11-30", "2020-12-07", "2020-12-14", "2020-12-21", "2020-12-28", "2021-01-04", "2021-01-11", "2021-01-18", "2021-01-25", "2021-02-01", "2021-02-08", "2021-02-15", "2021-02-22", "2021-03-01"]
         )
@@ -239,7 +239,7 @@ extension Task_InstanceDelta_Tests {
         ).subtracting(oldWomDates).subtracting(newDowDates).subtracting(newWomDates)
         let oldDomDates: Set<String> = globalDomDates.subtracting(newDomDates).subtracting(oldWomDates).subtracting(newDowDates).subtracting(newWomDates)
         
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc),newDowDatesSet,newWomDatesSet,newDomDatesSet)
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc),try getDomTargetSet(CDCoordinator.moc),newDowDatesSet,newWomDatesSet,newDomDatesSet)
         var delta = Set(try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!})).map{Date.toYMDTest($0)})
         let datesStillExisting = newWomDates.union(newDowDates).union(oldWomDates).union(newDomDates).union(oldDomDates)
         var expectedDelta = globalDowDates.subtracting( datesStillExisting )

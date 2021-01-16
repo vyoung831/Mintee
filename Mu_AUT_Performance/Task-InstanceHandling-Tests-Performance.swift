@@ -45,7 +45,7 @@ extension Task_InstanceHandling_Tests_Performance {
     
     // MARK: - Date change tests
     
-    func testPerformance_updateRecurringInstances_performance_oneYearToFiveYears() {
+    func testPerformance_updateRecurringInstances_performance_oneYearToFiveYears() throws {
         let newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         self.measure {
             do {
@@ -56,7 +56,7 @@ extension Task_InstanceHandling_Tests_Performance {
         }
     }
     
-    func testPerformance_updateRecurringInstances_performance_oneYearToTenYears() {
+    func testPerformance_updateRecurringInstances_performance_oneYearToTenYears() throws {
         let newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
         self.measure {
             do {
@@ -67,7 +67,7 @@ extension Task_InstanceHandling_Tests_Performance {
         }
     }
     
-    func testPerformance_updateRecurringInstances_performance_fiveYearsToTenYears() {
+    func testPerformance_updateRecurringInstances_performance_fiveYearsToTenYears() throws {
         var newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         XCTAssertNoThrow( try task.updateRecurringInstances(startDate: startDate, endDate: newEnd) )
         
@@ -82,7 +82,7 @@ extension Task_InstanceHandling_Tests_Performance {
         
     }
     
-    func testPerformance_updateRecurringInstances_performance_fiveYearsToTwentyFiveYears() {
+    func testPerformance_updateRecurringInstances_performance_fiveYearsToTwentyFiveYears() throws {
         var newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         XCTAssertNoThrow( try task.updateRecurringInstances(startDate: startDate, endDate: newEnd) )
         
@@ -96,7 +96,7 @@ extension Task_InstanceHandling_Tests_Performance {
         }
     }
     
-    func testPerformance_updateRecurringInstances_performance_tenYearsToTwentyFiveYears() {
+    func testPerformance_updateRecurringInstances_performance_tenYearsToTwentyFiveYears() throws {
         var newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
         XCTAssertNoThrow( try task.updateRecurringInstances(startDate: startDate, endDate: newEnd) )
         
@@ -112,11 +112,11 @@ extension Task_InstanceHandling_Tests_Performance {
     
     // MARK: - TTS deletion tests
     
-    func testPerformance_updateRecurringInstances_performance_fiveYears_twoTTS() {
+    func testPerformance_updateRecurringInstances_performance_fiveYears_twoTTS() throws {
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let newEnd = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!
         
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         self.measure {
             do {
                 try task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
@@ -126,11 +126,11 @@ extension Task_InstanceHandling_Tests_Performance {
         }
     }
     
-    func testPerformance_updateRecurringInstances_performance_tenYears_twoTTS() {
+    func testPerformance_updateRecurringInstances_performance_tenYears_twoTTS() throws {
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let newEnd = Calendar.current.date(from: DateComponents(year: 2030, month: 1, day: 1))!
         
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         self.measure {
             do {
                 try task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
@@ -140,11 +140,11 @@ extension Task_InstanceHandling_Tests_Performance {
         }
     }
     
-    func testPerformance_updateRecurringInstances_performance_twentyFiveYears_twoTTS() {
+    func testPerformance_updateRecurringInstances_performance_twentyFiveYears_twoTTS() throws {
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
         
-        let newTargetSets = Set(arrayLiteral: getWomTargetSet(CDCoordinator.moc),getDomTargetSet(CDCoordinator.moc))
+        let newTargetSets = Set(arrayLiteral: try getWomTargetSet(CDCoordinator.moc), try getDomTargetSet(CDCoordinator.moc))
         self.measure {
             do {
                 try task.updateRecurringInstances(startDate: newStart, endDate: newEnd, targetSets: newTargetSets)
@@ -157,20 +157,21 @@ extension Task_InstanceHandling_Tests_Performance {
     /**
      Test updateRecurringInstances with 3 TTSes and every day selected in the dom TTS
      */
-    func testPerformance_updateRecurringInstances_performance_twentyFiveYears_threeTTS_fullDom() {
+    func testPerformance_updateRecurringInstances_performance_twentyFiveYears_threeTTS_fullDom() throws {
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
         
-        let newDomSet = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
-                                      insertInto: CDCoordinator.moc,
-                                      min: 0, max: 1, minOperator: .lt, maxOperator: .lt, priority: 9,
-                                      pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
-                                                          wom: Set<SaveFormatter.weekOfMonth>(),
-                                                          dom: Set<SaveFormatter.dayOfMonth>([.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten,
-                                                                                              .eleven, .twelve, .thirteen, .fourteen, .fifteen, .sixteen, .seventeen, .eighteen, .nineteen, .twenty,
-                                                                                              .twenty_one, .twenty_two, .twenty_three, .twenty_four, .twenty_five, .twenty_six, .twenty_seven, .twenty_eight, .twenty_nine, .thirty,
-                                                                                              .thirty_one])))
-        let newTargetSets: Set<TaskTargetSet> = Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc), getWomTargetSet(CDCoordinator.moc), newDomSet)
+        let newDomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+                                          insertInto: CDCoordinator.moc,
+                                          min: 0, max: 1, minOperator: .lt, maxOperator: .lt, priority: 9,
+                                          pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
+                                                              wom: Set<SaveFormatter.weekOfMonth>(),
+                                                              dom: Set<SaveFormatter.dayOfMonth>([.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten,
+                                                                                                  .eleven, .twelve, .thirteen, .fourteen, .fifteen, .sixteen, .seventeen, .eighteen, .nineteen, .twenty,
+                                                                                                  .twenty_one, .twenty_two, .twenty_three, .twenty_four, .twenty_five, .twenty_six, .twenty_seven, .twenty_eight, .twenty_nine, .thirty,
+                                                                                                  .thirty_one])))
+        let newTargetSets: Set<TaskTargetSet> = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc),
+                                                    try getWomTargetSet(CDCoordinator.moc), newDomSet)
         
         self.measure {
             do {
