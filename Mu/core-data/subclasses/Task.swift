@@ -500,9 +500,9 @@ extension Task {
         while dateCounter.lessThanOrEqualToDate(endDate) {
             
             for idx in 0 ..< sortedTargetSets.count {
-                if sortedTargetSets[idx].checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
-                                                  weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
-                                                  daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
+                if try sortedTargetSets[idx].checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
+                                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
+                                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from this Task's instances or a new one in the MOC
                     let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))

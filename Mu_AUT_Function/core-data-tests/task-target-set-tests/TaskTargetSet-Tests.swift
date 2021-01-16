@@ -28,95 +28,95 @@ class TaskTargetSet_Tests: XCTestCase {
     
     // MARK: - checkDay tests
     
-    func test_checkDay_dow() {
+    func test_checkDay_dow() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .tuesday, .thursday, .saturday]),
                                                     wom: Set([]),
                                                     dom: Set([])))
-        XCTAssert(tts.checkDay(day: 5, weekday: 3, daysInMonth: 30))
-        XCTAssertFalse(tts.checkDay(day: 3, weekday: 2, daysInMonth: 30))
+        XCTAssert(try tts.checkDay(day: 5, weekday: 3, daysInMonth: 30))
+        XCTAssertFalse(try tts.checkDay(day: 3, weekday: 2, daysInMonth: 30))
     }
     
-    func test_checkDay_wom_rightWeekday_wrongWeek() {
+    func test_checkDay_wom_rightWeekday_wrongWeek() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
                                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
-        XCTAssertFalse(tts.checkDay(day: 8, weekday: 7, daysInMonth: 31))
+        XCTAssertFalse(try tts.checkDay(day: 8, weekday: 7, daysInMonth: 31))
     }
     
-    func test_checkDay_wom_rightWeekday_rightWeek() {
+    func test_checkDay_wom_rightWeekday_rightWeek() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
                                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
-        XCTAssert(tts.checkDay(day: 15, weekday: 7, daysInMonth: 31))
+        XCTAssert(try tts.checkDay(day: 15, weekday: 7, daysInMonth: 31))
     }
     
-    func test_checkDay_wom_wrongWeekday_wrongWeek() {
+    func test_checkDay_wom_wrongWeekday_wrongWeek() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
                                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
-        XCTAssertFalse(tts.checkDay(day: 8, weekday: 6, daysInMonth: 31))
+        XCTAssertFalse(try tts.checkDay(day: 8, weekday: 6, daysInMonth: 31))
     }
     
-    func test_checkDay_wom_wrongWeekday_rightWeek() {
+    func test_checkDay_wom_wrongWeekday_rightWeek() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
                                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
-        XCTAssertFalse(tts.checkDay(day: 1, weekday: 6, daysInMonth: 31))
+        XCTAssertFalse(try tts.checkDay(day: 1, weekday: 6, daysInMonth: 31))
     }
     
     /**
      Test that even though the weekday is the 4th of the month, checkDay returns true because 5 (last of month) was in WOM
      */
-    func test_checkDay_wom_lastOfMonth() {
+    func test_checkDay_wom_lastOfMonth() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
                                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                                     dom: Set([])))
-        XCTAssert(tts.checkDay(day: 24, weekday: 7, daysInMonth: 30))
+        XCTAssert(try tts.checkDay(day: 24, weekday: 7, daysInMonth: 30))
     }
     
-    func test_checkDay_dom() {
+    func test_checkDay_dom() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([]),
                                                     wom: Set([]),
                                                     dom: Set<SaveFormatter.dayOfMonth>([.five, .ten, .fifteen])))
-        XCTAssertFalse(tts.checkDay(day: 1, weekday: 1, daysInMonth: 30))
-        XCTAssert(tts.checkDay(day: 15, weekday: 1, daysInMonth: 31))
+        XCTAssertFalse(try tts.checkDay(day: 1, weekday: 1, daysInMonth: 30))
+        XCTAssert(try tts.checkDay(day: 15, weekday: 1, daysInMonth: 31))
     }
     
-    func test_checkDay_dom_lastDayOfMonth() {
+    func test_checkDay_dom_lastDayOfMonth() throws {
         let tts = TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([]),
                                                     wom: Set([]),
                                                     dom: Set<SaveFormatter.dayOfMonth>([.last])))
-        XCTAssertFalse(tts.checkDay(day: 28, weekday: 1, daysInMonth: 29))
-        XCTAssertFalse(tts.checkDay(day: 29, weekday: 1, daysInMonth: 30))
-        XCTAssertFalse(tts.checkDay(day: 29, weekday: 1, daysInMonth: 31))
-        XCTAssertFalse(tts.checkDay(day: 30, weekday: 1, daysInMonth: 31))
-        XCTAssert(tts.checkDay(day: 29, weekday: 1, daysInMonth: 29))
-        XCTAssert(tts.checkDay(day: 30, weekday: 1, daysInMonth: 30))
-        XCTAssert(tts.checkDay(day: 31, weekday: 1, daysInMonth: 31))
+        XCTAssertFalse(try tts.checkDay(day: 28, weekday: 1, daysInMonth: 29))
+        XCTAssertFalse(try tts.checkDay(day: 29, weekday: 1, daysInMonth: 30))
+        XCTAssertFalse(try tts.checkDay(day: 29, weekday: 1, daysInMonth: 31))
+        XCTAssertFalse(try tts.checkDay(day: 30, weekday: 1, daysInMonth: 31))
+        XCTAssert(try tts.checkDay(day: 29, weekday: 1, daysInMonth: 29))
+        XCTAssert(try tts.checkDay(day: 30, weekday: 1, daysInMonth: 30))
+        XCTAssert(try tts.checkDay(day: 31, weekday: 1, daysInMonth: 31))
     }
     
 }

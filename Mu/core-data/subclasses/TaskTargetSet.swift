@@ -146,17 +146,23 @@ extension TaskTargetSet {
      - parameter weekday: weekday to check; should have been obtained from a Calendar's weekday component
      - returns: True if parameters matched with this TaskTargetSet's pattern
      */
-    func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) -> Bool {
+    func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) throws -> Bool {
         
         guard let pattern = self.pattern else {
-            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() found nil in pattern",
+                                            "TaskTargetSet" : self.debugDescription]
+            throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
+                                              self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
         }
         
         if daysInMonth < 28 {
-            Crashlytics.crashlytics().log("checkDay() in TaskTargetSet received an invalid number of daysInMonth")
-            Crashlytics.crashlytics().setCustomValue(daysInMonth, forKey: "Days in month")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
+                                            "day" : day,
+                                            "weekday" : weekday,
+                                            "daysInMonth" : daysInMonth,
+                                            "TaskTargetSet" : self.debugDescription]
+            throw ErrorManager.recordNonFatal(.backendFunctionReceivedInvalidInputParameters,
+                                              self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
         }
         
         switch pattern.type {

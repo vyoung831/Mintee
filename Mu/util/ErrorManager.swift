@@ -38,6 +38,10 @@ struct ErrorManager {
         
     }
     
+    /*
+     Enum representing the codes of NSErrors that are reported to Crashlytics and thrown to the UI
+     - backendFunctionReceivedInvalidInputParameters: A non-UI function received invalid input that should have already been validated
+     */
     enum NonFatal: Int {
         case bundleIdentifierWasNil = 1
         case ttsvWomNil = 2
@@ -50,6 +54,7 @@ struct ErrorManager {
         case collectionSizerReceivedTotalWidthTooSmall = 9
         case persistentStoreContainedInvalidData = 10
         case dateOperationFailed = 11
+        case backendFunctionReceivedInvalidInputParameters = 12
     }
     
 }
