@@ -258,9 +258,14 @@ extension Task {
         var datesDelta: [String] = []
         let newDateStrings = dates.map{SaveFormatter.dateToStoredString($0)}
         for instance in instances {
-            if let existingDate = instance._date {
-                !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
+            
+            guard let existingDate = instance._date else {
+                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() found a nil in a TaskInstances' _date"]
+                throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
             }
+            
+            !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
+            
         }
         
         return datesDelta.sorted{ $0 < $1 }

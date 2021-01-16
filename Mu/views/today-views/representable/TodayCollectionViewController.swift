@@ -62,7 +62,7 @@ class TodayCollectionViewController: UICollectionViewController {
      */
     private func setUpFetchedResults() {
         let fetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", "date",SaveFormatter.dateToStoredString(Date()))
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", "date", SaveFormatter.dateToStoredString(Date()))
         fetchRequest.sortDescriptors = []
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.moc, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController?.delegate = self
