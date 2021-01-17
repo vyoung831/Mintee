@@ -58,7 +58,7 @@ Based on the error reporting responsibility defined in [failure handling](#failu
 
 ## Base debug objects
 When a Core Data entity from persistent store is found to have data that violates business logic, error reporting must, in addition to reporting debug data that is relevant to the failure, use APIs provided by certain entities (base objects) to report an additional standard set of persistent store debug data.  
-If the base debug object is unavailable (ex. failure occurs in a Core Data initializer)
+If the base debug object is unavailable (ex. failure occurs in a Core Data initializer), objects are expected to report as much debug data as possible/needed.
 The following table specifies base objects for each of Mu's model objects.
 | Core Data entity | Is base object? | Base debug object |
 |-|-|-|
