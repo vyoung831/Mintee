@@ -28,19 +28,14 @@ public class Tag: NSManagedObject {
      - tagName: String to set new Tag's tagName to
      */
     private convenience init( tagName : String ) {
-        if let entity = NSEntityDescription.entity(forEntityName: "Tag", in: CDCoordinator.moc) {
-            self.init(entity: entity, insertInto: CDCoordinator.moc)
-            self.name = tagName
-        } else {
-            Crashlytics.crashlytics().log("Could not get NSEntityDescription for Tag")
-            fatalError()
-        }
+        self.init(context: CDCoordinator.moc)
+        self.name = tagName
     }
     
     /**
      Given a tagName, either returns the existing Tag object with that tagName or creates a new one.
      This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate
-     - parameter tagName: Case and diacritic insensitive tagName of the Tag to attempt to find
+     - parameter tagName: Case and diacritic insensitive name of the Tag to attempt to find
      - returns: Tag NSManagedObject with its tagName set to the input parm tagName
      */
     static func getOrCreateTag ( tagName : String ) throws -> Tag {
@@ -60,9 +55,10 @@ public class Tag: NSManagedObject {
                 return first
             }
         } catch (let error) {
-            Crashlytics.crashlytics().log("FetchRequest for Tag failed in Tag.getOrCreateTag()")
-            Crashlytics.crashlytics().setCustomValue(error.localizedDescription, forKey: "Error localized description")
-            fatalError()
+            throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                              ["Message" : "TodayCollectionViewController.setUpFetchedResults failed to call performFetch on fetchedResultsController",
+                                               "request" : request.debugDescription,
+                                               "error.localizedDescription" : error.localizedDescription])
         }
         
         // No tag already exists in MOC. Return Tag from initiaizlier

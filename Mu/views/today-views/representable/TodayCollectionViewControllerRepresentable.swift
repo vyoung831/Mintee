@@ -31,10 +31,12 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
                 uiViewController.fetchedResultsController?.fetchRequest.predicate = newPredicate
                 try uiViewController.fetchedResultsController?.performFetch()
                 uiViewController.collectionView.reloadData()
-            } catch {
+            } catch (let error) {
                 ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                            ["Message" : "TodayCollectionViewControllerRepresentable.updateUIViewController failed to call fetchRequest on TodayViewController's NSFetchedResultsController",
-                                             "newPredicate" : newPredicate])
+                                            ["Message" : "TodayCollectionViewControllerRepresentable.updateUIViewController failed to call fetchRequest on TodayCollectionViewController's NSFetchedResultsController",
+                                             "newPredicate" : newPredicate,
+                                             "todayViewController.fetchedResultsController?.fetchRequest debugDescription" : uiViewController.fetchedResultsController?.fetchRequest.debugDescription,
+                                             "error.localizedDescription" : error.localizedDescription])
             }
         }
         

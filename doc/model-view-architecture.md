@@ -1,8 +1,6 @@
 Given Mu's usage of both UIKit and SwiftUI facilities, Mu's architecture cannot be characterized as strictly MVC or MVVM. This document details the development guidelines that Mu uses when managing model and view objects.
 
 1. [SaveFormatter](#saveformatter)
-    * [Saving to persistent storage](#saving-to-persistent-storage)
-    * [Reading from persistent storage](#reading-from-persistent-storage)
 
 # SaveFormatter
 Mu implements `SaveFormatter`, which defines enums, structs, and APIs to be used when converting data between persistent storage and memory. Mu expects Views using values that will eventually be saved to persistent storage to use instances of enums/structs defined in `SaveFormatter`.  

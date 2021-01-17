@@ -414,6 +414,7 @@
 		C4037A9624342E1F00150D47 /* Mu */ = {
 			isa = PBXGroup;
 			children = (
+				C4C2F2DF25B4CE6C00B7FE27 /* product */,
 				C48F022F2448A4700088227F /* core-data */,
 				C466A7A324473A0400EC3E97 /* util */,
 				C44C7F85243CA54A00072AD8 /* views */,
@@ -649,7 +650,6 @@
 		C466A7A324473A0400EC3E97 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				C4E8A83F25905BA4001BB09D /* plists */,
 				C466A7A424473A1100EC3E97 /* extensions */,
 				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
 				C442AE0C2546D71000A9EB72 /* ErrorManager.swift */,
@@ -755,6 +755,14 @@
 				C41A73EC245207F7007007CB /* EditTaskHostingController.swift */,
 			);
 			path = hosting;
+			sourceTree = "<group>";
+		};
+		C4C2F2DF25B4CE6C00B7FE27 /* product */ = {
+			isa = PBXGroup;
+			children = (
+				C4E8A83F25905BA4001BB09D /* plists */,
+			);
+			path = product;
 			sourceTree = "<group>";
 		};
 		C4C5FDE3250E7173004FAE47 /* popup-tests */ = {

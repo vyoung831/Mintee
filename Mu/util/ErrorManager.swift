@@ -11,7 +11,7 @@ import Firebase
 
 struct ErrorManager {
     
-    // Error message to present if an unexpected interal error was found in Mu or its persistent storage.
+    // Error message to present if an unexpected interal error was found.
     static let unexpectedErrorMessage = "Oops! Something went wrong. The cows are hard at work fixing it!"
     
     /**

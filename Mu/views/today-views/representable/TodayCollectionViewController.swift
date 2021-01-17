@@ -68,9 +68,12 @@ class TodayCollectionViewController: UICollectionViewController {
         fetchedResultsController?.delegate = self
         do {
             try fetchedResultsController?.performFetch()
-        } catch {
-            Crashlytics.crashlytics().log("TodayCollectionViewController was unable to execute NSFetchRequest during setup")
-            fatalError()
+        } catch (let error) {
+            ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                        ["Message" : "TodayCollectionViewController.setUpFetchedResults failed to call performFetch on fetchedResultsController",
+                                         "fetchRequest" : fetchRequest.debugDescription,
+                                         "error.localizedDescription" : error.localizedDescription])
+            return
         }
     }
     
@@ -101,36 +104,43 @@ extension TodayCollectionViewController {
         }
         
         if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
-            if let task = instance._task {
-                
-                cell.setTaskName(taskName: task._name ?? "")
-                cell.updateAppearance(instance: instance)
-                cell.handleEditButtonPressed = {
-                    do {
-                        let ethvc = try EditTaskHostingController(task: task,
-                                                                  dismiss: { [unowned self] in self.dismiss(animated: true, completion: nil) })
-                        self.present(ethvc, animated: true, completion: nil)
-                    } catch {
-                        let evhc = ErrorViewHostingController()
-                        self.navigationController?.pushViewController(evhc, animated: true)
-                    }
+            
+            guard let task = instance._task else {
+                var userInfo: [String : Any] =
+                    ["Message" : "TodayCollectionViewController.collectionView found a TaskInstance with _nil Task"]
+                if let taskThroughTargetSet = instance._targetSet?._task {
+                    userInfo = taskThroughTargetSet.mergeDebugDictionary(userInfo: userInfo)
+                } else {
+                    userInfo["TaskInstance"] = instance.debugDescription
                 }
-                
-                cell.handleSetButtonPressed = {
-                    let scphc =
-                        SetCountPopupHostingController(count: instance._completion, done: { [unowned self, instance] in
-                            instance._completion = $0
-                            CDCoordinator.shared.saveContext()
-                            self.dismiss(animated: true, completion: nil)
-                        }, cancel: { [unowned self] in
-                            self.dismiss(animated: true, completion: nil)
-                        })
-                    self.modalPresentationStyle = .overCurrentContext
-                    self.present(scphc, animated: true, completion: nil)
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                return cell
+            }
+            
+            cell.setTaskName(taskName: task._name ?? "")
+            cell.updateAppearance(instance: instance)
+            cell.handleEditButtonPressed = {
+                do {
+                    let ethvc = try EditTaskHostingController(task: task,
+                                                              dismiss: { [unowned self] in self.dismiss(animated: true, completion: nil) })
+                    self.present(ethvc, animated: true, completion: nil)
+                } catch {
+                    let evhc = ErrorViewHostingController()
+                    self.navigationController?.pushViewController(evhc, animated: true)
                 }
-            } else {
-                Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
-                fatalError()
+            }
+            
+            cell.handleSetButtonPressed = {
+                let scphc =
+                    SetCountPopupHostingController(count: instance._completion, done: { [unowned self, instance] in
+                        instance._completion = $0
+                        CDCoordinator.shared.saveContext()
+                        self.dismiss(animated: true, completion: nil)
+                    }, cancel: { [unowned self] in
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                self.modalPresentationStyle = .overCurrentContext
+                self.present(scphc, animated: true, completion: nil)
             }
         }
         return cell
