@@ -1,4 +1,4 @@
-# Error Reporting and Failure Handling
+# Failure Handling and Error Reporting
 Mu uses Firebase Crashlytics to report exceptions. More information on Crashlytics can be found [here](https://firebase.google.com/docs/crashlytics/customize-crash-reports). Although Crashlytics allows applications to report both fatal and non-fatal errors, Mu's error reporting and handling architecture is designed such that fatal errors should __NEVER__ be issued.  
 This document describes the development guidelines that must be adhered to in handling failures and (if necessary) reporting non-fatal errors.  
 The following definitions are used as such throughout the document:  
@@ -31,7 +31,7 @@ Failable functions should only return optionals when there is one (and only one)
 __Ex.__ Functions named `storedTo*()` in `SaveFormatter` return optionals - the only reason for failure is that the provided save-format value could not be converted to a valid in-memory enum/struct.
 
 The following figure illustrates how Views handle optional returns and report errors to Crashlytics.
-![](./img/error-reporting-and-handling-optionals.png)
+![](./img/failure-handling-and-error-reporting-optionals.png)
 
 ## Throwing functions
 Failable functions should throw if either of the following are true:  
@@ -43,7 +43,7 @@ __Ex.__ `Task.generateAndPruneInstances()` includes code with several possible r
 1. Function is defined in an NSManagedObject subclass (See [throwing in Core Data](#throwing-in-core-data-apis)).
 
 The following figure illustrates how errors that are reported to Crashlytics are thrown to the UI to handle.
-![](./img/error-reporting-and-handling-throwing.png)
+![](./img/failure-handling-and-error-reporting-throwing.png)
 
 ### Throwing in Core Data APIs
 To simplify failure detection in NSManagedObject subclasses, Mu requires that all failable functions in NSManagedObject subclasses be defined as throwing functions (including initializers).  

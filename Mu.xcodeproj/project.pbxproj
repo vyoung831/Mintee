@@ -650,10 +650,9 @@
 		C466A7A324473A0400EC3E97 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				C466A7A424473A1100EC3E97 /* extensions */,
-				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
 				C442AE0C2546D71000A9EB72 /* ErrorManager.swift */,
-				C43AE1C0256075D200F1D560 /* CollectionSizer.swift */,
+				C483241F25B4FB1A0047EA86 /* ui */,
+				C466A7A424473A1100EC3E97 /* extensions */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -694,6 +693,15 @@
 				C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */,
 			);
 			path = "task-target-set-views-tests";
+			sourceTree = "<group>";
+		};
+		C483241F25B4FB1A0047EA86 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
+				C43AE1C0256075D200F1D560 /* CollectionSizer.swift */,
+			);
+			path = ui;
 			sourceTree = "<group>";
 		};
 		C48719A224891999004463F4 /* task-target-set-views */ = {
