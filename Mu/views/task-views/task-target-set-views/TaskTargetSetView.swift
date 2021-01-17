@@ -58,7 +58,12 @@ struct TaskTargetSetView: View {
             return "Every week"
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
-                ErrorManager.recordNonFatal(.ttsvWomNil, [:])
+                ErrorManager.recordNonFatal(.viewObject_unexpectedNilProperty,
+                                            ["Message" : "TaskTargetSetView.getLabel() found nil selectedWeeksOfMonth when expected non-nil",
+                                             "selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription,
+                                             "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription,
+                                             "minOperator" : self.minOperator,
+                                             "maxOperator" : self.maxOperator])
                 return "Weekdays of month"
             }
             
@@ -96,22 +101,11 @@ struct TaskTargetSetView: View {
         if minOperator != .na { return "Target \(minOperator.stringValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
         if maxOperator != .na { return "Target \(maxOperator.stringValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
-        ErrorManager.recordNonFatal(.ttsvGetTargetStringInvalidValues, ["minOperator": minOperator.rawValue,
-                                                                        "maxOperator": maxOperator.rawValue,
-                                                                        "minTarget": minTarget,
-                                                                        "maxTarget": maxTarget])
+        ErrorManager.recordNonFatal(.viewFunction_receivedInvalidParms, ["minOperator": minOperator.rawValue,
+                                                                         "maxOperator": maxOperator.rawValue,
+                                                                         "minTarget": minTarget,
+                                                                         "maxTarget": maxTarget])
         return ""
-    }
-    
-    /**
-     Returns a String representing this TaskTargetSetView's target value(s)
-     - returns: String to be displayed as a target
-     */
-    func getTarget() -> String {
-        return TaskTargetSetView.getTargetString(minOperator: self.minOperator,
-                                                 maxOperator: self.maxOperator,
-                                                 minTarget: self.minTarget,
-                                                 maxTarget: self.maxTarget)
     }
     
     // MARK: - View
@@ -198,7 +192,10 @@ struct TaskTargetSetView: View {
             // MARK: - Target
             
             Group {
-                Text(getTarget())
+                Text( TaskTargetSetView.getTargetString(minOperator: self.minOperator,
+                                                        maxOperator: self.maxOperator,
+                                                        minTarget: self.minTarget,
+                                                        maxTarget: self.maxTarget) )
             }
             
         }

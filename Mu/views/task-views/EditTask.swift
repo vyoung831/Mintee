@@ -43,19 +43,16 @@ struct EditTask: View {
     private func saveTask() {
         
         task._name = self.taskName
-        
         var tagObjects: Set<Tag> = Set()
-        for idx in 0 ..< self.tags.count {
-            if let tag = Tag.getOrCreateTag(tagName: self.tags[idx]) {
-                tagObjects.insert(tag)
-            } else {
-                self.saveErrorMessage = "Save failed. An attempt was made to create a Tag with an empty name."
-                return
-            }
-        }
-        task.updateTags(newTags: tagObjects)
         
         do {
+            
+            for idx in 0 ..< self.tags.count {
+                let tag = try Tag.getOrCreateTag(tagName: self.tags[idx])
+                tagObjects.insert(tag)
+            }
+            task.updateTags(newTags: tagObjects)
+            
             // Update the Task's taskType, dates, targetSets and instances.
             switch self.taskType {
             case .recurring:

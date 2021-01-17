@@ -25,9 +25,6 @@ class CollectionSizer {
      - itemSize: The ideal item size calculated from the parameters idealItemWidth and heightMultiplier.
      If the width available cannot fit the ideal item's width with left/right insets set to the minimum, the item size is shrunk as needed.
      If the width available can fit only one item but has too much remaining width after setting left/right insets to maximum, the item size is increased as needed.
-     - sectionInset
-     - minimumInterItemSpacing
-     - minimumLineSpacing
      - parameter widthAvailable: The total width of the UICollectionView's frame
      - parameter idealItemWidth: The ideal width of each UICollectionView item
      - parameter heightMultiplier: The height-to-width ratio of each UICollectionView item
@@ -49,7 +46,6 @@ class CollectionSizer {
                 let trueItemWidth = widthAvailable - (2 * minSideInset)
                 flowLayout.itemSize = CGSize(width: trueItemWidth, height: trueItemWidth * heightMultiplier)
                 flowLayout.sectionInset = UIEdgeInsets(top: 20, left: minSideInset, bottom: 20, right: minSideInset)
-                ErrorManager.recordNonFatal(.collectionSizerReceivedTotalWidthTooSmall, [:])
             } else {
                 // An ideal size item can fit with smaller left/right insets, so insets are adjusted accordingly.
                 let trueSideInset = (widthAvailable - idealItemWidth) / 2

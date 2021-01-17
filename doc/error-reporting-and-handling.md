@@ -24,11 +24,11 @@ The following table specifies how the UI can be notified of failures in other pa
 | How UI is notified of failure | Object/struct responsible for reporting |
 |-|-|
 | [Receives nil return value when expecting non-nil](#returning-optionals) | UI |
-| [Catches error](#throwing-functions) | Function that detected failure |
+| [Catches error](#throwing-functions) | Function that first detected failure and threw error |
 
 ## Returning optionals
 Failable functions should only return optionals when there is one (and only one) possible reason of failure.  
-__Ex.__ Functions named `storedTo*()` in `SaveFormatter` return optionals - the only reason for failure is that the provided persistent store raw value could not be converted to a valid in-memory value.
+__Ex.__ Functions named `storedTo*()` in `SaveFormatter` return optionals - the only reason for failure is that the provided save-format value could not be converted to a valid in-memory enum/struct.
 
 The following figure illustrates how Views handle optional returns and report errors to Crashlytics.
 ![](./img/error-reporting-and-handling-optionals.png)
@@ -79,7 +79,7 @@ In order to separate testing and release data, Mu uses the following build phase
 
 # Build versioning
 To ensure that reported errors and crashes can be correlated back to the exact source code version, Mu follows a process of versioning builds based on [Twitch's iOS versioning practices](https://blog.twitch.tv/en/2016/09/20/ios-versioning-89e02f0a5146/).
-Mu generates and updates the app's build version everytime the project is archived for distribution. This is achieved by the following build phases, targets, and scripts, and configurations:  
+Mu generates and updates the app's build version everytime the project is archived for distribution. This is achieved by the following build phases, targets, scripts, and configurations:  
 1. Mu preprocesses `Info.plist` by defining the following project-wide build settings:
     * `INFOPLIST_PREFIX_HEADER` = `${PROJECT_DIR}/Versions/versions.h`
     * `INFOPLIST_PREPROCESS` = `Yes`

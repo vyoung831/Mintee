@@ -13,6 +13,7 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
     
     typealias UIViewControllerType = TodayCollectionViewController
     
+    // Binding to date in TodayView
     @Binding var date: Date
     
     func makeUIViewController(context: Context) -> TodayCollectionViewController {
@@ -21,7 +22,9 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
     
     func updateUIViewController(_ uiViewController: TodayCollectionViewController, context: Context) {
         
-        // Only have TodayCollectionViewController do a re-fetch if the date from TodayView has changed
+        /*
+         Construct an NSPredicate using the binding to TodayView's date and compare against the existing NSPredicate in TodayCollectionViewController's NSFetchedResultsController
+         */
         let newPredicate = NSPredicate(format: "%K == %@", "date", SaveFormatter.dateToStoredString(self.date))
         if uiViewController.fetchedResultsController?.fetchRequest.predicate?.predicateFormat != newPredicate.predicateFormat {
             do {
@@ -29,7 +32,9 @@ struct TodayCollectionViewControllerRepresentable: UIViewControllerRepresentable
                 try uiViewController.fetchedResultsController?.performFetch()
                 uiViewController.collectionView.reloadData()
             } catch {
-                ErrorManager.recordNonFatal(.updateTodayCollectionViewControllerFailed, [:])
+                ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                            ["Message" : "TodayCollectionViewControllerRepresentable.updateUIViewController failed to call fetchRequest on TodayViewController's NSFetchedResultsController",
+                                             "newPredicate" : newPredicate])
             }
         }
         

@@ -91,6 +91,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
      - parameter instance: TaskInstance whose completion (Float) is used to update completionMeter's constraints
      */
     public func updateAppearance(instance: TaskInstance) {
+        
         guard let minOpInt = instance._targetSet?._minOperator,
               let maxOpInt = instance._targetSet?._maxOperator,
               let maxTarget = instance._targetSet?._max,
@@ -115,10 +116,11 @@ class TodayCollectionViewCell: UICollectionViewCell {
             
             var userInfo: [String : Any] = ["Message" : "TodayCollectionViewCell found invalid _minOperator or _maxOperator in a TaskInstance's TaskTargetSet when updating completionMeter"]
             if let task = instance._task {
-                ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, task.mergeDebugDictionary(userInfo: userInfo) )
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo) )
             } else {
                 userInfo["TaskInstance"] = instance.debugDescription
-                ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData, userInfo )
+                userInfo["TaskTargetSet"] = instance._targetSet.debugDescription
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo )
             }
             
             return
@@ -157,7 +159,11 @@ class TodayCollectionViewCell: UICollectionViewCell {
      - parameter completion: The TaskInstance's current completion
      - returns: UIColor to set a TodayCollectionViewCell's completionMeter to
      */
-    static func getCompletionMeterPercentage(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float, completion: Float) -> Float {
+    static func getCompletionMeterPercentage(minOp: SaveFormatter.equalityOperator,
+                                             maxOp: SaveFormatter.equalityOperator,
+                                             minTarget: Float,
+                                             maxTarget: Float,
+                                             completion: Float) -> Float {
         switch minOp {
         case .na:
             switch maxOp {

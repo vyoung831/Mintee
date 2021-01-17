@@ -92,46 +92,48 @@ extension TodayCollectionViewController {
      This function provides the cell with task to display and with a Task-specific closure to call when its edit button is pressed.
      */
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath) as? TodayCollectionViewCell {
-            
-            if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
-                if let task = instance._task {
-                    
-                    cell.setTaskName(taskName: task._name ?? "")
-                    cell.updateAppearance(instance: instance)
-                    cell.handleEditButtonPressed = {
-                        do {
-                            let ethvc = try EditTaskHostingController(task: task,
-                                                                      dismiss: { [unowned self] in self.dismiss(animated: true, completion: nil) })
-                            self.present(ethvc, animated: true, completion: nil)
-                        } catch {
-                            let evhc = ErrorViewHostingController()
-                            self.navigationController?.pushViewController(evhc, animated: true)
-                        }
-                    }
-                    
-                    cell.handleSetButtonPressed = {
-                        let scphc =
-                            SetCountPopupHostingController(count: instance._completion, done: { [unowned self, instance] in
-                                instance._completion = $0
-                                CDCoordinator.shared.saveContext()
-                                self.dismiss(animated: true, completion: nil)
-                            }, cancel: { [unowned self] in
-                                self.dismiss(animated: true, completion: nil)
-                            })
-                        self.modalPresentationStyle = .overCurrentContext
-                        self.present(scphc, animated: true, completion: nil)
-                    }
-                } else {
-                    Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
-                    fatalError()
-                }
-            }
-            return cell
-        } else {
-            ErrorManager.recordNonFatal(.collectionViewCouldNotDequeueResuableCell, ["Collection View": "TodayCollectionViewController"])
-            return UICollectionViewCell()
+        
+        let dequeuedCell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath)
+        guard let cell = dequeuedCell as? TodayCollectionViewCell else {
+            ErrorManager.recordNonFatal(.uiViewController_castDequeuedCellFailed,
+                                        ["Message" : "TodayCollectionViewController could not cast dequeued UICollectionViewCell as TodayCollectionViewCell"])
+            return dequeuedCell
         }
+        
+        if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
+            if let task = instance._task {
+                
+                cell.setTaskName(taskName: task._name ?? "")
+                cell.updateAppearance(instance: instance)
+                cell.handleEditButtonPressed = {
+                    do {
+                        let ethvc = try EditTaskHostingController(task: task,
+                                                                  dismiss: { [unowned self] in self.dismiss(animated: true, completion: nil) })
+                        self.present(ethvc, animated: true, completion: nil)
+                    } catch {
+                        let evhc = ErrorViewHostingController()
+                        self.navigationController?.pushViewController(evhc, animated: true)
+                    }
+                }
+                
+                cell.handleSetButtonPressed = {
+                    let scphc =
+                        SetCountPopupHostingController(count: instance._completion, done: { [unowned self, instance] in
+                            instance._completion = $0
+                            CDCoordinator.shared.saveContext()
+                            self.dismiss(animated: true, completion: nil)
+                        }, cancel: { [unowned self] in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                    self.modalPresentationStyle = .overCurrentContext
+                    self.present(scphc, animated: true, completion: nil)
+                }
+            } else {
+                Crashlytics.crashlytics().log("TodayCollectionViewController fetched a TaskInstance that had no Task")
+                fatalError()
+            }
+        }
+        return cell
     }
     
     /**

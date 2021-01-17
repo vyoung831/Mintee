@@ -95,32 +95,48 @@ class ThemeManager: NSObject, ObservableObject {
     // MARK: - UserDefaults observation
     
     private func observeUserDefaults() {
-        UserDefaults.standard.addObserver(self, forKeyPath: SettingsPresentationView.PresentationOption.theme.rawValue, options: [NSKeyValueObservingOptions.new, NSKeyValueObservingOptions.old], context: nil)
+        UserDefaults.standard.addObserver(self,
+                                          forKeyPath: SettingsPresentationView.PresentationOption.theme.rawValue,
+                                          options: [NSKeyValueObservingOptions.new,
+                                                    NSKeyValueObservingOptions.old],
+                                          context: nil)
     }
     
     /**
-     Given a new value for "Theme" in UserDefaults, updates this class' Published Colors
+     Given a new value for "Theme" in UserDefaults, updates this class' @Published Color vars.
      */
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let unwrappedChanges = change else { return }
-        if let newKey = unwrappedChanges[.newKey] as? String {
-            if let newTheme = ThemeManager.Theme.init(rawValue: newKey) {
-                self.accent = ThemeManager.getElementColor(.accent, newTheme)
-                self.panel = ThemeManager.getElementColor(.panel, newTheme)
-                self.panelContent = ThemeManager.getElementColor(.panelContent, newTheme)
-                self.button = ThemeManager.getElementColor(.button, newTheme)
-                self.buttonText = ThemeManager.getElementColor(.buttonText, newTheme)
-                self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, newTheme)
-                self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, newTheme)
-                self.disabledTextFieldText = ThemeManager.getElementColor(.disabledTextFieldText, newTheme)
-                self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
-                self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
-                self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
-                NotificationCenter.default.post(name: .themeChanged, object: nil)
-            } else {
-                ErrorManager.recordNonFatal(.invalidThemeSaved, ["New Theme raw value": newKey])
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey: Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        
+        if keyPath == SettingsPresentationView.PresentationOption.theme.rawValue {
+            
+            guard let unwrappedChanges = change,
+                  let newKey = unwrappedChanges[.newKey] as? String,
+                  let newTheme = ThemeManager.Theme.init(rawValue: newKey) else {
+                ErrorManager.recordNonFatal(.userDefaults_observedInvalidUpdate,
+                                            ["Message" : "ThemeManager.observeValue() could not convert observed change to value of type ThemeManager.Theme",
+                                             "keyPath" : keyPath?.debugDescription,
+                                             "change" : change?.debugDescription])
+                return
             }
+            
+            self.accent = ThemeManager.getElementColor(.accent, newTheme)
+            self.panel = ThemeManager.getElementColor(.panel, newTheme)
+            self.panelContent = ThemeManager.getElementColor(.panelContent, newTheme)
+            self.button = ThemeManager.getElementColor(.button, newTheme)
+            self.buttonText = ThemeManager.getElementColor(.buttonText, newTheme)
+            self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, newTheme)
+            self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, newTheme)
+            self.disabledTextFieldText = ThemeManager.getElementColor(.disabledTextFieldText, newTheme)
+            self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
+            self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
+            self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
+            NotificationCenter.default.post(name: .themeChanged, object: nil)
+            
         }
+        
     }
     
     // MARK: - Utility functions
@@ -161,7 +177,9 @@ class ThemeManager: NSObject, ObservableObject {
             if let theme = ThemeManager.Theme.init(rawValue: savedTheme) {
                 return theme
             } else {
-                ErrorManager.recordNonFatal(.invalidThemeRead, ["Saved Theme raw value": savedTheme])
+                ErrorManager.recordNonFatal(.userDefaults_containedInvalidValue,
+                                            ["Message": "ThemeManager.getUserDefaultsTheme() could not convert the saved theme to a value of type ThemeManager.Theme",
+                                             "savedTheme" : savedTheme])
                 UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
                 return .system
             }

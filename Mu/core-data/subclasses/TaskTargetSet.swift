@@ -55,7 +55,7 @@ public class TaskTargetSet: NSManagedObject {
                                             "minOperator" : minOperator,
                                             "maxOperator" : maxOperator,
                                             "priority" : priority]
-            throw ErrorManager.recordNonFatal(.backendInitializerReceivedInvalidInputParameters, pattern.mergeDebugDictionary(userInfo: userInfo))
+            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, pattern.mergeDebugDictionary(userInfo: userInfo))
         }
     }
     
@@ -156,7 +156,7 @@ extension TaskTargetSet {
         guard let pattern = self.pattern else {
             let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() found nil in pattern",
                                             "TaskTargetSet" : self.debugDescription]
-            throw ErrorManager.recordNonFatal(.persistentStoreContainedInvalidData,
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
                                               self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
         }
         
@@ -166,7 +166,7 @@ extension TaskTargetSet {
                                             "weekday" : weekday,
                                             "daysInMonth" : daysInMonth,
                                             "TaskTargetSet" : self.debugDescription]
-            throw ErrorManager.recordNonFatal(.backendFunctionReceivedInvalidInputParameters,
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
                                               self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
         }
         

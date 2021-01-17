@@ -27,7 +27,9 @@ class Task_TagHandling_Tests_Performance: XCTestCase {
         
         var task: Task, tags: Set<Tag> = Set()
         task = Task(context: CDCoordinator.moc)
-        for i in 1 ... 1000 { tags.insert( Tag.getOrCreateTag(tagName: String(i))! ) }
+        for i in 1 ... 1000 {
+            tags.insert( try Tag.getOrCreateTag(tagName: String(i)) )
+        }
         
         self.measure {
             task.updateTags(newTags: tags)
@@ -42,7 +44,9 @@ class Task_TagHandling_Tests_Performance: XCTestCase {
         
         var task: Task, tags: Set<Tag> = Set()
         task = Task(context: CDCoordinator.moc)
-        for i in 1 ... 1000 { tags.insert( Tag.getOrCreateTag(tagName: String(i))! ) }
+        for i in 1 ... 1000 {
+            tags.insert( try Tag.getOrCreateTag(tagName: String(i)) )
+        }
         task.updateTags(newTags: tags)
         
         self.measure {

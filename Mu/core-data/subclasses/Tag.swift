@@ -40,16 +40,14 @@ public class Tag: NSManagedObject {
     /**
      Given a tagName, either returns the existing Tag object with that tagName or creates a new one.
      This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate
-     - parameters:
-     - tagName: CASE and DIACRITIC insensitive tagName of the Tag to attempt to find
-     - returns:
-     - Tag NSManagedObject with its tagName set to the input parm tagName
+     - parameter tagName: Case and diacritic insensitive tagName of the Tag to attempt to find
+     - returns: Tag NSManagedObject with its tagName set to the input parm tagName
      */
-    static func getOrCreateTag ( tagName : String ) -> Tag? {
+    static func getOrCreateTag ( tagName : String ) throws -> Tag {
         
         if tagName.count < 1 {
-            ErrorManager.recordNonFatal(.attemptedToCreateTagWithEmptyName, [:])
-            return nil
+            let userInfo: [String : Any] = ["Message" : "Tag.getOrCreateTag() received tagName with count < 1"]
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
         }
         
         // Set up case and diacritic insensitive predicate
@@ -61,7 +59,7 @@ public class Tag: NSManagedObject {
                 // Return existing tag
                 return first
             }
-        } catch {
+        } catch (let error) {
             Crashlytics.crashlytics().log("FetchRequest for Tag failed in Tag.getOrCreateTag()")
             Crashlytics.crashlytics().setCustomValue(error.localizedDescription, forKey: "Error localized description")
             fatalError()

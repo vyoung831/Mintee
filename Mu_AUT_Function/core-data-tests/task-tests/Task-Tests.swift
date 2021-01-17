@@ -52,8 +52,8 @@ class Task_Tests: XCTestCase {
         let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                             insertInto: CDCoordinator.moc,
                             name: "Task",
-                            tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                            Tag.getOrCreateTag(tagName: "Tag2")!]),
+                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                            try Tag.getOrCreateTag(tagName: "Tag2")]),
                             startDate: startDate, endDate: endDate,
                             targetSets: [tts])
         
@@ -75,8 +75,8 @@ class Task_Tests: XCTestCase {
         let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                             insertInto: CDCoordinator.moc,
                             name: "Task",
-                            tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                            Tag.getOrCreateTag(tagName: "Tag2")!]),
+                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                            try Tag.getOrCreateTag(tagName: "Tag2")]),
                             dates: [Date()])
         
         try task.deleteSelf()

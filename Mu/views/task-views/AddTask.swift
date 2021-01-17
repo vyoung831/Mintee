@@ -37,18 +37,14 @@ struct AddTask: View {
     private func saveTask() -> Bool {
         
         var tagObjects: Set<Tag> = Set()
-        for idx in 0 ..< self.tags.count {
-            if let tag = Tag.getOrCreateTag(tagName: self.tags[idx]) {
-                tagObjects.insert(tag)
-            } else {
-                self.errorMessage = "Save failed. An attempt was made to create a Tag with an empty name."
-                return false
-            }
-        }
-        
         var taskTargetSets: [TaskTargetSet] = []
         
         do {
+            
+            for idx in 0 ..< self.tags.count {
+                let tag = try Tag.getOrCreateTag(tagName: self.tags[idx])
+                tagObjects.insert(tag)
+            }
             
             switch self.taskType {
             case .recurring:

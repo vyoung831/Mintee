@@ -46,7 +46,7 @@ extension EditTaskHostingController_Tests {
         let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
                             insertInto: CDCoordinator.moc,
                             name: "Name",
-                            tags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!]),
+                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1")]),
                             startDate: Date(),
                             endDate: Date(),
                             targetSets: targetSets)

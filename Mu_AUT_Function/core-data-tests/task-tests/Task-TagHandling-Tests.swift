@@ -27,8 +27,8 @@ class Task_TagHandling_Tests: XCTestCase {
     func test_updateTags_addNewTags() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
-        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                           Tag.getOrCreateTag(tagName: "Tag2")!]))
+        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                           try Tag.getOrCreateTag(tagName: "Tag2")]))
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
@@ -43,11 +43,11 @@ class Task_TagHandling_Tests: XCTestCase {
     func test_updateTags_existingTagReuse() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
-        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                           Tag.getOrCreateTag(tagName: "Tag2")!]))
-        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                           Tag.getOrCreateTag(tagName: "Tag2")!,
-                                           Tag.getOrCreateTag(tagName: "Tag3")!]))
+        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                           try Tag.getOrCreateTag(tagName: "Tag2")]))
+        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                           try Tag.getOrCreateTag(tagName: "Tag2"),
+                                           try Tag.getOrCreateTag(tagName: "Tag3")]))
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {
@@ -62,11 +62,11 @@ class Task_TagHandling_Tests: XCTestCase {
     func test_updateTags_deadTagDeletion() throws {
         var tags: [Tag] = []
         let task = Task(context: CDCoordinator.moc)
-        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                           Tag.getOrCreateTag(tagName: "Tag2")!,
-                                           Tag.getOrCreateTag(tagName: "Tag3")!]))
-        task.updateTags(newTags: Set<Tag>([Tag.getOrCreateTag(tagName: "Tag1")!,
-                                           Tag.getOrCreateTag(tagName: "Tag2")!]))
+        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                           try Tag.getOrCreateTag(tagName: "Tag2"),
+                                           try Tag.getOrCreateTag(tagName: "Tag3")]))
+        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
+                                           try Tag.getOrCreateTag(tagName: "Tag2")]))
         do {
             try tags = CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
         } catch {

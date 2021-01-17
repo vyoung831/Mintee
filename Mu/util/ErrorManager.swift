@@ -40,23 +40,26 @@ struct ErrorManager {
     
     /*
      Enum representing the codes of NSErrors that are reported to Crashlytics and thrown to the UI
-     - backendFunctionReceivedInvalidInputParameters: A non-UI function received invalid input that should have already been validated
-     - backendInitializerReceivedInvalidInputParameters: A non-UI initializer received invalid input that should have already been validated
      */
     enum NonFatal: Int {
+        // Miscellaneous error codes
         case bundleIdentifierWasNil = 1
-        case ttsvWomNil = 2
-        case invalidThemeSaved = 3
-        case invalidThemeRead = 4
-        case updateTodayCollectionViewControllerFailed = 5
-        case ttsvGetTargetStringInvalidValues = 6
-        case collectionViewCouldNotDequeueResuableCell = 7
-        case attemptedToCreateTagWithEmptyName = 8
-        case collectionSizerReceivedTotalWidthTooSmall = 9
-        case persistentStoreContainedInvalidData = 10
-        case dateOperationFailed = 11
-        case backendFunctionReceivedInvalidInputParameters = 12
-        case backendInitializerReceivedInvalidInputParameters = 13
+        case dateOperationFailed = 2
+        
+        // UserDefault error codes
+        case userDefaults_containedInvalidValue = 100
+        case userDefaults_observedInvalidUpdate = 101
+        
+        // View object error codes
+        case viewObject_unexpectedNilProperty = 200
+        case viewFunction_receivedInvalidParms = 201
+        case uiViewController_castDequeuedCellFailed = 202
+        
+        // Model/persistent store error codes
+        case fetchRequest_failed = 300
+        case persistentStore_containedInvalidData = 301
+        case modelFunction_receivedInvalidInput = 302
+        case modelObjectInitializer_receivedInvalidInput = 303
     }
     
 }
