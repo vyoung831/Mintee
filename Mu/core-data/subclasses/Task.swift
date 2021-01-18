@@ -135,7 +135,8 @@ extension Task {
     
 }
 
-// MARK: Debug descriptions for error reporting
+// MARK: - Debug descriptions for error reporting
+
 extension Task {
     
     /**
@@ -151,8 +152,11 @@ extension Task {
         if let ttsArray = self.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
                 
+                // Add Dictionary entries for TaskTargetSets
                 let ttsIdentifier = "Task.TaskTargetSet[\(idx)]"
                 debugDictionary["\(ttsIdentifier).debugDescription"] = ttsArray[idx].debugDescription
+                
+                // Add Dictionary entries for DayPatterns' sets and types
                 let patternIdentifier = "\(ttsIdentifier)._pattern"
                 if let pattern = ttsArray[idx]._pattern {
                     debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
@@ -166,8 +170,9 @@ extension Task {
             }
         }
         
-        debugDictionary.merge(userInfo,
-                              uniquingKeysWith: { return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)" })
+        debugDictionary.merge(userInfo, uniquingKeysWith: {
+            return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)"
+        })
         return debugDictionary
         
     }
@@ -251,7 +256,7 @@ extension Task {
     func getDeltaInstancesSpecific(dates: Set<Date>) throws -> [String] {
         
         guard let instances = self.instances as? Set<TaskInstance> else {
-            let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() could not retrieve instances"]
+            let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() could not retrieve instances as Set of TaskInstance"]
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
@@ -260,7 +265,7 @@ extension Task {
         for instance in instances {
             
             guard let existingDate = instance._date else {
-                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() found a nil in a TaskInstances' _date"]
+                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() found nil in a TaskInstance's _date"]
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
             }
             
@@ -283,7 +288,7 @@ extension Task {
         var datesDelta: [Date] = []
         
         guard let instances = self.instances as? Set<TaskInstance> else {
-            let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() could not retrieve instances"]
+            let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() could not retrieve instances as Set of TaskInstance"]
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
@@ -291,12 +296,12 @@ extension Task {
         for instance in instances {
             guard let dateString = instance._date,
                   let date = SaveFormatter.storedStringToDate(dateString) else {
-                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() found a TaskInstance with nil or invalid date",
+                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() found a TaskInstance with nil or invalid _date",
                                                 "TaskInstance" : instance.debugDescription]
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
             }
             
-            if date.lessThanDate(startDate) || endDate.lessThanDate(date){
+            if date.lessThanDate(startDate) || endDate.lessThanDate(date) {
                 datesDelta.append(date)
             }
         }
@@ -382,7 +387,7 @@ extension Task {
     func updateSpecificInstances(dates: [Date]) throws {
         
         // Set task type, set start and end dates, and delete associated TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .specific)
+        self.taskType = SaveFormatter.taskTypeToStored(.specific)
         self.startDate = nil
         self.endDate = nil
         if let targetSets = self.targetSets {
@@ -433,7 +438,7 @@ extension Task {
     func updateRecurringInstances(startDate: Date, endDate: Date) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
+        self.taskType = SaveFormatter.taskTypeToStored(.recurring)
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         
@@ -458,7 +463,7 @@ extension Task {
     func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
+        self.taskType = SaveFormatter.taskTypeToStored(.recurring)
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         if let existingTargetSets = self.targetSets {

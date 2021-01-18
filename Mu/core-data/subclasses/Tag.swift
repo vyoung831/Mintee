@@ -24,8 +24,7 @@ public class Tag: NSManagedObject {
     
     /**
      Creates a Tag instance and inserts it into the shared MOC. This initializer should only be used if there is no existing Tag with tagName=$tagName in the MOC.
-     - parameters:
-     - tagName: String to set new Tag's tagName to
+     - parameter tagName: String to set new Tag's name to
      */
     private convenience init( tagName : String ) {
         self.init(context: CDCoordinator.moc)
@@ -56,7 +55,7 @@ public class Tag: NSManagedObject {
             }
         } catch (let error) {
             throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                              ["Message" : "TodayCollectionViewController.setUpFetchedResults failed to call performFetch on fetchedResultsController",
+                                              ["Message" : "Tag.getOrCreateTag() failed to execute NSFetchRequest",
                                                "request" : request.debugDescription,
                                                "error.localizedDescription" : error.localizedDescription])
         }

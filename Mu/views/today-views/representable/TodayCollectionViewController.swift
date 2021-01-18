@@ -98,7 +98,7 @@ extension TodayCollectionViewController {
         
         let dequeuedCell = collectionView.dequeueReusableCell(withReuseIdentifier: taskCardReuseIdentifier, for: indexPath)
         guard let cell = dequeuedCell as? TodayCollectionViewCell else {
-            ErrorManager.recordNonFatal(.uiViewController_castDequeuedCellFailed,
+            ErrorManager.recordNonFatal(.uiCollectionViewController_castDequeuedCellFailed,
                                         ["Message" : "TodayCollectionViewController could not cast dequeued UICollectionViewCell as TodayCollectionViewCell"])
             return dequeuedCell
         }
@@ -107,7 +107,7 @@ extension TodayCollectionViewController {
             
             guard let task = instance._task else {
                 var userInfo: [String : Any] =
-                    ["Message" : "TodayCollectionViewController.collectionView found a TaskInstance with _nil Task"]
+                    ["Message" : "TodayCollectionViewController.collectionView found a TaskInstance with nil _task"]
                 if let taskThroughTargetSet = instance._targetSet?._task {
                     userInfo = taskThroughTargetSet.mergeDebugDictionary(userInfo: userInfo)
                 } else {

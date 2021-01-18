@@ -1,14 +1,29 @@
-Given Mu's usage of both UIKit and SwiftUI facilities, Mu's architecture cannot be characterized as strictly MVC or MVVM. This document details the development guidelines that Mu uses when managing model and view objects.
+This document details the development guidelines that define model objects' and view objects' responsibilities.
 
 1. [SaveFormatter](#saveformatter)
 
 # SaveFormatter
-Mu implements `SaveFormatter`, which defines enums, structs, and APIs to be used when converting data between persistent storage and memory. Mu expects Views using values that will eventually be saved to persistent storage to use instances of enums/structs defined in `SaveFormatter`.  
+Mu implements `SaveFormatter`, which defines enums, structs, and APIs to be used when converting data between persistent storage and memory.  
+View objects that use values which will eventually be saved to persistent storage must use represent those values using types defined in `SaveFormatter`.  
 
-For each type that is defined in `SaveFormatter`, APIs must be implemented that provide the following functionality:  
+For each type that is defined in `SaveFormatter`, functions must be implemented that provide the following functionality:  
 * Convert data from persistent store form to enum/struct to use in-memory (`storedTo*()` functions).
 * Convert in-memory enum/struct to persistent store save form (`*toStored()` functions).
 * (As needed) Convert the enum/struct to different formats for UI to present.
 
-The following figure illustrates the intended usage of `SaveFormatter` in converting data between persistent store and memory.
-![](./img/model-view-architecture-saveformatter-usage.png)
+The following code blocks illustrate examples of the intended usage of `SaveFormatter` in converting data between persistent store and memory.
+```
+var userVar: SaveFormatter.someEnum
+func saveToStore() {
+    modelObject.property = SaveFormatter.enumToStored(userVar)
+}
+```
+```
+var userVar: SaveFormatter.someEnum
+func readFromStore() {
+    guard let memoryFormat = SaveFormatter.storedToEnum(modelObject.property) else {
+        // Handle error
+    }
+    userVar = memoryFormat
+}
+```

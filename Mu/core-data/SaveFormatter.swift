@@ -2,7 +2,8 @@
 //  SaveFormatter.swift
 //  Mu
 //
-//  This class provides utility functions for converting Core Data save data to/from data that Views expect to use
+//  This class provides utility functions for converting persistent store data to/from structs/enums that Views expect to use.
+//  Because some classes use the allCases var to access some structs/enums, enums should conform to CaseIterable, and the order in which cases are declared in this class' enums should not be altered unless necessary.
 //
 //  Created by Vincent Young on 5/18/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -25,15 +26,14 @@ class SaveFormatter {
             case .specific: return "Specific"
             }
         }
-        
     }
     
     /**
-     Returns persistent store format of a value of type SaveFormatter.taskType (stored in Task).
+     Returns persistent store format of a value of type SaveFormatter.taskType (to be stored in Task).
      - parameter op: SaveFormatter.taskType being used in-memory.
      - returns: Int16 to store to Task's taskType.
      */
-    static func taskTypeToStored(type: taskType) -> Int16 {
+    static func taskTypeToStored(_ type: taskType) -> Int16 {
         return type.rawValue
     }
     
@@ -42,7 +42,7 @@ class SaveFormatter {
      - parameter op: Int16 stored in Task's taskType
      - returns: (Optional) Value of type SaveFormatter.taskType to be used by Views or Model objects.
      */
-    static func storedToTaskType(storedType: Int16) -> taskType? {
+    static func storedToTaskType(_ storedType: Int16) -> taskType? {
         return taskType.init(rawValue: storedType)
     }
     
@@ -66,11 +66,10 @@ extension SaveFormatter {
             case .na: return "N/A"
             }
         }
-        
     }
     
     /**
-     Returns persistent store format of a value of type SaveFormatter.equalityOperator (stored in TaskTargetSet).
+     Returns persistent store format of a value of type SaveFormatter.equalityOperator (to be stored in TaskTargetSet).
      - parameter op: SaveFormatter.equalityOperator being used in-memory.
      - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator.
      */
@@ -133,8 +132,8 @@ extension SaveFormatter {
     }
     
     /**
-     Returns persistent store format of a value of type SaveFormatter.dayOfWeek (stored in DayPattern).
-     - parameter dow: Value of type SaveFormatter.dayOfWeek obtain the Int16 persistent store value of.
+     Returns persistent store format of a value of type SaveFormatter.dayOfWeek (to be stored in DayPattern).
+     - parameter dow: Value of type SaveFormatter.dayOfWeek to obtain the Int16 persistent store value of.
      - returns: Int16 representing provided SaveFormatter.dayOfWeek.
      */
     static func dayOfWeekToStored(_ dow: SaveFormatter.dayOfWeek) -> Int16 {
@@ -181,8 +180,8 @@ extension SaveFormatter {
     }
     
     /**
-     Returns persistent store format of a value of type SaveFormatter.weekOfMonth (stored in DayPattern).
-     - parameter wom: Value of type SaveFormatter.weekOfMonth obtain the Int16 persistent store value of.
+     Returns persistent store format of a value of type SaveFormatter.weekOfMonth (to be stored in DayPattern).
+     - parameter wom: Value of type SaveFormatter.weekOfMonth to obtain the Int16 persistent store value of.
      - returns: Int16 representing provided SaveFormatter.weekOfMonth.
      */
     static func weekOfMonthToStored(_ wom: SaveFormatter.weekOfMonth) -> Int16 {
@@ -209,18 +208,18 @@ extension SaveFormatter {
         case thirty_one = 31, last = 0
         
         var shortValue: String {
-            return self == .last ? "last" : String(self.rawValue)
+            return self == .last ? "Last" : String(self.rawValue)
         }
         
         var longValue: String {
-            return self == .last ? "last" : String(self.rawValue)
+            return self == .last ? "Last" : String(self.rawValue)
         }
         
     }
     
     /**
-     Returns persistent store format of a value of type SaveFormatter.dayOfMonth (stored in DayPattern).
-     - parameter dom: Value of type SaveFormatter.dayOfMonth obtain the Int16 persistent store value of.
+     Returns persistent store format of a value of type SaveFormatter.dayOfMonth (to be stored in DayPattern).
+     - parameter dom: Value of type SaveFormatter.dayOfMonth to obtain the Int16 persistent store value of.
      - returns: Int16 representing provided SaveFormatter.dayOfMonth.
      */
     static func dayOfMonthToStored(_ dom: SaveFormatter.dayOfMonth) -> Int16 {

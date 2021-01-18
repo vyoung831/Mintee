@@ -78,7 +78,7 @@ class DayPattern: NSObject, NSSecureCoding {
         
         // Exit if the decoded type cannot be converted back into an enum value of type DayPattern.patternType
         guard let type = patternType(rawValue: typeValue) else {
-            let userInfo: [String : Any] = ["Message" : "DayPattern.init() could not initialize a value of type patternType from the saved Int8",
+            let userInfo: [String : Any] = ["Message" : "DayPattern.init() could not initialize a value of type DayPattern.patternType from the saved Int8",
                                             "decoded value" : typeValue]
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
@@ -109,8 +109,9 @@ extension DayPattern {
         debugDictionary["DayPattern.daysOfMonth"] = self.daysOfMonth
         debugDictionary["DayPattern.type"] = self.type
         
-        debugDictionary.merge(userInfo,
-                              uniquingKeysWith: { return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)" })
+        debugDictionary.merge(userInfo, uniquingKeysWith: {
+            return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)"
+        })
         return debugDictionary
     }
     

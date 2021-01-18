@@ -49,7 +49,7 @@ public class TaskTargetSet: NSManagedObject {
             self.priority = priority
             self.pattern = pattern
         } else {
-            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() received false from TaskTargetSet.validateOperators()",
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() failed to validate operators",
                                             "min" : min,
                                             "max" : max,
                                             "minOperator" : minOperator,

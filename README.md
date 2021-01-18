@@ -1,8 +1,8 @@
-1. [Mu](#Mu)
-1. [Technotes](#technotes)
-
 # Mu
 Mu is a task and habit management application developed for iPhone.
+
+# Table of Contents
+1. [Technotes](#technotes)
 
 # Technotes
 For technotes on design and development guidelines, see the following:  

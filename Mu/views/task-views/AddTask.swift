@@ -48,7 +48,6 @@ struct AddTask: View {
             
             switch self.taskType {
             case .recurring:
-                
                 for i in 0 ..< taskTargetSetViews.count {
                     let ttsv = taskTargetSetViews[i]
                     let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: CDCoordinator.moc,
@@ -69,7 +68,6 @@ struct AddTask: View {
                                   endDate: self.endDate,
                                   targetSets: Set(taskTargetSets))
                 break
-                
             case .specific:
                 let _ = try Task(entity: Task.entity(),
                                  insertInto: CDCoordinator.moc,
@@ -77,8 +75,8 @@ struct AddTask: View {
                                  tags: tagObjects,
                                  dates: self.dates)
                 break
-                
             }
+            
         } catch {
             self.errorMessage = ErrorManager.unexpectedErrorMessage
             CDCoordinator.moc.rollback()

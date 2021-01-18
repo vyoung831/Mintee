@@ -114,7 +114,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
         guard let minOp = SaveFormatter.storedToEqualityOperator(minOpInt),
               let maxOp = SaveFormatter.storedToEqualityOperator(maxOpInt) else {
             
-            var userInfo: [String : Any] = ["Message" : "TodayCollectionViewCell found invalid _minOperator or _maxOperator in a TaskInstance's TaskTargetSet when updating completionMeter"]
+            var userInfo: [String : Any] = ["Message" : "TodayCollectionViewCell.updateAppearance() found invalid _minOperator or _maxOperator in a TaskInstance's TaskTargetSet"]
             if let task = instance._task {
                 ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo) )
             } else {
