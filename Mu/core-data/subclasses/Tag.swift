@@ -24,32 +24,24 @@ public class Tag: NSManagedObject {
     
     /**
      Creates a Tag instance and inserts it into the shared MOC. This initializer should only be used if there is no existing Tag with tagName=$tagName in the MOC.
-     - parameters:
-     - tagName: String to set new Tag's tagName to
+     - parameter tagName: String to set new Tag's name to
      */
     private convenience init( tagName : String ) {
-        if let entity = NSEntityDescription.entity(forEntityName: "Tag", in: CDCoordinator.moc) {
-            self.init(entity: entity, insertInto: CDCoordinator.moc)
-            self.name = tagName
-        } else {
-            Crashlytics.crashlytics().log("Could not get NSEntityDescription for Tag")
-            fatalError()
-        }
+        self.init(context: CDCoordinator.moc)
+        self.name = tagName
     }
     
     /**
      Given a tagName, either returns the existing Tag object with that tagName or creates a new one.
      This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate
-     - parameters:
-     - tagName: CASE and DIACRITIC insensitive tagName of the Tag to attempt to find
-     - returns:
-     - Tag NSManagedObject with its tagName set to the input parm tagName
+     - parameter tagName: Case and diacritic insensitive name of the Tag to attempt to find
+     - returns: Tag NSManagedObject with its tagName set to the input parm tagName
      */
-    static func getOrCreateTag ( tagName : String ) -> Tag? {
+    static func getOrCreateTag ( tagName : String ) throws -> Tag {
         
         if tagName.count < 1 {
-            ErrorManager.recordNonFatal(.attemptedToCreateTagWithEmptyName, [:])
-            return nil
+            let userInfo: [String : Any] = ["Message" : "Tag.getOrCreateTag() received tagName with count < 1"]
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
         }
         
         // Set up case and diacritic insensitive predicate
@@ -61,10 +53,11 @@ public class Tag: NSManagedObject {
                 // Return existing tag
                 return first
             }
-        } catch {
-            Crashlytics.crashlytics().log("FetchRequest for Tag failed in Tag.getOrCreateTag()")
-            Crashlytics.crashlytics().setValue(error.localizedDescription, forKey: "Error localized description")
-            fatalError()
+        } catch (let error) {
+            throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                              ["Message" : "Tag.getOrCreateTag() failed to execute NSFetchRequest",
+                                               "request" : request.debugDescription,
+                                               "error.localizedDescription" : error.localizedDescription])
         }
         
         // No tag already exists in MOC. Return Tag from initiaizlier

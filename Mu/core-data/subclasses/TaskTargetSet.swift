@@ -36,10 +36,10 @@ public class TaskTargetSet: NSManagedObject {
                      insertInto context: NSManagedObjectContext?,
                      min: Float,
                      max: Float,
-                     minOperator: Int16,
-                     maxOperator: Int16,
+                     minOperator: SaveFormatter.equalityOperator,
+                     maxOperator: SaveFormatter.equalityOperator,
                      priority: Int16,
-                     pattern: DayPattern) {
+                     pattern: DayPattern) throws {
         if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
             self.init(entity: entity, insertInto: context)
             self.minOperator = validatedValues.minOp
@@ -49,8 +49,13 @@ public class TaskTargetSet: NSManagedObject {
             self.priority = priority
             self.pattern = pattern
         } else {
-            Crashlytics.crashlytics().log("An attempt was made to instantiate a TaskTargetSet with invalid data")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() failed to validate operators",
+                                            "min" : min,
+                                            "max" : max,
+                                            "minOperator" : minOperator,
+                                            "maxOperator" : maxOperator,
+                                            "priority" : priority]
+            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, pattern.mergeDebugDictionary(userInfo: userInfo))
         }
     }
     
@@ -77,92 +82,65 @@ extension TaskTargetSet {
 extension TaskTargetSet {
     
     /**
-     Calls function of the same name in TaskTargetSet that takes minOp and maxOp as Int16 instead of SaveFormatter.EqualityOperator.
-     Checks provided minOperator, maxOperator, and min/max values to determine if combination is valid. Corrects values where necessary, such as setting both operators to = and both values to the same value if = is present.
+     Checks provided minOperator, maxOperator, and min/max values to validate against business logic.
+     Corrects values where necessary, such as setting both operators to = and both values to the same value if = is present.
      Returns a tuple containing an optional error message and an optional tuple of corrected values to set in the TaskTargetSet.
-     - parameter minOp: EqualityOperator that is to be set as TaskTargetSet's minOperator
-     - parameter maxOp: EqualityOperator that is to be set as TaskTargetSet's maxOperator
-     - parameter minTarget: Float to set TaskTargetSet's min to
-     - parameter maxTarget: Float to set TaskTargetSet's max to
-     - returns: Tuple of optional errorMessage and optional tuple of correct values to set in TaskTargetSet. One and only one of the tuples will be non-nil
+     - parameter minOp: EqualityOperator that is to be set as TaskTargetSet's minOperator.
+     - parameter maxOp: EqualityOperator that is to be set as TaskTargetSet's maxOperator.
+     - parameter min: Float to set TaskTargetSet's min to.
+     - parameter max: Float to set TaskTargetSet's max to.
+     - returns: Tuple of optional errorMessage and optional tuple of correct values to set as TaskTargetSet's properties. One and only one of the tuples will be non-nil.
      */
-    static func validateOperators(minOperator: SaveFormatter.equalityOperator,
-                                  maxOperator: SaveFormatter.equalityOperator,
-                                  min: Float,
-                                  max: Float) -> (errorMessage: String?, operators: (minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, min: Float, max: Float)?) {
-        
-        let validatedValues = TaskTargetSet.validateOperators(minOp: SaveFormatter.getOperatorNumber(minOperator),
-                                                              maxOp: SaveFormatter.getOperatorNumber(maxOperator),
-                                                              min: min,
-                                                              max: max)
-        if let validatedOperators = validatedValues.operators {
-            return (validatedValues.errorMessage, (minOp: SaveFormatter.getOperatorString(validatedOperators.minOp),
-                                                   maxOp: SaveFormatter.getOperatorString(validatedOperators.maxOp),
-                                                   min: validatedOperators.min,
-                                                   max: validatedOperators.max))
-        }
-        return (validatedValues.errorMessage, nil)
-    }
-    
-    /**
-     Checks provided minOperator, maxOperator, and min/max values to determine if combination is valid. Corrects values where necessary, such as setting both operators to = and both values to the same value if = is present.
-     Returns a tuple containing an optional error message and an optional tuple of corrected values to set in the TaskTargetSet.
-     - parameter minOp: EqualityOperator whose Int16 equivalent is to be set as TaskTargetSet's minOperator
-     - parameter maxOp: EqualityOperator whose Int16 equivalent is to be set as TaskTargetSet's minOperator
-     - parameter minTarget: Float to set TaskTargetSet's min to
-     - parameter maxTarget: Float to set TaskTargetSet's max to
-     - returns: Tuple of optional errorMessage and optional tuple of correct values to set in TaskTargetSet. One and only one of the tuples will be non-nil
-     */
-    static func validateOperators(minOp: Int16,
-                                  maxOp: Int16,
+    static func validateOperators(minOp: SaveFormatter.equalityOperator,
+                                  maxOp: SaveFormatter.equalityOperator,
                                   min: Float,
                                   max: Float) -> (errorMessage: String?, operators: (minOp: Int16, maxOp: Int16, min: Float, max: Float)?) {
         
-        let minOperator = SaveFormatter.getOperatorString(minOp)
-        let maxOperator = SaveFormatter.getOperatorString(maxOp)
-        let eq = SaveFormatter.getOperatorNumber(.eq)
-        let na = SaveFormatter.getOperatorNumber(.na)
+        let minOpStore = SaveFormatter.equalityOperatorToStored(minOp)
+        let maxOpStore = SaveFormatter.equalityOperatorToStored(maxOp)
+        let eq = SaveFormatter.equalityOperatorToStored(.eq)
+        let na = SaveFormatter.equalityOperatorToStored(.na)
         
-        if minOperator == .eq && maxOperator == .eq && min != max {
+        if minOp == .eq && maxOp == .eq && min != max {
             return ("Both operators were set to equal but target values were different", nil)
         }
         
-        if minOperator == .eq {
+        if minOp == .eq {
             return (nil, (eq, eq, min, min))
-        }; if maxOperator == .eq {
+        }; if maxOp == .eq {
             return (nil, (eq, eq, max, max))
         }
         
-        switch minOperator {
+        switch minOp {
         case .lt:
-            if maxOperator == .lt || maxOperator == .lte {
+            if maxOp == .lt || maxOp == .lte {
                 return min >= max ?
                     ("Min/max were set to (lt, lt/lte) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                    (nil, (minOpStore, maxOpStore, min, max))
             } else {
-                return (nil, (minOp, na, min, 0))
+                return (nil, (minOpStore, na, min, 0))
             }
         case .lte:
-            switch maxOperator {
+            switch maxOp {
             case .lt:
                 return min >= max ?
                     ("Min/max were set to (lte, lt) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                    (nil, (minOpStore, maxOpStore, min, max))
             case .lte:
                 if min == max {
                     return (nil, (eq, eq, min, min))
                 } else {
                     return min > max ?
                         ("Min/max were set to (lte, lte) but min was greater than max", nil) :
-                        (nil, (minOp, maxOp, min, max))
+                        (nil, (minOpStore, maxOpStore, min, max))
                 }
             default:
-                return (nil, (minOp, na, min, 0))
+                return (nil, (minOpStore, na, min, 0))
             }
         default:
-            return maxOp == na ?
+            return maxOp == .na ?
                 ("Min and max operators were both N/A", nil) :
-                (nil, (na, maxOp, 0, max))
+                (nil, (na, maxOpStore, 0, max))
         }
         
     }
@@ -173,24 +151,30 @@ extension TaskTargetSet {
      - parameter weekday: weekday to check; should have been obtained from a Calendar's weekday component
      - returns: True if parameters matched with this TaskTargetSet's pattern
      */
-    func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) -> Bool {
+    func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) throws -> Bool {
         
         guard let pattern = self.pattern else {
-            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() found nil in pattern",
+                                            "TaskTargetSet" : self.debugDescription]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                              self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
         }
         
         if daysInMonth < 28 {
-            Crashlytics.crashlytics().log("checkDay() in TaskTargetSet received an invalid number of daysInMonth")
-            Crashlytics.crashlytics().setValue(daysInMonth, forKey: "Days in month")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
+                                            "day" : day,
+                                            "weekday" : weekday,
+                                            "daysInMonth" : daysInMonth,
+                                            "TaskTargetSet" : self.debugDescription]
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+                                              self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
         }
         
         switch pattern.type {
         case .dow:
             return pattern.daysOfWeek.contains(weekday)
         case .wom:
-            if pattern.weeksOfMonth.contains(SaveFormatter.getWeekOfMonthNumber(wom: "Last")) {
+            if pattern.weeksOfMonth.contains(SaveFormatter.weekOfMonthToStored(.last)) {
                 return pattern.daysOfWeek.contains(weekday) &&
                     (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ) || day + 7 > daysInMonth)
             }
@@ -205,39 +189,6 @@ extension TaskTargetSet {
             return pattern.daysOfMonth.contains(day) || ( pattern.daysOfMonth.contains(0) && day == daysInMonth)
         }
         
-    }
-    
-    /**
-     - returns: A Set of Int16, representing the day value of each DayOfWeek in this object's daysOfWeek relationship
-     */
-    func getDaysOfWeek() -> Set<Int16> {
-        guard let pattern = self.pattern else {
-            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
-            fatalError()
-        }
-        return pattern.daysOfWeek
-    }
-    
-    /**
-     - returns: A Set of Int16, representing the week value of each WeekOfMonth in this object's weeksOfMonth relationship
-     */
-    func getWeeksOfMonth() -> Set<Int16> {
-        guard let pattern = self.pattern else {
-            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
-            fatalError()
-        }
-        return pattern.weeksOfMonth
-    }
-    
-    /**
-     - returns: A Set of Int16, representing the day value of each DayOfMonth in this object's daysOfMonth relationship
-     */
-    func getDaysOfMonth() -> Set<Int16> {
-        guard let pattern = self.pattern else {
-            Crashlytics.crashlytics().log("TaskTargetSet was unable to retrieve its DayPattern")
-            fatalError()
-        }
-        return pattern.daysOfMonth
     }
     
 }

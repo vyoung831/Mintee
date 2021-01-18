@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct BubbleRows: View {
+struct BubbleRows<BubbleType : Day>: View {
     
     // MARK: - Presentation options
     
@@ -19,15 +19,15 @@ struct BubbleRows: View {
     
     // MARK: - Properties
     
-    static let rowSpacing: CGFloat = 12
-    static let minimumInterBubbleSpacing: CGFloat = 5
+    let rowSpacing: CGFloat = 12
+    let minimumInterBubbleSpacing: CGFloat = 5
     
     var maxBubbleRadius: CGFloat = 28
-    var bubbles: [[String]]
+    var bubbles: [[BubbleType]]
     
     var presentation: BubbleRows.PresentationOption
     var toggleable: Bool
-    @Binding var selectedBubbles: Set<String>
+    @Binding var selectedBubbles: Set<BubbleType>
     
     @State var grHeight: CGFloat = 0
     
@@ -59,7 +59,7 @@ struct BubbleRows: View {
      - returns: Bubble radius
      */
     func getBubbleRadius(totalWidth: CGFloat) -> CGFloat {
-        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubbles[0].count)-1) * BubbleRows.minimumInterBubbleSpacing
+        let bubblesCumulativeWidth = totalWidth - (CGFloat(bubbles[0].count)-1) * minimumInterBubbleSpacing
         let fullBubbleRadius = (bubblesCumulativeWidth/CGFloat(bubbles[0].count))/2
         return min(fullBubbleRadius, maxBubbleRadius)
     }
@@ -72,7 +72,7 @@ struct BubbleRows: View {
      */
     func getGeometryReaderHeight(totalWidth: CGFloat) -> CGFloat {
         let bubbleHeight = 2*getBubbleRadius(totalWidth: totalWidth)
-        let spacing = CGFloat(self.bubbles.count-1) * BubbleRows.rowSpacing
+        let spacing = CGFloat(self.bubbles.count-1) * rowSpacing
         let totalHeight = bubbleHeight*(CGFloat(self.bubbles.count)) + spacing
         return totalHeight
     }
@@ -88,7 +88,7 @@ struct BubbleRows: View {
         let bubblesCumulativeWidth = bubbleWidth * CGFloat(bubbles[0].count)
         let totalSpacing = totalWidth - bubblesCumulativeWidth
         let spacing = totalSpacing/(CGFloat(bubbles[0].count) - 1)
-        return max(spacing, BubbleRows.minimumInterBubbleSpacing)
+        return max(spacing, minimumInterBubbleSpacing)
     }
     
     // MARK: - View
@@ -100,7 +100,7 @@ struct BubbleRows: View {
          Because GeometryReader only updates the height of its frame and never the width, circular layout references between the GeometryReader and VStack are avoided
          */
         GeometryReader { gr in
-            VStack(alignment: .leading, spacing: BubbleRows.rowSpacing) {
+            VStack(alignment: .leading, spacing: rowSpacing) {
                 ForEach(0 ..< self.bubbles.count, id: \.self) { row in
                     
                     // Calculate the HStack spacing now that GeometryReader has the available width
@@ -117,11 +117,11 @@ struct BubbleRows: View {
                                     .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                            height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                            alignment: .center)
-                                Text(String(bubbleText)).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                                            ? themeManager.buttonText : themeManager.button)
+                                Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
+                                                                                ? themeManager.buttonText : themeManager.button)
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
-                            .accessibility(label: Text("\(DayBubbleLabels.getLongLabel(bubbleText))"))
+                            .accessibility(label: Text("\(bubbleText.longValue)"))
                             .accessibility(hint: Text("Tap to toggle this day"))
                             .onTapGesture {
                                 // Add or remove the bubbleText from selectedBubbles

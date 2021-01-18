@@ -42,11 +42,11 @@ public class Task: NSManagedObject {
                      tags: Set<Tag>,
                      startDate: Date,
                      endDate: Date,
-                     targetSets: Set<TaskTargetSet>) {
+                     targetSets: Set<TaskTargetSet>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.updateTags(newTags: tags)
-        self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
+        try self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
     }
     
     /**
@@ -56,26 +56,27 @@ public class Task: NSManagedObject {
                      insertInto context: NSManagedObjectContext?,
                      name: String,
                      tags: Set<Tag>,
-                     dates: [Date]) {
+                     dates: [Date]) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.updateTags(newTags: tags)
-        self.updateSpecificInstances(dates: dates)
+        try self.updateSpecificInstances(dates: dates)
     }
     
     /**
      Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
      Also deletes all TaskInstances and TaskTargetSets associated with this Task.
      */
-    public func deleteSelf() {
+    public func deleteSelf() throws {
         self.removeAllTags()
         
-        if let targetSets = self.targetSets, let instances = self.instances {
+        if let targetSets = self.targetSets,
+           let instances = self.instances {
             for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
             for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
         } else {
-            Crashlytics.crashlytics().log("deleteSelf() in Task found targetSets and/or instances to be nil")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "Task.deleteSelf() found instances and/or targetSets to be nil"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
         CDCoordinator.moc.delete(self)
@@ -131,6 +132,50 @@ extension Task {
     
     @objc(removeTargetSets:)
     @NSManaged private func removeFromTargetSets(_ values: NSSet)
+    
+}
+
+// MARK: - Debug descriptions for error reporting
+
+extension Task {
+    
+    /**
+     Gathers debug descriptions of this Task and its TaskTargetSets.
+     - parameter userInfo: [String : Any] Dictionary containing existing debug info
+     - returns: Dictionary containing existing debug info and debug descriptions of this Task and its TaskTargetSets
+     */
+    func mergeDebugDictionary(userInfo: [String : Any]) -> [String : Any] {
+        
+        var debugDictionary: [String : Any] = [:]
+        debugDictionary["Task.debugDescription"] = self.debugDescription
+        
+        if let ttsArray = self.targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
+            for idx in 0 ..< ttsArray.count {
+                
+                // Add Dictionary entries for TaskTargetSets
+                let ttsIdentifier = "Task.TaskTargetSet[\(idx)]"
+                debugDictionary["\(ttsIdentifier).debugDescription"] = ttsArray[idx].debugDescription
+                
+                // Add Dictionary entries for DayPatterns' sets and types
+                let patternIdentifier = "\(ttsIdentifier)._pattern"
+                if let pattern = ttsArray[idx]._pattern {
+                    debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
+                    debugDictionary["\(patternIdentifier).weeksOfMonth"] = pattern.weeksOfMonth
+                    debugDictionary["\(patternIdentifier).daysOfMonth"] = pattern.daysOfMonth
+                    debugDictionary["\(patternIdentifier).type"] = pattern.type
+                } else {
+                    debugDictionary["\(patternIdentifier)"] = nil
+                }
+                
+            }
+        }
+        
+        debugDictionary.merge(userInfo, uniquingKeysWith: {
+            return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)"
+        })
+        return debugDictionary
+        
+    }
     
 }
 
@@ -208,18 +253,24 @@ extension Task {
      - parameter dates: New dates that would be set as this Task's instances
      - returns: Array of Strings representing TaskInstances that would be deleted, sorted by date. The Strings represent the dates in "M-d-yyyy" format
      */
-    func getDeltaInstancesSpecific(dates: Set<Date>) -> [String] {
+    func getDeltaInstancesSpecific(dates: Set<Date>) throws -> [String] {
+        
         guard let instances = self.instances as? Set<TaskInstance> else {
-            Crashlytics.crashlytics().log("getDeltaInstancesSpecific() in Task could not retrieve existing instances")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() could not retrieve instances as Set of TaskInstance"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
         var datesDelta: [String] = []
         let newDateStrings = dates.map{SaveFormatter.dateToStoredString($0)}
         for instance in instances {
-            if let existingDate = instance._date {
-                !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
+            
+            guard let existingDate = instance._date else {
+                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() found nil in a TaskInstance's _date"]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
             }
+            
+            !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
+            
         }
         
         return datesDelta.sorted{ $0 < $1 }
@@ -232,38 +283,28 @@ extension Task {
      - parameter dayPatterns: Set of DayPatterns
      - returns: Array of Strings representing TaskInstances that would be deleted, sorted by date. The Strings represent the dates in "M-d-yyyy" format
      */
-    func getDeltaInstancesRecurring(startDate: Date, endDate: Date, dayPatterns: Set<DayPattern>) -> [Date] {
+    func getDeltaInstancesRecurring(startDate: Date, endDate: Date, dayPatterns: Set<DayPattern>) throws -> [Date] {
         
         var datesDelta: [Date] = []
         
         guard let instances = self.instances as? Set<TaskInstance> else {
-            Crashlytics.crashlytics().log("getDeltaInstancesRecurring() in Task could not retrieve existing instances")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() could not retrieve instances as Set of TaskInstance"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
-        // Filter existing TaskInstances for ones before the proposed start date
-        let instancesBefore = instances.filter({
-            if let date = $0._date {
-                return SaveFormatter.storedStringToDate(date).lessThanDate(startDate)
-            } else {
-                Crashlytics.crashlytics().log("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value")
-                fatalError()
+        // Filter existing TaskInstances for ones before the proposed start date or after the proposed end date
+        for instance in instances {
+            guard let dateString = instance._date,
+                  let date = SaveFormatter.storedStringToDate(dateString) else {
+                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() found a TaskInstance with nil or invalid _date",
+                                                "TaskInstance" : instance.debugDescription]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
             }
-        })
-        
-        // Filter existing TaskInstances for ones after the proposed end date
-        let instancesAfter = instances.filter({
-            if let date = $0._date {
-                return endDate.lessThanDate(SaveFormatter.storedStringToDate(date))
-            } else {
-                Crashlytics.crashlytics().log("getDeltaInstancesRecurring() found an existing TaskInstance with a nil date value")
-                fatalError()
+            
+            if date.lessThanDate(startDate) || endDate.lessThanDate(date) {
+                datesDelta.append(date)
             }
-        })
-        
-        let beforeSorted = instancesBefore.map({ $0._date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
-        let afterSorted = instancesAfter.map({ $0._date ?? "" }).sorted().map{ SaveFormatter.storedStringToDate($0) }
-        datesDelta.append(contentsOf: beforeSorted)
+        }
         
         // Loop through each of the days from startDate to endDate to evaluate if TaskInstances for each day would be created, deleted, or carried over
         var dateCounter = startDate
@@ -282,13 +323,14 @@ extension Task {
                 case .wom:
                     let day = Int16(Calendar.current.component(.day, from: dateCounter))
                     guard let daysInMonth = Calendar.current.range(of: .day, in: .month, for: dateCounter) else {
-                        Crashlytics.crashlytics().log("getDeltaInstancesRecurring() in Task found daysInMonth equal to nil in a Task of type .wom")
-                        fatalError()
+                        let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() received nil days in month while iterating from startDate to endDate",
+                                                        "dateCounter" : dateCounter.debugDescription]
+                        throw ErrorManager.recordNonFatal(.dateOperationFailed, self.mergeDebugDictionary(userInfo: userInfo))
                     }
                     
                     if pattern.daysOfWeek.contains(Int16(Calendar.current.component(.weekday, from: dateCounter))) {
                         if pattern.weeksOfMonth.contains(Int16(ceil(Float(day)/7))) { matched = true }
-                        else if pattern.weeksOfMonth.contains(SaveFormatter.getWeekOfMonthNumber(wom: "Last")) {
+                        else if pattern.weeksOfMonth.contains(SaveFormatter.weekOfMonthToStored(.last)) {
                             if day + 7 > daysInMonth.count { matched = true }
                         }
                     }
@@ -316,16 +358,16 @@ extension Task {
             if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
                 dateCounter = newDate
             } else {
-                Crashlytics.crashlytics().log("An error occurred in getDeltaInstancesRecurring() when incrementing dateCounter")
-                fatalError()
+                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() failed to increment dateCounter",
+                                                "dateCounter" : dateCounter.debugDescription]
+                throw ErrorManager.recordNonFatal(.dateOperationFailed, self.mergeDebugDictionary(userInfo: userInfo))
             }
             
             matched = false
             
         }
         
-        datesDelta.append(contentsOf: afterSorted)
-        return datesDelta
+        return datesDelta.sorted()
     }
     
 }
@@ -342,10 +384,10 @@ extension Task {
      - Deletes existing TaskInstances that don't intersect with the caller-provided dates, and generates new TaskInstances and assigns them to this Task
      - parameter dates: Array of Dates to be assigned to this Task's instances
      */
-    func updateSpecificInstances(dates: [Date]) {
+    func updateSpecificInstances(dates: [Date]) throws {
         
         // Set task type, set start and end dates, and delete associated TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .specific)
+        self.taskType = SaveFormatter.taskTypeToStored(.specific)
         self.startDate = nil
         self.endDate = nil
         if let targetSets = self.targetSets {
@@ -359,22 +401,23 @@ extension Task {
         let newDatesStrings = Set(dates.map{ SaveFormatter.dateToStoredString($0) })
         var datesToBeAdded: Set<String> = newDatesStrings
         guard let existingInstances = self.instances as? Set<TaskInstance> else {
-            Crashlytics.crashlytics().log("updateSpecificInstances() in Task could not retrieve instances")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "Task.updateSpecificInstances() could not retrieve instances as Set of TaskInstance"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         for existingInstance in existingInstances {
-            if let existingDate = existingInstance._date {
-                if !newDatesStrings.contains(existingDate) {
-                    CDCoordinator.moc.delete(existingInstance)
-                } else {
-                    datesToBeAdded.remove(existingDate)
-                }
+            
+            guard let existingDate = existingInstance._date else {
+                let userInfo: [String : Any] = ["Message" : "Task.updateSpecificInstances() found nil in a TaskInstance's _date",
+                                                "TaskInstance" : existingInstance.debugDescription]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
             }
-            else {
-                Crashlytics.crashlytics().log("updateSpecificInstances() in Task found a TaskInstance with nil date value")
-                Crashlytics.crashlytics().setValue(existingInstance, forKey: "TaskInstance")
-                fatalError()
+            
+            if !newDatesStrings.contains(existingDate) {
+                CDCoordinator.moc.delete(existingInstance)
+            } else {
+                datesToBeAdded.remove(existingDate)
             }
+            
         }
         
         // Generate TaskInstances for the remaining dates that don't already exist for this Task
@@ -392,13 +435,18 @@ extension Task {
      - parameter startDate: startDate to assign to this Task
      - parameter endDate: endDate to assign to this Task
      */
-    func updateRecurringInstances(startDate: Date, endDate: Date) {
+    func updateRecurringInstances(startDate: Date, endDate: Date) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
+        self.taskType = SaveFormatter.taskTypeToStored(.recurring)
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
-        generateAndPruneInstances()
+        
+        do {
+            try generateAndPruneInstances()
+        } catch (let error) {
+            throw error
+        }
         
     }
     
@@ -412,10 +460,10 @@ extension Task {
      - parameter endDate: endDate to assign to this Task
      - parameter targetSets: Set of new TaskTargetSets to associate with this Task
      */
-    func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) {
+    func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(type: .recurring)
+        self.taskType = SaveFormatter.taskTypeToStored(.recurring)
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         if let existingTargetSets = self.targetSets {
@@ -425,41 +473,47 @@ extension Task {
                 }
             }
         } else {
-            Crashlytics.crashlytics().log("updateRecurringInstances() in Task failed to delete TaskTargetSets")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "Task.updateRecurringInstances() found nil in targetSets"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
         // Set new targetSets and update instances
         self.targetSets = NSSet(set: targetSets)
-        generateAndPruneInstances()
+        
+        do {
+            try generateAndPruneInstances()
+        } catch (let error) {
+            throw error
+        }
         
     }
     
     /**
      Uses this Task's targetSets to generate new or attach existing TaskInstances. Existing TaskInstances that are no longer needed are deleted.
      */
-    private func generateAndPruneInstances() {
+    private func generateAndPruneInstances() throws {
         
         guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0._priority < $1._priority} ) else {
-            Crashlytics.crashlytics().log("generateAndPruneInstances() in Task failed to get and/or sort targetSets")
-            fatalError()
+            let userInfo: [String : Any] = ["Message" : "Task.generateAndPruneInstances() could not read from or sort targetSets"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
-        guard let sd = self.startDate, let ed = self.endDate else {
-            Crashlytics.crashlytics().log("generateAndPruneInstances was called but startDate and/or endDate were nil")
-            fatalError()
+        guard let sd = self.startDate,
+              let ed = self.endDate,
+              var dateCounter = SaveFormatter.storedStringToDate(sd),
+              let endDate = SaveFormatter.storedStringToDate(ed) else {
+            let userInfo: [String : Any] = ["Message" : "Task.generateAndPruneInstances() found a nil or invalid startDate and/or endDate"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
-        var dateCounter = SaveFormatter.storedStringToDate(sd)
-        let endDate = SaveFormatter.storedStringToDate(ed)
         
         var newInstances = Set<TaskInstance>()
         var matched = false
         while dateCounter.lessThanOrEqualToDate(endDate) {
             
             for idx in 0 ..< sortedTargetSets.count {
-                if sortedTargetSets[idx].checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
-                                                  weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
-                                                  daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
+                if try sortedTargetSets[idx].checkDay(day: Int16(Calendar.current.component(.day, from: dateCounter)),
+                                                      weekday: Int16(Calendar.current.component(.weekday, from: dateCounter)),
+                                                      daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from this Task's instances or a new one in the MOC
                     let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))
@@ -477,8 +531,9 @@ extension Task {
             if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
                 dateCounter = newDate
             } else {
-                Crashlytics.crashlytics().log("An error occurred in generateAndPruneInstances() when incrementing dateCounter")
-                fatalError()
+                let userInfo: [String : Any] = ["Message" : "Task.generateAndPruneInstances() failed to increment dateCounter",
+                                                "dateCounter" : dateCounter.debugDescription]
+                throw ErrorManager.recordNonFatal(.dateOperationFailed, self.mergeDebugDictionary(userInfo: userInfo))
             }
         }
         

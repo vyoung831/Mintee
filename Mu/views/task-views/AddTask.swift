@@ -37,48 +37,50 @@ struct AddTask: View {
     private func saveTask() -> Bool {
         
         var tagObjects: Set<Tag> = Set()
-        for idx in 0 ..< self.tags.count {
-            if let tag = Tag.getOrCreateTag(tagName: self.tags[idx]) {
-                tagObjects.insert(tag)
-            } else {
-                self.errorMessage = "Save failed. An attempt was made to create a Tag with an empty name."
-                return false
-            }
-        }
-        
         var taskTargetSets: [TaskTargetSet] = []
-        for i in 0 ..< taskTargetSetViews.count {
-            let ttsv = taskTargetSetViews[i]
-            let tts = TaskTargetSet(entity: TaskTargetSet.entity(),
-                                    insertInto: CDCoordinator.moc,
-                                    min: ttsv.minTarget,
-                                    max: ttsv.maxTarget,
-                                    minOperator: SaveFormatter.getOperatorNumber(ttsv.minOperator),
-                                    maxOperator: SaveFormatter.getOperatorNumber(ttsv.maxOperator),
-                                    priority: Int16(i),
-                                    pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? []).map{ SaveFormatter.getWeekdayNumber(weekday: $0) }),
-                                                        wom: Set((ttsv.selectedWeeksOfMonth ?? []).map{ SaveFormatter.getWeekOfMonthNumber(wom: $0) }),
-                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []).map{ SaveFormatter.getDayOfMonthInt($0) })))
-            taskTargetSets.append(tts)
-        }
         
-        switch self.taskType {
-        case .recurring:
-            let _ = Task(entity: Task.entity(),
-                         insertInto: CDCoordinator.moc,
-                         name: self.taskName,
-                         tags: tagObjects,
-                         startDate: self.startDate,
-                         endDate: self.endDate,
-                         targetSets: Set(taskTargetSets))
-            break
-        case .specific:
-            let _ = Task(entity: Task.entity(),
-                         insertInto: CDCoordinator.moc,
-                         name: self.taskName,
-                         tags: tagObjects,
-                         dates: self.dates)
-            break
+        do {
+            
+            for idx in 0 ..< self.tags.count {
+                let tag = try Tag.getOrCreateTag(tagName: self.tags[idx])
+                tagObjects.insert(tag)
+            }
+            
+            switch self.taskType {
+            case .recurring:
+                for i in 0 ..< taskTargetSetViews.count {
+                    let ttsv = taskTargetSetViews[i]
+                    let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: CDCoordinator.moc,
+                                                min: ttsv.minTarget, max: ttsv.maxTarget,
+                                                minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
+                                                priority: Int16(i),
+                                                pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                    wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                    dom: Set((ttsv.selectedDaysOfMonth ?? []))))
+                    taskTargetSets.append(tts)
+                }
+                
+                let _ =  try Task(entity: Task.entity(),
+                                  insertInto: CDCoordinator.moc,
+                                  name: self.taskName,
+                                  tags: tagObjects,
+                                  startDate: self.startDate,
+                                  endDate: self.endDate,
+                                  targetSets: Set(taskTargetSets))
+                break
+            case .specific:
+                let _ = try Task(entity: Task.entity(),
+                                 insertInto: CDCoordinator.moc,
+                                 name: self.taskName,
+                                 tags: tagObjects,
+                                 dates: self.dates)
+                break
+            }
+            
+        } catch {
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
+            return false
         }
         
         do {
@@ -146,7 +148,7 @@ struct AddTask: View {
                 
                 // MARK: - Task name text field
                 
-                TaskNameTextField(taskName: self.$taskName)
+                TaskNameTextFieldSection(taskName: self.$taskName)
                 if (errorMessage.count > 0) {
                     Text(errorMessage)
                         .foregroundColor(.red)
@@ -183,11 +185,5 @@ struct AddTask: View {
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
         
-    }
-}
-
-struct AddTask_Previews: PreviewProvider {
-    static var previews: some View {
-        AddTask(isBeingPresented: .constant(true))
     }
 }

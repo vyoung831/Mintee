@@ -45,27 +45,21 @@ extension Date {
     /**
      Using the current calendar, returns the number of calendar days from the current date to the endDate
      - parameter endDate: End date to compare against
-     - returns: Number of calendar days to end date
+     - returns: (Optional) Number of calendar days to end date
      */
-    func daysToDate(_ endDate: Date) -> Int {
+    func daysToDate(_ endDate: Date) -> Int? {
         
         let startComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: self)
         let endComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: endDate)
         guard let startCalendarDate = Calendar.current.date(from: startComponents),
               let endCalendarDate = Calendar.current.date(from: endComponents) else {
-            Crashlytics.crashlytics().log("Date.daysToDate() could not convert the start date's and/or end date's components to Dates")
-            Crashlytics.crashlytics().setValue(startComponents, forKey: "Start date components")
-            Crashlytics.crashlytics().setValue(endComponents, forKey: "End date components")
-            fatalError()
+            return nil
         }
         
         if let days = Calendar.current.dateComponents(Set(arrayLiteral: .day), from: startCalendarDate, to: endCalendarDate).day {
             return days
         } else {
-            Crashlytics.crashlytics().log("Date.daysToDate() could not get amount of days between start date and end date")
-            Crashlytics.crashlytics().setValue(startCalendarDate, forKey: "Start date")
-            Crashlytics.crashlytics().setValue(endCalendarDate, forKey: "End date")
-            fatalError()
+            return nil
         }
         
     }

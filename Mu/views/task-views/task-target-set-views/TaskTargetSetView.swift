@@ -30,9 +30,9 @@ struct TaskTargetSetView: View {
     var minOperator: SaveFormatter.equalityOperator
     var maxTarget: Float
     var maxOperator: SaveFormatter.equalityOperator
-    var selectedDaysOfWeek: Set<String>?
-    var selectedWeeksOfMonth: Set<String>?
-    var selectedDaysOfMonth: Set<String>?
+    var selectedDaysOfWeek: Set<SaveFormatter.dayOfWeek>?
+    var selectedWeeksOfMonth: Set<SaveFormatter.weekOfMonth>?
+    var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth>?
     
     // MARK: - Closures
     
@@ -58,11 +58,16 @@ struct TaskTargetSetView: View {
             return "Every week"
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
-                ErrorManager.recordNonFatal(.ttsvWomNil, [:])
+                ErrorManager.recordNonFatal(.viewObject_unexpectedNilProperty,
+                                            ["Message" : "TaskTargetSetView.getLabel() found nil selectedWeeksOfMonth when expected non-nil",
+                                             "selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription,
+                                             "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription,
+                                             "minOperator" : self.minOperator,
+                                             "maxOperator" : self.maxOperator])
                 return "Weekdays of month"
             }
             
-            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.getWeekOfMonthNumber(wom: $0) < SaveFormatter.getWeekOfMonthNumber(wom: $1) })
+            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.weekOfMonthToStored($0) < SaveFormatter.weekOfMonthToStored($1) }).map{ $0.shortValue }
             var label: String = ""
             for idx in 0 ..< orderedWeeks.count {
                 label.append(contentsOf: orderedWeeks[idx])
@@ -89,29 +94,18 @@ struct TaskTargetSetView: View {
      */
     static func getTargetString(minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float) -> String {
         
-        if minOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.rawValue) \(minTarget.clean)"}
-        if maxOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.rawValue) \(maxTarget.clean)"}
+        if minOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.stringValue) \(minTarget.clean)"}
+        if maxOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.stringValue) \(maxTarget.clean)"}
         
-        if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.rawValue) Target \(maxOperator.rawValue) \(maxTarget.clean)" }
-        if minOperator != .na { return "Target \(minOperator.rawValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
-        if maxOperator != .na { return "Target \(maxOperator.rawValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
+        if minOperator != .na && maxOperator != .na { return "\(minTarget.clean) \(minOperator.stringValue) Target \(maxOperator.stringValue) \(maxTarget.clean)" }
+        if minOperator != .na { return "Target \(minOperator.stringValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
+        if maxOperator != .na { return "Target \(maxOperator.stringValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
-        ErrorManager.recordNonFatal(.ttsvGetTargetStringInvalidValues, ["minOperator": minOperator.rawValue,
-                                                                        "maxOperator": maxOperator.rawValue,
-                                                                        "minTarget": minTarget,
-                                                                        "maxTarget": maxTarget])
+        ErrorManager.recordNonFatal(.viewFunction_receivedInvalidParms, ["minOperator": minOperator.rawValue,
+                                                                         "maxOperator": maxOperator.rawValue,
+                                                                         "minTarget": minTarget,
+                                                                         "maxTarget": maxTarget])
         return ""
-    }
-    
-    /**
-     Returns a String representing this TaskTargetSetView's target value(s)
-     - returns: String to be displayed as a target
-     */
-    func getTarget() -> String {
-        return TaskTargetSetView.getTargetString(minOperator: self.minOperator,
-                                                 maxOperator: self.maxOperator,
-                                                 minTarget: self.minTarget,
-                                                 maxTarget: self.maxTarget)
     }
     
     // MARK: - View
@@ -172,14 +166,21 @@ struct TaskTargetSetView: View {
             // MARK: - Bubbles
             
             Group {
-                BubbleRows(bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: 7,
-                                                                           patternType: self.type == .wom || self.type == .dow ? .dow : .dom),
-                           presentation: .none,
-                           toggleable: false,
-                           selectedBubbles: .constant((self.type == .dow || self.type == .wom
-                                                        ? self.selectedDaysOfWeek : self.selectedDaysOfMonth)
-                                                        ?? Set<String>()))
-                    .accessibilityElement(children: .ignore)
+                
+                if self.type == .dom {
+                    BubbleRows<SaveFormatter.dayOfMonth>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: 7),
+                                                         presentation: .none,
+                                                         toggleable: false,
+                                                         selectedBubbles: .constant(self.selectedDaysOfMonth ?? Set<SaveFormatter.dayOfMonth>()))
+                        .accessibilityElement(children: .ignore)
+                } else {
+                    BubbleRows<SaveFormatter.dayOfWeek>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7),
+                                                        presentation: .none,
+                                                        toggleable: false,
+                                                        selectedBubbles: .constant(self.selectedDaysOfWeek!))
+                        .accessibilityElement(children: .ignore)
+                }
+                
             }
             
             // MARK: - Frequency
@@ -191,7 +192,10 @@ struct TaskTargetSetView: View {
             // MARK: - Target
             
             Group {
-                Text(getTarget())
+                Text( TaskTargetSetView.getTargetString(minOperator: self.minOperator,
+                                                        maxOperator: self.maxOperator,
+                                                        minTarget: self.minTarget,
+                                                        maxTarget: self.maxTarget) )
             }
             
         }
@@ -204,6 +208,5 @@ struct TaskTargetSetView: View {
         .accessibilityElement(children: .combine)
         .accessibility(identifier: "task-target-set-view")
         .accessibility(label: Text("Target set"))
-        .accessibility(value: Text("\(selectedDaysOfWeek!.map{DayBubbleLabels.getLongLabel($0)}.joined(separator: ", ")). \(getLabel()). \(getTarget())"))
     }
 }

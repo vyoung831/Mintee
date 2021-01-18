@@ -28,9 +28,9 @@ struct TaskTargetSetPopup: View {
     
     // MARK: - State variables
     
-    @State var selectedDaysOfWeek: Set<String> = Set<String>()
-    @State var selectedWeeks: Set<String> = Set<String>()
-    @State var selectedDaysOfMonth: Set<String> = Set<String>()
+    @State var selectedDaysOfWeek: Set<SaveFormatter.dayOfWeek> = Set()
+    @State var selectedWeeks: Set<SaveFormatter.weekOfMonth> = Set()
+    @State var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth> = Set()
     
     @State var type: DayPattern.patternType = .dow
     @State var minOperator: SaveFormatter.equalityOperator = .lt
@@ -91,7 +91,7 @@ struct TaskTargetSetPopup: View {
             if let maxu = validateMaxValue() { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
         } else { maxOperator = .na; max = 0 }
         
-        let ttsValidation = TaskTargetSet.validateOperators(minOperator: minOperator, maxOperator: maxOperator, min: min, max: max)
+        let ttsValidation = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)
         guard let validatedValues = ttsValidation.operators else {
             if let message = ttsValidation.errorMessage {
                 self.errorMessage = message
@@ -101,9 +101,9 @@ struct TaskTargetSetPopup: View {
         
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: validatedValues.min,
-                                     minOperator: validatedValues.minOp,
+                                     minOperator: minOperator,
                                      maxTarget: validatedValues.max,
-                                     maxOperator: validatedValues.maxOp,
+                                     maxOperator: maxOperator,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
@@ -171,19 +171,27 @@ struct TaskTargetSetPopup: View {
                 Group {
                     
                     // Days of week/month
-                    BubbleRows(maxBubbleRadius: 32,
-                               bubbles: self.type == .dom ? DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dom) : DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .dow),
-                               presentation: self.type == .dom ? .none : .centerLastRow,
-                               toggleable: true,
-                               selectedBubbles: self.type == .dom ? self.$selectedDaysOfMonth : self.$selectedDaysOfWeek)
+                    if self.type == .dom {
+                        BubbleRows<SaveFormatter.dayOfMonth>(maxBubbleRadius: 32,
+                                                             bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: self.bubblesPerRow),
+                                                             presentation: .none,
+                                                             toggleable: true,
+                                                             selectedBubbles: self.$selectedDaysOfMonth)
+                    } else {
+                        BubbleRows<SaveFormatter.dayOfWeek>(maxBubbleRadius: 32,
+                                                            bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: self.bubblesPerRow),
+                                                            presentation: .centerLastRow,
+                                                            toggleable: true,
+                                                            selectedBubbles: self.$selectedDaysOfWeek )
+                    }
                     
                     // Weeks of month
                     if self.type == .wom {
-                        BubbleRows(maxBubbleRadius: 32,
-                                   bubbles: DayBubbleLabels.getDividedBubbleLabels(bubblesPerRow: self.bubblesPerRow, patternType: .wom),
-                                   presentation: .centerLastRow,
-                                   toggleable: true,
-                                   selectedBubbles: self.$selectedWeeks)
+                        BubbleRows<SaveFormatter.weekOfMonth>(maxBubbleRadius: 32,
+                                                              bubbles: DayBubbleLabels.getDividedBubbles_weeksOfMonth(bubblesPerRow: self.bubblesPerRow),
+                                                              presentation: .centerLastRow,
+                                                              toggleable: true,
+                                                              selectedBubbles: self.$selectedWeeks)
                     }
                     
                     Picker(selection: self.$type,
@@ -217,7 +225,7 @@ struct TaskTargetSetPopup: View {
                     
                     Picker("Low op", selection: self.$minOperator) {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                            Text(op.rawValue)
+                            Text(op.stringValue)
                         }}
                         .foregroundColor(.accentColor)
                         .frame(width: operationWidth, height: operationHeight)
@@ -227,7 +235,7 @@ struct TaskTargetSetPopup: View {
                     
                     Picker("High op", selection: self.$maxOperator) {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                            Text(op.rawValue)
+                            Text(op.stringValue)
                         }}
                         .foregroundColor(.accentColor)
                         .frame(width: operationWidth, height: operationHeight)
