@@ -1,3 +1,4 @@
+# Model-view Architecture
 This document details the development guidelines that define model objects' and view objects' responsibilities.
 
 1. [SaveFormatter](#saveformatter)
