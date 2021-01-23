@@ -111,7 +111,6 @@
 		C4D8A34D249EB1D7008B3B9C /* Date-Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* Date-Extensions-Tests.swift */; };
 		C4D9DB6425475771002F0B40 /* SetCountPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D9DB6325475771002F0B40 /* SetCountPopup.swift */; };
 		C4D9DB692547614B002F0B40 /* SetCountPopupHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D9DB682547614B002F0B40 /* SetCountPopupHostingController.swift */; };
-		C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */; };
 		C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */; };
 		C4DCDFBA24B12A3B008F727F /* XCUIElement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DCDFB924B12A3B008F727F /* XCUIElement+Extensions.swift */; };
 		C4E5D5EE250426A000557373 /* Task-TagHandling-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */; };
@@ -292,7 +291,6 @@
 		C4D8A34C249EB1D7008B3B9C /* Date-Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date-Extensions-Tests.swift"; sourceTree = "<group>"; };
 		C4D9DB6325475771002F0B40 /* SetCountPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCountPopup.swift; sourceTree = "<group>"; };
 		C4D9DB682547614B002F0B40 /* SetCountPopupHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCountPopupHostingController.swift; sourceTree = "<group>"; };
-		C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopup.swift; sourceTree = "<group>"; };
 		C4DCDFB924B12A3B008F727F /* XCUIElement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extensions.swift"; sourceTree = "<group>"; };
 		C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests.swift"; sourceTree = "<group>"; };
@@ -795,7 +793,6 @@
 			children = (
 				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
 				C492BDDB255B93EF0054CD2A /* FetchRequests.swift */,
-				C4DAFA1524A35F82007E85AB /* NSManagedObject+Extensions.swift */,
 				C499FFEC247364DF00ABB64C /* SaveFormatter.swift */,
 			);
 			path = utils;
@@ -1285,7 +1282,6 @@
 				C41A73ED245207F7007007CB /* EditTaskHostingController.swift in Sources */,
 				C46FD050253CE81300CE489E /* UINavigationController-Extensions.swift in Sources */,
 				C41F8733248F8FF2008AC18D /* Float-Extensions.swift in Sources */,
-				C4DAFA1624A35F82007E85AB /* NSManagedObject+Extensions.swift in Sources */,
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
 				C43AE1C1256075D200F1D560 /* CollectionSizer.swift in Sources */,
 				C4130C2324C86E9A003EF047 /* TaskTypeSection.swift in Sources */,
