@@ -36,7 +36,7 @@ To maintain separation of concerns between view, model, and utility components, 
 | Utility components | <ul> <li/> Provide helper functions for other components. </ul> | <ul> <li/> Manipulate the persistent store. </ul> |
 
 ## Persistent store data conversion
-To maintain structured data conversion between view components, model components, and the persistent store. Mu implements `SaveFormatter`, which defines enums for the following purposes:  
+To maintain structured data conversion between view components, model components, and the persistent store, Mu implements `SaveFormatter`, which defines enums for the following purposes:  
 * Restrict the persistent store format of data attributes to the range of possible values that business rules define.  
 * Ensure that view components can restrict user input to values that can be converted to persistent store format. Removes need for additional validation by model components.
 

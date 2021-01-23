@@ -2,11 +2,11 @@
 This document specifies the development approach and practices that Mu uses towards defining automated unit tests.
 
 # Table of contents
-1. [Tooling and conventions](#tooling-and-conventions)
+1. [Tooling and environment](#tooling-and-environment)
 1. [Testing approach](#testing-approach)
 
 # Tooling and environment
-Mu uses XCTest to perform automated unit tests on the application.  
+Mu uses XCTest to perform automated unit tests on application code.  
 
 `Mu_AUT_Function` and `Mu_AUT_Performance` contain XCTestCases for Mu's function and performance unit tests, respectively. Their structures are as follows:  
 * `Mu_AUT_Function`'s directory structure mirrors that of `Mu`, with identical nested directory name(s) and `-tests` appended to each directory.
