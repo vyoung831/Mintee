@@ -1,5 +1,5 @@
-# XCode UI
-**/UserInterfaceState.xcuserstate
+# xcuserdata
+xcuserdata/
 
 # Pods and XCode workspaces
 Podfile.lock
