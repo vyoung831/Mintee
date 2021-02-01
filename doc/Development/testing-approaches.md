@@ -1,6 +1,6 @@
 # Testing Approaches
 This document specifies the practices that Mu uses towards implementing AUT/UIT and defining coverage.  
-This document references the PDL (product development lifecycle) outlined [here](../../README.md).  
+This document references the product development lifecycle outlined [here](../../README.md).  
 The following acronyms and definitions are used in this document as follows:  
 * __AUT__: Automated unit test/testing.
 * __UIT__: Automated UI test/testing.
@@ -13,7 +13,7 @@ The following acronyms and definitions are used in this document as follows:
 1. [UIT coverage](#uit-coverage)
 
 # Tooling and environment
-Mu uses XCTest to perform AUT on application code, and UIT on the application.  
+Mu uses XCTest to perform AUT on application code, and UIT on the application's user flows.  
 
 ## AUT structure
 `Mu_AUT_Function` and `Mu_AUT_Performance` contain XCTestCases for Mu's function and performance AUTs, respectively. Their structures are as follows:  
@@ -24,7 +24,7 @@ Mu uses XCTest to perform AUT on application code, and UIT on the application.
 `Mu_UI_Tests` contains XCTestCases for Mu's automated UITs. Each XCTestCase corresponds to one AUN or one PUN.
 
 # AUT coverage
-Development makes AUT coverage decisions and documents them in the comments of the XCTestCase(s) itself.
+Development makes AUT coverage decisions and documents them in the comments of the XCTestCase(s) itself.  
 AUTs are separated by the [component](./development-principles.md) that is tested. In some cases, such as `Task`'s tests, AUTs are split further and multiple XCTestCases exist for one component. 
 
 # UIT coverage
