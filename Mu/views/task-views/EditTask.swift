@@ -93,9 +93,6 @@ struct EditTask: View {
         } catch {
             CDCoordinator.moc.rollback()
             self.saveErrorMessage = "Save failed. Please check that another task with this name doesn't already exist."
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                UIAccessibility.post(notification: .announcement, argument: self.saveErrorMessage)
-            }
         }
         
     }
@@ -177,8 +174,6 @@ struct EditTask: View {
                     })
                     .foregroundColor(.accentColor)
                     .accessibility(identifier: "edit-task-save-button")
-                    .accessibility(label: Text("Save"))
-                    .accessibility(hint: Text("Tap to save changes to task"))
                     .disabled(self.taskName == "")
                     .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ? self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
                         self.isPresentingConfirmDeletePopupForSaveTask ?
@@ -215,7 +210,6 @@ struct EditTask: View {
                     Text(saveErrorMessage)
                         .foregroundColor(.red)
                         .accessibility(identifier: "edit-task-save-error-message")
-                        .accessibility(hidden: true)
                 }
                 
                 // MARK: - Tags

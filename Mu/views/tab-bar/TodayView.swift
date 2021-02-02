@@ -53,8 +53,6 @@ struct TodayView: View {
                             .frame(width: 30, height: 30, alignment: .center)
                             .foregroundColor(themeManager.panelContent)
                             .accessibility(identifier: "add-task-button")
-                            .accessibility(label: Text("Add button"))
-                            .accessibility(hint: Text("Tap to add a new task"))
                     })
                     .sheet(isPresented: $isPresentingAddTask, content:  {
                         AddTask(isBeingPresented: self.$isPresentingAddTask)

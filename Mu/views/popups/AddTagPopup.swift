@@ -53,7 +53,6 @@ struct AddTagPopup: View {
                     })
                     .foregroundColor(.accentColor)
                     .accessibility(identifier: "add-tag-popup-cancel-button")
-                    .accessibility(hint: Text("Tap to cancel adding tag"))
                     
                     Spacer()
                     Text("Add Tag")
@@ -75,7 +74,6 @@ struct AddTagPopup: View {
                     })
                     .foregroundColor(.accentColor)
                     .accessibility(identifier: "add-tag-popup-done-button")
-                    .accessibility(label: Text("Tap to finish adding tag"))
                 }
             }
             

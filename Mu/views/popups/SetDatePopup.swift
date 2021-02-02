@@ -48,7 +48,6 @@ struct SetDatePopup: View {
                                     })
                                     .foregroundColor(.accentColor)
                                     .accessibility(identifier: "set-date-popup-done-button")
-                                    .accessibility(label: Text("Tap to finish setting \(isStartDate ? "start": "end" ) date"))
             )
             
         }

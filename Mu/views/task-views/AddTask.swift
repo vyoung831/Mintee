@@ -116,18 +116,12 @@ struct AddTask: View {
                         
                         if self.saveTask() {
                             self.isBeingPresented = false
-                        } else {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                UIAccessibility.post(notification: .announcement, argument: self.errorMessage)
-                            }
                         }
+                        
                     }, label: {
                         Text("Save")
-                            .accessibilityElement(children: .ignore)
                     })
                     .foregroundColor(.accentColor)
-                    .accessibility(label: Text("Save button"))
-                    .accessibility(hint: Text("Tap to save new task"))
                     .accessibility(identifier: "add-task-save-button")
                     .disabled(self.taskName == "")
                     
@@ -153,7 +147,6 @@ struct AddTask: View {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .accessibility(identifier: "add-task-error-message")
-                        .accessibility(hidden: true)
                 }
                 
                 // MARK: - Tags

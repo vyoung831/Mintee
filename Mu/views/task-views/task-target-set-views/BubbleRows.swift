@@ -121,8 +121,6 @@ struct BubbleRows<BubbleType : Day>: View {
                                                                                 ? themeManager.buttonText : themeManager.button)
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
-                            .accessibility(label: Text("\(bubbleText.longValue)"))
-                            .accessibility(hint: Text("Tap to toggle this day"))
                             .onTapGesture {
                                 // Add or remove the bubbleText from selectedBubbles
                                 if self.toggleable {

@@ -23,9 +23,6 @@ struct TaskNameTextFieldSection: View {
                 .foregroundColor(.primary)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .accessibility(identifier: "task-name-text-field")
-                .accessibility(label: Text("Name"))
-                .accessibility(hint: Text("Enter the task name here"))
-                .accessibility(value: Text(taskName))
         })
     }
     
