@@ -9,7 +9,7 @@ The following acronyms/definitions are used as follows in this document:
     1. [Component responsibilities](#component-responsibilities)
     1. [Persistent store data conversion](#persistent-store-data-conversion)
 1. [TDD](#tdd)
-1. [Notes](#notes)
+1. [Accessibility](#accessibility)
 
 # Application components
 Mu places all application code into 1 of the following 3 categories:  
@@ -69,5 +69,6 @@ To ensure quality AUT coverage, Mu adheres to the following guidelines when brea
 * View components break closure code into as many public helper functions as ideal. Where needed, helper functions are declared as static to avoid breaking the view components themselves.
 * Model and utility components balance public functions and private helper functions as needed.
 
-# Notes
-* Accessibility is only used for identifying UI elements for UI testing. To ensure consistent user experience, Mu doesn't currently use any other accessibility attributes.
+# Accessibility
+Accessibility is only used for identifying UI elements for UI testing.  
+To ensure consistent user experience and test coverage, Mu doesn't currently use any accessibility attributes other than identifiers.
