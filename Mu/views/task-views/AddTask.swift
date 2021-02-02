@@ -126,8 +126,6 @@ struct AddTask: View {
                             .accessibilityElement(children: .ignore)
                     })
                     .foregroundColor(.accentColor)
-                    .accessibility(label: Text("Save button"))
-                    .accessibility(hint: Text("Tap to save new task"))
                     .accessibility(identifier: "add-task-save-button")
                     .disabled(self.taskName == "")
                     
@@ -153,7 +151,6 @@ struct AddTask: View {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .accessibility(identifier: "add-task-error-message")
-                        .accessibility(hidden: true)
                 }
                 
                 // MARK: - Tags

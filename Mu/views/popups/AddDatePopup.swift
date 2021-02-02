@@ -33,8 +33,7 @@ struct AddDatePopup: View {
                                         Text("Cancel")
                                     })
                                     .foregroundColor(.accentColor)
-                                    .accessibility(identifier: "add-date-popup-cancel-button")
-                                    .accessibility(hint: Text("Tap to cancel date selection")),
+                                    .accessibility(identifier: "add-date-popup-cancel-button"),
                                 trailing:
                                     Button(action: {
                                         self.addDate(self.date)
@@ -43,8 +42,7 @@ struct AddDatePopup: View {
                                         Text("Done")
                                     })
                                     .foregroundColor(.accentColor)
-                                    .accessibility(identifier: "add-date-popup-done-button")
-                                    .accessibility(label: Text("Tap to finish adding date")))
+                                    .accessibility(identifier: "add-date-popup-done-button"))
         }
         .accentColor(themeManager.accent)
         

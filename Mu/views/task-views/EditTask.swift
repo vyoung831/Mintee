@@ -177,8 +177,6 @@ struct EditTask: View {
                     })
                     .foregroundColor(.accentColor)
                     .accessibility(identifier: "edit-task-save-button")
-                    .accessibility(label: Text("Save"))
-                    .accessibility(hint: Text("Tap to save changes to task"))
                     .disabled(self.taskName == "")
                     .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ? self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
                         self.isPresentingConfirmDeletePopupForSaveTask ?
@@ -215,7 +213,6 @@ struct EditTask: View {
                     Text(saveErrorMessage)
                         .foregroundColor(.red)
                         .accessibility(identifier: "edit-task-save-error-message")
-                        .accessibility(hidden: true)
                 }
                 
                 // MARK: - Tags

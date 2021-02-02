@@ -141,8 +141,6 @@ struct TaskTargetSetPopup: View {
                         }, label: { Text("Done") })
                         .foregroundColor(.accentColor)
                         .accessibility(identifier: "task-target-set-popup-done-button")
-                        .accessibility(label: Text("Done"))
-                        .accessibility(hint: Text("Tap to finish setting target set"))
                         .disabled(self.maxOperator == .na && self.minOperator == .na)
                         .disabled(!validDaysSelected())
                         Spacer()
@@ -155,14 +153,11 @@ struct TaskTargetSetPopup: View {
                         }, label: { Text("Cancel") })
                         .foregroundColor(.accentColor)
                         .accessibility(identifier: "task-target-set-popup-cancel-button")
-                        .accessibility(label: Text("Cancel"))
-                        .accessibility(hint: Text("Tap to cancel setting target set"))
                     }
                     if errorMessage.count > 0 {
                         Text(errorMessage)
                             .foregroundColor(.red)
                             .accessibility(identifier: "task-target-set-popup-error-message")
-                            .accessibility(hidden: true)
                     }
                 }
                 
@@ -194,9 +189,7 @@ struct TaskTargetSetPopup: View {
                                                               selectedBubbles: self.$selectedWeeks)
                     }
                     
-                    Picker(selection: self.$type,
-                           label: Text("Type")
-                            .accessibility(hint: Text("Use to set target set pattern type"))) {
+                    Picker(selection: self.$type, label: Text("Type")) {
                         ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
                             Text( self.dayPatternTypeLabels[pt] ?? "")
                         }
@@ -220,8 +213,6 @@ struct TaskTargetSetPopup: View {
                         .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
                         .cornerRadius(3)
                         .accessibility(identifier: "minimum-value")
-                        .accessibility(label: Text("Minimum"))
-                        .accessibility(hint: Text("Enter your target set's minimum value or leave blank"))
                     
                     Picker("Low op", selection: self.$minOperator) {
                         ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
@@ -250,8 +241,6 @@ struct TaskTargetSetPopup: View {
                         .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
                         .cornerRadius(3)
                         .accessibility(identifier: "maximum-value")
-                        .accessibility(label: Text("Maximum"))
-                        .accessibility(hint: Text("Enter your target set's maximum value or leave blank"))
                     
                 }.labelsHidden()
             }
