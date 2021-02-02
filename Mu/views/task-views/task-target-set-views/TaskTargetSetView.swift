@@ -164,13 +164,11 @@ struct TaskTargetSetView: View {
                                                          presentation: .none,
                                                          toggleable: false,
                                                          selectedBubbles: .constant(self.selectedDaysOfMonth ?? Set<SaveFormatter.dayOfMonth>()))
-                        .accessibilityElement(children: .ignore)
                 } else {
                     BubbleRows<SaveFormatter.dayOfWeek>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7),
                                                         presentation: .none,
                                                         toggleable: false,
                                                         selectedBubbles: .constant(self.selectedDaysOfWeek!))
-                        .accessibilityElement(children: .ignore)
                 }
                 
             }
@@ -197,7 +195,6 @@ struct TaskTargetSetView: View {
         .background( themeManager.collectionItem )
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
-        .accessibilityElement(children: .combine)
         .accessibility(identifier: "task-target-set-view")
     }
 }

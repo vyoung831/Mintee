@@ -93,9 +93,6 @@ struct EditTask: View {
         } catch {
             CDCoordinator.moc.rollback()
             self.saveErrorMessage = "Save failed. Please check that another task with this name doesn't already exist."
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                UIAccessibility.post(notification: .announcement, argument: self.saveErrorMessage)
-            }
         }
         
     }

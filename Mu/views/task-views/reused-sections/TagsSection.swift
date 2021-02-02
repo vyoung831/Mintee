@@ -62,7 +62,6 @@ struct TagsSection: View {
                 .background(themeManager.button)
                 .cornerRadius(3)
                 .accessibility(identifier: "tag")
-                .accessibilityElement(children: .combine)
                 
             }
         }

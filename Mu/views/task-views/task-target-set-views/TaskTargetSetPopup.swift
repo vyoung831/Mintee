@@ -51,15 +51,6 @@ struct TaskTargetSetPopup: View {
     var save: (TaskTargetSetView) -> ()
     
     /**
-     Announce to user via accessibility notification the error message is displayed
-     */
-    func announceError() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            UIAccessibility.post(notification: .announcement, argument: self.errorMessage)
-        }
-    }
-    
-    /**
      - returns: True if both minValue and maxValue TextFields are empty
      */
     func checkEmptyValues() -> Bool {

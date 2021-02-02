@@ -52,7 +52,6 @@ struct SelectDatesSection: View {
                 .background(themeManager.button)
                 .cornerRadius(3)
                 .accessibility(identifier: "date")
-                .accessibilityElement(children: .combine)
             }
             
         })
