@@ -1,14 +1,11 @@
 # Development Principles
 This document outlines the development principles that Mu adheres to in implementing application code.  
-The following acronyms/definitions are used as follows in this document:  
-* __MOC__: NSManagedObjectContext
 
 # Table of Contents
 1. [Application components](#application-components)
 1. [Application architecture](#application-architecture)
     1. [Component responsibilities](#component-responsibilities)
     1. [Persistent store data conversion](#persistent-store-data-conversion)
-1. [TDD](#tdd)
 1. [Accessibility](#accessibility)
 
 # Application components
@@ -64,10 +61,8 @@ func readFromStore() {
 }
 ```
 
-# TDD
-To ensure quality AUT coverage, Mu adheres to the following guidelines when breaking components into as many testable functions as needed:  
-* View components break closure code into as many public helper functions as ideal. Where needed, helper functions are declared as static to avoid breaking the view components themselves.
-* Model and utility components balance public functions and private helper functions as needed.
+__Notes__  
+* To ensure that user experience of dates remain consistent across time zones, dates are stored as strings. This avoids a Date object being created and saved to user data, only to be accessed later using a different Calendar object and displaying a potentially different day.
 
 # Accessibility
 Accessibility is only used for identifying UI elements for UI testing.  
