@@ -6,7 +6,9 @@ This document outlines the development principles that Mu adheres to in implemen
 1. [Application architecture](#application-architecture)
     1. [Component responsibilities](#component-responsibilities)
     1. [Persistent store data conversion](#persistent-store-data-conversion)
-1. [Accessibility](#accessibility)
+1. [View development](#view-development)
+    1. [Navigation](#navigation)
+    1. [Accessibility](#accessibility)
 
 # Application components
 Mu places all application code into 1 of the following 3 categories:  
@@ -30,8 +32,8 @@ To maintain separation of concerns between view, model, and utility components, 
 | Component | Responsibilities | What the component should __NEVER__ do |
 |-|-|-|
 | Model components | <ul> <li/> Implement and provide APIs for other components to use to execute business logic. <li/> Implement and provide APIs for other components to use to validate data against business rules. </ul> | |
-| View components | <ul> <li/> Provide UI for data presentation and user input. <li/> Validate user input against business rules. <li/> Format user input to pass to model component APIs (see [data conversion](#persistent-store-data-conversion)). <li/> Use model component APIs to execute business logic. <li/> Commit or rollback MOC changes based on results of calls to model components' APIs. </ul> | <ul> <li/> Manipulate the persistent store. </ul> |
-| Utility components | <ul> <li/> Provide helper functions for other components. </ul> | <ul> <li/> Manipulate the persistent store. </ul> |
+| View components | <ul> <li/> Provide UI for data presentation and user input. <li/> Validate user input against business rules. <li/> Format user input to pass to model component APIs (see [data conversion](#persistent-store-data-conversion)). <li/> Use model component APIs to execute business logic. <li/> Commit or rollback MOC changes based on results of calls to model components' APIs. </ul> | <ul> <li/> Update the MOC (except for instantiating NSManagedObjects and calling model component functions). </ul> |
+| Utility components | <ul> <li/> Provide helper functions for other components. </ul> | <ul> <li/> Update the MOC. </ul> |
 
 ## Persistent store data conversion
 To maintain structured data conversion between view components, model components, and the persistent store, Mu implements `SaveFormatter`, which defines enums for the following purposes:  
@@ -64,6 +66,11 @@ func readFromStore() {
 __Notes__  
 * To ensure that user experience of dates remain consistent across time zones, dates are stored as strings. This avoids a Date object being created and saved to user data, only to be accessed later using a different Calendar object and displaying a potentially different day.
 
-# Accessibility
+# View development
+
+## Navigation
+Every view in Mu declares a `NavigationView` to prepare for additional navigation if decided upon by UI/UX.
+
+## Accessibility
 Accessibility is only used for identifying UI elements for UI testing.  
 To ensure consistent user experience and test coverage, Mu doesn't currently use any accessibility attributes other than identifiers.
