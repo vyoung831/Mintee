@@ -8,6 +8,7 @@ The following acronyms and definitions are used in this document as follows:
 # Table of contents
 1. [Tooling and environment](#tooling-and-environment)
     1. [AUT](#aut-structure)
+        1. [SharedTestUtils](#sharedtestutils)
     1. [UIT](#uit-structure)
 1. [AUT coverage](#aut-coverage)
 1. [UIT coverage](#uit-coverage)
@@ -19,6 +20,10 @@ Mu uses XCTest to perform AUT on application code, and UIT on the application's 
 `Mu_AUT_Function` and `Mu_AUT_Performance` contain XCTestCases for Mu's function and performance AUTs, respectively. Their structures are as follows:  
 * `Mu_AUT_Function`'s directory structure mirrors that of `Mu`, with identical nested directory name(s) and `-tests` appended to each directory.
 * `Mu_AUT_Performance` does not contain subdirectories. Each performance XCTestCase is placed directly into the target's main dir and is named after one XCTestCase in `Mu_AUT_Function`, with `-Performance` appended to its name.
+
+## SharedTestUtils
+Because performance AUTs are based on function AUTs, Mu defines a static library target named `SharedTestUtils`, which provides setup and helper functions for function and performance AUTs that correspond to the same test scenario.  
+Both AUT targets list `SharedTestUtils` as a target dependency.
 
 ## UIT structure
 `Mu_UI_Tests` contains XCTestCases for Mu's automated UITs. Each XCTestCase corresponds to one AUN or one PUN.
