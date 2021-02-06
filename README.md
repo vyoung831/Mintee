@@ -40,5 +40,5 @@ For UI/UX resources, see the following:
 # Development Technotes
 For technotes on design and development guidelines, see the following:  
 1. [Development principles](./doc/Development/development-principles.md)
-1. [Testing approaches](./doc/Development/testing-approaches.md)
+1. [Test approach](./doc/Development/test-approach.md)
 1. [Error reporting and failure handling](./doc/Development/error-reporting-and-handling.md)
