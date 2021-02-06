@@ -120,125 +120,131 @@ struct TaskTargetSetPopup: View {
     }
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: true, content: {
-            VStack(alignment: .center, spacing: 30) {
-                
-                // MARK: - Title bar
-                
-                Group {
-                    HStack {
-                        Button(action: {
-                            self.done()
-                        }, label: { Text("Done") })
-                        .foregroundColor(.accentColor)
-                        .accessibility(identifier: "task-target-set-popup-done-button")
-                        .disabled(self.maxOperator == .na && self.minOperator == .na)
-                        .disabled(!validDaysSelected())
-                        Spacer()
-                        Text(title)
-                            .font(.title)
-                        Spacer()
-                        
-                        Button(action: {
-                            self.isBeingPresented = false
-                        }, label: { Text("Cancel") })
-                        .foregroundColor(.accentColor)
-                        .accessibility(identifier: "task-target-set-popup-cancel-button")
-                    }
-                    if errorMessage.count > 0 {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .accessibility(identifier: "task-target-set-popup-error-message")
-                    }
-                }
-                
-                // MARK: - Bubbles/DayPattern picker
-                
-                Group {
+        
+        NavigationView {
+            
+            ScrollView(.vertical, showsIndicators: true, content: {
+                VStack(alignment: .center, spacing: 30) {
                     
-                    // Days of week/month
-                    if self.type == .dom {
-                        BubbleRows<SaveFormatter.dayOfMonth>(maxBubbleRadius: 32,
-                                                             bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: self.bubblesPerRow),
-                                                             presentation: .none,
-                                                             toggleable: true,
-                                                             selectedBubbles: self.$selectedDaysOfMonth)
-                    } else {
-                        BubbleRows<SaveFormatter.dayOfWeek>(maxBubbleRadius: 32,
-                                                            bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: self.bubblesPerRow),
-                                                            presentation: .centerLastRow,
-                                                            toggleable: true,
-                                                            selectedBubbles: self.$selectedDaysOfWeek )
-                    }
+                    // MARK: - Error message
                     
-                    // Weeks of month
-                    if self.type == .wom {
-                        BubbleRows<SaveFormatter.weekOfMonth>(maxBubbleRadius: 32,
-                                                              bubbles: DayBubbleLabels.getDividedBubbles_weeksOfMonth(bubblesPerRow: self.bubblesPerRow),
-                                                              presentation: .centerLastRow,
-                                                              toggleable: true,
-                                                              selectedBubbles: self.$selectedWeeks)
-                    }
-                    
-                    Picker(selection: self.$type, label: Text("Type")) {
-                        ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
-                            Text( self.dayPatternTypeLabels[pt] ?? "")
+                    Group {
+                        if errorMessage.count > 0 {
+                            Text(errorMessage)
+                                .foregroundColor(.red)
+                                .accessibility(identifier: "task-target-set-popup-error-message")
                         }
                     }
-                    .foregroundColor(.accentColor)
-                    .accessibility(identifier: "task-target-set-popup-pattern-type-picker")
-                    .frame(height: typePickerHeight)
                     
+                    // MARK: - Bubbles/DayPattern picker
+                    
+                    Group {
+                        
+                        // Days of week/month
+                        if self.type == .dom {
+                            BubbleRows<SaveFormatter.dayOfMonth>(maxBubbleRadius: 32,
+                                                                 bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: self.bubblesPerRow),
+                                                                 presentation: .none,
+                                                                 toggleable: true,
+                                                                 selectedBubbles: self.$selectedDaysOfMonth)
+                        } else {
+                            BubbleRows<SaveFormatter.dayOfWeek>(maxBubbleRadius: 32,
+                                                                bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: self.bubblesPerRow),
+                                                                presentation: .centerLastRow,
+                                                                toggleable: true,
+                                                                selectedBubbles: self.$selectedDaysOfWeek )
+                        }
+                        
+                        // Weeks of month
+                        if self.type == .wom {
+                            BubbleRows<SaveFormatter.weekOfMonth>(maxBubbleRadius: 32,
+                                                                  bubbles: DayBubbleLabels.getDividedBubbles_weeksOfMonth(bubblesPerRow: self.bubblesPerRow),
+                                                                  presentation: .centerLastRow,
+                                                                  toggleable: true,
+                                                                  selectedBubbles: self.$selectedWeeks)
+                        }
+                        
+                        Picker(selection: self.$type, label: Text("Type")) {
+                            ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
+                                Text( self.dayPatternTypeLabels[pt] ?? "")
+                            }
+                        }
+                        .foregroundColor(.accentColor)
+                        .accessibility(identifier: "task-target-set-popup-pattern-type-picker")
+                        .frame(height: typePickerHeight)
+                        
+                    }
+                    
+                    // MARK: - Target setter
+                    
+                    HStack(alignment: .center, spacing: 10) {
+                        
+                        TextField("", text: self.$minValueString)
+                            .disabled(self.maxOperator == .eq || self.minOperator == .na)
+                            .keyboardType( .decimalPad )
+                            .padding(10)
+                            .border(themeManager.textFieldBorder, width: 2)
+                            .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
+                            .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
+                            .cornerRadius(3)
+                            .accessibility(identifier: "minimum-value")
+                        
+                        Picker("Low op", selection: self.$minOperator) {
+                            ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
+                                Text(op.stringValue)
+                            }}
+                            .foregroundColor(.accentColor)
+                            .frame(width: operationWidth, height: operationHeight)
+                            .clipped()
+                        
+                        Text("Target")
+                        
+                        Picker("High op", selection: self.$maxOperator) {
+                            ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
+                                Text(op.stringValue)
+                            }}
+                            .foregroundColor(.accentColor)
+                            .frame(width: operationWidth, height: operationHeight)
+                            .clipped()
+                        
+                        TextField("", text: self.$maxValueString)
+                            .disabled(self.minOperator == .eq || self.maxOperator == .na)
+                            .keyboardType( .decimalPad )
+                            .padding(10)
+                            .border(themeManager.textFieldBorder, width: 2)
+                            .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
+                            .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
+                            .cornerRadius(3)
+                            .accessibility(identifier: "maximum-value")
+                        
+                    }.labelsHidden()
                 }
+            })
+            .padding(15)
+            .background(themeManager.panel)
+            .foregroundColor(themeManager.panelContent)
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                leading: Button(action: {
+                    self.done()
+                }, label: {
+                    Text("Done")
+                })
+                .foregroundColor(.accentColor)
+                .accessibility(identifier: "task-target-set-popup-done-button")
+                .disabled(self.maxOperator == .na && self.minOperator == .na)
+                .disabled(!validDaysSelected()),
                 
-                // MARK: - Target setter
-                
-                HStack(alignment: .center, spacing: 10) {
-                    
-                    TextField("", text: self.$minValueString)
-                        .disabled(self.maxOperator == .eq || self.minOperator == .na)
-                        .keyboardType( .decimalPad )
-                        .padding(10)
-                        .border(themeManager.textFieldBorder, width: 2)
-                        .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
-                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
-                        .cornerRadius(3)
-                        .accessibility(identifier: "minimum-value")
-                    
-                    Picker("Low op", selection: self.$minOperator) {
-                        ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                            Text(op.stringValue)
-                        }}
-                        .foregroundColor(.accentColor)
-                        .frame(width: operationWidth, height: operationHeight)
-                        .clipped()
-                    
-                    Text("Target")
-                    
-                    Picker("High op", selection: self.$maxOperator) {
-                        ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                            Text(op.stringValue)
-                        }}
-                        .foregroundColor(.accentColor)
-                        .frame(width: operationWidth, height: operationHeight)
-                        .clipped()
-                    
-                    TextField("", text: self.$maxValueString)
-                        .disabled(self.minOperator == .eq || self.maxOperator == .na)
-                        .keyboardType( .decimalPad )
-                        .padding(10)
-                        .border(themeManager.textFieldBorder, width: 2)
-                        .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
-                        .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
-                        .cornerRadius(3)
-                        .accessibility(identifier: "maximum-value")
-                    
-                }.labelsHidden()
-            }
-        })
-        .padding(15)
-        .background(themeManager.panel)
-        .foregroundColor(themeManager.panelContent)
-        .accentColor(themeManager.accent)
+                trailing: Button(action: {
+                    self.isBeingPresented = false
+                }, label: {
+                    Text("Cancel")
+                })
+                .foregroundColor(.accentColor)
+                .accessibility(identifier: "task-target-set-popup-cancel-button")
+            )
+            
+        }.accentColor(themeManager.accent)
     }
 }
