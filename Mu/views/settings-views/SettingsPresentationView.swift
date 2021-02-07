@@ -12,7 +12,7 @@ struct SettingsPresentationView: View {
     
     // MARK: - Color Theme
     
-    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    @AppStorage("Theme") var theme: String = ThemeManager.getUserDefaultsTheme().rawValue
     
     // MARK: - Presentation Settings
     
@@ -40,7 +40,7 @@ struct SettingsPresentationView: View {
     func getUserDefaultBinding(_ option: PresentationOption) -> Binding<String> {
         switch option {
         case .theme:
-            return $themeManager.theme
+            return self.$theme
         }
     }
     
