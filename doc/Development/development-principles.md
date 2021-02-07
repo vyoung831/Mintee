@@ -87,5 +87,3 @@ func readFromStore() {
 `ThemeManager` defines a shared instance that observes NSUserDefaults for changes to the key `Theme`. When changes are observed, the shared instance informs other objects by doing the following:
 * Updates its published vars. SwiftUI components which declare the shared `ThemeManager` with the `@ObservedObject` property wrapper automatically have their views updated.
 * Posts to notification center for non-SwiftUI components to observe and handle.
-
-### CDCoordinator
