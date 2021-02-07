@@ -11,7 +11,7 @@ The following definitions are used as such throughout the document:
 1. [Failure handling](#failure-handling)
     * [Returning optionals](#returning-optionals)
     * [Throwing functions](#throwing-functions)
-        * [Throwing in Core Data](#throwing-in-core-data-apis)
+        * [Throwing in model components](#throwing-in-model-components)
 1. [Error reporting](#error-reporting)
     * [Base debug objects](#base-debug-objects)
 1. [Crashlytics configurations](#crashlytics-configurations-and-projects)
@@ -39,16 +39,16 @@ __Ex.__ `Task.generateAndPruneInstances()` includes code with several possible r
     * Finding persistent store data that violates business logic (A relationship that should be non-nil is nil)
     * Failing to convert persistent store data to valid in-memory value via `SaveFormatter` (corrupted data)
     * Swift's `Date` conversion/incrementation functions returns nil un-expectedly.
-1. The function is defined in a model component (See [throwing in Core Data](#throwing-in-core-data-apis)).
+1. The function is defined in a model component (See [throwing in model components](#throwing-in-model-components)).
 
 The following figure illustrates how errors that are reported to Crashlytics are thrown to view components to handle.
 ![](./img/failure-handling-and-error-reporting-throwing.png)
 
-### Throwing in Core Data APIs
+### Throwing in model components
 To simplify failure detection in model components, Mu requires that all failable functions in model components be defined as throwing functions (including initializers).  
 Thus, when a component calls a throwing Core Data function, it is expected to either
-* (If view component) Handle the error OR
-* Re-throw error for view component to handle.
+1. (If view component) Handle the error OR
+1. Re-throw error for view component to handle.
 
 # Error reporting
 Based on the error reporting responsibility defined in [failure handling](#failure-handling), errors are reported to Crashlytics by completing the following steps:  

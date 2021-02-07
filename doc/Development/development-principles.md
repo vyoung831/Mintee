@@ -51,7 +51,7 @@ To ensure consistent user experience and test coverage, Mu doesn't currently use
 # Notable components
 
 ## SaveFormatter
-To maintain structured data conversion between view components, model components, and the persistent store, Mu implements `SaveFormatter`, which defines enums for the following purposes:  
+To maintain structured data conversion between view components, model components, and the persistent store, `SaveFormatter` defines enums for the following purposes:  
 * Restrict the persistent store format of data attributes to the range of possible values that business rules define.  
 * Ensure that view components can restrict user input to values that can be converted to persistent store format. Removes need for additional validation by model components.
 
@@ -82,6 +82,6 @@ func readFromStore() {
 
 ### ThemeManager
 `ThemeManager` is a class used to handle changes to the app's theme (UI color scheme).
-`ThemeManager` defines a shared instance that observes NSUserDefaults for changes to the key `Theme`. When changes are observed, the shared instance informs other objects by doing the following:
+`ThemeManager` defines a shared instance that observes NSUserDefaults for updates to the theme. When changes are observed, the shared instance informs other objects by doing the following:
 * Updates its published vars. SwiftUI components which declare the shared `ThemeManager` with the `@ObservedObject` property wrapper automatically have their views updated.
 * Posts to notification center for non-SwiftUI components to observe and handle.
