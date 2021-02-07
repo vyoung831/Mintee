@@ -2,10 +2,10 @@
 //  ThemeManager.swift
 //  Mu
 //
-//  A shared instance of ThemeManager is used to hold, update, and read values from UserDefaults
-//  When "Theme" is changed in UserDefaults, ThemeManager does the following:
-//  - Posts a .themeChanged Notification that UIViews can observe
-//  - Updates Published properties. SwiftUI Views that are observing ThemeManager.shared will update their Views and UIViews can query the Published properties upon observing Notifications. Due to SwiftUI bugs, SwiftUI Views should define ThemeManager.shared as an @ObservedObject instead of using @EnvironmentObject
+//  A shared instance of ThemeManager is used to hold themed colors, and informs other objects when the theme saved to NSUserDefaults changes.
+//  When "Theme" is updated in UserDefaults, the shared ThemeManager does the following:
+//  - Updates Published properties. SwiftUI Views that declare ThemeManager.shared with the @ObservedObject property wrapper will update their Views. Due to SwiftUI bugs, SwiftUI Views should define ThemeManager.shared as an @ObservedObject instead of using @EnvironmentObject
+//  - Posts a .themeChanged Notification. Non-SwiftUI components can read from the Published properties upon observing the notification.
 //
 //  Created by Vincent Young on 10/10/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -38,7 +38,7 @@ class ThemeManager: NSObject, ObservableObject {
         case collectionItemContent = "collectionItemContent"
     }
     
-    // MARK: - Observed/shared objects and properties
+    // MARK: - Shared instance and observable properties
     
     static var shared: ThemeManager = {
         let tms = ThemeManager()
@@ -61,13 +61,6 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var collectionItem: Color
     @Published var collectionItemBorder: Color
     @Published var collectionItemContent: Color
-    
-    @Published var theme: String = getUserDefaultsTheme().rawValue {
-        didSet {
-            UserDefaults.standard.setValue(theme,
-                                           forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
-        }
-    }
     
     // MARK: - Initializers
     
@@ -170,7 +163,7 @@ class ThemeManager: NSObject, ObservableObject {
     
     /**
      Returns the Theme based on the current value saved to key "Theme" in UserDefaults. If the current value can't be cast to a Theme, this function sets the value in UserDefaults to Theme.system's rawValue
-     - returns: Value currently assigned to key "Theme" of UserDefaults
+     - returns: Value currently assigned to key "Theme" in UserDefaults
      */
     static func getUserDefaultsTheme() -> Theme {
         if let savedTheme = UserDefaults.standard.string(forKey: SettingsPresentationView.PresentationOption.theme.rawValue) {

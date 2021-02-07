@@ -12,7 +12,7 @@ struct SettingsPresentationView: View {
     
     // MARK: - Color Theme
     
-    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    @AppStorage(PresentationOption.theme.rawValue) var theme: String = ThemeManager.getUserDefaultsTheme().rawValue
     
     // MARK: - Presentation Settings
     
@@ -40,7 +40,7 @@ struct SettingsPresentationView: View {
     func getUserDefaultBinding(_ option: PresentationOption) -> Binding<String> {
         switch option {
         case .theme:
-            return $themeManager.theme
+            return self.$theme
         }
     }
     
@@ -48,9 +48,9 @@ struct SettingsPresentationView: View {
         
         List(SettingsPresentationView.PresentationOption.allCases, id: \.self) { option in
             NavigationLink(option.rawValue,
-                           destination: SettingsPresentationDetailView(option: option.rawValue,
-                                                                       values: SettingsPresentationView.getPossibleOptions(option: option),
-                                                                       savedValue: self.getUserDefaultBinding(option)))
+                           destination: UserDefaultsListView(option: option.rawValue,
+                                                             values: SettingsPresentationView.getPossibleOptions(option: option),
+                                                             savedValue: self.getUserDefaultBinding(option)))
         }
         .navigationTitle(Text("Presentation Settings"))
         

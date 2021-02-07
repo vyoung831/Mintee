@@ -5,10 +5,16 @@ The following acronyms and definitions are used in this document as follows:
 * __User data__: Data that a user creates and owns in Mu (not including settings or preferences).
 
 # Table of Contents
+1. [Getting started](#getting-started)
 1. [Product development lifecycle](#product-development-lifecycle)
     1. [BM documents](#bm-documents)
     1. [UI/UX collaboration](#uiux-collaboration)
     1. [Development Technotes](#development-technotes)
+
+# Getting Started
+To get started, complete the following after cloning this repo:  
+1. Install [Cocoapods](https://cocoapods.org/) on your machine.
+1. Run `pod install` to install dependencies locally.
 
 # Product development lifecycle
 Mu's product development lifecycle divides internal responsibilities between the following 3 business units:

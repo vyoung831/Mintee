@@ -95,7 +95,7 @@ struct AddTask: View {
     
     var body: some View {
         
-        NavigationView{
+        NavigationView {
             
             ScrollView(.vertical, showsIndicators: true, content: {
                 VStack(alignment: .leading, spacing: 15, content: {
@@ -137,6 +137,7 @@ struct AddTask: View {
             .navigationTitle("Add Task")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
+                
                 leading: Button(action: {
                     
                     switch self.taskType {
@@ -160,12 +161,14 @@ struct AddTask: View {
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "add-task-save-button")
                 .disabled(self.taskName == ""),
+                
                 trailing: Button(action: {
                     self.isBeingPresented = false
                 }, label: {
                     Text("Cancel")
                 })
                 .foregroundColor(.accentColor)
+                
             )
             .background(themeManager.panel)
             .foregroundColor(themeManager.panelContent)
