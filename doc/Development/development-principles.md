@@ -3,7 +3,6 @@ This document outlines the development principles that Mu adheres to in implemen
 
 # Table of Contents
 1. [Application components](#application-components)
-1. [Application architecture](#application-architecture)
 1. [Model development](#model-development)
 1. [View development](#view-development)
     1. [Navigation](#navigation)
@@ -12,7 +11,6 @@ This document outlines the development principles that Mu adheres to in implemen
     1. [SaveFormatter](#persistent-store-data-conversion)
     1. [Singletons](#singletons)
         1. [ThemeManager](#thememanager)
-        1. [CDCoordinator](#cdcoordinator)
 
 # Application components
 Mu places all application code into 1 of the following 3 categories:  

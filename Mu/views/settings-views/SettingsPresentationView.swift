@@ -12,7 +12,7 @@ struct SettingsPresentationView: View {
     
     // MARK: - Color Theme
     
-    @AppStorage("Theme") var theme: String = ThemeManager.getUserDefaultsTheme().rawValue
+    @AppStorage(PresentationOption.theme.rawValue) var theme: String = ThemeManager.getUserDefaultsTheme().rawValue
     
     // MARK: - Presentation Settings
     

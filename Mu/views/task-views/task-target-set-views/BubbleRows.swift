@@ -98,9 +98,9 @@ struct BubbleRows<BubbleType : Day>: View {
     
     var body: some View {
         /*
-         Because BubbleRows can be placed in a vertical ScrollView, its GR (GeometryReader) has a very small height.
+         Because BubbleRows can be placed in a vertical ScrollView, SwiftUI assigns its GR (GeometryReader) a very small height.
          Bubbles must be declared in GR in order to use its width to calculate their radii, but GR's height won't expand (SwiftUI views do not expand to fit their children).
-         Thus, a BubbleRowsHeightKey is defined - when the GR's width is updated, the PreferenceKey is updated and grHeight state var that sets the height of the GR is updated.
+         Thus, BubbleRowsHeightKey is defined - when the GR's width is updated, the PreferenceKey is updated and the grHeight state var (used to set GR's height) is updated.
          Circular references are avoided because updating the GeometryReader's height doesn't have any effect on its width.
          */
         GeometryReader { gr in

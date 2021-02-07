@@ -3,7 +3,7 @@
 //  Mu
 //
 //  A re-usable View that is to be pushed onto the navigation stack of a Settings view.
-//  Presents the user with the current value among a list of each setting's possible values, and updates Binding.
+//  Presents the user with the current value among a list of a setting's possible values.
 //  savedValue is binded to a var with an @AppStorage property wrapper, so that the list option selected by the user is automatically written to NSUserDefaults.
 //
 //  Created by Vincent Young on 10/7/20.
