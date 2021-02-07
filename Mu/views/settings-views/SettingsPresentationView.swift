@@ -48,9 +48,9 @@ struct SettingsPresentationView: View {
         
         List(SettingsPresentationView.PresentationOption.allCases, id: \.self) { option in
             NavigationLink(option.rawValue,
-                           destination: SettingsPresentationDetailView(option: option.rawValue,
-                                                                       values: SettingsPresentationView.getPossibleOptions(option: option),
-                                                                       savedValue: self.getUserDefaultBinding(option)))
+                           destination: UserDefaultsListView(option: option.rawValue,
+                                                             values: SettingsPresentationView.getPossibleOptions(option: option),
+                                                             savedValue: self.getUserDefaultBinding(option)))
         }
         .navigationTitle(Text("Presentation Settings"))
         
