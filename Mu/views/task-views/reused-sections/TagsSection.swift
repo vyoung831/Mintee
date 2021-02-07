@@ -22,8 +22,6 @@ struct TagsSection: View {
                 Text("Tags")
                     .bold()
                     .accessibility(identifier: "tags-section-label")
-                    .accessibility(label: Text("Tags"))
-                    .accessibility(addTraits: .isHeader)
                 
                 Button(action: {
                     self.isPresentingAddTagPopup = true
@@ -32,8 +30,6 @@ struct TagsSection: View {
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .accessibility(identifier: "add-tag-button")
-                        .accessibility(label: Text("Add"))
-                        .accessibility(hint: Text("Tap to add a tag"))
                 })
                 .foregroundColor(themeManager.panelContent)
                 .sheet(isPresented: self.$isPresentingAddTagPopup, content: {
@@ -60,15 +56,12 @@ struct TagsSection: View {
                         Image(systemName: "xmark.circle.fill")
                     })
                     .accessibility(identifier: "tag-remove-button")
-                    .accessibility(label: Text("Remove tag"))
-                    .accessibility(hint: Text("Tap to remove tag"))
                 }
                 .padding(12)
                 .foregroundColor(themeManager.buttonText)
                 .background(themeManager.button)
                 .cornerRadius(3)
                 .accessibility(identifier: "tag")
-                .accessibilityElement(children: .combine)
                 
             }
         }

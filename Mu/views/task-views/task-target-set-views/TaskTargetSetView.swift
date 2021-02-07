@@ -125,8 +125,6 @@ struct TaskTargetSetView: View {
                     })
                     .foregroundColor(themeManager.collectionItemContent)
                     .accessibility(identifier: "task-target-set-view-edit-button")
-                    .accessibility(label: Text("Edit target set"))
-                    .accessibility(hint: Text("Tap to edit target set"))
                     
                     Button(action: {
                         self.moveUp()
@@ -135,8 +133,6 @@ struct TaskTargetSetView: View {
                     })
                     .foregroundColor(themeManager.collectionItemContent)
                     .accessibility(identifier: "task-target-set-view-up-button")
-                    .accessibility(label: Text("Increase target set priority"))
-                    .accessibility(hint: Text("Tap to increase target set's priority"))
                     
                     Button(action: {
                         self.moveDown()
@@ -145,8 +141,6 @@ struct TaskTargetSetView: View {
                     })
                     .foregroundColor(themeManager.collectionItemContent)
                     .accessibility(identifier: "task-target-set-view-down-button")
-                    .accessibility(label: Text("Decrease target set priority"))
-                    .accessibility(hint: Text("Tap to decrease target set's priority"))
                     
                     Spacer()
                     
@@ -157,8 +151,6 @@ struct TaskTargetSetView: View {
                     })
                     .foregroundColor(themeManager.collectionItemContent)
                     .accessibility(identifier: "task-target-set-view-delete-button")
-                    .accessibility(label: Text("Delete target set"))
-                    .accessibility(hint: Text("Tap to delete target set"))
                     
                 }
             }
@@ -172,13 +164,11 @@ struct TaskTargetSetView: View {
                                                          presentation: .none,
                                                          toggleable: false,
                                                          selectedBubbles: .constant(self.selectedDaysOfMonth ?? Set<SaveFormatter.dayOfMonth>()))
-                        .accessibilityElement(children: .ignore)
                 } else {
                     BubbleRows<SaveFormatter.dayOfWeek>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7),
                                                         presentation: .none,
                                                         toggleable: false,
                                                         selectedBubbles: .constant(self.selectedDaysOfWeek!))
-                        .accessibilityElement(children: .ignore)
                 }
                 
             }
@@ -205,8 +195,6 @@ struct TaskTargetSetView: View {
         .background( themeManager.collectionItem )
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
-        .accessibilityElement(children: .combine)
         .accessibility(identifier: "task-target-set-view")
-        .accessibility(label: Text("Target set"))
     }
 }

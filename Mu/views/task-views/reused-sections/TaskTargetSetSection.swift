@@ -33,8 +33,6 @@ struct TaskTargetSetSection: View {
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .accessibility(identifier: "add-task-target-set-button")
-                        .accessibility(label: Text("Add"))
-                        .accessibility(hint: Text("Tap to add a target set"))
                 })
                 .foregroundColor(themeManager.panelContent)
                 .sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {

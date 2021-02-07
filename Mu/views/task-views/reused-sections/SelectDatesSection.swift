@@ -32,8 +32,6 @@ struct SelectDatesSection: View {
                         .frame(width: 30, height: 30, alignment: .center)
                 })
                 .accessibility(identifier: "add-date-button")
-                .accessibility(label: Text("Add"))
-                .accessibility(hint: Text("Tap to add a date"))
             }
             .foregroundColor(themeManager.panelContent)
             
@@ -48,15 +46,12 @@ struct SelectDatesSection: View {
                     })
                     .foregroundColor(themeManager.buttonText)
                     .accessibility(identifier: "date-delete-button")
-                    .accessibility(label: Text("Delete date"))
-                    .accessibility(hint: Text("Tap to delete date"))
                 }
                 .padding(12)
                 .foregroundColor(themeManager.buttonText)
                 .background(themeManager.button)
                 .cornerRadius(3)
                 .accessibility(identifier: "date")
-                .accessibilityElement(children: .combine)
             }
             
         })

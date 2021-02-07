@@ -2,6 +2,9 @@
 //  BubbleRows.swift
 //  Mu
 //
+//  Presents a row of bubbles used for a DayPattern's array's presentation/selection.
+//  Parent view can set whether or not bubbles are toggleable.
+//
 //  Created by Vincent Young on 6/3/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
@@ -95,9 +98,10 @@ struct BubbleRows<BubbleType : Day>: View {
     
     var body: some View {
         /*
-         The GeometryReader updates its height based on changes to SizePreferenceKey detected from the VStack of rows.
-         The VStack updates the SizePreferenceKey by using GeometryReader's width to call getGeometryReaderSize.
-         Because GeometryReader only updates the height of its frame and never the width, circular layout references between the GeometryReader and VStack are avoided
+         Because BubbleRows can be placed in a vertical ScrollView, SwiftUI assigns its GR (GeometryReader) a very small height.
+         Bubbles must be declared in GR in order to use its width to calculate their radii, but GR's height won't expand (SwiftUI views do not expand to fit their children).
+         Thus, BubbleRowsHeightKey is defined - when the GR's width is updated, the PreferenceKey is updated and the grHeight state var (used to set GR's height) is updated.
+         Circular references are avoided because updating the GeometryReader's height doesn't have any effect on its width.
          */
         GeometryReader { gr in
             VStack(alignment: .leading, spacing: rowSpacing) {
@@ -121,8 +125,6 @@ struct BubbleRows<BubbleType : Day>: View {
                                                                                 ? themeManager.buttonText : themeManager.button)
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
-                            .accessibility(label: Text("\(bubbleText.longValue)"))
-                            .accessibility(hint: Text("Tap to toggle this day"))
                             .onTapGesture {
                                 // Add or remove the bubbleText from selectedBubbles
                                 if self.toggleable {

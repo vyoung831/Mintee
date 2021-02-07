@@ -95,95 +95,86 @@ struct AddTask: View {
     
     var body: some View {
         
-        ScrollView(.vertical, showsIndicators: true, content: {
-            VStack(alignment: .leading, spacing: 15, content: {
+        NavigationView {
+            
+            ScrollView(.vertical, showsIndicators: true, content: {
+                VStack(alignment: .leading, spacing: 15, content: {
+                    
+                    // MARK: - Task name text field
+                    
+                    TaskNameTextFieldSection(taskName: self.$taskName)
+                    if (errorMessage.count > 0) {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .accessibility(identifier: "add-task-error-message")
+                    }
+                    
+                    // MARK: - Tags
+                    
+                    TagsSection(tags: self.$tags)
+                    
+                    // MARK: - Task type
+                    
+                    TaskTypeSection(taskTypes: self.taskTypes, taskType: self.$taskType)
+                    
+                    // MARK: - Dates
+                    
+                    if self.taskType == .recurring {
+                        StartAndEndDateSection(startDate: self.$startDate,
+                                               endDate: self.$endDate)
+                    } else {
+                        SelectDatesSection(dates: self.$dates)
+                    }
+                    
+                    // MARK: - Target sets
+                    
+                    if self.taskType == .recurring {
+                        TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
+                    }
+                    
+                }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
+            })
+            .navigationTitle("Add Task")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
                 
-                // MARK: - Title and buttons
-                
-                HStack {
-                    Button(action: {
-                        
-                        switch self.taskType {
-                        case .recurring:
-                            if self.taskTargetSetViews.count < 1 {
-                                self.errorMessage = "Please add one or more target sets"; return
-                            }
-                        case .specific:
-                            if self.dates.count < 1 {
-                                self.errorMessage = "Please add one or more dates"; return
-                            }
+                leading: Button(action: {
+                    
+                    switch self.taskType {
+                    case .recurring:
+                        if self.taskTargetSetViews.count < 1 {
+                            self.errorMessage = "Please add one or more target sets"; return
                         }
-                        
-                        if self.saveTask() {
-                            self.isBeingPresented = false
-                        } else {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                UIAccessibility.post(notification: .announcement, argument: self.errorMessage)
-                            }
+                    case .specific:
+                        if self.dates.count < 1 {
+                            self.errorMessage = "Please add one or more dates"; return
                         }
-                    }, label: {
-                        Text("Save")
-                            .accessibilityElement(children: .ignore)
-                    })
-                    .foregroundColor(.accentColor)
-                    .accessibility(label: Text("Save button"))
-                    .accessibility(hint: Text("Tap to save new task"))
-                    .accessibility(identifier: "add-task-save-button")
-                    .disabled(self.taskName == "")
+                    }
                     
-                    Spacer()
-                    
-                    Text("Add Task")
-                        .font(.title)
-                        .bold()
-                    
-                    Spacer()
-                    Button(action: {
+                    if self.saveTask() {
                         self.isBeingPresented = false
-                    }, label: {
-                        Text("Cancel")
-                    })
-                    .foregroundColor(.accentColor)
-                }
+                    }
+                    
+                }, label: {
+                    Text("Save")
+                })
+                .foregroundColor(.accentColor)
+                .accessibility(identifier: "add-task-save-button")
+                .disabled(self.taskName == ""),
                 
-                // MARK: - Task name text field
+                trailing: Button(action: {
+                    self.isBeingPresented = false
+                }, label: {
+                    Text("Cancel")
+                })
+                .foregroundColor(.accentColor)
                 
-                TaskNameTextFieldSection(taskName: self.$taskName)
-                if (errorMessage.count > 0) {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .accessibility(identifier: "add-task-error-message")
-                        .accessibility(hidden: true)
-                }
-                
-                // MARK: - Tags
-                
-                TagsSection(tags: self.$tags)
-                
-                // MARK: - Task type
-                
-                TaskTypeSection(taskTypes: self.taskTypes, taskType: self.$taskType)
-                
-                // MARK: - Dates
-                
-                if self.taskType == .recurring {
-                    StartAndEndDateSection(startDate: self.$startDate,
-                                           endDate: self.$endDate)
-                } else {
-                    SelectDatesSection(dates: self.$dates)
-                }
-                
-                // MARK: - Target sets
-                
-                if self.taskType == .recurring {
-                    TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
-                }
-                
-            }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
-        })
+            )
+            .background(themeManager.panel)
+            .foregroundColor(themeManager.panelContent)
+            
+        }
         .accentColor(themeManager.accent)
-        .background(themeManager.panel)
-        .foregroundColor(themeManager.panelContent)
         
     }
 }

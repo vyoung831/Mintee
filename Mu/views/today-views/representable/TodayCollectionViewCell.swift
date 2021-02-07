@@ -74,9 +74,9 @@ class TodayCollectionViewCell: UICollectionViewCell {
         let textColor = UIColor(ThemeManager.getElementColor(.collectionItemContent, .system))
         self.taskName.textColor = textColor
         self.target.textColor = textColor
-        self.status.textColor = textColor 
+        self.status.textColor = textColor
         setButton.setTitleColor(textColor, for: UIControl.State.normal)
-        editButton.setTitleColor(textColor, for: UIControl.State.normal)
+        editButton.setTitleColor(textColor, for: UIControl.State.normal)        
     }
     
     // MARK: - UI updates
@@ -225,7 +225,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
     private func setUpCell() {
         self.layer.cornerRadius = cornerRadius
         self.layer.borderWidth = CGFloat(borderWidth)
-        self.backgroundColor = .white
         setUpSubviews()
         updateTheme()
     }

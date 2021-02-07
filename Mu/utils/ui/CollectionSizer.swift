@@ -2,6 +2,8 @@
 //  CollectionSizer.swift
 //  Mu
 //
+//  Provides functions for views to use so that collections are sized consistently across SwiftUI and non-SwiftUI components.
+//
 //  Created by Vincent Young on 11/14/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
@@ -18,6 +20,8 @@ class CollectionSizer {
     static let maxSideInset: CGFloat = 40
     
     static let idealInterItemSpacing: CGFloat = 10
+    
+    // MARK: - UICollectionView sizing
     
     /**
      Returns a UICollectionViewFlowLayout to use for a UICollectionView.
@@ -93,6 +97,8 @@ class CollectionSizer {
         return (layout: flowLayout, itemsPerRow: itemCount)
         
     }
+    
+    // MARK: - LazyVGrid (SwiftUI) sizing
     
     /**
      Converts the return value from CollectionSizer.getCollectionViewFlowLayout to a tuple of values for SwiftUI LazyVGrids to use

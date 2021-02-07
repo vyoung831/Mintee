@@ -1,9 +1,9 @@
 # Failure Handling and Error Reporting
-Mu uses Firebase Crashlytics to report exceptions. More information on Crashlytics can be found [here](https://firebase.google.com/docs/crashlytics/customize-crash-reports). Although Crashlytics allows applications to report both fatal and non-fatal errors, Mu's error reporting and handling architecture is designed such that fatal errors should __NEVER__ be issued.  
-This document describes the development guidelines that must be adhered to in handling failures and (if necessary) reporting non-fatal errors.  
+Mu uses Firebase Crashlytics to report exceptions. More information on Crashlytics can be found [here](https://firebase.google.com/docs/crashlytics/customize-crash-reports). Although Crashlytics allows applications to report both fatal and non-fatal errors, Mu's error reporting and handling architecture is designed such that fatal errors are __NEVER__ issued.  
+This document describes the development guidelines that are adhered to in handling failures and (if necessary) reporting non-fatal errors.  
 The following definitions are used as such throughout the document:  
-* `Failure`: A code execution that has resulted in an error that cannot be corrected by user action.
-* `Failable function`: A function that
+* __Failure__: A code execution that has resulted in an error that cannot be corrected by user action.
+* __Failable function__: A function that
     * Contains a possible failure OR
     * Calls a function that contains a possible failure.
 
@@ -11,55 +11,55 @@ The following definitions are used as such throughout the document:
 1. [Failure handling](#failure-handling)
     * [Returning optionals](#returning-optionals)
     * [Throwing functions](#throwing-functions)
-        * [Throwing in Core Data](#throwing-in-core-data-apis)
+        * [Throwing in model components](#throwing-in-model-components)
 1. [Error reporting](#error-reporting)
     * [Base debug objects](#base-debug-objects)
 1. [Crashlytics configurations](#crashlytics-configurations-and-projects)
 1. [Build versioning](#build-versioning)
 
 # Failure handling
-In Mu, all failures must be handled by the UI and [reported to Crashlytics](#error-reporting).  
-The following table and sections detail how the UI can be notified of failures that occur in other parts of Mu and which objects/structs are responsible for reporting to Crashlytics.
-| How UI is notified of failure | Object/struct responsible for reporting |
+In Mu, all failures are [reported to Crashlytics](#error-reporting) and handled by view components.  
+The following table and sections detail how view components detect failures and which components/functions are responsible for reporting to Crashlytics.
+| How view component detects failure | Component/function responsible for reporting |
 |-|-|
-| [Receives nil return value when expecting non-nil](#returning-optionals) | UI |
+| [Receives nil return value when expecting non-nil](#returning-optionals) | View component |
 | [Catches error](#throwing-functions) | Function that first detected failure and threw error |
 
 ## Returning optionals
-Failable functions should return optionals when there is one (and only one) possible reason of failure.  
-__Ex.__ Functions named `storedTo*()` in `SaveFormatter` return optionals - the only reason for failure is that the provided save-format value could not be converted to a valid in-memory enum/struct.
+Failable functions return optionals when there is one (and only one) possible reason of failure.  
+__Ex.__ Functions named `storedTo*()` in `SaveFormatter` return optionals - the only reason for failure is that the provided save-format value could not be converted to a valid `SaveFormatter` enum.
 
-The following figure illustrates how Views handle optional returns and report errors to Crashlytics.
+The following figure illustrates how view components handle optional returns and report errors to Crashlytics.
 ![](./img/failure-handling-and-error-reporting-optionals.png)
 
 ## Throwing functions
-Failable functions should throw if either of the following are true:  
+Failable functions throw if either of the following are true:  
 1. There are multiple possible reasons for failure.  
 __Ex.__ `Task.generateAndPruneInstances()` includes code with several possible reasons for failure. These include:
     * Finding persistent store data that violates business logic (A relationship that should be non-nil is nil)
     * Failing to convert persistent store data to valid in-memory value via `SaveFormatter` (corrupted data)
     * Swift's `Date` conversion/incrementation functions returns nil un-expectedly.
-1. The function is defined in an NSManagedObject subclass (See [throwing in Core Data](#throwing-in-core-data-apis)).
+1. The function is defined in a model component (See [throwing in model components](#throwing-in-model-components)).
 
-The following figure illustrates how errors that are reported to Crashlytics are thrown to the UI to handle.
+The following figure illustrates how errors that are reported to Crashlytics are thrown to view components to handle.
 ![](./img/failure-handling-and-error-reporting-throwing.png)
 
-### Throwing in Core Data APIs
-To simplify failure detection in NSManagedObject subclasses, Mu requires that all failable functions in NSManagedObject subclasses be defined as throwing functions (including initializers).  
-Thus, when a function calls a throwing Core Data function, it is expected to either
-* (If UI) Handle the error OR
-* Re-throw error for UI to handle.
+### Throwing in model components
+To simplify failure detection in model components, Mu requires that all failable functions in model components be defined as throwing functions (including initializers).  
+Thus, when a component calls a throwing Core Data function, it is expected to either
+1. (If view component) Handle the error OR
+1. Re-throw error for view component to handle.
 
 # Error reporting
 Based on the error reporting responsibility defined in [failure handling](#failure-handling), errors are reported to Crashlytics by completing the following steps:  
 1. Record a non-fatal error via `ErrorManager` and include [base objects](#base-debug-objects) (if applicable) in the error's userInfo.
-1. (If applicable) Throw the NSError returned by `ErrorManager` back down the call stack to be handled by the UI. __ALL__ Errors that Mu throws __MUST__ be obtained from calling `ErrorManager`.  
+1. (If applicable) Throw the NSError returned by `ErrorManager` back down the call stack to be handled by view components. __ALL__ Errors that Mu throws are obtained from calling `ErrorManager`.  
 
 ## Base debug objects
-When a failure occurs in a model object, error reporting must, in addition to reporting debug data that is relevant to the failure, use APIs provided by certain model objects (base objects) to report an additional set of standard debug data.  
-If the base debug object is unavailable (ex. failure occurs in a model object initializer), objects are expected to report as much debug data as possible/needed.
-The following table specifies base objects for each of Mu's model objects.
-| Core Data entity | Is base object? | Base debug object |
+When a failure occurs in a model component, error reporting, in addition to reporting debug data that is relevant to the failure, uses APIs provided by certain model components (base objects) to report an additional set of standard debug data.  
+If the base debug object is unavailable (ex. failure occurs in a model component initializer), as much debug data is reported as possible/needed.
+The following table specifies base objects for each of Mu's model components.
+| Model component | Is base object? | Base debug object |
 |-|-|-|
 | Task | Y | N/A |
 | Analysis | Y | N/A |
@@ -68,6 +68,7 @@ The following table specifies base objects for each of Mu's model objects.
 | TaskTargetSet | N | Task |
 | TaskSummaryAnalysis | N | Task |
 | LegendEntry | N | Analysis |
+| DayPattern | N | Task |
 
 # Crashlytics configurations and projects
 In order to separate testing and release data, Mu uses the following build phases and configurations to capture data in 2 separate Firebase applications:  

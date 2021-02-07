@@ -32,7 +32,6 @@ struct SelectDatePopup: View {
                                     })
                                     .foregroundColor(.accentColor)
                                     .accessibility(identifier: "select-date-popup-done-button")
-                                    .accessibility(label: Text("Tap to finish selecting date"))
             )
             
         }
