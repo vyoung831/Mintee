@@ -16,7 +16,6 @@ struct SettingsView: View {
     
     // UI Constants
     let rowSpacing: CGFloat = 20
-    let gridVerticalPadding: CGFloat = 25
     let idealItemWidth: CGFloat = 100
     let cardHeightMultiplier: CGFloat = 1.5
     
@@ -49,9 +48,9 @@ struct SettingsView: View {
                                            alignment: .center)
                             }
                         }
-                        .padding(EdgeInsets(top: self.gridVerticalPadding,
+                        .padding(EdgeInsets(top: CollectionSizer.gridVerticalPadding,
                                             leading: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset,
-                                            bottom: self.gridVerticalPadding,
+                                            bottom: CollectionSizer.gridVerticalPadding,
                                             trailing: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset))
                     }
                 }
@@ -67,8 +66,6 @@ struct SettingsView: View {
 struct SettingsViewCard<Content: View>: View {
     
     let maxIconWidth: CGFloat = 50
-    let cornerRadius: CGFloat = 5
-    let borderThickness: CGFloat = 3
     let cardPadding: CGFloat = 5
     let textPadding: CGFloat = 5
     
@@ -116,8 +113,8 @@ struct SettingsViewCard<Content: View>: View {
                 
             }
             .padding(cardPadding)
-            .border(themeManager.collectionItemBorder, width: borderThickness)
-            .cornerRadius(cornerRadius)
+            .border(themeManager.collectionItemBorder, width: CollectionSizer.borderThickness)
+            .cornerRadius(CollectionSizer.cornerRadius)
             .foregroundColor(themeManager.collectionItemContent)
             .background(themeManager.collectionItem)
         }

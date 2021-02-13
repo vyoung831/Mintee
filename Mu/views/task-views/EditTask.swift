@@ -17,8 +17,10 @@ struct EditTask: View {
     let saveTaskDeleteMessage: String = "Because you changed your dates, task type, and/or target sets, you will lose data from the following dates. Are you sure you want to continue?"
     let deleteTaskDeleteMessage: String = "Are you sure you want to delete this Task? You will lose all data that you have previously entered for it."
     
-    var task: Task
+    @Binding var isBeingPresented: Bool
     var dismiss: (() -> Void)
+    
+    var task: Task
     @State var datesToDelete: [String] = []
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
@@ -89,7 +91,7 @@ struct EditTask: View {
         
         do {
             try CDCoordinator.moc.save()
-            self.dismiss()
+            self.dismiss(); self.isBeingPresented = false;
         } catch {
             CDCoordinator.moc.rollback()
             self.saveErrorMessage = "Save failed. Please check that another task with this name doesn't already exist."
@@ -101,7 +103,7 @@ struct EditTask: View {
         do {
             try task.deleteSelf()
             try CDCoordinator.moc.save()
-            self.dismiss()
+            self.dismiss(); self.isBeingPresented = false;
         } catch {
             self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
             CDCoordinator.moc.rollback()
@@ -244,7 +246,7 @@ struct EditTask: View {
                 }),
                 trailing: Button(action: {
                     CDCoordinator.moc.rollback()
-                    self.dismiss()
+                    self.dismiss(); self.isBeingPresented = false;
                 }, label: {
                     Text("Cancel")
                 })

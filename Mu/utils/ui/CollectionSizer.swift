@@ -15,6 +15,14 @@ import SwiftUI
 
 class CollectionSizer {
     
+    // MARK: - Properties with set app-wide constant values
+    
+    static let gridVerticalPadding: CGFloat = 20
+    static let cornerRadius: CGFloat = 5
+    static let borderThickness: CGFloat = 3
+    
+    // MARK: - Properties used for sizing comparison
+    
     static let idealSideInset: CGFloat = 20
     static let minSideInset: CGFloat = 10
     static let maxSideInset: CGFloat = 40
