@@ -25,6 +25,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
      */
     static func extractTTSVArray(task: Task) throws -> [TaskTargetSetView] {
         var ttsvArray: [TaskTargetSetView] = []
+        // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
         if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
                 
@@ -100,8 +101,9 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
             }
             
-            let editTask = EditTask(task: task,
+            let editTask = EditTask(isBeingPresented: .constant(true),
                                     dismiss: dismiss,
+                                    task: task,
                                     taskName: task._name ?? "",
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
@@ -130,8 +132,9 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                 
             }
             
-            let editTask = EditTask(task: task,
+            let editTask = EditTask(isBeingPresented: .constant(true),
                                     dismiss: dismiss,
+                                    task: task,
                                     taskName: task._name ?? "",
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},

@@ -43,27 +43,60 @@ struct TagsSection: View {
                         }
                     }).environment(\.managedObjectContext, CDCoordinator.moc)
                 })
+                
+                Spacer()
+                
             }
             
             ForEach(0 ..< self.tags.count, id: \.self) { idx in
                 
                 HStack {
-                    Text(self.tags[idx])
                     
-                    Button(action: {
-                        self.tags.remove(at: idx)
-                    }, label: {
-                        Image(systemName: "xmark.circle.fill")
-                    })
-                    .accessibility(identifier: "tag-remove-button")
+                    TagView(name: self.tags[idx],
+                            removable: true,
+                            remove: {
+                                self.tags.remove(at: idx)
+                            })
+                    
+                    Spacer()
+                    
                 }
-                .padding(12)
-                .foregroundColor(themeManager.buttonText)
-                .background(themeManager.button)
-                .cornerRadius(3)
-                .accessibility(identifier: "tag")
                 
             }
         }
     }
+}
+
+struct TagView: View {
+    
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
+    var name: String
+    var removable: Bool
+    var remove: () -> ()
+    
+    var body: some View {
+        
+        HStack {
+            
+            Text(name)
+            if removable {
+                Button(action: {
+                    self.remove()
+                }, label: {
+                    Image(systemName: "xmark.circle.fill")
+                })
+                .accessibility(identifier: "tag-remove-button")
+            }
+            
+        }
+        .padding(12)
+        .foregroundColor(themeManager.buttonText)
+        .background(themeManager.button)
+        .cornerRadius(3)
+        .accessibility(identifier: "tag")
+        
+    }
+    
+    
 }
