@@ -132,7 +132,11 @@ struct ManageViewCard: View {
                     
                     HStack {
                         if taskType == .recurring {
-                            Text("Recurring")
+                            if let recurringProperties = self.getRecurringProperties() {
+                                Text("\(Date.toMDYPresent(recurringProperties.startDate)) to \(Date.toMDYPresent(recurringProperties.endDate))")
+                            } else {
+                                Text("Recurring")
+                            }
                         } else {
                             Text("Specific")
                         }
