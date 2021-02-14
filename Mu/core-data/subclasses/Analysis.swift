@@ -13,14 +13,14 @@ import CoreData
 @objc(Analysis)
 public class Analysis: NSManagedObject {
     
-    @NSManaged private var analysisType: String?
+    @NSManaged private var analysisType: Int16
     @NSManaged private var endDate: String?
     @NSManaged private var name: String?
     @NSManaged private var startDate: String?
     @NSManaged private var legendEntries: NSSet?
     @NSManaged private var tags: NSSet?
     
-    var _analysisType: String? { get { return self.analysisType } }
+    var _analysisType: Int16 { get { return self.analysisType } }
     var _endDate: String? { get { return self.endDate } }
     var _name: String? { get { return self.name } }
     var _startDate: String? { get { return self.startDate } }

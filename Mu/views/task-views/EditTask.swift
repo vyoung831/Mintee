@@ -11,9 +11,6 @@ import Firebase
 
 struct EditTask: View {
     
-    let startDateLabel: String = "Start Date: "
-    let endDateLabel: String = "End Date: "
-    let taskTypes: [SaveFormatter.taskType] = SaveFormatter.taskType.allCases
     let saveTaskDeleteMessage: String = "Because you changed your dates, task type, and/or target sets, you will lose data from the following dates. Are you sure you want to continue?"
     let deleteTaskDeleteMessage: String = "Are you sure you want to delete this Task? You will lose all data that you have previously entered for it."
     
@@ -119,7 +116,10 @@ struct EditTask: View {
                     
                     // MARK: - Task name text field
                     
-                    TaskNameTextFieldSection(taskName: self.$taskName)
+                    LabelAndTextFieldSection(label: "Task name",
+                                             labelIdentifier: "task-name-label",
+                                             textField: self.$taskName,
+                                             textFieldIdentifier: "task-name-text-field")
                     if (saveErrorMessage.count > 0) {
                         Text(saveErrorMessage)
                             .foregroundColor(.red)
@@ -128,11 +128,14 @@ struct EditTask: View {
                     
                     // MARK: - Tags
                     
-                    TagsSection(tags: self.$tags)
+                    TagsSection(label: "Tags",
+                                tags: self.$tags)
                     
                     // MARK: - Task type
                     
-                    TaskTypeSection(taskTypes: self.taskTypes, taskType: self.$taskType)
+                    SaveFormatterSelectionSection<SaveFormatter.taskType>(sectionLabel: "Task type",
+                                                                          options: SaveFormatter.taskType.allCases,
+                                                                          selection: self.$taskType)
                     
                     // MARK: - Dates
                     
