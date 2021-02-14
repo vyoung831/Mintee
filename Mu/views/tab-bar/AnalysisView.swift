@@ -9,7 +9,57 @@
 import SwiftUI
 
 struct AnalysisView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
+    init() {
+        UIPageControl.appearance().currentPageIndicatorTintColor = .red
+        UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
     }
+    
+    var body: some View {
+        
+        NavigationView {
+            
+            Group {
+                
+                TabView {
+                    AnalysisGraphPage()
+                    AnalysisTextPage()
+                }
+                .tabViewStyle(PageTabViewStyle())
+                
+            }
+            .background(themeManager.panel)
+            .navigationTitle("Analysis")
+            
+        }
+        
+    }
+}
+
+struct AnalysisGraphPage: View {
+    
+    var body: some View {
+        
+        ScrollView(.vertical, showsIndicators: true, content: {
+            Text("Graph page")
+        })
+        .padding(25)
+        
+    }
+    
+}
+
+struct AnalysisTextPage: View {
+    
+    var body: some View {
+        
+        ScrollView(.vertical, showsIndicators: true, content: {
+            Text("Text page")
+        })
+        .padding(25)
+        
+    }
+    
 }
