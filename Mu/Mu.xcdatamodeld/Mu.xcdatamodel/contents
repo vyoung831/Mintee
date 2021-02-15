@@ -78,6 +78,6 @@
         <element name="Task" positionX="-9748.8037109375" positionY="2124.302429199219" width="128" height="163"/>
         <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="103"/>
         <element name="TaskSummaryAnalysis" positionX="-9507.880310058594" positionY="2247.859283447266" width="128" height="133"/>
-        <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="163"/>
+        <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="149"/>
     </elements>
 </model>
