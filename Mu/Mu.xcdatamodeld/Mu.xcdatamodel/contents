@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D64" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Analysis" representedClassName="Analysis" syncable="YES">
-        <attribute name="analysisType" optional="YES" attributeType="String"/>
+        <attribute name="analysisType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="endDate" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="startDate" optional="YES" attributeType="String"/>
@@ -78,6 +78,6 @@
         <element name="Task" positionX="-9748.8037109375" positionY="2124.302429199219" width="128" height="163"/>
         <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="103"/>
         <element name="TaskSummaryAnalysis" positionX="-9507.880310058594" positionY="2247.859283447266" width="128" height="133"/>
-        <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="163"/>
+        <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="149"/>
     </elements>
 </model>

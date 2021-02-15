@@ -9,14 +9,41 @@
 import SwiftUI
 
 struct MainTabBarView: View {
+    
     var body: some View {
+        
         TabView {
+            
+            AnalysisView().tabItem {
+                VStack {
+                    Image(systemName: "chart.bar.xaxis")
+                    Text("Analysis")
+                }
+            }
+            
+            ManageView().tabItem {
+                VStack {
+                    Image(systemName: "book")
+                    Text("Manage")
+                }
+            }
+            
             TodayView().tabItem {
-                Text("Today")
+                VStack {
+                    Image(systemName: "clock")
+                    Text("Today")
+                }
             }
+            
             SettingsView().tabItem {
-                Text("Settings")
+                VStack {
+                    Image(systemName: "gearshape")
+                    Text("Settings")
+                }
             }
+            
         }
+        
     }
+    
 }
