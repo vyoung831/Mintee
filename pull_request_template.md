@@ -1,9 +1,7 @@
 # Description
-
 Provide a summary of the changes.
 
 ## Type of change
-
 Delete N/A options
 - [ ] New feature
 - [ ] Technical debt or bug fix
@@ -11,17 +9,20 @@ Delete N/A options
 - [ ] Documentation update
 
 ## Related issue(s)
-
 List related zenhub issue(s)
 
 # Development checklist
-
 - [ ] New code adheres to [development principles](./doc/Development/development-principles.md).
-    - [ ] New code for each application component:
-        - [ ] Satisifies its responsibilities and maintains separation of concerns.
+    - New code for each application component:
+        - [ ] Satisifies its responsibilities and maintains separation of concerns
         - Integrates with notable components:
             - [ ] SaveFormatter
             - [ ] ThemeManager
+    - New model components:
+        - Transformables:
+            - [ ] Custom objects for transformables conform to NSSecureCoding
+            - [ ] Custom objects for transformables are specified in the Core Data model
+            - [ ] Custom data transformers are implemented and registered
     - New view components:
         - [ ] Use accessibility only for identification.
         - [ ] Define navigation views.
