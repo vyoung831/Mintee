@@ -11,6 +11,7 @@ import SwiftUI
 struct AddAnalysis: View {
     
     @Binding var isBeingPresented: Bool
+    @State var isPresentingLegendEntryPopup: Bool = false
     
     @State var errorMessage: String = ""
     
@@ -42,7 +43,6 @@ struct AddAnalysis: View {
                     }
                     
                     // MARK: - Tags
-                    
                     TagsSection(label: "Include Tasks with Tags:",
                                 tags: self.$tags)
                     
@@ -52,9 +52,21 @@ struct AddAnalysis: View {
                                                                               selection: self.$analysisType)
                     
                     // MARK: - Start and end date
-                    
                     StartAndEndDateSection(startDate: self.$startDate,
                                            endDate: self.$endDate)
+                    
+                    HStack {
+                        Text("Legend")
+                        Button(action: {
+                            self.isPresentingLegendEntryPopup = true
+                        }, label: {
+                            Image(systemName: "plus.circle")
+                                .frame(width: 30, height: 30, alignment: .center)
+                                .foregroundColor(themeManager.panelContent)
+                                .accessibility(identifier: "add-legend-entry-button")
+                        })
+                        .scaleEffect(1.5)
+                    }
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
