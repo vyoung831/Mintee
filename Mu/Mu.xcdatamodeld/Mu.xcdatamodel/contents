@@ -3,24 +3,15 @@
     <entity name="Analysis" representedClassName="Analysis" syncable="YES">
         <attribute name="analysisType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="endDate" optional="YES" attributeType="String"/>
+        <attribute name="legend" optional="YES" attributeType="Transformable" valueTransformerName="AnalysisLegendTransformer" customClassName="AnalysisLegend"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="startDate" optional="YES" attributeType="String"/>
-        <relationship name="legendEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LegendEntry" inverseName="analysis" inverseEntity="LegendEntry"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="analyses" inverseEntity="Tag"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="name"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
-    </entity>
-    <entity name="LegendEntry" representedClassName="LegendEntry" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="String"/>
-        <attribute name="max" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="maxInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="min" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="minInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="analysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analysis" inverseName="legendEntries" inverseEntity="Analysis"/>
-        <relationship name="taskSummaryAnalysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskSummaryAnalysis" inverseName="legendEntries" inverseEntity="TaskSummaryAnalysis"/>
     </entity>
     <entity name="Tag" representedClassName="Tag" syncable="YES">
         <attribute name="name" attributeType="String" defaultValueString=""/>
@@ -57,8 +48,8 @@
         <attribute name="analysisType" optional="YES" attributeType="String"/>
         <attribute name="dateRange" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="endDate" optional="YES" attributeType="String"/>
+        <attribute name="legend" optional="YES" attributeType="Transformable" valueTransformerName="AnalysisLegendTransformer" customClassName="AnalysisLegend"/>
         <attribute name="startDate" optional="YES" attributeType="String"/>
-        <relationship name="legendEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LegendEntry" inverseName="taskSummaryAnalysis" inverseEntity="LegendEntry"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="taskSummaryAnalysis" inverseEntity="Task"/>
     </entity>
     <entity name="TaskTargetSet" representedClassName="TaskTargetSet" syncable="YES">
@@ -72,12 +63,11 @@
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
     </entity>
     <elements>
-        <element name="Analysis" positionX="-9381.968017578125" positionY="1956.215362548828" width="128" height="133"/>
-        <element name="LegendEntry" positionX="-9146.159820556641" positionY="2066.493591308594" width="128" height="148"/>
+        <element name="Analysis" positionX="-9381.968017578125" positionY="1956.215362548828" width="128" height="119"/>
         <element name="Tag" positionX="-9576.1591796875" positionY="2091.435958862305" width="128" height="88"/>
         <element name="Task" positionX="-9748.8037109375" positionY="2124.302429199219" width="128" height="163"/>
         <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="103"/>
-        <element name="TaskSummaryAnalysis" positionX="-9507.880310058594" positionY="2247.859283447266" width="128" height="133"/>
+        <element name="TaskSummaryAnalysis" positionX="-9507.880310058594" positionY="2247.859283447266" width="128" height="119"/>
         <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="149"/>
     </elements>
 </model>

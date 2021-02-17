@@ -57,7 +57,7 @@ class DayPattern: NSObject, NSSecureCoding {
         coder.encode(NSSet(set: self.daysOfWeek), forKey: DayPattern.Keys.daysOfWeek.rawValue)
         coder.encode(NSSet(set: self.weeksOfMonth), forKey: DayPattern.Keys.weeksOfMonth.rawValue)
         coder.encode(NSSet(set: self.daysOfMonth), forKey: DayPattern.Keys.daysOfMonth.rawValue)
-        coder.encode(self.type.rawValue, forKey: DayPattern.Keys.type.rawValue)
+        coder.encode(NSNumber(value: self.type.rawValue), forKey: DayPattern.Keys.type.rawValue)
     }
     
     required init?(coder decoder: NSCoder) {
@@ -65,13 +65,13 @@ class DayPattern: NSObject, NSSecureCoding {
         guard let dow = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue) as? Set<Int16>,
               let wom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue) as? Set<Int16>,
               let dom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue) as? Set<Int16>,
-              let typeValue = decoder.decodeObject(of: [DayPattern.self], forKey: DayPattern.Keys.type.rawValue) as? Int8 else {
+              let typeValue = decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue) as? Int8 else {
             let userInfo: [String : Any] =
                 ["Message" : "DayPattern.init() could not decode its properties",
-                 "DaysOfWeek" : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue).debugDescription,
-                 "WeeksOfMonth" : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue).debugDescription,
-                 "DaysOfMonth" : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue).debugDescription,
-                 "typeValue" : decoder.decodeObject(of: [DayPattern.self], forKey: DayPattern.Keys.type.rawValue).debugDescription]
+                 DayPattern.Keys.daysOfWeek.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue).debugDescription,
+                 DayPattern.Keys.weeksOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue).debugDescription,
+                 DayPattern.Keys.daysOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue).debugDescription,
+                 DayPattern.Keys.type.rawValue : decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue).debugDescription]
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
         }
