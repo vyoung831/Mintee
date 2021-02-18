@@ -96,6 +96,9 @@ struct AddAnalysis: View {
             
         }
         .accentColor(themeManager.accent)
+        .popover(isPresented: self.$isPresentingLegendEntryPopup, content: {
+            AddLegendEntryPopup(isBeingPresented: self.$isPresentingLegendEntryPopup)
+        })
         
     }
     
