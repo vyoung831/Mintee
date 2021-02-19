@@ -57,28 +57,8 @@ struct AddAnalysis: View {
                                            endDate: self.$endDate)
                     
                     // MARK: - Legend entries
-                    Group {
-                        
-                        HStack {
-                            Text("Legend")
-                            Button(action: {
-                                self.isPresentingLegendEntryPopup = true
-                            }, label: {
-                                Image(systemName: "plus.circle")
-                                    .frame(width: 30, height: 30, alignment: .center)
-                                    .foregroundColor(themeManager.panelContent)
-                                    .accessibility(identifier: "add-legend-entry-button")
-                            })
-                            .scaleEffect(1.5)
-                        }
-                        
-                        VStack {
-                            ForEach(0 ..< self.legendEntries.count, id: \.self) { idx in
-                                legendEntries[idx]
-                            }
-                        }
-                        
-                    }
+                    LegendSection(isPresentingLegendEntryPopup: self.$isPresentingLegendEntryPopup,
+                                  legendEntries: self.$legendEntries)
                     .popover(isPresented: self.$isPresentingLegendEntryPopup, content: {
                         AddLegendEntryPopup(isBeingPresented: self.$isPresentingLegendEntryPopup,
                                             save: { label, color in
