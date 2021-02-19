@@ -20,6 +20,8 @@ struct AddLegendEntryPopup: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    var save: (String, Color) -> ()
+    
     var body: some View {
         
         NavigationView {
@@ -46,6 +48,7 @@ struct AddLegendEntryPopup: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
                                     Button(action: {
+                                        save("Some label", color)
                                         self.isBeingPresented = false
                                     }, label: {
                                         Text("Done")
