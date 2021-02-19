@@ -16,6 +16,8 @@ struct ManageView: View {
         sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]
     ) var tasksFetch: FetchedResults<Task>
     
+    @State var isPresentingAddTaskPopup: Bool = false
+    
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     var body: some View {
@@ -33,11 +35,26 @@ struct ManageView: View {
                 }
                 
             }
-            .navigationTitle("Manage")
             .padding(CollectionSizer.gridVerticalPadding)
             .background(ThemeManager.shared.panel)
+            .navigationTitle("Manage")
+            .navigationBarItems(trailing:
+                                    Button(action: {
+                                        self.isPresentingAddTaskPopup = true
+                                    }, label: {
+                                        Image(systemName: "plus.circle")
+                                            .frame(width: 30, height: 30, alignment: .center)
+                                            .foregroundColor(themeManager.panelContent)
+                                            .accessibility(identifier: "add-task-button")
+                                    })
+                                    .scaleEffect(1.5)
+                                    .foregroundColor(themeManager.panelContent)
+                                    .sheet(isPresented: self.$isPresentingAddTaskPopup, content:  {
+                                        AddTask(isBeingPresented: self.$isPresentingAddTaskPopup)
+                                    })
+            )
             
-        }
+        }.accentColor(themeManager.accent)
         
     }
     
