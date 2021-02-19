@@ -20,6 +20,7 @@ struct AddAnalysis: View {
     @State var tags: [String] = []
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
+    @State var legendEntries: [LegendEntryView] = []
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -55,18 +56,41 @@ struct AddAnalysis: View {
                     StartAndEndDateSection(startDate: self.$startDate,
                                            endDate: self.$endDate)
                     
-                    HStack {
-                        Text("Legend")
-                        Button(action: {
-                            self.isPresentingLegendEntryPopup = true
-                        }, label: {
-                            Image(systemName: "plus.circle")
-                                .frame(width: 30, height: 30, alignment: .center)
-                                .foregroundColor(themeManager.panelContent)
-                                .accessibility(identifier: "add-legend-entry-button")
-                        })
-                        .scaleEffect(1.5)
+                    // MARK: - Legend entries
+                    Group {
+                        
+                        HStack {
+                            Text("Legend")
+                            Button(action: {
+                                self.isPresentingLegendEntryPopup = true
+                            }, label: {
+                                Image(systemName: "plus.circle")
+                                    .frame(width: 30, height: 30, alignment: .center)
+                                    .foregroundColor(themeManager.panelContent)
+                                    .accessibility(identifier: "add-legend-entry-button")
+                            })
+                            .scaleEffect(1.5)
+                        }
+                        
+                        VStack {
+                            ForEach(0 ..< self.legendEntries.count, id: \.self) { idx in
+                                legendEntries[idx]
+                            }
+                        }
+                        
                     }
+                    .popover(isPresented: self.$isPresentingLegendEntryPopup, content: {
+                        AddLegendEntryPopup(isBeingPresented: self.$isPresentingLegendEntryPopup,
+                                            save: { label, color in
+                                                
+                                                // LegendEntryViews are deleted by their indices that were calculated here. It's assumed that the LegendEntryViews will not be reordered
+                                                let idx = self.legendEntries.count
+                                                self.legendEntries.append(
+                                                    LegendEntryView(delete: { self.legendEntries.remove(at: idx) },
+                                                                    label: label,
+                                                                    color: color))
+                                            })
+                    })
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
@@ -81,7 +105,7 @@ struct AddAnalysis: View {
                 })
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "add-analysis-save-button")
-                                .disabled(self.analysisName == ""),
+                .disabled(self.analysisName == ""),
                 
                 trailing: Button(action: {
                     self.isBeingPresented = false
@@ -96,9 +120,6 @@ struct AddAnalysis: View {
             
         }
         .accentColor(themeManager.accent)
-        .popover(isPresented: self.$isPresentingLegendEntryPopup, content: {
-            AddLegendEntryPopup(isBeingPresented: self.$isPresentingLegendEntryPopup)
-        })
         
     }
     
