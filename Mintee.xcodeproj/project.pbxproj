@@ -55,6 +55,7 @@
 		C43AE1D42560C12700F1D560 /* CollectionSizer-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */; };
 		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
 		C442AE0D2546D71000A9EB72 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C442AE0C2546D71000A9EB72 /* ErrorManager.swift */; };
+		C447C18325DFE786006FF43A /* LegendSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C447C18225DFE786006FF43A /* LegendSection.swift */; };
 		C44940C92498D713009FE818 /* SaveFormatter-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */; };
 		C44940CD2498F113009FE818 /* BubbleRows-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940CC2498F113009FE818 /* BubbleRows-Tests.swift */; };
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
@@ -240,6 +241,7 @@
 		C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionSizer-Tests.swift"; sourceTree = "<group>"; };
 		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
 		C442AE0C2546D71000A9EB72 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		C447C18225DFE786006FF43A /* LegendSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendSection.swift; sourceTree = "<group>"; };
 		C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SaveFormatter-Tests.swift"; sourceTree = "<group>"; };
 		C44940CC2498F113009FE818 /* BubbleRows-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleRows-Tests.swift"; sourceTree = "<group>"; };
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -880,6 +882,7 @@
 				C4578D2224B4065C008BD3D4 /* LabelAndTextFieldSection.swift */,
 				C4130C2224C86E9A003EF047 /* SaveFormatterSelectionSection.swift */,
 				C4EBC1BC25DE9474006EACD4 /* MinAndMaxSection.swift */,
+				C447C18225DFE786006FF43A /* LegendSection.swift */,
 			);
 			path = "reused-sections";
 			sourceTree = "<group>";
@@ -1293,6 +1296,7 @@
 				C42B5B4D259ACD6E00E6A093 /* ErrorView.swift in Sources */,
 				C433E88725D9FA240053A47A /* AnalysisLegend.swift in Sources */,
 				C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */,
+				C447C18325DFE786006FF43A /* LegendSection.swift in Sources */,
 				C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */,
 				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
