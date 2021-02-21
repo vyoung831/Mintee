@@ -161,7 +161,7 @@ extension Task_InstanceHandling_Tests_Performance {
         let newStart = Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 1))!
         let newEnd = Calendar.current.date(from: DateComponents(year: 2045, month: 1, day: 1))!
         
-        let newDomSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let newDomSet = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                           insertInto: CDCoordinator.moc,
                                           min: 0, max: 1, minOperator: .lt, maxOperator: .lt, priority: 9,
                                           pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
