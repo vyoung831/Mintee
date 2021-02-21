@@ -4,7 +4,7 @@
 //
 //  This extension handles color theme updates to navbars throughout the project, in both SwiftUI and UIKit components. The navbar background and text is updated when
 //  1. viewDidLoad() is called
-//  2. ThemeManager posts the .themeChanged Notification
+//  2. The .themeChanged Notification is posted
 //
 //  Due to lack of official Apple documentation, the following resources were used to implement this solution:
 //  - Using UINavigationBarAppearance to update SwiftUI navbars: https://medium.com/@francisco.gindre/customizing-swiftui-navigation-bar-8369d42b8805
