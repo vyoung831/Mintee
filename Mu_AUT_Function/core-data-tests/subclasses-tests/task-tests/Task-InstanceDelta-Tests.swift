@@ -195,7 +195,7 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_addTTS() throws {
         
         let newDowDatesMin = dowMin + 100; let newDowDatesMax = dowMax + 100
-        let newDowDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let newDowDatesSet = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                                insertInto: CDCoordinator.moc,
                                                min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
                                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]),
@@ -217,15 +217,15 @@ extension Task_InstanceDelta_Tests {
     func test_getDeltaInstancesRecurring_addWomDowDom_deleteDow() throws {
         
         let newDowDatesMin = dowMin + 100; let newDowDatesMax = dowMax + 100; let newWomDatesMin = womMin + 100; let newWomDatesMax = womMax + 100; let newDomDatesMin = domMin + 100; let newDomDatesMax = domMax + 100
-        let newDowDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let newDowDatesSet = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                                insertInto: CDCoordinator.moc,
                                                min: newDowDatesMin, max: newDowDatesMax, minOperator: .lt, maxOperator: .lt, priority: 1,
                                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday]), wom: Set(), dom: Set()))
-        let newWomDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let newWomDatesSet = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                                insertInto: CDCoordinator.moc,
                                                min: newWomDatesMin, max: newWomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 0,
                                                pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .friday]), wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]), dom: Set()))
-        let newDomDatesSet = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let newDomDatesSet = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                                insertInto: CDCoordinator.moc,
                                                min: newDomDatesMin, max: newDomDatesMax, minOperator: .lt, maxOperator: .lt, priority: 7,
                                                pattern: DayPattern(dow: Set(), wom: Set(), dom: Set<SaveFormatter.dayOfMonth>([.three, .six, .nine, .twelve, .fifteen, .eighteen, .twenty_one, .twenty_four, .twenty_seven, .thirty])))

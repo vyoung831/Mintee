@@ -29,7 +29,7 @@ class TaskTargetSet_Tests: XCTestCase {
     // MARK: - checkDay tests
     
     func test_checkDay_dow() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .tuesday, .thursday, .saturday]),
@@ -40,7 +40,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     func test_checkDay_wom_rightWeekday_wrongWeek() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
@@ -50,7 +50,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     func test_checkDay_wom_rightWeekday_rightWeek() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
@@ -60,7 +60,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     func test_checkDay_wom_wrongWeekday_wrongWeek() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
@@ -70,7 +70,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     func test_checkDay_wom_wrongWeekday_rightWeek() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
@@ -83,7 +83,7 @@ class TaskTargetSet_Tests: XCTestCase {
      Test that even though the weekday is the 4th of the month, checkDay returns true because 5 (last of month) was in WOM
      */
     func test_checkDay_wom_lastOfMonth() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.saturday]),
@@ -93,7 +93,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     func test_checkDay_dom() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([]),
@@ -104,7 +104,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     func test_checkDay_dom_lastDayOfMonth() throws {
-        let tts = try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(CDCoordinator.moc)!,
+        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
                                 insertInto: CDCoordinator.moc,
                                 min: 0, max: 5, minOperator: .lt, maxOperator: .lt, priority: 0,
                                 pattern: DayPattern(dow: Set([]),
