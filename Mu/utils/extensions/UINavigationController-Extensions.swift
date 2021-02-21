@@ -2,10 +2,13 @@
 //  UINavigationController+Extensions.swift
 //  Mu
 //
-//  Extension to UINavigationController to set navbar background and text when
-//  - View is loaded
-//  - themeChanged Notification is posted
-//  TO-DO: More doc
+//  This extension handles color theme updates to navbars throughout the project, in both SwiftUI and UIKit components. The navbar background and text is updated when
+//  1. viewDidLoad() is called
+//  2. ThemeManager posts the .themeChanged Notification
+//
+//  Due to lack of official Apple documentation, the following resources were used to implement this solution:
+//  - Using UINavigationBarAppearance to update SwiftUI navbars: https://medium.com/@francisco.gindre/customizing-swiftui-navigation-bar-8369d42b8805
+//  - Refreshing navbar appearances: https://stackoverflow.com/questions/39066126/how-to-properly-refresh-a-uinavigationbar
 //
 //  Created by Vincent Young on 10/18/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
