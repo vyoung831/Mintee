@@ -96,6 +96,7 @@
 		C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */; };
 		C492BDDC255B93EF0054CD2A /* FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492BDDB255B93EF0054CD2A /* FetchRequests.swift */; };
 		C492CCEC25DDCE3800C7A9CB /* AddLegendEntryPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492CCEB25DDCE3800C7A9CB /* AddLegendEntryPopup.swift */; };
+		C493C03525E1EEC900538B59 /* SearchTagPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493C03425E1EEC900538B59 /* SearchTagPopup.swift */; };
 		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
 		C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */; };
 		C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */; };
@@ -281,6 +282,7 @@
 		C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayCollectionViewCell-Tests.swift"; sourceTree = "<group>"; };
 		C492BDDB255B93EF0054CD2A /* FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequests.swift; sourceTree = "<group>"; };
 		C492CCEB25DDCE3800C7A9CB /* AddLegendEntryPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLegendEntryPopup.swift; sourceTree = "<group>"; };
+		C493C03425E1EEC900538B59 /* SearchTagPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTagPopup.swift; sourceTree = "<group>"; };
 		C499FFEC247364DF00ABB64C /* SaveFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatter.swift; sourceTree = "<group>"; };
 		C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSet.swift; sourceTree = "<group>"; };
 		C49D666624E8992B0030DB54 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -589,7 +591,6 @@
 			children = (
 				C4A10C7C24E9BD9A00F015A4 /* SelectDatesSection.swift */,
 				C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */,
-				C4ACD3CA250D715100D56277 /* TagsSection.swift */,
 				C482233224BA57B000E6426E /* TaskTargetSetSection.swift */,
 			);
 			path = "reused-sections";
@@ -725,6 +726,7 @@
 				C492CCEB25DDCE3800C7A9CB /* AddLegendEntryPopup.swift */,
 				C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */,
 				C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */,
+				C493C03425E1EEC900538B59 /* SearchTagPopup.swift */,
 				C4908D27253E20A100B51ADF /* SelectDatePopup.swift */,
 				C4D9DB6325475771002F0B40 /* SetCountPopup.swift */,
 				C48F9761245ADBC3000339E9 /* SetDatePopup.swift */,
@@ -880,9 +882,10 @@
 			isa = PBXGroup;
 			children = (
 				C4578D2224B4065C008BD3D4 /* LabelAndTextFieldSection.swift */,
-				C4130C2224C86E9A003EF047 /* SaveFormatterSelectionSection.swift */,
-				C4EBC1BC25DE9474006EACD4 /* MinAndMaxSection.swift */,
 				C447C18225DFE786006FF43A /* LegendSection.swift */,
+				C4EBC1BC25DE9474006EACD4 /* MinAndMaxSection.swift */,
+				C4130C2224C86E9A003EF047 /* SaveFormatterSelectionSection.swift */,
+				C4ACD3CA250D715100D56277 /* TagsSection.swift */,
 			);
 			path = "reused-sections";
 			sourceTree = "<group>";
@@ -1301,6 +1304,7 @@
 				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
+				C493C03525E1EEC900538B59 /* SearchTagPopup.swift in Sources */,
 				C4D618F8252EA085009A9751 /* UserDefaultsListView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C408449C25FFD473007C4105 /* Mintee.xcdatamodeld in Sources */,

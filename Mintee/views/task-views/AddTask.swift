@@ -110,7 +110,9 @@ struct AddTask: View {
                     
                     // MARK: - Tags
                     
-                    TagsSection(label: "Tags",
+                    TagsSection(allowedToAddNewTags: true,
+                                label: "Tags",
+                                formType: "task",
                                 tags: self.$tags)
                     
                     // MARK: - Task type

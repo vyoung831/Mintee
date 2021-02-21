@@ -128,7 +128,9 @@ struct EditTask: View {
                     
                     // MARK: - Tags
                     
-                    TagsSection(label: "Tags",
+                    TagsSection(allowedToAddNewTags: true,
+                                label: "Tags",
+                                formType: "task",
                                 tags: self.$tags)
                     
                     // MARK: - Task type
@@ -236,17 +238,20 @@ struct EditTask: View {
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "edit-task-save-button")
                 .disabled(self.taskName == "")
-                .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ? self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
-                    self.isPresentingConfirmDeletePopupForSaveTask ?
-                        ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
-                                           deleteList: self.datesToDelete,
-                                           delete: self.saveTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask) :
-                        ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
-                                           deleteList: [],
-                                           delete: self.deleteTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
-                }),
+                .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ?
+                        self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
+                            if self.isPresentingConfirmDeletePopupForSaveTask {
+                                ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
+                                                   deleteList: self.datesToDelete,
+                                                   delete: self.saveTask,
+                                                   isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask)
+                            } else {
+                                ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
+                                                   deleteList: [],
+                                                   delete: self.deleteTask,
+                                                   isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
+                            }
+                        }),
                 trailing: Button(action: {
                     CDCoordinator.moc.rollback()
                     self.dismiss(); self.isBeingPresented = false;
