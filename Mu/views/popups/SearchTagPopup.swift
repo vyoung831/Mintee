@@ -1,27 +1,28 @@
 //
-//  AddTagPopup.swift
+//  SearchTagPopup.swift
 //  Mu
 //
-//  Created by Vincent Young on 9/12/20.
-//  Copyright © 2020 Vincent Young. All rights reserved.
+//  Created by Vincent Young on 2/20/21.
+//  Copyright © 2021 Vincent Young. All rights reserved.
 //
 
 import SwiftUI
-import CoreData
 
-struct AddTagPopup: View {
+struct SearchTagPopup: View {
     
     @Binding var isBeingPresented: Bool
     @State var tagText: String = ""
     @State var errorMessage: String = ""
     
     @FetchRequest(
-        // TO-DO: Update NSSortDescriptor to use more robust way to sort Tag name 
+        // TO-DO: Update NSSortDescriptor to use more robust way to sort Tag name
         entity: Tag.entity(),
         sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]
     ) var tagsFetch: FetchedResults<Tag>
     
-    // AddTagPopup expects an error message to be returned from the containing view should the addTag closure fail
+    @State var selectedTag: Tag?
+    
+    // SearchTagPopup expects an error message to be returned from the containing view should the addTag closure fail
     var addTag: (String) -> String?
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
@@ -38,18 +39,29 @@ struct AddTagPopup: View {
                         Text("Cancel")
                     })
                     .foregroundColor(.accentColor)
-                    .accessibility(identifier: "add-tag-popup-cancel-button")
+                    .accessibility(identifier: "search-tag-popup-cancel-button")
                     
                     Spacer()
-                    Text("Add Tag")
+                    Text("Search for Tag")
                         .font(.title)
                     Spacer()
                     
                     Button(action: {
                         
-                        if self.tagText.count == 0 {
-                            self.isBeingPresented = false
-                        } else if let addTagErrorMessage = self.addTag(self.tagText) {
+                        guard let tag = selectedTag else {
+                            self.errorMessage = "Please select a Tag"
+                            return
+                        }
+                        
+                        guard let tagName = tag._name else {
+                            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                        ["Message" : "SearchTagPopup.Done found a tag with nil _name",
+                                                         "Tag" : tag])
+                            self.errorMessage = ErrorManager.unexpectedErrorMessage
+                            return
+                        }
+                        
+                        if let addTagErrorMessage = self.addTag(tagName) {
                             self.errorMessage = addTagErrorMessage
                         } else {
                             self.isBeingPresented = false
@@ -58,8 +70,9 @@ struct AddTagPopup: View {
                     }, label: {
                         Text("Done")
                     })
+                    .disabled(selectedTag == nil)
                     .foregroundColor(.accentColor)
-                    .accessibility(identifier: "add-tag-popup-done-button")
+                    .accessibility(identifier: "search-tag-popup-done-button")
                 }
             }
             
@@ -71,16 +84,25 @@ struct AddTagPopup: View {
             }
             
             // tagsFetch is filtered for Tag names containing the TextField's value
-            List(tagsFetch.filter{
-                AddTagPopup.tagShouldBeDisplayed($0, self.tagText)
-            }, id: \.self) { tag in
+            List(tagsFetch.filter{ AddTagPopup.tagShouldBeDisplayed($0, self.tagText) || selectedTag == $0 }, id: \.self) { tag in
                 if let tagName = tag._name {
-                    Button(tagName) {
-                        // Sets the TextField value to the tapped Tag
-                        self.tagText = tagName // TO-DO: Add foregroundColor modifier as panelContent when SwiftUI is updated with ability to change List background color
+                    
+                    if self.selectedTag == tag {
+                        HStack {
+                            Text(tagName)
+                            Spacer()
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.primary) // TO-DO: Update foregroundColor to accentColor after SwiftUI is updated with ability to change List background color
+                        }
+                    } else {
+                        Button(tagName) {
+                            selectedTag = tag
+                        }
                     }
+                    
                 }
             }
+            .background(themeManager.panel)
             .foregroundColor(.primary) // TO-DO: Update foregroundColor to panelContent after SwiftUI is updated with ability to change List background color
             
         }
@@ -89,25 +111,6 @@ struct AddTagPopup: View {
         .background(themeManager.panel)
         .foregroundColor(themeManager.panelContent)
         
-    }
-}
-
-extension AddTagPopup {
-    
-    /**
-     Compares a Tag's name to the content in a TextField to determine if the Tag should be displayed to the user to be selected.
-     Also used by SearchTagPopup.
-     - parameter tag: Tag to evaluate
-     - parameter textFieldContent: Content of TextField to evaluate against Tag in question.
-     - returns: True if tagText is a substring of tag's name
-     */
-    static func tagShouldBeDisplayed(_ tag: Tag,_ textFieldContent: String) -> Bool {
-        if let tagName = tag._name {
-            if tagName.lowercased().contains(textFieldContent.lowercased()) || textFieldContent.count == 0 {
-                return true
-            }
-        }
-        return false
     }
     
 }

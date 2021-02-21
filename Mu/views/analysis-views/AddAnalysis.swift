@@ -11,6 +11,7 @@ import SwiftUI
 struct AddAnalysis: View {
     
     @Binding var isBeingPresented: Bool
+    @State var isPresentingLegendEntryPopup: Bool = false
     
     @State var errorMessage: String = ""
     
@@ -19,6 +20,7 @@ struct AddAnalysis: View {
     @State var tags: [String] = []
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
+    @State var legendEntries: [LegendEntryView] = []
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -42,8 +44,9 @@ struct AddAnalysis: View {
                     }
                     
                     // MARK: - Tags
-                    
-                    TagsSection(label: "Include Tasks with Tags:",
+                    TagsSection(allowedToAddNewTags: false,
+                                label: "Include Tasks with Tags:",
+                                formType: "analysis",
                                 tags: self.$tags)
                     
                     // MARK: - Analysis type
@@ -52,9 +55,24 @@ struct AddAnalysis: View {
                                                                               selection: self.$analysisType)
                     
                     // MARK: - Start and end date
-                    
                     StartAndEndDateSection(startDate: self.$startDate,
                                            endDate: self.$endDate)
+                    
+                    // MARK: - Legend entries
+                    LegendSection(isPresentingLegendEntryPopup: self.$isPresentingLegendEntryPopup,
+                                  legendEntries: self.$legendEntries)
+                    .popover(isPresented: self.$isPresentingLegendEntryPopup, content: {
+                        AddLegendEntryPopup(isBeingPresented: self.$isPresentingLegendEntryPopup,
+                                            save: { label, color in
+                                                
+                                                // LegendEntryViews are deleted by their indices that were calculated here. It's assumed that the LegendEntryViews will not be reordered
+                                                let idx = self.legendEntries.count
+                                                self.legendEntries.append(
+                                                    LegendEntryView(delete: { self.legendEntries.remove(at: idx) },
+                                                                    label: label,
+                                                                    color: color))
+                                            })
+                    })
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
@@ -69,7 +87,7 @@ struct AddAnalysis: View {
                 })
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "add-analysis-save-button")
-                                .disabled(self.analysisName == ""),
+                .disabled(self.analysisName == ""),
                 
                 trailing: Button(action: {
                     self.isBeingPresented = false

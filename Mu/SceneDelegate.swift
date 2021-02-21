@@ -19,14 +19,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         DayPatternTransformer.register()
-        
-        // Get the managed object context from the shared persistent container.
-        let context = CDCoordinator.moc
+        AnalysisLegendTransformer.register()
         
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
         let mainTabBarView = MainTabBarView()
-            .environment(\.managedObjectContext, context)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
