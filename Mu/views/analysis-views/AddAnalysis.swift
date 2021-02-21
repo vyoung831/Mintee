@@ -44,7 +44,9 @@ struct AddAnalysis: View {
                     }
                     
                     // MARK: - Tags
-                    TagsSection(label: "Include Tasks with Tags:",
+                    TagsSection(allowedToAddNewTags: false,
+                                label: "Include Tasks with Tags:",
+                                formType: "analysis",
                                 tags: self.$tags)
                     
                     // MARK: - Analysis type
