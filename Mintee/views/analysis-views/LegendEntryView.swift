@@ -10,10 +10,8 @@ import SwiftUI
 
 struct LegendEntryView: View {
     
-    var delete: () -> ()
-    
-    var label: String
-    var color: Color
+    @State var label: String
+    @State var color: Color
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -21,20 +19,12 @@ struct LegendEntryView: View {
         
         HStack {
             
-            Spacer()
-            Text(label)
-            
-            Spacer()
-            Button(action: {
-                delete()
-            }, label: {
-                Image(systemName: "trash")
-            })
+            ColorPicker(self.label, selection: self.$color)
             
         }
         .frame(maxWidth: .infinity)
         .padding(12)
-        .background(color)
+        .background(self.color)
         .border(themeManager.collectionItemBorder, width: 3)
         .cornerRadius(5)
         
