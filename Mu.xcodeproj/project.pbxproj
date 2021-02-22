@@ -95,7 +95,6 @@
 		C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4908D27253E20A100B51ADF /* SelectDatePopup.swift */; };
 		C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */; };
 		C492BDDC255B93EF0054CD2A /* FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492BDDB255B93EF0054CD2A /* FetchRequests.swift */; };
-		C492CCEC25DDCE3800C7A9CB /* AddLegendEntryPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492CCEB25DDCE3800C7A9CB /* AddLegendEntryPopup.swift */; };
 		C493C03525E1EEC900538B59 /* SearchTagPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493C03425E1EEC900538B59 /* SearchTagPopup.swift */; };
 		C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFEC247364DF00ABB64C /* SaveFormatter.swift */; };
 		C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */; };
@@ -281,7 +280,6 @@
 		C4908D27253E20A100B51ADF /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
 		C4925035254F942400A3C424 /* TodayCollectionViewCell-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayCollectionViewCell-Tests.swift"; sourceTree = "<group>"; };
 		C492BDDB255B93EF0054CD2A /* FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequests.swift; sourceTree = "<group>"; };
-		C492CCEB25DDCE3800C7A9CB /* AddLegendEntryPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLegendEntryPopup.swift; sourceTree = "<group>"; };
 		C493C03425E1EEC900538B59 /* SearchTagPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTagPopup.swift; sourceTree = "<group>"; };
 		C499FFEC247364DF00ABB64C /* SaveFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFormatter.swift; sourceTree = "<group>"; };
 		C499FFF2247371FA00ABB64C /* TaskTargetSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSet.swift; sourceTree = "<group>"; };
@@ -721,7 +719,6 @@
 			isa = PBXGroup;
 			children = (
 				C4A10C7E24E9C29000F015A4 /* AddDatePopup.swift */,
-				C492CCEB25DDCE3800C7A9CB /* AddLegendEntryPopup.swift */,
 				C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */,
 				C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */,
 				C493C03425E1EEC900538B59 /* SearchTagPopup.swift */,
@@ -1317,7 +1314,6 @@
 				C4EBC1BD25DE9474006EACD4 /* MinAndMaxSection.swift in Sources */,
 				C41F8733248F8FF2008AC18D /* Float-Extensions.swift in Sources */,
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
-				C492CCEC25DDCE3800C7A9CB /* AddLegendEntryPopup.swift in Sources */,
 				C43AE1C1256075D200F1D560 /* CollectionSizer.swift in Sources */,
 				C4130C2324C86E9A003EF047 /* SaveFormatterSelectionSection.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis.swift in Sources */,

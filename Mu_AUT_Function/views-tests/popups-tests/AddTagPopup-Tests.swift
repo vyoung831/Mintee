@@ -13,7 +13,6 @@ import SwiftUI
 
 class AddTagPopup_Tests: XCTestCase {
     
-    @State var ibp: Bool = true
     var tag: Tag!
     
     override func setUpWithError() throws {
