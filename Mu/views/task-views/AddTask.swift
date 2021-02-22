@@ -144,7 +144,7 @@ struct AddTask: View {
                     
                     switch self.taskType {
                     case .recurring:
-                        if self.taskTargetSetViews.count < 1 {
+                        if taskTargetSetViews.count < 1 {
                             self.errorMessage = "Please add one or more target sets"; return
                         }
                     case .specific:

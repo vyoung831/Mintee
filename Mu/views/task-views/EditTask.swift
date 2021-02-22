@@ -180,7 +180,7 @@ struct EditTask: View {
                     
                     switch self.taskType {
                     case .recurring:
-                        if self.taskTargetSetViews.count < 1 {
+                        if taskTargetSetViews.count < 1 {
                             self.saveErrorMessage = "Please add one or more target sets"; return
                         }
                     case .specific:
@@ -200,7 +200,7 @@ struct EditTask: View {
                         case .recurring:
                             // Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
                             var dayPatterns: Set<DayPattern> = Set()
-                            let newTaskTargetSets: [TaskTargetSetView] = self.taskType == .recurring ? self.taskTargetSetViews : []
+                            let newTaskTargetSets: [TaskTargetSetView] = self.taskType == .recurring ? taskTargetSetViews : []
                             for tts in newTaskTargetSets {
                                 
                                 // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here

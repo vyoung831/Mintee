@@ -25,20 +25,22 @@ struct TaskTargetSetView: View {
     /*
      TaskTargetSetView expects minOperator and maxOperator to be nil if a min/max target bound is not be used. Other views/classes such as EditTaskHostingController and AddTaskTargetSetPopup set this View's operators to nil to convey that.
      */
-    var type: DayPattern.patternType
-    var minTarget: Float
-    var minOperator: SaveFormatter.equalityOperator
-    var maxTarget: Float
-    var maxOperator: SaveFormatter.equalityOperator
-    var selectedDaysOfWeek: Set<SaveFormatter.dayOfWeek>?
-    var selectedWeeksOfMonth: Set<SaveFormatter.weekOfMonth>?
-    var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth>?
+    @State var type: DayPattern.patternType
+    @State var minTarget: Float
+    @State var minOperator: SaveFormatter.equalityOperator
+    @State var maxTarget: Float
+    @State var maxOperator: SaveFormatter.equalityOperator
+    @State var selectedDaysOfWeek: Set<SaveFormatter.dayOfWeek>?
+    @State var selectedWeeksOfMonth: Set<SaveFormatter.weekOfMonth>?
+    @State var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth>?
+    
+    @State var isPresentingEditTaskTargetSetPopup: Bool = false
     
     // MARK: - Closures
     
     var moveUp: () -> () = {}
     var moveDown: () -> () = {}
-    var edit: () -> () = {}
+    var update: (TaskTargetSetView) -> () = { _ in }
     var delete: () -> () = {}
     
     // MARK: - Environment Objects
@@ -119,7 +121,7 @@ struct TaskTargetSetView: View {
             Group {
                 HStack(alignment: .center, spacing: buttonsSpacing) {
                     Button(action: {
-                        self.edit()
+                        isPresentingEditTaskTargetSetPopup = true
                     }, label: {
                         Text("Edit")
                     })
@@ -196,5 +198,27 @@ struct TaskTargetSetView: View {
         .cornerRadius(cornerRadius)
         .padding(vStackMargin)
         .accessibility(identifier: "task-target-set-view")
+        .sheet(isPresented: self.$isPresentingEditTaskTargetSetPopup, content: {
+                TaskTargetSetPopup.init(title: "Edit Target Set",
+                                        selectedDaysOfWeek: self.selectedDaysOfWeek ?? Set(),
+                                        selectedWeeks: self.selectedWeeksOfMonth ?? Set(),
+                                        selectedDaysOfMonth: self.selectedDaysOfMonth ?? Set(),
+                                        type: self.type,
+                                        minOperator: self.minOperator,
+                                        maxOperator: self.maxOperator,
+                                        minValueString: String(self.minTarget.clean),
+                                        maxValueString: String(self.maxTarget.clean),
+                                        isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
+                                        save: { ttsv in
+                                            self.type = ttsv.type
+                                            self.minTarget = ttsv.minTarget
+                                            self.minOperator = ttsv.minOperator
+                                            self.maxTarget = ttsv.maxTarget
+                                            self.maxOperator = ttsv.maxOperator
+                                            self.selectedDaysOfWeek = ttsv.selectedDaysOfWeek
+                                            self.selectedWeeksOfMonth = ttsv.selectedWeeksOfMonth
+                                            self.selectedDaysOfMonth = ttsv.selectedDaysOfMonth
+                                            update(self)
+                                        })})
     }
 }
