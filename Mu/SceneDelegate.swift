@@ -21,6 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         DayPatternTransformer.register()
         AnalysisLegendTransformer.register()
         
+        // Get the managed object context from the shared persistent container.
+        // TO-DO: Make a doc or note on why this line is necessary. If it is excluded, SwiftUI FetchRequests fail, even if context isn't provided to mainTabBarView as an environment object.
+        let context = CDCoordinator.moc
+        
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
         let mainTabBarView = MainTabBarView()
