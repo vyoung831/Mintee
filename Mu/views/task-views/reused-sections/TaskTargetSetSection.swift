@@ -2,7 +2,7 @@
 //  TaskTargetSetSection.swift
 //  Mu
 //
-//  Section for presenting TaskTargetSets, re-used by AddTask and EditTask
+//  Section for presenting TaskTargetSetViews, re-used by Task forms such as AddTask and EditTask.
 //
 //  Created by Vincent Young on 7/11/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -43,6 +43,10 @@ struct TaskTargetSetSection: View {
                 })
             }
             
+            /*
+             Because each TTSV contains buttons for re-ordering priority or deleting itself within the array of TTSVs, closures must be provided to each TTSV that manipulate the array of TTSVs.
+             A "second layer" of TTSVs are declared using the binded array's data, plus closures that manipulate the binded array. Any changes to the binding redraws the second layer of TTSVs.
+             */
             ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
                 TaskTargetSetView(type: self.taskTargetSetViews[idx].type,
                                   minTarget: self.taskTargetSetViews[idx].minTarget,
