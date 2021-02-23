@@ -38,6 +38,10 @@ struct TaskTargetSetView: View {
     
     // MARK: - Closures
     
+    /*
+     Closures used by TaskTargetSetView to manipulate its position among other TTSVs that are presented (see TaskTargetSetSection).
+     Because the TTSV being manipulated by TaskTargetSetPopup is part of a "second layer" of TTSVs, the 'update' closure must provide a TTSV to replace the underlying TTSV in the binded array. A new second layer TTSV is then redrawn for the replaced TTSV.
+     */
     var moveUp: () -> () = {}
     var moveDown: () -> () = {}
     var update: (TaskTargetSetView) -> () = { _ in }
