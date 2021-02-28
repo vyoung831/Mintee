@@ -9,7 +9,7 @@ Delete N/A options
 - [ ] Documentation update
 
 ## Related issue(s)
-List related zenhub issue(s)
+List related issue(s)
 
 # Development checklist
 - [ ] New code adheres to [development principles](./doc/Development/development-principles.md).
