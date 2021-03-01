@@ -14,6 +14,13 @@ struct MainTabBarView: View {
         
         TabView {
             
+            AnalysisView().tabItem {
+                VStack {
+                    Image(systemName: "chart.bar.xaxis")
+                    Text("Analysis")
+                }
+            }
+            
             ManageView().tabItem {
                 VStack {
                     Image(systemName: "book")

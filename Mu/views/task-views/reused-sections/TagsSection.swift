@@ -10,6 +10,8 @@ import SwiftUI
 
 struct TagsSection: View {
     
+    var label: String
+    
     @State var isPresentingAddTagPopup: Bool = false
     @Binding var tags: [String]
     
@@ -19,7 +21,7 @@ struct TagsSection: View {
         VStack{
             
             HStack {
-                Text("Tags")
+                Text(label)
                     .bold()
                     .accessibility(identifier: "tags-section-label")
                 

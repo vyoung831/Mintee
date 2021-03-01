@@ -12,41 +12,7 @@
 import Foundation
 import Firebase
 
-class SaveFormatter {
-    
-    // MARK: - Task type
-    
-    enum taskType: Int16, CaseIterable {
-        case recurring = 0
-        case specific = 1
-        
-        var stringValue: String {
-            switch self {
-            case .recurring: return "Recurring"
-            case .specific: return "Specific"
-            }
-        }
-    }
-    
-    /**
-     Returns persistent store format of a value of type SaveFormatter.taskType (to be stored in Task).
-     - parameter op: SaveFormatter.taskType being used in-memory.
-     - returns: Int16 to store to Task's taskType.
-     */
-    static func taskTypeToStored(_ type: taskType) -> Int16 {
-        return type.rawValue
-    }
-    
-    /**
-     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.taskType
-     - parameter op: Int16 stored in Task's taskType
-     - returns: (Optional) Value of type SaveFormatter.taskType to be used by Views or Model objects.
-     */
-    static func storedToTaskType(_ storedType: Int16) -> taskType? {
-        return taskType.init(rawValue: storedType)
-    }
-    
-}
+class SaveFormatter {}
 
 // MARK: - TaskTargetSet equality operators
 
@@ -264,6 +230,94 @@ extension SaveFormatter {
      */
     static func storedStringToDate(_ storedString: String) -> Date? {
         return storedStringToDateFormatter.date(from: storedString)
+    }
+    
+}
+
+// MARK: - Selectable types (used with SaveFormatterSelectionSection)
+
+/*
+ SaveFormatter enums that have all cases displayed to the user for selection/interaction (used with SaveFormatterSelectionSection) conform to SelectableType. This pertains to enums that can only save one value to persistent store.
+ */
+protocol SelectableType: Equatable {
+    
+    // String that's displayed to the user for selection
+    var stringValue: String { get }
+    
+}
+
+// MARK: - Task type
+
+extension SaveFormatter {
+    
+    enum taskType: Int16, CaseIterable, SelectableType {
+        
+        case recurring = 0
+        case specific = 1
+        
+        var stringValue: String {
+            switch self {
+            case .recurring: return "Recurring"
+            case .specific: return "Specific"
+            }
+        }
+        
+    }
+    
+    /**
+     Returns persistent store format of a value of type SaveFormatter.taskType (to be stored in Task).
+     - parameter type: SaveFormatter.taskType being used in-memory.
+     - returns: Int16 to store to Task's taskType.
+     */
+    static func taskTypeToStored(_ type: taskType) -> Int16 {
+        return type.rawValue
+    }
+    
+    /**
+     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.taskType
+     - parameter storedType: Int16 stored in Task's taskType
+     - returns: (Optional) Value of type SaveFormatter.taskType to be used by Views or Model components.
+     */
+    static func storedToTaskType(_ storedType: Int16) -> taskType? {
+        return taskType.init(rawValue: storedType)
+    }
+    
+}
+
+// MARK: - Analysis types
+
+extension SaveFormatter {
+    
+    enum analysisType: Int16, CaseIterable, SelectableType {
+        
+        case box = 0
+        case line = 1
+        
+        var stringValue: String {
+            switch self {
+            case .box: return "Box"
+            case .line: return "Line"
+            }
+        }
+        
+    }
+    
+    /**
+     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.analysisType
+     - parameter stored: Int16 saved to an Analysis' analysisType
+     - returns: (Optional) Value of type SaveFormatter.analysisType to be used by Views or Model components.
+     */
+    static func storedToAnalysisType(_ stored: Int16) -> SaveFormatter.analysisType? {
+        return analysisType.init(rawValue: stored)
+    }
+    
+    /**
+     Returns persistent store format of a value of type SaveFormatter.analysisType.
+     - parameter type: SaveFormatter.analysisType being used in-memory.
+     - returns: Int16 to store to an Analysis' analysisType.
+     */
+    static func analysisTypeToStored(_ type: SaveFormatter.analysisType) -> Int16 {
+        return type.rawValue
     }
     
 }

@@ -18,7 +18,7 @@ class EditTaskHostingController_Tests: XCTestCase {
     let daysOfWeek: Set<SaveFormatter.dayOfWeek> = Set(arrayLiteral: .sunday, .monday, .tuesday, .friday)
     func getDowTargetSet(_ moc: NSManagedObjectContext) throws -> TaskTargetSet {
         let dowPattern = DayPattern(dow: daysOfWeek, wom: Set<SaveFormatter.weekOfMonth>(), dom: Set<SaveFormatter.dayOfMonth>())
-        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+        return try TaskTargetSet(entity: TaskTargetSet.entity(),
                                  insertInto: moc,
                                  min: dowMin, max: dowMax,
                                  minOperator: .lt, maxOperator: .lt,
@@ -43,7 +43,7 @@ extension EditTaskHostingController_Tests {
     func test_extractTTSVArray() throws {
         
         let targetSets: Set<TaskTargetSet> = Set(arrayLiteral: try getDowTargetSet(CDCoordinator.moc))
-        let task = try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+        let task = try Task(entity: Task.entity(),
                             insertInto: CDCoordinator.moc,
                             name: "Name",
                             tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1")]),

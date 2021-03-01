@@ -18,7 +18,7 @@ class Task_InstanceHandling_Tests_Util {
         let dowPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .monday, .tuesday, .friday]),
                                     wom: Set<SaveFormatter.weekOfMonth>(),
                                     dom: Set<SaveFormatter.dayOfMonth>())
-        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+        return try TaskTargetSet(entity: TaskTargetSet.entity(),
                                  insertInto: moc,
                                  min: dowMin, max: dowMax,
                                  minOperator: .lt, maxOperator: .lt,
@@ -30,7 +30,7 @@ class Task_InstanceHandling_Tests_Util {
         let womPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.monday, .wednesday]),
                                     wom: Set<SaveFormatter.weekOfMonth>([.first, .third, .last]),
                                     dom: Set<SaveFormatter.dayOfMonth>())
-        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+        return try TaskTargetSet(entity: TaskTargetSet.entity(),
                                  insertInto: moc,
                                  min: womMin, max: womMax,
                                  minOperator: .lt, maxOperator: .lt,
@@ -42,7 +42,7 @@ class Task_InstanceHandling_Tests_Util {
         let domPattern = DayPattern(dow: Set<SaveFormatter.dayOfWeek>(),
                                     wom: Set<SaveFormatter.weekOfMonth>(),
                                     dom: Set<SaveFormatter.dayOfMonth>([.last, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten]))
-        return try TaskTargetSet(entity: TaskTargetSet.getEntityDescription(moc)!,
+        return try TaskTargetSet(entity: TaskTargetSet.entity(),
                                  insertInto: moc,
                                  min: domMin, max: domMax,
                                  minOperator: .lt, maxOperator: .lt,
@@ -61,7 +61,7 @@ class Task_InstanceHandling_Tests_Util {
     
     static func setUp() throws -> Task {
         CDCoordinator.moc = TestContainer.testMoc
-        return try Task(entity: Task.getEntityDescription(CDCoordinator.moc)!,
+        return try Task(entity: Task.entity(),
                         insertInto: CDCoordinator.moc,
                         name: "Task", tags: [],
                         startDate: startDate, endDate: endDate,

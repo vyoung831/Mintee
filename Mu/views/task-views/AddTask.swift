@@ -12,10 +12,6 @@ import Firebase
 
 struct AddTask: View {
     
-    let startDateLabel: String = "Start Date: "
-    let endDateLabel: String = "End Date: "
-    let taskTypes: [SaveFormatter.taskType] = SaveFormatter.taskType.allCases
-    
     @Binding var isBeingPresented: Bool
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
@@ -102,7 +98,10 @@ struct AddTask: View {
                     
                     // MARK: - Task name text field
                     
-                    TaskNameTextFieldSection(taskName: self.$taskName)
+                    LabelAndTextFieldSection(label: "Task name",
+                                             labelIdentifier: "task-name-label",
+                                             textField: self.$taskName,
+                                             textFieldIdentifier: "task-name-text-field")
                     if (errorMessage.count > 0) {
                         Text(errorMessage)
                             .foregroundColor(.red)
@@ -111,11 +110,14 @@ struct AddTask: View {
                     
                     // MARK: - Tags
                     
-                    TagsSection(tags: self.$tags)
+                    TagsSection(label: "Tags",
+                                tags: self.$tags)
                     
                     // MARK: - Task type
                     
-                    TaskTypeSection(taskTypes: self.taskTypes, taskType: self.$taskType)
+                    SaveFormatterSelectionSection<SaveFormatter.taskType>(sectionLabel: "Task type",
+                                                                          options: SaveFormatter.taskType.allCases,
+                                                                          selection: self.$taskType)
                     
                     // MARK: - Dates
                     
@@ -142,7 +144,7 @@ struct AddTask: View {
                     
                     switch self.taskType {
                     case .recurring:
-                        if self.taskTargetSetViews.count < 1 {
+                        if taskTargetSetViews.count < 1 {
                             self.errorMessage = "Please add one or more target sets"; return
                         }
                     case .specific:

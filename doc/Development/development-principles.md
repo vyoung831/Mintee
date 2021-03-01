@@ -4,6 +4,7 @@ This document outlines the development principles that Mu adheres to in implemen
 # Table of Contents
 1. [Application components](#application-components)
 1. [Model development](#model-development)
+    1. [Transformables](#transformables)
 1. [View development](#view-development)
     1. [Navigation](#navigation)
     1. [Accessibility](#accessibility)
@@ -38,6 +39,17 @@ To maintain separation of concerns between view, model, and utility components, 
 
 __Notes__  
 * To ensure that user experience of dates remain consistent across time zones, dates are stored as strings. This avoids a Date object being created and saved to user data, only to be accessed later using a different Calendar object and displaying a potentially different day.
+
+## Transformables
+Mu uses transformables to represent various custom objects. To allow for secure reading from persistent store, the following are implemented for each transformable:  
+* The custom class is updated to conform to `NSSecureCoding`.
+* The custom class is specified under the transformable's attributes in the Core Data model, allowing Core Data codegen to automatically protect against object substitution.
+* A custom transformer is subclassed from `NSSecureUnarchiveFromDataTransformer` and specified under the transformable's attributes in the Core Data model. The custom transformer does the following:  
+    * Includes the `@objc` attribute in order to be accessible to the objective-C runtime and to Core Data.
+    * Includes the custom class in its allowed top-level classes.
+* SceneDelegate is updated to register the custom transformer before initializing the persistent container.
+
+More can be read [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).
 
 # View development
 

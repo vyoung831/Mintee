@@ -36,7 +36,7 @@ struct ManageView: View {
                 
             }
             .padding(CollectionSizer.gridVerticalPadding)
-            .background(ThemeManager.shared.panel)
+            .background(themeManager.panel)
             .navigationTitle("Manage")
             .navigationBarItems(trailing:
                                     Button(action: {

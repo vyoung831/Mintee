@@ -2,7 +2,7 @@
 //  TaskTargetSetSection.swift
 //  Mu
 //
-//  Section for presenting TaskTargetSets, re-used by AddTask and EditTask
+//  Section for presenting TaskTargetSetViews, re-used by Task forms such as AddTask and EditTask.
 //
 //  Created by Vincent Young on 7/11/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -14,7 +14,6 @@ struct TaskTargetSetSection: View {
     
     @Binding var taskTargetSetViews: [TaskTargetSetView]
     
-    @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
@@ -38,10 +37,16 @@ struct TaskTargetSetSection: View {
                 .sheet(isPresented: self.$isPresentingAddTaskTargetSetPopup, content: {
                     TaskTargetSetPopup.init(title: "Add Target Set",
                                             isBeingPresented: self.$isPresentingAddTaskTargetSetPopup,
-                                            save: { ttsv in self.taskTargetSetViews.append(ttsv) })
+                                            save: {
+                                                ttsv in self.taskTargetSetViews.append(ttsv)
+                                            })
                 })
             }
             
+            /*
+             Because each TTSV contains buttons for re-ordering priority or deleting itself within the array of TTSVs, closures must be provided to each TTSV that manipulate the array of TTSVs.
+             A "second layer" of TTSVs are declared using the binded array's data, plus closures that manipulate the binded array. Any changes to the binding redraws the second layer of TTSVs.
+             */
             ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
                 TaskTargetSetView(type: self.taskTargetSetViews[idx].type,
                                   minTarget: self.taskTargetSetViews[idx].minTarget,
@@ -53,21 +58,8 @@ struct TaskTargetSetSection: View {
                                   selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
                                   moveUp: { if idx > 0 {self.taskTargetSetViews.swapAt(idx, idx - 1)} },
                                   moveDown: { if idx < self.taskTargetSetViews.count - 1 {self.taskTargetSetViews.swapAt(idx, idx + 1)} },
-                                  edit: { self.isPresentingEditTaskTargetSetPopup = true },
+                                  update: { ttsv in taskTargetSetViews[idx] = ttsv},
                                   delete: { self.taskTargetSetViews.remove(at: idx) })
-                    .sheet(isPresented: self.$isPresentingEditTaskTargetSetPopup, content: {
-                            TaskTargetSetPopup.init(title: "Edit Target Set",
-                                                    selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek ?? Set(),
-                                                    selectedWeeks: self.taskTargetSetViews[idx].selectedWeeksOfMonth ?? Set(),
-                                                    selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth ?? Set(),
-                                                    type: self.taskTargetSetViews[idx].type,
-                                                    minOperator: self.taskTargetSetViews[idx].minOperator,
-                                                    maxOperator: self.taskTargetSetViews[idx].maxOperator,
-                                                    minValueString: String(self.taskTargetSetViews[idx].minTarget.clean),
-                                                    maxValueString: String(self.taskTargetSetViews[idx].maxTarget.clean),
-                                                    isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
-                                                    save: { ttsv in self.taskTargetSetViews[idx] = ttsv})})
-                
             }
             
         }
