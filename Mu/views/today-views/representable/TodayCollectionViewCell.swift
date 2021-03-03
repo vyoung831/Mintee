@@ -167,18 +167,47 @@ class TodayCollectionViewCell: UICollectionViewCell {
         switch minOp {
         case .na:
             switch maxOp {
+            case .eq:
+                Crashlytics.crashlytics().log("TodayCollectionViewCell.getCompletionMeterPercentage accessed a TaskInstance whose targetSet had (minOperator == .na && maxOperator == .eq)")
+                fatalError()
             case .na:
                 Crashlytics.crashlytics().log("TodayCollectionViewCell.getCompletionMeterPercentage accessed a TaskInstance whose targetSet had (minOperator == .na && maxOperator == .na)")
-                exit(-1)
+                fatalError()
             default:
-                return min(completion / maxTarget, 1)
+                if maxTarget > 0 {
+                    return completion <= 0 ? 0 : min(completion / maxTarget, 1)
+                } else if maxTarget < 0 {
+                    return completion >= 0 ? 0 : min(completion / maxTarget, 1)
+                } else {
+                    return 1
+                }
+            }
+        case .eq:
+            if minTarget > 0 {
+                return completion <= 0 ? 0 : min(completion / minTarget, 1)
+            } else if minTarget < 0 {
+                return completion >= 0 ? 0 : min(completion / minTarget, 1)
+            } else {
+                return 1
             }
         default:
             switch maxOp {
             case .na:
-                return min(completion / minTarget, 1)
+                if minTarget > 0 {
+                    return completion <= 0 ? 0 : min(completion / minTarget, 1)
+                } else if minTarget < 0 {
+                    return completion >= 0 ? 0 : min(completion / minTarget, 1)
+                } else {
+                    return 1
+                }
             default:
-                return min(completion / maxTarget, 1)
+                if completion <= minTarget {
+                    return 0
+                } else if completion < maxTarget {
+                    return min( abs(completion - minTarget)/abs(maxTarget - minTarget), 1)
+                } else {
+                    return 1
+                }
             }
         }
     }
