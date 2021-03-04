@@ -140,11 +140,19 @@ class ThemeManager: NSObject, ObservableObject {
      - returns: Color to set the ThemedUIElement to
      */
     static func getElementColor(_ element: ThemedUIElement, _ theme: Theme) -> Color {
+        
+        /*
+         "CollectionItemBorder" is not defined in the asset catalogs.
+         Borders are only drawn for collection items when the theme is set to "system". Otherwise, Views use the collectionItem color.
+         */
+        let assetKey = (element == .collectionItemBorder) ?
+            ThemedUIElement.collectionItem.rawValue : element.rawValue
+        
         switch theme {
         case .jungle:
-            return Color("theme-jungle-\(element.rawValue)")
+            return Color("theme-jungle-\(assetKey)")
         case .ocean:
-            return Color("theme-ocean-\(element.rawValue)")
+            return Color("theme-ocean-\(assetKey)")
         case .system:
             switch element {
             case .panel:
@@ -154,7 +162,7 @@ class ThemeManager: NSObject, ObservableObject {
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
             case .collectionItemBorder:
-                return .secondary
+                return .primary
             default:
                 return .primary
             }

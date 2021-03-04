@@ -20,14 +20,16 @@ struct BubbleRows<BubbleType : Day>: View {
         case centerLastRow
     }
     
-    // MARK: - Properties
-    
     let rowSpacing: CGFloat = 12
     let minimumInterBubbleSpacing: CGFloat = 5
     
     var maxBubbleRadius: CGFloat = 28
-    var bubbles: [[BubbleType]]
     
+    // Var that represents what UIElement this struct is being presented on.
+    // Depending on if BubbleRows is presented on a panel or a collectionItem, its colors differ.
+    var presentationBase: ThemeManager.ThemedUIElement
+    
+    var bubbles: [[BubbleType]]
     var presentation: BubbleRows.PresentationOption
     var toggleable: Bool
     @Binding var selectedBubbles: Set<BubbleType>
@@ -114,15 +116,27 @@ struct BubbleRows<BubbleType : Day>: View {
                         
                         ForEach(self.bubbles[row], id: \.self) { bubbleText in
                             ZStack {
-                                Circle()
-                                    .foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                        ? themeManager.button : .clear)
-                                    .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
-                                    .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
-                                           height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
-                                           alignment: .center)
-                                Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                                                ? themeManager.buttonText : themeManager.button)
+                                if presentationBase == .panel {
+                                    Circle()
+                                        .foregroundColor(self.selectedBubbles.contains(bubbleText)
+                                                            ? themeManager.button : .clear)
+                                        .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
+                                        .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
+                                               height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
+                                               alignment: .center)
+                                    Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
+                                                                                    ? themeManager.collectionItemContent : themeManager.collectionItem)
+                                } else {
+                                    Circle()
+                                        .foregroundColor(self.selectedBubbles.contains(bubbleText)
+                                                            ? themeManager.collectionItemContent : .clear)
+                                        .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
+                                        .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
+                                               height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
+                                               alignment: .center)
+                                    Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
+                                                                                    ? themeManager.collectionItem : themeManager.collectionItemContent)
+                                }
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
                             .onTapGesture {
