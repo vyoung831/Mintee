@@ -24,7 +24,8 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getBubbleRadius_maxBubbleRadius_respected() {
         
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .none,
                                                              toggleable: false,
                                                              selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
@@ -45,7 +46,8 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getBubbleRadius_minimumInterBubbleSpacing_respected() {
         
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .none,
                                                              toggleable: false,
                                                              selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
@@ -64,7 +66,8 @@ class BubbleRows_Tests: XCTestCase {
     func test_getGeometryReaderHeight() {
         let totalWidth: CGFloat = 200
         
-        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .none,
                                                              toggleable: false,
                                                              selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
@@ -83,7 +86,8 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHstackSpacing_increasesHStackSpacing() {
         
-        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .none,
                                                              toggleable: false,
                                                              selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
@@ -102,7 +106,8 @@ class BubbleRows_Tests: XCTestCase {
      */
     func test_getHStackSpacing_minimumInterBubbleSpacing_resistsCompression() {
         
-        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .none,
                                                              toggleable: false,
                                                              selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
@@ -123,7 +128,8 @@ class BubbleRows_Tests: XCTestCase {
 extension BubbleRows_Tests {
     
     func test_rowNeedsSpacers_oneRow() {
-        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
+        let bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .centerLastRow,
                                                              toggleable: false,
                                                              selectedBubbles: .constant(Set<SaveFormatter.dayOfWeek>()))
@@ -131,7 +137,8 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_twoRows_firstRowMoreBubbles() {
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday]],
                                                              presentation: .centerLastRow,
                                                              toggleable: false,
@@ -145,7 +152,8 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_twoRows_equalAmountOfBubbles() {
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .centerLastRow,
                                                              toggleable: false,
@@ -159,7 +167,8 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_twoRows_secondRowMoreBubbles() {
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .centerLastRow,
                                                              toggleable: false,
@@ -173,7 +182,8 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_threeRows_equalAmountOfBubbles() {
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .centerLastRow,
@@ -190,7 +200,8 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_threeRows_lastRowMostBubbles() {
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]],
                                                              presentation: .centerLastRow,
@@ -207,7 +218,8 @@ extension BubbleRows_Tests {
     }
     
     func test_rowNeedsSpacers_threeRows_lastRowLeastBubbles() {
-        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+        var bubbleRows = BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
+                                                             bubbles: [[.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
                                                                        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday]],
                                                              presentation: .centerLastRow,
