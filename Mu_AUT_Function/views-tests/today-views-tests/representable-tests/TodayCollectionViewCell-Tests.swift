@@ -23,70 +23,71 @@ class TodayCollectionViewCell_Tests: XCTestCase {
     
 }
 
-// MARK: - getCompletionMeterPercentage tests.
-/*
- Because TaskTargetSets can store targets as negative, zero, or positive, this class tests combinations of the following 2 combinations of variables:
- - Min and max operators (of type SaveFormatter.equalityOperator - lt, lte, eq, na). Note: because of TaskTargetSet's validation logic during instantiation, the following min/max operator combos (respectively) are not tested for:
-    - lt/eq
-    - lte/eq
-    - eq/lt
-    - eq/lte
-    - eq/eq
-    - na/eq
-    - na/na
- - Min and max target values (negative, zero, positive)
- - Completion with combinations of the following traits:
-    - Sign (positive/negative/equal to 0)
-    - Relation to min and max target values (less than min, between 2 values, greater than max)
- 
- Additionally, because the completion meter height doesn't differentiate between the equalityOperators (lt) and (lte), the following test scenario combos are replaced:
- - (lt)/(lte) combos are replaced with just the (lt)/(lt) combo
- - (lt/lte)/(na) combos are replaced with just the (lt)/(na) combo
- - (na)/(lt/lte) combos are replaced with just the (na)/(lt) combo
- */
+// MARK: - getCompletionMeterPercentage tests
+
+//
+// Because TaskTargetSets can store targets as negative, zero, or positive, this class tests combinations of the following 3 combinations of variables:
+// - Min and max operators (of type SaveFormatter.equalityOperator - lt, lte, eq, na). Note: because of TaskTargetSet's validation logic during instantiation, the following min/max operator combos (respectively) are not tested for:
+//    - lt/eq
+//    - lte/eq
+//    - eq/lt
+//    - eq/lte
+//    - eq/eq
+//    - na/eq
+//    - na/na
+// - Min and max target values (negative, zero, positive)
+// - Completion with combinations of the following traits:
+//    - Sign (positive/negative/equal to 0)
+//    - Relation to min and max target values (less than min, between 2 values, greater than max)
+//
+// Additionally, because completion meter height doesn't differentiate between the equalityOperators (lt) and (lte), the following test scenario combos are replaced:
+// - (lt)/(lte) combos are replaced with just the (lt)/(lt) combo
+// - (lt/lte)/(na) combos are replaced with just the (lt)/(na) combo
+// - (na)/(lt/lte) combos are replaced with just the (na)/(lt) combo
+//
 
 // MARK: - getCompletionMeterPercentage tests with negative min target and negative max target
 
 extension TodayCollectionViewCell_Tests {
     
     func test_getCompletionMeterPercentage_lt_lt_negative_negative() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 0.4 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 0.4 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 1 )
     }
     
     func test_getCompletionMeterPercentage_lt_na_negative_negative() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 0.8 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 0.5 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 0.3 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 0.8 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 0.5 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 0.3 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 0 )
     }
     
     func test_getCompletionMeterPercentage_eq_na_negative_negative() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 0.8 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 0.5 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 0.3 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 0.8 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 0.5 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 0.3 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 0 )
     }
     
     func test_getCompletionMeterPercentage_na_lt_negative_negative() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 0.6 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -8) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -5) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: -3) == 0.6 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: negativeMaxTarget, completion: 3) == 0 )
     }
     
 }
@@ -96,35 +97,35 @@ extension TodayCollectionViewCell_Tests {
 extension TodayCollectionViewCell_Tests {
     
     func test_getCompletionMeterPercentage_lt_lt_negative_zero() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 0.2 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 0.2 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 1 )
     }
     
     func test_getCompletionMeterPercentage_lt_na_negative_zero() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 0.8 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 0.8 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 0 )
     }
     
     func test_getCompletionMeterPercentage_eq_na_negative_zero() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 0.8 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 0.8 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 0 )
     }
     
     func test_getCompletionMeterPercentage_na_lt_negative_zero() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: -8) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 0) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: 0, completion: 3) == 1 )
     }
     
 }
@@ -134,43 +135,43 @@ extension TodayCollectionViewCell_Tests {
 extension TodayCollectionViewCell_Tests {
     
     func test_getCompletionMeterPercentage_lt_lt_negative_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0.25 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0.5 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.65 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0.25 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0.5 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.65 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_lt_na_negative_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0.5 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0.5 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 0 )
     }
     
     func test_getCompletionMeterPercentage_eq_na_negative_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0.5 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0.5 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 0 )
     }
     
     func test_getCompletionMeterPercentage_na_lt_negative_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.3 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -12) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: -5) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.3 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: negativeMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
 }
@@ -180,35 +181,35 @@ extension TodayCollectionViewCell_Tests {
 extension TodayCollectionViewCell_Tests {
     
     func test_getCompletionMeterPercentage_lt_lt_zero_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 0.7 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 0.7 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_lt_na_zero_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_eq_na_zero_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_na_lt_zero_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 0.7 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: -10) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 7) == 0.7 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: 0, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
 }
@@ -218,43 +219,43 @@ extension TodayCollectionViewCell_Tests {
 extension TodayCollectionViewCell_Tests {
     
     func test_getCompletionMeterPercentage_lt_lt_positive_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 0.6 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 0.6 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_lt_na_positive_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.6 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.6 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .lt, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_eq_na_positive_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.6 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.6 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .eq, maxOp: .na, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
     func test_getCompletionMeterPercentage_na_lt_positive_positive() {
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.3 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 0.5 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 0.8 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
-        XCTAssert(try! TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: -7) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 0) == 0 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 3) == 0.3 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 5) == 0.5 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 8) == 0.8 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 10) == 1 )
+        XCTAssert(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: .na, maxOp: .lt, minTarget: positiveMinTarget, maxTarget: positiveMaxTarget, completion: 12) == 1 )
     }
     
 }
