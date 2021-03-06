@@ -44,7 +44,6 @@ struct ManageView: View {
                                     }, label: {
                                         Image(systemName: "plus.circle")
                                             .frame(width: 30, height: 30, alignment: .center)
-                                            .foregroundColor(themeManager.panelContent)
                                             .accessibility(identifier: "add-task-button")
                                     })
                                     .scaleEffect(1.5)
