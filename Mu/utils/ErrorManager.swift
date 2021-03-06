@@ -54,6 +54,7 @@ struct ErrorManager {
         case viewObject_unexpectedNilProperty = 200
         case viewFunction_receivedInvalidParms = 201
         case uiCollectionViewController_castDequeuedCellFailed = 202
+        case viewObject_didNotContainExpectedObject = 203
         
         // Model/persistent store error codes
         case fetchRequest_failed = 300

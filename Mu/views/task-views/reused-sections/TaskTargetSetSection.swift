@@ -44,22 +44,55 @@ struct TaskTargetSetSection: View {
             }
             
             /*
-             Because each TTSV contains buttons for re-ordering priority or deleting itself within the array of TTSVs, closures must be provided to each TTSV that manipulate the array of TTSVs.
-             A "second layer" of TTSVs are declared using the binded array's data, plus closures that manipulate the binded array. Any changes to the binding redraws the second layer of TTSVs.
+             Because each TTSV contains buttons for re-ordering or deleting itself within the array of TTSVs, closures are provided for each TTSV to manipulate the binded-to TTSV array.
+             A "second layer" of TTSVs are declared using the binded array's data, plus closures that manipulate the binded array. Changes to the underlying state (including through this View's binding) redraws the second layer of TTSVs.
              */
-            ForEach(0 ..< taskTargetSetViews.count, id: \.self) { idx in
-                TaskTargetSetView(type: self.taskTargetSetViews[idx].type,
-                                  minTarget: self.taskTargetSetViews[idx].minTarget,
-                                  minOperator: self.taskTargetSetViews[idx].minOperator,
-                                  maxTarget: self.taskTargetSetViews[idx].maxTarget,
-                                  maxOperator: self.taskTargetSetViews[idx].maxOperator,
-                                  selectedDaysOfWeek: self.taskTargetSetViews[idx].selectedDaysOfWeek,
-                                  selectedWeeksOfMonth: self.taskTargetSetViews[idx].selectedWeeksOfMonth,
-                                  selectedDaysOfMonth: self.taskTargetSetViews[idx].selectedDaysOfMonth,
-                                  moveUp: { if idx > 0 {self.taskTargetSetViews.swapAt(idx, idx - 1)} },
-                                  moveDown: { if idx < self.taskTargetSetViews.count - 1 {self.taskTargetSetViews.swapAt(idx, idx + 1)} },
-                                  update: { ttsv in taskTargetSetViews[idx] = ttsv},
-                                  delete: { self.taskTargetSetViews.remove(at: idx) })
+            ForEach(taskTargetSetViews) { tts in
+                TaskTargetSetView(type: tts.type,
+                                  minTarget: tts.minTarget,
+                                  minOperator: tts.minOperator,
+                                  maxTarget: tts.maxTarget,
+                                  maxOperator: tts.maxOperator,
+                                  selectedDaysOfWeek: tts.selectedDaysOfWeek,
+                                  selectedWeeksOfMonth: tts.selectedWeeksOfMonth,
+                                  selectedDaysOfMonth: tts.selectedDaysOfMonth,
+                                  moveUp: {
+                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}), idx > 0 {
+                                        taskTargetSetViews.swapAt(idx, idx - 1)
+                                    } else {
+                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                                    ["Message" : "TaskTargetSetView.moveUp() in TaskTargetSetSection could not find the first index of tts to start swap from",
+                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                     "tts.id" : tts.id])
+                                    }
+                                  }, moveDown: {
+                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}), idx < taskTargetSetViews.count - 1 {
+                                        taskTargetSetViews.swapAt(idx, idx + 1)
+                                    } else {
+                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                                    ["Message" : "TaskTargetSetView.moveDown() in TaskTargetSetSection could not find the first index of tts to start swap from",
+                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                     "tts.id" : tts.id])
+                                    }
+                                  }, update: { ttsv in
+                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}) {
+                                        self.taskTargetSetViews[idx] = ttsv
+                                    } else {
+                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                                    ["Message" : "TaskTargetSetView.update() in TaskTargetSetSection could not find the first index of tts to update",
+                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                     "tts.id" : tts.id])
+                                    }
+                                  }, delete: {
+                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}) {
+                                        self.taskTargetSetViews.remove(at: idx)
+                                    } else {
+                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                                    ["Message" : "TaskTargetSetView.delete() in TaskTargetSetSection could not find the first index of tts to delete",
+                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                     "tts.id" : tts.id])
+                                    }
+                                  })
             }
             
         }
