@@ -25,8 +25,8 @@ class TodayCollectionViewCell_Tests: XCTestCase {
 
 // MARK: - getCompletionMeterPercentage tests.
 /*
- Because TaskTargetSets can store targets as negative, zero, or positive, this class tests combinations of the following 3 combinations of variables:
- - Min and max operators (of type SaveFormatter.equalityOperator - lt, lte, eq, na). Because of TaskTargetSet's validation logic during instantiation, the following min/max operator combos (respectively) are not tested for:
+ Because TaskTargetSets can store targets as negative, zero, or positive, this class tests combinations of the following 2 combinations of variables:
+ - Min and max operators (of type SaveFormatter.equalityOperator - lt, lte, eq, na). Note: because of TaskTargetSet's validation logic during instantiation, the following min/max operator combos (respectively) are not tested for:
     - lt/eq
     - lte/eq
     - eq/lt
@@ -35,6 +35,9 @@ class TodayCollectionViewCell_Tests: XCTestCase {
     - na/eq
     - na/na
  - Min and max target values (negative, zero, positive)
+ - Completion with combinations of the following traits:
+    - Sign (positive/negative/equal to 0)
+    - Relation to min and max target values (less than min, between 2 values, greater than max)
  
  Additionally, because the completion meter height doesn't differentiate between the equalityOperators (lt) and (lte), the following test scenario combos are replaced:
  - (lt)/(lte) combos are replaced with just the (lt)/(lt) combo
