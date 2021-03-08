@@ -28,14 +28,16 @@ class ThemeManager: NSObject, ObservableObject {
         case accent = "accent"
         case panel = "panel"
         case panelContent = "panelContent"
-        case button = "button"
         case buttonText = "buttonText"
         case textFieldBorder = "textFieldBorder"
         case disabledTextField = "disabledTextField"
         case disabledTextFieldText = "disabledTextFieldText"
         case collectionItem = "collectionItem"
-        case collectionItemBorder = "collectionItemBorder"
         case collectionItemContent = "collectionItemContent"
+        
+        // Placeholder colors (not actually defined in asset catalogs)
+        case button = "button"
+        case collectionItemBorder = "collectionItemBorder"
     }
     
     // MARK: - Shared instance and observable properties
@@ -51,7 +53,6 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var panel: Color
     @Published var panelContent: Color
     
-    @Published var button: Color
     @Published var buttonText: Color
     
     @Published var textFieldBorder: Color
@@ -64,6 +65,7 @@ class ThemeManager: NSObject, ObservableObject {
     // MARK: - Placeholder colors (not actually defined in asset catalogs)
     
     @Published var collectionItemBorder: Color
+    @Published var button: Color
     
     // MARK: - Initializers
     
@@ -148,8 +150,15 @@ class ThemeManager: NSObject, ObservableObject {
          "CollectionItemBorder" is not defined in the asset catalogs.
          Borders are only drawn for collection items when the theme is set to "system". Otherwise, Views use the collectionItem color.
          */
-        let assetKey = (element == .collectionItemBorder) ?
-            ThemedUIElement.collectionItem.rawValue : element.rawValue
+        var assetKey: String = ""
+        switch element {
+        case .collectionItemBorder:
+            assetKey = ThemedUIElement.collectionItem.rawValue
+        case .button:
+            assetKey = ThemedUIElement.collectionItem.rawValue
+        default:
+            assetKey = element.rawValue
+        }
         
         switch theme {
         case .jungle:

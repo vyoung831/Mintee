@@ -125,8 +125,8 @@ struct BubbleRows<BubbleType : Day>: View {
                                                height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                                alignment: .center)
                                     Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                                                    ? themeManager.collectionItemContent : themeManager.collectionItem)
-                                } else {
+                                                                                    ? themeManager.buttonText : themeManager.button)
+                                } else if presentationBase == .collectionItem {
                                     Circle()
                                         .foregroundColor(self.selectedBubbles.contains(bubbleText)
                                                             ? themeManager.collectionItemContent : .clear)
