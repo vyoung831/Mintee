@@ -92,9 +92,9 @@ struct TaskTargetSetPopup: View {
         
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: validatedValues.min,
-                                     minOperator: minOperator,
+                                     minOperator: validatedValues.minOp,
                                      maxTarget: validatedValues.max,
-                                     maxOperator: maxOperator,
+                                     maxOperator: validatedValues.maxOp,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
