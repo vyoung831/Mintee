@@ -59,8 +59,11 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var disabledTextFieldText: Color
     
     @Published var collectionItem: Color
-    @Published var collectionItemBorder: Color
     @Published var collectionItemContent: Color
+    
+    // MARK: - Placeholder colors (not actually defined in asset catalogs)
+    
+    @Published var collectionItemBorder: Color
     
     // MARK: - Initializers
     

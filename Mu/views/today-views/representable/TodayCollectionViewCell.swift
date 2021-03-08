@@ -192,14 +192,14 @@ class TodayCollectionViewCell: UICollectionViewCell {
     }
     
     /**
-     For the TodayCollectionViewCell of a recurring-type Task, returns the meterStatus value that completionMeterStatus should be set to.
+     For the TodayCollectionViewCell of a recurring-type Task, returns the value of type meterStatus that the cell's completionMeterStatus should be set to.
      completionMeterStatus is used to determine what color to assign completionMeter's backgroundColor (light/dark mode is also factored into those decisions).
      - parameter minOp: The minimum value operator for the TaskInstances's minimum target
      - parameter maxOp: The maximum value operator for the TaskInstances's maximum target
      - parameter minTarget: The TaskInstance's minimum target
      - parameter maxTarget: The TaskInstance's maximum target
      - parameter completion: The TaskInstance's current completion
-     - returns: meterStatus to set completionMeterStatus to
+     - returns: meterStatus to set the cell's completionMeterStatus to
      */
     static func getCompletionMeterStatus(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float, completion: Float) -> meterStatus {
         
