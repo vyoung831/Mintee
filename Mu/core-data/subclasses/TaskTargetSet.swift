@@ -84,8 +84,8 @@ extension TaskTargetSet {
     /**
      Checks provided minOperator, maxOperator, and min/max values to validate against business logic.
      Returns a tuple containing an optional error message and an optional tuple of corrected values to set in the TaskTargetSet.
-     - parameter minOp: Value of type SaveFormatter.equalityOperator whose persistent store format shouldbe assigned as TaskTargetSet's minOperator.
-     - parameter maxOp: Value of type SaveFormatter.equalityOperator whose persistent store format shouldbe assigned as TaskTargetSet's maxOperator.
+     - parameter minOp: Value of type SaveFormatter.equalityOperator whose persistent store format should be assigned as TaskTargetSet's minOperator.
+     - parameter maxOp: Value of type SaveFormatter.equalityOperator whose persistent store format should be assigned as TaskTargetSet's maxOperator.
      - parameter min: Float to set TaskTargetSet's min to.
      - parameter max: Float to set TaskTargetSet's max to.
      - returns: Tuple of optional errorMessage and optional tuple of correct values to set as TaskTargetSet's properties. One and only one of the tuples will be non-nil.

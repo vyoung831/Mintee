@@ -146,10 +146,7 @@ class ThemeManager: NSObject, ObservableObject {
      */
     static func getElementColor(_ element: ThemedUIElement, _ theme: Theme) -> Color {
         
-        /*
-         "CollectionItemBorder" is not defined in the asset catalogs.
-         Borders are only drawn for collection items when the theme is set to "system". Otherwise, Views use the collectionItem color.
-         */
+        // For elements that don't have colors defined in the asset catalog, assetKey is used to replace the Color Set that they should be using.
         var assetKey: String = ""
         switch element {
         case .collectionItemBorder:
@@ -173,8 +170,6 @@ class ThemeManager: NSObject, ObservableObject {
                 return .accentColor
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
-            case .collectionItemBorder:
-                return .primary
             default:
                 return .primary
             }
