@@ -17,4 +17,4 @@ Add any other context or screenshots about the feature request here.
 
 **Acceptance criteria**
 This issue can be closed when the following acceptance criteria are satisfied:
- - Acceptance statement 1
+- [ ] Acceptance statement 1
