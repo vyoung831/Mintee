@@ -9,7 +9,7 @@
 import SwiftUI
 import Firebase
 
-struct TaskTargetSetView: View {
+struct TaskTargetSetView: View , Identifiable {
     
     // MARK: - Constants and calculated properties
     
@@ -35,6 +35,8 @@ struct TaskTargetSetView: View {
     @State var selectedDaysOfMonth: Set<SaveFormatter.dayOfMonth>?
     
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
+    
+    let id = UUID()
     
     // MARK: - Closures
     
@@ -214,15 +216,7 @@ struct TaskTargetSetView: View {
                                         maxValueString: String(self.maxTarget.clean),
                                         isBeingPresented: self.$isPresentingEditTaskTargetSetPopup,
                                         save: { ttsv in
-                                            self.type = ttsv.type
-                                            self.minTarget = ttsv.minTarget
-                                            self.minOperator = ttsv.minOperator
-                                            self.maxTarget = ttsv.maxTarget
-                                            self.maxOperator = ttsv.maxOperator
-                                            self.selectedDaysOfWeek = ttsv.selectedDaysOfWeek
-                                            self.selectedWeeksOfMonth = ttsv.selectedWeeksOfMonth
-                                            self.selectedDaysOfMonth = ttsv.selectedDaysOfMonth
-                                            update(self)
+                                            update(ttsv)
                                         })})
     }
 }
