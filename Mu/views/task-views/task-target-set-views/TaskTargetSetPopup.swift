@@ -140,6 +140,15 @@ struct TaskTargetSetPopup: View {
                     
                     Group {
                         
+                        Picker(selection: self.$type, label: Text("Type")) {
+                            ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
+                                Text( self.dayPatternTypeLabels[pt] ?? "")
+                            }
+                        }
+                        .foregroundColor(.accentColor)
+                        .accessibility(identifier: "task-target-set-popup-pattern-type-picker")
+                        .frame(height: typePickerHeight)
+                        
                         // Days of week/month
                         if self.type == .dom {
                             BubbleRows<SaveFormatter.dayOfMonth>(presentationBase: .panel,
@@ -163,15 +172,6 @@ struct TaskTargetSetPopup: View {
                                                                   toggleable: true,
                                                                   selectedBubbles: self.$selectedWeeks)
                         }
-                        
-                        Picker(selection: self.$type, label: Text("Type")) {
-                            ForEach(DayPattern.patternType.allCases, id: \.self) { pt in
-                                Text( self.dayPatternTypeLabels[pt] ?? "")
-                            }
-                        }
-                        .foregroundColor(.accentColor)
-                        .accessibility(identifier: "task-target-set-popup-pattern-type-picker")
-                        .frame(height: typePickerHeight)
                         
                     }
                     

@@ -1,8 +1,8 @@
 platform :ios, '14.0'
 
 def shared_pods
-    pod 'Firebase/Crashlytics'
-    pod 'Firebase/Analytics'
+    pod 'Firebase/Crashlytics', '~> 7.0'
+    pod 'Firebase/Analytics', '~> 7.0'
 end
 
 target 'Mu' do 

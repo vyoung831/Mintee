@@ -2,7 +2,6 @@
 xcuserdata/
 
 # Pods and XCode workspaces
-Podfile.lock
 Pods/
 
 # Versioning header files

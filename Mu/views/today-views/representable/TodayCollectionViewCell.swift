@@ -133,6 +133,20 @@ class TodayCollectionViewCell: UICollectionViewCell {
             return
         }
         
+        guard let completionMeterHeightPercentage = TodayCollectionViewCell.getCompletionMeterPercentage(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion) else {
+            
+            var userInfo: [String : Any] = ["Message" : "TodayCollectionViewCell.updateAppearance() received nil on call to TodayCollectionViewCell.getCompletionMeterPercentage()"]
+            if let task = instance._task {
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo) )
+            } else {
+                userInfo["TaskInstance"] = instance.debugDescription
+                userInfo["TaskTargetSet"] = instance._targetSet.debugDescription
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo )
+            }
+            
+            return
+        }
+        
         // Update target
         target.text = TaskTargetSetView.getTargetString(minOperator: minOp,
                                                         maxOperator: maxOp,
@@ -149,7 +163,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                              relatedBy: .equal,
                                                              toItem: self,
                                                              attribute: .height,
-                                                             multiplier: CGFloat(TodayCollectionViewCell.getCompletionMeterPercentage(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion)),
+                                                             multiplier: CGFloat(completionMeterHeightPercentage),
                                                              constant: 0)
         completionMeterHeightConstraint.isActive = true
         self.completionMeterStatus = TodayCollectionViewCell.getCompletionMeterStatus(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion)
@@ -165,28 +179,55 @@ class TodayCollectionViewCell: UICollectionViewCell {
      - parameter minTarget: The TaskInstance's minimum target
      - parameter maxTarget: The TaskInstance's maximum target
      - parameter completion: The TaskInstance's current completion
-     - returns: UIColor to set a TodayCollectionViewCell's completionMeter to
+     - returns: (Optional) Float to set a TodayCollectionViewCell's completionMeterHeightConstraint to (in relation to the cell's height). Returns nil if min/max operator combo violates business logic.
      */
     static func getCompletionMeterPercentage(minOp: SaveFormatter.equalityOperator,
                                              maxOp: SaveFormatter.equalityOperator,
                                              minTarget: Float,
                                              maxTarget: Float,
-                                             completion: Float) -> Float {
+                                             completion: Float) -> Float? {
         switch minOp {
         case .na:
             switch maxOp {
+            case .eq:
+                return nil
             case .na:
-                Crashlytics.crashlytics().log("TodayCollectionViewCell.getCompletionMeterPercentage accessed a TaskInstance whose targetSet had (minOperator == .na && maxOperator == .na)")
-                exit(-1)
+                return nil
             default:
-                return min(completion / maxTarget, 1)
+                if maxTarget > 0 {
+                    return completion <= 0 ? 0 : min(completion / maxTarget, 1)
+                } else if maxTarget < 0 {
+                    return completion >= 0 ? 0 : min(completion / maxTarget, 1)
+                } else {
+                    return 1
+                }
+            }
+        case .eq:
+            if minTarget > 0 {
+                return completion <= 0 ? 0 : min(completion / minTarget, 1)
+            } else if minTarget < 0 {
+                return completion >= 0 ? 0 : min(completion / minTarget, 1)
+            } else {
+                return 1
             }
         default:
             switch maxOp {
             case .na:
-                return min(completion / minTarget, 1)
+                if minTarget > 0 {
+                    return completion <= 0 ? 0 : min(completion / minTarget, 1)
+                } else if minTarget < 0 {
+                    return completion >= 0 ? 0 : min(completion / minTarget, 1)
+                } else {
+                    return 1
+                }
             default:
-                return min(completion / maxTarget, 1)
+                if completion <= minTarget {
+                    return 0
+                } else if completion < maxTarget {
+                    return min( abs(completion - minTarget)/abs(maxTarget - minTarget), 1)
+                } else {
+                    return 1
+                }
             }
         }
     }
