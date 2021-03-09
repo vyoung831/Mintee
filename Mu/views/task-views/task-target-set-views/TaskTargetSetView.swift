@@ -168,12 +168,14 @@ struct TaskTargetSetView: View , Identifiable {
             Group {
                 
                 if self.type == .dom {
-                    BubbleRows<SaveFormatter.dayOfMonth>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: 7),
+                    BubbleRows<SaveFormatter.dayOfMonth>(presentationBase: .collectionItem,
+                                                         bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: 7),
                                                          presentation: .none,
                                                          toggleable: false,
                                                          selectedBubbles: .constant(self.selectedDaysOfMonth ?? Set<SaveFormatter.dayOfMonth>()))
                 } else {
-                    BubbleRows<SaveFormatter.dayOfWeek>(bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7),
+                    BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .collectionItem,
+                                                        bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7),
                                                         presentation: .none,
                                                         toggleable: false,
                                                         selectedBubbles: .constant(self.selectedDaysOfWeek!))

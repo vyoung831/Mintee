@@ -92,9 +92,9 @@ struct TaskTargetSetPopup: View {
         
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: validatedValues.min,
-                                     minOperator: minOperator,
+                                     minOperator: validatedValues.minOp,
                                      maxTarget: validatedValues.max,
-                                     maxOperator: maxOperator,
+                                     maxOperator: validatedValues.maxOp,
                                      selectedDaysOfWeek: self.type == .dow || self.type == .wom ? self.selectedDaysOfWeek : Set(),
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
@@ -151,13 +151,13 @@ struct TaskTargetSetPopup: View {
                         
                         // Days of week/month
                         if self.type == .dom {
-                            BubbleRows<SaveFormatter.dayOfMonth>(maxBubbleRadius: 32,
+                            BubbleRows<SaveFormatter.dayOfMonth>(presentationBase: .panel,
                                                                  bubbles: DayBubbleLabels.getDividedBubbles_daysOfMonth(bubblesPerRow: self.bubblesPerRow),
                                                                  presentation: .none,
                                                                  toggleable: true,
                                                                  selectedBubbles: self.$selectedDaysOfMonth)
                         } else {
-                            BubbleRows<SaveFormatter.dayOfWeek>(maxBubbleRadius: 32,
+                            BubbleRows<SaveFormatter.dayOfWeek>(presentationBase: .panel,
                                                                 bubbles: DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: self.bubblesPerRow),
                                                                 presentation: .centerLastRow,
                                                                 toggleable: true,
@@ -166,7 +166,7 @@ struct TaskTargetSetPopup: View {
                         
                         // Weeks of month
                         if self.type == .wom {
-                            BubbleRows<SaveFormatter.weekOfMonth>(maxBubbleRadius: 32,
+                            BubbleRows<SaveFormatter.weekOfMonth>(presentationBase: .panel,
                                                                   bubbles: DayBubbleLabels.getDividedBubbles_weeksOfMonth(bubblesPerRow: self.bubblesPerRow),
                                                                   presentation: .centerLastRow,
                                                                   toggleable: true,
@@ -213,7 +213,7 @@ struct TaskTargetSetPopup: View {
                             .padding(10)
                             .border(themeManager.textFieldBorder, width: 2)
                             .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
-                            .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
+                            .foregroundColor(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextFieldText : .primary)
                             .cornerRadius(3)
                             .accessibility(identifier: "maximum-value")
                         

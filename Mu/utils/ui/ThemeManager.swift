@@ -28,14 +28,16 @@ class ThemeManager: NSObject, ObservableObject {
         case accent = "accent"
         case panel = "panel"
         case panelContent = "panelContent"
-        case button = "button"
         case buttonText = "buttonText"
         case textFieldBorder = "textFieldBorder"
         case disabledTextField = "disabledTextField"
         case disabledTextFieldText = "disabledTextFieldText"
         case collectionItem = "collectionItem"
-        case collectionItemBorder = "collectionItemBorder"
         case collectionItemContent = "collectionItemContent"
+        
+        // Placeholder colors (not actually defined in asset catalogs)
+        case button = "button"
+        case collectionItemBorder = "collectionItemBorder"
     }
     
     // MARK: - Shared instance and observable properties
@@ -51,7 +53,6 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var panel: Color
     @Published var panelContent: Color
     
-    @Published var button: Color
     @Published var buttonText: Color
     
     @Published var textFieldBorder: Color
@@ -59,8 +60,12 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var disabledTextFieldText: Color
     
     @Published var collectionItem: Color
-    @Published var collectionItemBorder: Color
     @Published var collectionItemContent: Color
+    
+    // MARK: - Placeholder colors (not actually defined in asset catalogs)
+    
+    @Published var collectionItemBorder: Color
+    @Published var button: Color
     
     // MARK: - Initializers
     
@@ -140,11 +145,23 @@ class ThemeManager: NSObject, ObservableObject {
      - returns: Color to set the ThemedUIElement to
      */
     static func getElementColor(_ element: ThemedUIElement, _ theme: Theme) -> Color {
+        
+        // For elements that don't have colors defined in the asset catalog, assetKey is used to replace the Color Set that they should be using.
+        var assetKey: String = ""
+        switch element {
+        case .collectionItemBorder:
+            assetKey = ThemedUIElement.collectionItem.rawValue
+        case .button:
+            assetKey = ThemedUIElement.collectionItem.rawValue
+        default:
+            assetKey = element.rawValue
+        }
+        
         switch theme {
         case .jungle:
-            return Color("theme-jungle-\(element.rawValue)")
+            return Color("theme-jungle-\(assetKey)")
         case .ocean:
-            return Color("theme-ocean-\(element.rawValue)")
+            return Color("theme-ocean-\(assetKey)")
         case .system:
             switch element {
             case .panel:
@@ -153,8 +170,6 @@ class ThemeManager: NSObject, ObservableObject {
                 return .accentColor
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
-            case .collectionItemBorder:
-                return .secondary
             default:
                 return .primary
             }

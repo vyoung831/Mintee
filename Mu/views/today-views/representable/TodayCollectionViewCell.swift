@@ -27,6 +27,13 @@ class TodayCollectionViewCell: UICollectionViewCell {
     private var editButton = UIButton(type: UIButton.ButtonType.system)
     private var setButton = UIButton(type: UIButton.ButtonType.system)
     
+    enum meterStatus {
+        case unsatisfactory
+        case borderline
+        case satisfactory
+    }
+    var completionMeterStatus: meterStatus = .satisfactory
+    
     // MARK: - Closures
     
     // Closure to call when editButton is pressed. Should be set by the UICollectionViewDataSource
@@ -159,7 +166,8 @@ class TodayCollectionViewCell: UICollectionViewCell {
                                                              multiplier: CGFloat(completionMeterHeightPercentage),
                                                              constant: 0)
         completionMeterHeightConstraint.isActive = true
-        completionMeter.backgroundColor = TodayCollectionViewCell.getCompletionMeterColor(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion)
+        self.completionMeterStatus = TodayCollectionViewCell.getCompletionMeterStatus(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion)
+        updateCompletionMeterColor()
         
     }
     
@@ -225,40 +233,81 @@ class TodayCollectionViewCell: UICollectionViewCell {
     }
     
     /**
-     For a Recurring-type Task, returns the UIColor that a TodayCollectionViewCell's completionMeter's background should be set to.
-     Red/green are used to represent the target not being met or being met, respectively.
-     Yellow is returned if one of the operators is non-inclusvie and the current completion is equal to that target
+     For the TodayCollectionViewCell of a recurring-type Task, returns the value of type meterStatus that the cell's completionMeterStatus should be set to.
+     completionMeterStatus is used to determine what color to assign completionMeter's backgroundColor (light/dark mode is also factored into those decisions).
      - parameter minOp: The minimum value operator for the TaskInstances's minimum target
      - parameter maxOp: The maximum value operator for the TaskInstances's maximum target
      - parameter minTarget: The TaskInstance's minimum target
      - parameter maxTarget: The TaskInstance's maximum target
      - parameter completion: The TaskInstance's current completion
-     - returns: UIColor to set a TodayCollectionViewCell's completionMeter to
+     - returns: meterStatus to set the cell's completionMeterStatus to
      */
-    static func getCompletionMeterColor(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float, completion: Float) -> UIColor {
+    static func getCompletionMeterStatus(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float, completion: Float) -> meterStatus {
         
         var minSatisfied: Bool = true
         var maxSatisfied: Bool = true
         
         switch minOp {
         case .lt:
-            if completion == minTarget { return .yellow }
+            if completion == minTarget { return .borderline }
             minSatisfied = (completion > minTarget); break
-        case .lte: minSatisfied = (completion >= minTarget); break
-        case .eq: return (completion == minTarget) ? .green : .red
-        default: break
+        case .lte:
+            minSatisfied = (completion >= minTarget); break
+        case .eq:
+            return (completion == minTarget) ? .satisfactory : .unsatisfactory
+        default:
+            break
         }
         
         switch maxOp {
         case .lt:
-            if completion == maxTarget { return .yellow }
+            if completion == maxTarget { return .borderline }
             maxSatisfied = (completion < maxTarget); break
-        case .lte: maxSatisfied = completion <= maxTarget; break
-        case .eq: return (completion == maxTarget) ? .green : .red
-        default: break
+        case .lte:
+            maxSatisfied = completion <= maxTarget; break
+        case .eq:
+            return (completion == maxTarget) ? .satisfactory : .unsatisfactory
+        default:
+            break
         }
         
-        return (minSatisfied && maxSatisfied) ? .green : .red
+        return (minSatisfied && maxSatisfied) ? .satisfactory : .unsatisfactory
+    }
+    
+    /*
+     Called when the collection of traits that describe this object's current environment changes.
+     Makes call to update completionMeter's backgroundColor, in case userInterfaceStyle (light/dark mode) changed.
+     */
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateCompletionMeterColor()
+    }
+    
+    /**
+     Updates the backgroundColor of completionMeter based on this object's existing completionMeterStatus and userInterfaceStyle (light/dark mode).
+     */
+    private func updateCompletionMeterColor() {
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            switch self.completionMeterStatus {
+            case .borderline:
+                self.completionMeter.backgroundColor = UIColor(hex: "ccc610ff"); break
+            case .satisfactory:
+                self.completionMeter.backgroundColor = UIColor(hex: "09b300ff"); break
+            case .unsatisfactory:
+                self.completionMeter.backgroundColor = UIColor(hex: "ad0c00ff"); break
+            }
+        case .light:
+            switch self.completionMeterStatus {
+            case .borderline:
+                self.completionMeter.backgroundColor = .yellow; break
+            case .satisfactory:
+                self.completionMeter.backgroundColor = .green; break
+            case .unsatisfactory:
+                self.completionMeter.backgroundColor = UIColor(hex: "ff928aff"); break
+            }
+        default:
+            break
+        }
     }
     
     // MARK: - UI setup

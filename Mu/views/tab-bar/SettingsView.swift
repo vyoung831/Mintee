@@ -114,9 +114,9 @@ struct SettingsViewCard<Content: View>: View {
             }
             .padding(cardPadding)
             .border(themeManager.collectionItemBorder, width: CollectionSizer.borderThickness)
-            .cornerRadius(CollectionSizer.cornerRadius)
             .foregroundColor(themeManager.collectionItemContent)
             .background(themeManager.collectionItem)
+            .cornerRadius(CollectionSizer.cornerRadius)
         }
     }
     

@@ -143,7 +143,7 @@ struct ManageViewCard: View {
                         Spacer()
                         Button("Edit", action: {
                             self.isPresentingEditTask = true
-                        })
+                        }).foregroundColor(.primary)
                     }
                     
                     HStack {
