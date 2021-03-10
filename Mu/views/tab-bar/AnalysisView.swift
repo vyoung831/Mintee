@@ -35,9 +35,7 @@ struct AnalysisView: View {
             .background(themeManager.panel)
             .navigationBarTitle("Analysis")
             .navigationBarItems(trailing:
-                                    Button(action: {
-                                        self.isPresentingAddAnalysis = true
-                                    }, label: {
+                                    Button(action: {}, label: {
                                         Image(systemName: "plus.circle")
                                             .frame(width: 30, height: 30, alignment: .center)
                                             .foregroundColor(themeManager.panelContent)
@@ -57,10 +55,13 @@ struct AnalysisView: View {
 
 struct AnalysisGraphPage: View {
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         ScrollView(.vertical, showsIndicators: true, content: {
-            Text("Graph page")
+            Text("Sample page")
+                .foregroundColor(themeManager.panelContent)
         })
         .padding(25)
         
@@ -70,10 +71,13 @@ struct AnalysisGraphPage: View {
 
 struct AnalysisTextPage: View {
     
+    @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
     var body: some View {
         
         ScrollView(.vertical, showsIndicators: true, content: {
-            Text("Text page")
+            Text("Sample page")
+                .foregroundColor(themeManager.panelContent)
         })
         .padding(25)
         
