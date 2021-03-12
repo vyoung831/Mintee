@@ -12,4 +12,4 @@ EPOCH_MINUTES=$((${EPOCH_SECONDS}/60))
 
 # Write CFBundleVersion value to versions.h
 BUILD_NUMBER=${DECIMALIZED_COMMIT}.${EPOCH_MINUTES}
-echo "#define MuBuildNumber \"${BUILD_NUMBER}\"" >> versions.h
+echo "#define MuBuildNumber ${BUILD_NUMBER}" >> versions.h
