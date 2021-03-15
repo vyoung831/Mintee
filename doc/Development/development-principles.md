@@ -1,5 +1,5 @@
 # Development Principles
-This document outlines the development principles that Mu adheres to in implementing application code.  
+This document outlines the development principles that Mintee adheres to in implementing application code.  
 
 # Table of Contents
 1. [Application components](#application-components)
@@ -14,7 +14,7 @@ This document outlines the development principles that Mu adheres to in implemen
         1. [ThemeManager](#thememanager)
 
 # Application components
-Mu places all application code into 1 of the following 3 categories:  
+Mintee places all application code into 1 of the following 3 categories:  
 1. Utility components. Stored in dirs named `utils` or their subdirs.
 1. Model components. Stored in the `core-data` dir and comprised of the following:  
     1. NSManagedObject subclasses.
@@ -41,7 +41,7 @@ __Notes__
 * To ensure that user experience of dates remain consistent across time zones, dates are stored as strings. This avoids a Date object being created and saved to user data, only to be accessed later using a different Calendar object and displaying a potentially different day.
 
 ## Transformables
-Mu uses transformables to represent various custom objects. To allow for secure reading from persistent store, the following are implemented for each transformable:  
+Mintee uses transformables to represent various custom objects. To allow for secure reading from persistent store, the following are implemented for each transformable:  
 * The custom class is updated to conform to `NSSecureCoding`.
 * The custom class is specified under the transformable's attributes in the Core Data model, allowing Core Data codegen to automatically protect against object substitution.
 * A custom transformer is subclassed from `NSSecureUnarchiveFromDataTransformer` and specified under the transformable's attributes in the Core Data model. The custom transformer does the following:  
@@ -54,11 +54,11 @@ More can be read [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-an
 # View development
 
 ## Navigation
-Every view in Mu declares a `NavigationView` to prepare for additional navigation if decided upon by UI/UX.
+Every view in Mintee declares a `NavigationView` to prepare for additional navigation if decided upon by UI/UX.
 
 ## Accessibility
 Accessibility is only used for identifying UI elements for UI testing.  
-To ensure consistent user experience and test coverage, Mu doesn't currently use any accessibility attributes other than identifiers.
+To ensure consistent user experience and test coverage, Mintee doesn't currently use any accessibility attributes other than identifiers.
 
 # Notable components
 
