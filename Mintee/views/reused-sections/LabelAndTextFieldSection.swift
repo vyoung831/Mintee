@@ -2,7 +2,7 @@
 //  LabelAndTextFieldSection.swift
 //  Mintee
 //
-//  View that contains a label and text field binding. Used by forms throughout Mu.
+//  View that contains a label and text field binding. Used by forms throughout Mintee.
 //
 //  Created by Vincent Young on 7/6/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

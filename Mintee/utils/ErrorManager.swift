@@ -26,7 +26,7 @@ struct ErrorManager {
         if let bundleID = Bundle.main.bundleIdentifier {
             domain = bundleID
         } else {
-            domain = "Leko.Mu"
+            domain = "Leko.Mintee"
             Crashlytics.crashlytics().record(error: NSError(domain: domain,
                                                             code: NonFatal.bundleIdentifierWasNil.rawValue,
                                                             userInfo: [:]))
