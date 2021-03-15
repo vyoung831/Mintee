@@ -1,6 +1,6 @@
 //
 //  SaveFormatterSelectionSection.swift
-//  Mu
+//  Mintee
 //
 //  Section for presenting SaveFormatter enums that conform to SelectableType and updating the value of one on a form.
 //

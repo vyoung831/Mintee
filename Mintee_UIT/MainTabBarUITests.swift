@@ -1,6 +1,6 @@
 //
 //  MainTabBarUITests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  These UI tests test the navigation between Mu's main tabs
 //

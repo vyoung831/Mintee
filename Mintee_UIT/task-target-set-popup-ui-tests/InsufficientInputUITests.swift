@@ -1,6 +1,6 @@
 //
 //  InsufficientInputUITests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  Created by Vincent Young on 7/13/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

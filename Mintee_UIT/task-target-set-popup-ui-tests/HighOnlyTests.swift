@@ -1,6 +1,6 @@
 //
 //  HighOnlyTests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  This class tests TaskTargetSetPopup input combinations where only high value is filled out.
 //

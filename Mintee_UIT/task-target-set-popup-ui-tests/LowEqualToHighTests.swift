@@ -1,6 +1,6 @@
 //
 //  LowEqualToHighTests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  This class tests TaskTargetSetPopup input combinations where low value is equal to the high value.
 //

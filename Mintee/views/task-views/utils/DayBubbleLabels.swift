@@ -1,6 +1,6 @@
 //
 //  DayBubbleLabels.swift
-//  Mu
+//  Mintee
 //
 //  This class handles the content that is displayed in BubbleRows.
 //

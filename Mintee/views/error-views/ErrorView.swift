@@ -1,6 +1,6 @@
 //
 //  ErrorView.swift
-//  Mu
+//  Mintee
 //
 //  Created by Vincent Young on 12/28/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

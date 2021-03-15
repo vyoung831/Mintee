@@ -1,6 +1,6 @@
 //
 //  CollectionSizer.swift
-//  Mu
+//  Mintee
 //
 //  Provides functions for views to use so that collections are sized consistently across SwiftUI and non-SwiftUI components.
 //

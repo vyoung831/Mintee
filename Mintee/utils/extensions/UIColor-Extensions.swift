@@ -1,6 +1,6 @@
 //
 //  UIColor-Extensions.swift
-//  Mu
+//  Mintee
 //
 //  Created by Vincent Young on 3/5/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  UINavigationController+Extensions.swift
-//  Mu
+//  Mintee
 //
 //  This extension handles color theme updates to navbars throughout the project, in both SwiftUI and UIKit components. The navbar background and text is updated when
 //  1. viewDidLoad() is called

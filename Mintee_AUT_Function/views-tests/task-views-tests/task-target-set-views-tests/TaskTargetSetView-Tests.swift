@@ -1,6 +1,6 @@
 //
 //  TaskTargetSetView-Tests.swift
-//  MuTests
+//  MinteeTests
 //
 //  Created by Vincent Young on 6/1/1.
 //  Copyright © 11 Vincent Young. All rights reserved.

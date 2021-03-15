@@ -1,6 +1,6 @@
 //
 //  EditTaskHostingController-Tests.swift
-//  MuTests
+//  MinteeTests
 //
 //  Created by Vincent Young on 9/6/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

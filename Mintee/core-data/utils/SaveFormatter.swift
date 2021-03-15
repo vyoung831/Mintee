@@ -1,6 +1,6 @@
 //
 //  SaveFormatter.swift
-//  Mu
+//  Mintee
 //
 //  This class provides utility functions for converting persistent store data to/from structs/enums that Views expect to use.
 //  Because some classes use the allCases var to access some structs/enums, enums should conform to CaseIterable, and the order in which cases are declared in this class' enums should not be altered unless necessary.

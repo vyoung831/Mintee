@@ -1,6 +1,6 @@
 //
 //  BubbleRows.swift
-//  Mu
+//  Mintee
 //
 //  Presents a row of bubbles used for a DayPattern's array's presentation/selection.
 //  Parent view can set whether or not bubbles are toggleable.

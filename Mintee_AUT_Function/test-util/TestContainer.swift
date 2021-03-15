@@ -1,6 +1,6 @@
 //
 //  TestContainer.swift
-//  MuTests
+//  MinteeTests
 //
 //  Created by Vincent Young on 6/21/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

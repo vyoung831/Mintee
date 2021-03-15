@@ -1,6 +1,6 @@
 //
 //  UserDefaultsListView.swift
-//  Mu
+//  Mintee
 //
 //  A re-usable View that is to be pushed onto the navigation stack of a Settings view.
 //  Presents the user with the current value among a list of a setting's possible values.

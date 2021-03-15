@@ -1,6 +1,6 @@
 //
 //  AddAnalysis.swift
-//  Mu
+//  Mintee
 //
 //  Created by Vincent Young on 2/13/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.

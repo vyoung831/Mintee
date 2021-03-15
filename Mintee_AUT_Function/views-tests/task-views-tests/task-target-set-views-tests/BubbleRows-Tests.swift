@@ -1,6 +1,6 @@
 //
 //  BubbleRows-Tests.swift
-//  MuTests
+//  MinteeTests
 //
 //  Created by Vincent Young on 6/16/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

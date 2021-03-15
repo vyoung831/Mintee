@@ -1,6 +1,6 @@
 //
 //  SelectDatesSection.swift
-//  Mu
+//  Mintee
 //
 //  Section for presenting dates in specific type Tasks, re-used by AddTask and EditTask
 //

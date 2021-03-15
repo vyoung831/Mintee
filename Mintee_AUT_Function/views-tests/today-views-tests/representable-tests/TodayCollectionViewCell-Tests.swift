@@ -1,6 +1,6 @@
 //
 //  TodayCollectionViewCell-Tests.swift
-//  MuTests
+//  MinteeTests
 //
 //  Tests for TodayCollectionViewCell's completion meter functions.
 //

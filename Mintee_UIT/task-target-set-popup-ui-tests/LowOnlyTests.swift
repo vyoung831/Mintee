@@ -1,6 +1,6 @@
 //
 //  LowOnlyTests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  This class tests TaskTargetSetPopup input combinations where only low value is filled out.
 //

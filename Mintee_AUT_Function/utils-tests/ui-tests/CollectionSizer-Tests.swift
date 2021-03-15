@@ -1,6 +1,6 @@
 //
 //  CollectionSizer-Tests.swift
-//  MuTests
+//  MinteeTests
 //
 //  Created by Vincent Young on 11/14/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

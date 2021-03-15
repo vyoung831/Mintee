@@ -1,6 +1,6 @@
 //
 //  TodayViewControllerUITests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  This XCTestCase tests UI flows from TodayViewController
 //

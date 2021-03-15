@@ -1,6 +1,6 @@
 //
 //  FetchRequests.swift
-//  Mu
+//  Mintee
 //
 //  Houses NSFetchRequests that were produced by Core Data codegen.
 //

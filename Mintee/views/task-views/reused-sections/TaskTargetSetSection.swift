@@ -1,6 +1,6 @@
 //
 //  TaskTargetSetSection.swift
-//  Mu
+//  Mintee
 //
 //  Section for presenting TaskTargetSetViews, re-used by Task forms such as AddTask and EditTask.
 //

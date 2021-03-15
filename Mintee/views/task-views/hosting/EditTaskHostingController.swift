@@ -1,6 +1,6 @@
 //
 //  EditTaskHostingController.swift
-//  Mu
+//  Mintee
 //
 //  This UIHostingController hosts the EditTask View
 //

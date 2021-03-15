@@ -1,6 +1,6 @@
 //
 //  SelectDatePopup.swift
-//  Mu
+//  Mintee
 //
 //  Created by Vincent Young on 10/19/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

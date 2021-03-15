@@ -1,6 +1,6 @@
 //
 //  TodayView.swift
-//  Mu
+//  Mintee
 //
 //  Created by Vincent Young on 4/8/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  StartAndEndDateSection.swift
-//  Mu
+//  Mintee
 //
 //  Section for presenting start date and end date in recurring type Tasks, re-used by AddTask and EditTask
 //

@@ -1,6 +1,6 @@
 //
 //  AddTaskUITests.swift
-//  MuUITests
+//  MinteeUITests
 //
 //  Created by Vincent Young on 3/31/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

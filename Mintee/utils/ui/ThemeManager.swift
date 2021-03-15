@@ -1,6 +1,6 @@
 //
 //  ThemeManager.swift
-//  Mu
+//  Mintee
 //
 //  A shared instance of ThemeManager is used to hold themed colors, and informs other objects when the theme saved to NSUserDefaults changes.
 //  When "Theme" is updated in UserDefaults, the shared ThemeManager does the following:
