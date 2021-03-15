@@ -1,8 +1,8 @@
-# Mu
-Mu is a task and habit management application developed for iPhone.  
-This document provides an overview of Mu's working procedures between business units, steps to getting started, and links to additional documentation and resources.  
+# Mintee
+Mintee is a task and habit management application developed for iPhone.  
+This document provides an overview of Mintee's working procedures between business units, steps to getting started, and links to additional documentation and resources.  
 The following acronyms and definitions are used in this document as follows:  
-* __User data__: Data that a user creates and owns in Mu (not including settings or preferences).
+* __User data__: Data that a user creates and owns in Mintee (not including settings or preferences).
 
 # Table of Contents
 1. [Getting started](#getting-started)
@@ -17,7 +17,7 @@ To get started, complete the following after cloning this repo:
 1. Run `pod install` to install dependencies locally.
 
 # Product development lifecycle
-Mu's product development lifecycle divides internal responsibilities between the following 3 business units:
+Mintee's product development lifecycle divides internal responsibilities between the following 3 business units:
 1. Business management (BM)
 1. UI/UX
 1. Development

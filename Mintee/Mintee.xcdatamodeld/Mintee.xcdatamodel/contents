@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D80" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Analysis" representedClassName="Analysis" syncable="YES">
+        <attribute name="analysisType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="String"/>
+        <relationship name="legendEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LegendEntry" inverseName="analysis" inverseEntity="LegendEntry"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="analyses" inverseEntity="Tag"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="LegendEntry" representedClassName="LegendEntry" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="max" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="maxInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="min" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="minInclusive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="analysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analysis" inverseName="legendEntries" inverseEntity="Analysis"/>
+        <relationship name="taskSummaryAnalysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskSummaryAnalysis" inverseName="legendEntries" inverseEntity="TaskSummaryAnalysis"/>
+    </entity>
+    <entity name="Tag" representedClassName="Tag" syncable="YES">
+        <attribute name="name" attributeType="String" defaultValueString=""/>
+        <relationship name="analyses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Analysis" inverseName="tags" inverseEntity="Analysis"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="tags" inverseEntity="Task"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Task" representedClassName="Task" syncable="YES">
+        <attribute name="endDate" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="String"/>
+        <attribute name="taskType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskInstance" inverseName="task" inverseEntity="TaskInstance"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="tasks" inverseEntity="Tag"/>
+        <relationship name="targetSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="task" inverseEntity="TaskTargetSet"/>
+        <relationship name="taskSummaryAnalysis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskSummaryAnalysis" inverseName="task" inverseEntity="TaskSummaryAnalysis"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="TaskInstance" representedClassName="TaskInstance" syncable="YES">
+        <attribute name="completion" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <relationship name="targetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="instances" inverseEntity="TaskTargetSet"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="instances" inverseEntity="Task"/>
+    </entity>
+    <entity name="TaskSummaryAnalysis" representedClassName="TaskSummaryAnalysis" syncable="YES">
+        <attribute name="analysisType" optional="YES" attributeType="String"/>
+        <attribute name="dateRange" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="String"/>
+        <relationship name="legendEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LegendEntry" inverseName="taskSummaryAnalysis" inverseEntity="LegendEntry"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="taskSummaryAnalysis" inverseEntity="Task"/>
+    </entity>
+    <entity name="TaskTargetSet" representedClassName="TaskTargetSet" syncable="YES">
+        <attribute name="max" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="maxOperator" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="min" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="minOperator" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="pattern" optional="YES" attributeType="Transformable" valueTransformerName="DayPatternTransformer" customClassName="DayPattern"/>
+        <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskInstance" inverseName="targetSet" inverseEntity="TaskInstance"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
+    </entity>
+    <elements>
+        <element name="Analysis" positionX="-9381.968017578125" positionY="1956.215362548828" width="128" height="133"/>
+        <element name="LegendEntry" positionX="-9146.159820556641" positionY="2066.493591308594" width="128" height="148"/>
+        <element name="Tag" positionX="-9576.1591796875" positionY="2091.435958862305" width="128" height="88"/>
+        <element name="Task" positionX="-9748.8037109375" positionY="2124.302429199219" width="128" height="163"/>
+        <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="103"/>
+        <element name="TaskSummaryAnalysis" positionX="-9507.880310058594" positionY="2247.859283447266" width="128" height="133"/>
+        <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="149"/>
+    </elements>
+</model>

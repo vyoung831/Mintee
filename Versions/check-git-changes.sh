@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # 
-# Script to run before archiving builds of Mu.
+# Script to run before archiving builds of Mintee.
 # This script checks that the current local branch is tracking and up-to-date with origin/master.
 #
 

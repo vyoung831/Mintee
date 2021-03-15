@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
-@testable import Mu
+@testable import Mintee
 import Foundation
 import CoreData
 
@@ -21,7 +21,7 @@ class TestContainer {
      */
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let mom = CDCoordinator.shared.persistentContainer.managedObjectModel
-        let container = NSPersistentCloudKitContainer(name: "Mu", managedObjectModel: mom)
+        let container = NSPersistentCloudKitContainer(name: "Mintee", managedObjectModel: mom)
         
         container.persistentStoreDescriptions.first?.type = NSInMemoryStoreType
         container.loadPersistentStores(completionHandler: { description, error in

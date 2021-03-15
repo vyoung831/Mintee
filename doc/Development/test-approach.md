@@ -1,5 +1,5 @@
 # Test Approach
-This document specifies the practices that Mu uses towards implementing AUT/UIT and defining coverage.  
+This document specifies the practices that Mintee uses towards implementing AUT/UIT and defining coverage.  
 This document references the product development lifecycle outlined [here](../../README.md).  
 The following acronyms and definitions are used in this document as follows:  
 * __AUT__: Automated unit test/testing.
@@ -14,19 +14,19 @@ The following acronyms and definitions are used in this document as follows:
 1. [UIT coverage](#uit-coverage)
 
 # Tooling and environment
-Mu uses XCTest to perform AUT on application code, and UIT on the application's user flows.  
+Mintee uses XCTest to perform AUT on application code, and UIT on the application's user flows.  
 
 ## AUT structure
-`Mu_AUT_Function` and `Mu_AUT_Performance` contain XCTestCases for Mu's function and performance AUTs, respectively. Their structures are as follows:  
-* `Mu_AUT_Function`'s directory structure mirrors that of `Mu`, with identical nested directory name(s) and `-tests` appended to each directory.
-* `Mu_AUT_Performance` does not contain subdirectories. Each performance XCTestCase is placed directly into the target's main dir and is named after one XCTestCase in `Mu_AUT_Function`, with `-Performance` appended to its name.
+`Mintee_AUT_Function` and `Mintee_AUT_Performance` contain XCTestCases for Mintee's function and performance AUTs, respectively. Their structures are as follows:  
+* `Mintee_AUT_Function`'s directory structure mirrors that of `Mintee`, with identical nested directory name(s) and `-tests` appended to each directory.
+* `Mintee_AUT_Performance` does not contain subdirectories. Each performance XCTestCase is placed directly into the target's main dir and is named after one XCTestCase in `Mintee_AUT_Function`, with `-Performance` appended to its name.
 
 ### SharedTestUtils
-Because performance AUTs are based on function AUTs, Mu defines the `SharedTestUtils` static library target, which provides setup and helper functions for function and performance AUTs that correspond to the same test scenario.  
+Because performance AUTs are based on function AUTs, Mintee defines the `SharedTestUtils` static library target, which provides setup and helper functions for function and performance AUTs that correspond to the same test scenario.  
 Both AUT targets list `SharedTestUtils` as a target dependency.
 
 ## UIT structure
-`Mu_UI_Tests` contains XCTestCases for Mu's automated UITs.
+`Mintee_UIT` contains XCTestCases for Mintee's automated UITs.
 
 # AUT coverage
 Development makes AUT coverage decisions and documents them in the comments of the XCTestCase(s) itself.  

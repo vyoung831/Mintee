@@ -12,7 +12,7 @@ Delete N/A options
 List related issue(s)
 
 # Development checklist
-- [ ] New code adheres to [development principles](https://github.com/vyoung831/Mu/blob/master/doc/Development/development-principles.md).
+- [ ] New code adheres to [development principles](https://github.com/vyoung831/Mintee/blob/master/doc/Development/development-principles.md).
     - New code for each application component:
         - [ ] Satisifies its responsibilities and maintains separation of concerns
         - Integrates with notable components:
@@ -27,6 +27,6 @@ List related issue(s)
         - [ ] Use accessibility only for identification.
         - [ ] Define navigation views.
 - [ ] Necessary comments and documentation are updated
-- [ ] New AUT are implemented that comply with [test approach](https://github.com/vyoung831/Mu/blob/master/doc/Development/test-approach.md)
-- [ ] New UIT are implemented that comply to [test approach](https://github.com/vyoung831/Mu/blob/master/doc/Development/test-approach.md)
+- [ ] New AUT are implemented that comply with [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
+- [ ] New UIT are implemented that comply to [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 - [ ] New and existing unit tests pass locally with my changes
