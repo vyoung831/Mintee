@@ -212,7 +212,7 @@
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mintee_AUT_Function.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037AB324342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4037AB824342E2300150D47 /* MinteeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinteeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4037AB824342E2300150D47 /* Mintee_UIT.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mintee_UIT.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* AddTaskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewHostingController.swift; sourceTree = "<group>"; };
@@ -402,7 +402,7 @@
 				C465818125A27D6800E4418D /* SharedTestUtils */,
 				C4037AB024342E2300150D47 /* Mintee_AUT_Function */,
 				C465839425A2ACAB00E4418D /* Mintee_AUT_Performance */,
-				C4037ABB24342E2300150D47 /* Mintee_UI_Tests */,
+				C4037ABB24342E2300150D47 /* Mintee_UIT */,
 				C4037A9524342E1F00150D47 /* Products */,
 				1A157D2107AFEF5B8A419F40 /* Pods */,
 				8AD43B30ED9F77EA07670B70 /* Frameworks */,
@@ -414,7 +414,7 @@
 			children = (
 				C4037A9424342E1F00150D47 /* Mintee.app */,
 				C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */,
-				C4037AB824342E2300150D47 /* MinteeUITests.xctest */,
+				C4037AB824342E2300150D47 /* Mintee_UIT.xctest */,
 				C465818025A27D6800E4418D /* libSharedTestUtils.a */,
 				C465839325A2ACAB00E4418D /* Mintee_AUT_Performance.xctest */,
 			);
@@ -448,7 +448,7 @@
 			path = Mintee_AUT_Function;
 			sourceTree = "<group>";
 		};
-		C4037ABB24342E2300150D47 /* Mintee_UI_Tests */ = {
+		C4037ABB24342E2300150D47 /* Mintee_UIT */ = {
 			isa = PBXGroup;
 			children = (
 				C430EEAA24BF820400BD98FD /* task-target-set-popup-ui-tests */,
@@ -458,7 +458,7 @@
 				C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */,
 				C4DCDFBC24B144E8008F727F /* util */,
 			);
-			path = Mintee_UI_Tests;
+			path = Mintee_UIT;
 			sourceTree = "<group>";
 		};
 		C40416ED259E7A8200849E1D /* hosting */ = {
@@ -950,9 +950,9 @@
 			productReference = C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C4037AB724342E2300150D47 /* MinteeUITests */ = {
+		C4037AB724342E2300150D47 /* Mintee_UIT */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "MinteeUITests" */;
+			buildConfigurationList = C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee_UIT" */;
 			buildPhases = (
 				C4037AB424342E2300150D47 /* Sources */,
 				C4037AB524342E2300150D47 /* Frameworks */,
@@ -963,9 +963,9 @@
 			dependencies = (
 				C4037ABA24342E2300150D47 /* PBXTargetDependency */,
 			);
-			name = MinteeUITests;
+			name = Mintee_UIT;
 			productName = MuUITests;
-			productReference = C4037AB824342E2300150D47 /* MinteeUITests.xctest */;
+			productReference = C4037AB824342E2300150D47 /* Mintee_UIT.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		C465817F25A27D6800E4418D /* SharedTestUtils */ = {
@@ -1057,7 +1057,7 @@
 				C465817F25A27D6800E4418D /* SharedTestUtils */,
 				C4037AAC24342E2300150D47 /* Mintee_AUT_Function */,
 				C465839225A2ACAB00E4418D /* Mintee_AUT_Performance */,
-				C4037AB724342E2300150D47 /* MinteeUITests */,
+				C4037AB724342E2300150D47 /* Mintee_UIT */,
 				C4EC7B8125958EB1003B6DD5 /* Versions */,
 			);
 		};
@@ -1637,7 +1637,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu_AUT_Function;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mintee_AUT_Function;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1661,7 +1661,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu_AUT_Function;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mintee_AUT_Function;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1681,7 +1681,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.MuUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mintee_UIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1701,7 +1701,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.MuUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mintee_UIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1748,14 +1748,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				INFOPLIST_FILE = Mu_AUT_Performance/Info.plist;
+				INFOPLIST_FILE = Mintee_AUT_Performance/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Test.Mu-AUT-Performance";
+				PRODUCT_BUNDLE_IDENTIFIER = "Test.Mintee-AUT-Performance";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1770,14 +1770,14 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				INFOPLIST_FILE = Mu_AUT_Performance/Info.plist;
+				INFOPLIST_FILE = Mintee_AUT_Performance/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Test.Mu-AUT-Performance";
+				PRODUCT_BUNDLE_IDENTIFIER = "Test.Mintee-AUT-Performance";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1833,7 +1833,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "MinteeUITests" */ = {
+		C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee_UIT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037AC824342E2300150D47 /* Debug */,

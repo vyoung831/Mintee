@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-@testable import Mu
+@testable import Mintee
 
 class TestContainer {
     

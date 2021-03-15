@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Mu
+@testable import Mintee
 
 class Date_Extension_Tests: XCTestCase {
 

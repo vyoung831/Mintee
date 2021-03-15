@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Mu
+@testable import Mintee
 
 class CollectionSizer_Tests: XCTestCase {
     

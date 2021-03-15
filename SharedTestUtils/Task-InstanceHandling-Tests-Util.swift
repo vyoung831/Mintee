@@ -6,7 +6,7 @@
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
 
-@testable import Mu
+@testable import Mintee
 import Foundation
 import CoreData
 

@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
-@testable import Mu
+@testable import Mintee
 import XCTest
 
 class DayBubbleLabels_Tests: XCTestCase {
