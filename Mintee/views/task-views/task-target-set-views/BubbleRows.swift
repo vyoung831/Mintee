@@ -23,7 +23,7 @@ struct BubbleRows<BubbleType : Day>: View {
     let rowSpacing: CGFloat = 12
     let minimumInterBubbleSpacing: CGFloat = 5
     
-    var maxBubbleRadius: CGFloat = 28
+    var maxBubbleRadius: CGFloat = 36
     
     // Var that represents what UIElement this struct is being presented on.
     // Depending on if BubbleRows is presented on a panel or a collectionItem, its colors differ.
