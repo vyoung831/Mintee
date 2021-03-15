@@ -26,13 +26,13 @@
 		6B7B35B9C0FF05C817B9BCE0 /* libPods-SharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A916E8169D5FEDB6A2D2121 /* libPods-SharedTestUtils.a */; };
 		90C17391E3385ECEB9C8DA12 /* libPods-Mintee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA2C3861A510FA5952549039 /* libPods-Mintee.a */; };
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
-		C4037A9D24342E1F00150D47 /* Mintee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9B24342E1F00150D47 /* Mintee.xcdatamodeld */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
 		C4037ABD24342E2300150D47 /* AddTaskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* AddTaskUITests.swift */; };
 		C40416EF259E7AA400849E1D /* ErrorViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */; };
 		C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */; };
 		C406563724AA08E9002926EB /* Tag-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563624AA08E9002926EB /* Tag-Tests.swift */; };
 		C408445D25FFC532007C4105 /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408445C25FFC532007C4105 /* MainTabBarUITests.swift */; };
+		C408449C25FFD473007C4105 /* Mintee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C408449A25FFD473007C4105 /* Mintee.xcdatamodeld */; };
 		C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C409257B248664A600E463DA /* TaskTargetSetPopup.swift */; };
 		C4130C1924C6FB4F003EF047 /* LowOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */; };
 		C4130C1B24C6FB56003EF047 /* HighOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */; };
@@ -131,7 +131,7 @@
 			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C4037A9324342E1F00150D47;
-			remoteInfo = Mu;
+			remoteInfo = Mintee;
 		};
 		C465819A25A27DC400E4418D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -145,21 +145,21 @@
 			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C4037A9324342E1F00150D47;
-			remoteInfo = Mu;
+			remoteInfo = Mintee;
 		};
 		C465822825A292E000E4418D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C4037A9324342E1F00150D47;
-			remoteInfo = Mu;
+			remoteInfo = Mintee;
 		};
 		C465839825A2ACAB00E4418D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C4037A9324342E1F00150D47;
-			remoteInfo = Mu;
+			remoteInfo = Mintee;
 		};
 		C46583A925A2ACBC00E4418D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -200,7 +200,6 @@
 		B5A3C00BA8274715B11649C7 /* Pods-SharedTestUtils.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.debug.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.debug.xcconfig"; sourceTree = "<group>"; };
 		C4037A9424342E1F00150D47 /* Mintee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mintee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037A9724342E1F00150D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mu.xcdatamodel; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mintee_AUT_Function.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +211,7 @@
 		C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet-Tests.swift"; sourceTree = "<group>"; };
 		C406563624AA08E9002926EB /* Tag-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag-Tests.swift"; sourceTree = "<group>"; };
 		C408445C25FFC532007C4105 /* MainTabBarUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarUITests.swift; sourceTree = "<group>"; };
+		C408449B25FFD473007C4105 /* Mintee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mintee.xcdatamodel; sourceTree = "<group>"; };
 		C409257B248664A600E463DA /* TaskTargetSetPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetPopup.swift; sourceTree = "<group>"; };
 		C4130C1824C6FB4F003EF047 /* LowOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowOnlyTests.swift; sourceTree = "<group>"; };
 		C4130C1A24C6FB56003EF047 /* HighOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighOnlyTests.swift; sourceTree = "<group>"; };
@@ -414,7 +414,7 @@
 				C4037A9724342E1F00150D47 /* AppDelegate.swift */,
 				C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */,
 				C4037AA024342E2300150D47 /* Assets.xcassets */,
-				C4037A9B24342E1F00150D47 /* Mintee.xcdatamodeld */,
+				C408449A25FFD473007C4105 /* Mintee.xcdatamodeld */,
 				C48F022F2448A4700088227F /* core-data */,
 				C4C2F2DF25B4CE6C00B7FE27 /* product */,
 				C466A7A324473A0400EC3E97 /* utils */,
@@ -913,7 +913,7 @@
 				C4EC7B8A25958EB9003B6DD5 /* PBXTargetDependency */,
 			);
 			name = Mintee;
-			productName = Mu;
+			productName = Mintee;
 			productReference = C4037A9424342E1F00150D47 /* Mintee.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -933,7 +933,7 @@
 				C465819B25A27DC400E4418D /* PBXTargetDependency */,
 			);
 			name = Mintee_AUT_Function;
-			productName = MuTests;
+			productName = Mintee_AUT_Function;
 			productReference = C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -951,7 +951,7 @@
 				C4037ABA24342E2300150D47 /* PBXTargetDependency */,
 			);
 			name = Mintee_UIT;
-			productName = MuUITests;
+			productName = Mintee_UIT;
 			productReference = C4037AB824342E2300150D47 /* Mintee_UIT.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -990,7 +990,7 @@
 				C465839925A2ACAB00E4418D /* PBXTargetDependency */,
 			);
 			name = Mintee_AUT_Performance;
-			productName = Mu_AUT_Performance;
+			productName = Mintee_AUT_Performance;
 			productReference = C465839325A2ACAB00E4418D /* Mintee_AUT_Performance.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -1289,6 +1289,7 @@
 				C46DC96C243DEC420037C74C /* ManageView.swift in Sources */,
 				C4D618F8252EA085009A9751 /* UserDefaultsListView.swift in Sources */,
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
+				C408449C25FFD473007C4105 /* Mintee.xcdatamodeld in Sources */,
 				C48F024A2448A5730088227F /* LegendEntry.swift in Sources */,
 				C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */,
 				C416E6BF251808000063309F /* SettingsPresentationView.swift in Sources */,
@@ -1310,7 +1311,6 @@
 				C41D107824BDCBA800549CA1 /* DayBubbleLabels.swift in Sources */,
 				C48F02442448A5730088227F /* TaskSummaryAnalysis.swift in Sources */,
 				C4D9DB692547614B002F0B40 /* SetCountPopupHostingController.swift in Sources */,
-				C4037A9D24342E1F00150D47 /* Mintee.xcdatamodeld in Sources */,
 				C4D9DB6425475771002F0B40 /* SetCountPopup.swift in Sources */,
 				C482233324BA57B000E6426E /* TaskTargetSetSection.swift in Sources */,
 				C48F024E2448A5730088227F /* Task.swift in Sources */,
@@ -1860,12 +1860,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		C4037A9B24342E1F00150D47 /* Mintee.xcdatamodeld */ = {
+		C408449A25FFD473007C4105 /* Mintee.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */,
+				C408449B25FFD473007C4105 /* Mintee.xcdatamodel */,
 			);
-			currentVersion = C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */;
+			currentVersion = C408449B25FFD473007C4105 /* Mintee.xcdatamodel */;
 			path = Mintee.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
