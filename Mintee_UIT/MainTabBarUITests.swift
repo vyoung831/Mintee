@@ -2,7 +2,7 @@
 //  MainTabBarUITests.swift
 //  MinteeUITests
 //
-//  These UI tests test the navigation between Mu's main tabs
+//  These UI tests test the navigation between Mintee's main tabs
 //
 //  Created by Vincent Young on 4/4/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
