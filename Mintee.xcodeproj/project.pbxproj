@@ -23,8 +23,9 @@
 
 /* Begin PBXBuildFile section */
 		1A04A4E0A489675CD86B84A3 /* libPods-SharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */; };
-		33F3B41306E2C2951B94D6AB /* libPods-Mu_AUT_Performance.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF89AF04D4AA33CDE73C14A /* libPods-Mu_AUT_Performance.a */; };
-		B88C10F4211188FBDB41B44E /* libPods-Mu_AUT_Function.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */; };
+		5BD13AF60319B9B847ADBFBC /* libPods-Mintee_AUT_Function.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDCFADCB504BB57D11C620D /* libPods-Mintee_AUT_Function.a */; };
+		62659E822ECD4EEB43C7EEA2 /* libPods-Mintee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A7B200D132C0270062CE525 /* libPods-Mintee.a */; };
+		B8CF8FD3860E5C2F4D782189 /* libPods-Mintee_AUT_Performance.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC30633750260459519D748 /* libPods-Mintee_AUT_Performance.a */; };
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
 		C4037A9D24342E1F00150D47 /* Mu.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9B24342E1F00150D47 /* Mu.xcdatamodeld */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
@@ -65,7 +66,6 @@
 		C46581B325A289FD00E4418D /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
 		C46581B425A289FD00E4418D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49D666624E8992B0030DB54 /* Extensions.swift */; };
 		C465821425A2920C00E4418D /* libSharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C465818025A27D6800E4418D /* libSharedTestUtils.a */; };
-		C46582ED25A2A86700E4418D /* libPods-Mu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C46582EC25A2A86700E4418D /* libPods-Mu.a */; };
 		C465839625A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */; };
 		C46583C625A2ACE500E4418D /* libSharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C465818025A27D6800E4418D /* libSharedTestUtils.a */; };
 		C46583E025A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */; };
@@ -190,23 +190,29 @@
 
 /* Begin PBXFileReference section */
 		042008483E20CEA767F7324A /* Pods-MuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.release.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.release.xcconfig"; sourceTree = "<group>"; };
+		1510162C2998365A11307B94 /* Pods-Mintee_AUT_Performance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Performance.debug.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Performance/Pods-Mintee_AUT_Performance.debug.xcconfig"; sourceTree = "<group>"; };
+		1A7B200D132C0270062CE525 /* libPods-Mintee.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		28B2B43E74F392EA14EA285F /* Pods-Mintee_AUT_Function.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Function.debug.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Function/Pods-Mintee_AUT_Function.debug.xcconfig"; sourceTree = "<group>"; };
 		290DCD335251535455118312 /* Pods-SharedTestUtils.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.debug.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.debug.xcconfig"; sourceTree = "<group>"; };
 		44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Function.release.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Function/Pods-Mu_AUT_Function.release.xcconfig"; sourceTree = "<group>"; };
 		51C447A60DCA459E4B8AB193 /* Pods-SharedTestUtils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.release.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.release.xcconfig"; sourceTree = "<group>"; };
 		52A0B081CA2AE527419E07AE /* Pods-Mu_AUT_Performance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Performance.release.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Performance/Pods-Mu_AUT_Performance.release.xcconfig"; sourceTree = "<group>"; };
+		5871670AC74B0F4CE6684FEE /* Pods-Mintee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee.release.xcconfig"; path = "Target Support Files/Pods-Mintee/Pods-Mintee.release.xcconfig"; sourceTree = "<group>"; };
+		7058FD6A45C3DBA193180019 /* Pods-Mintee_AUT_Function.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Function.release.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Function/Pods-Mintee_AUT_Function.release.xcconfig"; sourceTree = "<group>"; };
+		7A58002E646D111AF179E942 /* Pods-Mintee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee.debug.xcconfig"; path = "Target Support Files/Pods-Mintee/Pods-Mintee.debug.xcconfig"; sourceTree = "<group>"; };
 		7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Function.debug.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Function/Pods-Mu_AUT_Function.debug.xcconfig"; sourceTree = "<group>"; };
 		93F818CCB99A1927A9AB33BB /* Pods-Mu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu.release.xcconfig"; path = "Target Support Files/Pods-Mu/Pods-Mu.release.xcconfig"; sourceTree = "<group>"; };
 		9D80B2B3F73CC235806A8E18 /* Pods-MuTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MuTests.debug.xcconfig"; path = "Target Support Files/Pods-MuTests/Pods-MuTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A42EEF8790153313551F5B71 /* Pods-Mu_AUT_Performance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu_AUT_Performance.debug.xcconfig"; path = "Target Support Files/Pods-Mu_AUT_Performance/Pods-Mu_AUT_Performance.debug.xcconfig"; sourceTree = "<group>"; };
 		B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SharedTestUtils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4037A9424342E1F00150D47 /* Mu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4037A9424342E1F00150D47 /* Mintee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mintee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037A9724342E1F00150D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4037A9C24342E1F00150D47 /* Mu.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mu.xcdatamodel; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4037AA824342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mu_AUT_Function.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mintee_AUT_Function.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037AB324342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4037AB824342E2300150D47 /* MuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4037AB824342E2300150D47 /* MinteeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinteeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* AddTaskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewHostingController.swift; sourceTree = "<group>"; };
@@ -246,8 +252,7 @@
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
 		C465818025A27D6800E4418D /* libSharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSharedTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C465819325A27D7300E4418D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		C46582EC25A2A86700E4418D /* libPods-Mu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-Mu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mu_AUT_Performance.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C465839325A2ACAB00E4418D /* Mintee_AUT_Performance.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mintee_AUT_Performance.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests-Performance.swift"; sourceTree = "<group>"; };
 		C465839725A2ACAB00E4418D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests-Util.swift"; sourceTree = "<group>"; };
@@ -303,9 +308,10 @@
 		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C4FC99D7253BF15200E2359F /* Notification.Name-Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name-Extensions.swift"; sourceTree = "<group>"; };
 		C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopupUITests.swift; sourceTree = "<group>"; };
-		CDF89AF04D4AA33CDE73C14A /* libPods-Mu_AUT_Performance.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mu_AUT_Performance.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mu_AUT_Function.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1EC786721357F9A14CA6390 /* Pods-Mintee_AUT_Performance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Performance.release.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Performance/Pods-Mintee_AUT_Performance.release.xcconfig"; sourceTree = "<group>"; };
 		F3152598BE06FF5A4A09550D /* Pods-Mu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mu.debug.xcconfig"; path = "Target Support Files/Pods-Mu/Pods-Mu.debug.xcconfig"; sourceTree = "<group>"; };
+		FEC30633750260459519D748 /* libPods-Mintee_AUT_Performance.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee_AUT_Performance.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFDCFADCB504BB57D11C620D /* libPods-Mintee_AUT_Function.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee_AUT_Function.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,7 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C46582ED25A2A86700E4418D /* libPods-Mu.a in Frameworks */,
+				62659E822ECD4EEB43C7EEA2 /* libPods-Mintee.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,7 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C465821425A2920C00E4418D /* libSharedTestUtils.a in Frameworks */,
-				B88C10F4211188FBDB41B44E /* libPods-Mu_AUT_Function.a in Frameworks */,
+				5BD13AF60319B9B847ADBFBC /* libPods-Mintee_AUT_Function.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C46583C625A2ACE500E4418D /* libSharedTestUtils.a in Frameworks */,
-				33F3B41306E2C2951B94D6AB /* libPods-Mu_AUT_Performance.a in Frameworks */,
+				B8CF8FD3860E5C2F4D782189 /* libPods-Mintee_AUT_Performance.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +373,12 @@
 				44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */,
 				A42EEF8790153313551F5B71 /* Pods-Mu_AUT_Performance.debug.xcconfig */,
 				52A0B081CA2AE527419E07AE /* Pods-Mu_AUT_Performance.release.xcconfig */,
+				7A58002E646D111AF179E942 /* Pods-Mintee.debug.xcconfig */,
+				5871670AC74B0F4CE6684FEE /* Pods-Mintee.release.xcconfig */,
+				28B2B43E74F392EA14EA285F /* Pods-Mintee_AUT_Function.debug.xcconfig */,
+				7058FD6A45C3DBA193180019 /* Pods-Mintee_AUT_Function.release.xcconfig */,
+				1510162C2998365A11307B94 /* Pods-Mintee_AUT_Performance.debug.xcconfig */,
+				F1EC786721357F9A14CA6390 /* Pods-Mintee_AUT_Performance.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -374,11 +386,11 @@
 		8AD43B30ED9F77EA07670B70 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C46582EC25A2A86700E4418D /* libPods-Mu.a */,
 				C465819325A27D7300E4418D /* XCTest.framework */,
 				B1F10812BFAA8782FB6373A0 /* libPods-SharedTestUtils.a */,
-				D47FC837463CD92B4ECDE7DD /* libPods-Mu_AUT_Function.a */,
-				CDF89AF04D4AA33CDE73C14A /* libPods-Mu_AUT_Performance.a */,
+				1A7B200D132C0270062CE525 /* libPods-Mintee.a */,
+				FFDCFADCB504BB57D11C620D /* libPods-Mintee_AUT_Function.a */,
+				FEC30633750260459519D748 /* libPods-Mintee_AUT_Performance.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -386,11 +398,11 @@
 		C4037A8B24342E1F00150D47 = {
 			isa = PBXGroup;
 			children = (
-				C4037A9624342E1F00150D47 /* Mu */,
+				C4037A9624342E1F00150D47 /* Mintee */,
 				C465818125A27D6800E4418D /* SharedTestUtils */,
-				C4037AB024342E2300150D47 /* Mu_AUT_Function */,
-				C465839425A2ACAB00E4418D /* Mu_AUT_Performance */,
-				C4037ABB24342E2300150D47 /* Mu_UI_Tests */,
+				C4037AB024342E2300150D47 /* Mintee_AUT_Function */,
+				C465839425A2ACAB00E4418D /* Mintee_AUT_Performance */,
+				C4037ABB24342E2300150D47 /* Mintee_UI_Tests */,
 				C4037A9524342E1F00150D47 /* Products */,
 				1A157D2107AFEF5B8A419F40 /* Pods */,
 				8AD43B30ED9F77EA07670B70 /* Frameworks */,
@@ -400,16 +412,16 @@
 		C4037A9524342E1F00150D47 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C4037A9424342E1F00150D47 /* Mu.app */,
-				C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */,
-				C4037AB824342E2300150D47 /* MuUITests.xctest */,
+				C4037A9424342E1F00150D47 /* Mintee.app */,
+				C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */,
+				C4037AB824342E2300150D47 /* MinteeUITests.xctest */,
 				C465818025A27D6800E4418D /* libSharedTestUtils.a */,
-				C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */,
+				C465839325A2ACAB00E4418D /* Mintee_AUT_Performance.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C4037A9624342E1F00150D47 /* Mu */ = {
+		C4037A9624342E1F00150D47 /* Mintee */ = {
 			isa = PBXGroup;
 			children = (
 				C4037AA824342E2300150D47 /* Info.plist */,
@@ -422,10 +434,10 @@
 				C466A7A324473A0400EC3E97 /* utils */,
 				C44C7F85243CA54A00072AD8 /* views */,
 			);
-			path = Mu;
+			path = Mintee;
 			sourceTree = "<group>";
 		};
-		C4037AB024342E2300150D47 /* Mu_AUT_Function */ = {
+		C4037AB024342E2300150D47 /* Mintee_AUT_Function */ = {
 			isa = PBXGroup;
 			children = (
 				C4037AB324342E2300150D47 /* Info.plist */,
@@ -433,10 +445,10 @@
 				C405FA0124F15BDB00F6A547 /* utils-tests */,
 				C405FA0224F15BE200F6A547 /* views-tests */,
 			);
-			path = Mu_AUT_Function;
+			path = Mintee_AUT_Function;
 			sourceTree = "<group>";
 		};
-		C4037ABB24342E2300150D47 /* Mu_UI_Tests */ = {
+		C4037ABB24342E2300150D47 /* Mintee_UI_Tests */ = {
 			isa = PBXGroup;
 			children = (
 				C430EEAA24BF820400BD98FD /* task-target-set-popup-ui-tests */,
@@ -446,7 +458,7 @@
 				C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */,
 				C4DCDFBC24B144E8008F727F /* util */,
 			);
-			path = Mu_UI_Tests;
+			path = Mintee_UI_Tests;
 			sourceTree = "<group>";
 		};
 		C40416ED259E7A8200849E1D /* hosting */ = {
@@ -620,7 +632,7 @@
 			path = SharedTestUtils;
 			sourceTree = "<group>";
 		};
-		C465839425A2ACAB00E4418D /* Mu_AUT_Performance */ = {
+		C465839425A2ACAB00E4418D /* Mintee_AUT_Performance */ = {
 			isa = PBXGroup;
 			children = (
 				C465839725A2ACAB00E4418D /* Info.plist */,
@@ -628,7 +640,7 @@
 				C465841925A2B83000E4418D /* Task-InstanceHandling-Tests-Performance.swift */,
 				C465839525A2ACAB00E4418D /* Task-TagHandling-Tests-Performance.swift */,
 			);
-			path = Mu_AUT_Performance;
+			path = Mintee_AUT_Performance;
 			sourceTree = "<group>";
 		};
 		C466A7A324473A0400EC3E97 /* utils */ = {
@@ -896,9 +908,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C4037A9324342E1F00150D47 /* Mu */ = {
+		C4037A9324342E1F00150D47 /* Mintee */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4037AC124342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu" */;
+			buildConfigurationList = C4037AC124342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee" */;
 			buildPhases = (
 				3AB9327A9A597B79B798D49C /* [CP] Check Pods Manifest.lock */,
 				C4CFC5C72592C696000BA4DA /* Log Build Variables */,
@@ -913,14 +925,14 @@
 			dependencies = (
 				C4EC7B8A25958EB9003B6DD5 /* PBXTargetDependency */,
 			);
-			name = Mu;
+			name = Mintee;
 			productName = Mu;
-			productReference = C4037A9424342E1F00150D47 /* Mu.app */;
+			productReference = C4037A9424342E1F00150D47 /* Mintee.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C4037AAC24342E2300150D47 /* Mu_AUT_Function */ = {
+		C4037AAC24342E2300150D47 /* Mintee_AUT_Function */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu_AUT_Function" */;
+			buildConfigurationList = C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee_AUT_Function" */;
 			buildPhases = (
 				B32CA8E36345B60628BB2E3C /* [CP] Check Pods Manifest.lock */,
 				C4037AA924342E2300150D47 /* Sources */,
@@ -933,14 +945,14 @@
 				C465822925A292E000E4418D /* PBXTargetDependency */,
 				C465819B25A27DC400E4418D /* PBXTargetDependency */,
 			);
-			name = Mu_AUT_Function;
+			name = Mintee_AUT_Function;
 			productName = MuTests;
-			productReference = C4037AAD24342E2300150D47 /* Mu_AUT_Function.xctest */;
+			productReference = C4037AAD24342E2300150D47 /* Mintee_AUT_Function.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C4037AB724342E2300150D47 /* MuUITests */ = {
+		C4037AB724342E2300150D47 /* MinteeUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "MuUITests" */;
+			buildConfigurationList = C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "MinteeUITests" */;
 			buildPhases = (
 				C4037AB424342E2300150D47 /* Sources */,
 				C4037AB524342E2300150D47 /* Frameworks */,
@@ -951,9 +963,9 @@
 			dependencies = (
 				C4037ABA24342E2300150D47 /* PBXTargetDependency */,
 			);
-			name = MuUITests;
+			name = MinteeUITests;
 			productName = MuUITests;
-			productReference = C4037AB824342E2300150D47 /* MuUITests.xctest */;
+			productReference = C4037AB824342E2300150D47 /* MinteeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		C465817F25A27D6800E4418D /* SharedTestUtils */ = {
@@ -975,9 +987,9 @@
 			productReference = C465818025A27D6800E4418D /* libSharedTestUtils.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		C465839225A2ACAB00E4418D /* Mu_AUT_Performance */ = {
+		C465839225A2ACAB00E4418D /* Mintee_AUT_Performance */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C465839A25A2ACAB00E4418D /* Build configuration list for PBXNativeTarget "Mu_AUT_Performance" */;
+			buildConfigurationList = C465839A25A2ACAB00E4418D /* Build configuration list for PBXNativeTarget "Mintee_AUT_Performance" */;
 			buildPhases = (
 				08AAC4007367673123253B9F /* [CP] Check Pods Manifest.lock */,
 				C465838F25A2ACAB00E4418D /* Sources */,
@@ -990,9 +1002,9 @@
 				C46583AA25A2ACBC00E4418D /* PBXTargetDependency */,
 				C465839925A2ACAB00E4418D /* PBXTargetDependency */,
 			);
-			name = Mu_AUT_Performance;
+			name = Mintee_AUT_Performance;
 			productName = Mu_AUT_Performance;
-			productReference = C465839325A2ACAB00E4418D /* Mu_AUT_Performance.xctest */;
+			productReference = C465839325A2ACAB00E4418D /* Mintee_AUT_Performance.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1028,7 +1040,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C4037A8F24342E1F00150D47 /* Build configuration list for PBXProject "Mu" */;
+			buildConfigurationList = C4037A8F24342E1F00150D47 /* Build configuration list for PBXProject "Mintee" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1041,11 +1053,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C4037A9324342E1F00150D47 /* Mu */,
+				C4037A9324342E1F00150D47 /* Mintee */,
 				C465817F25A27D6800E4418D /* SharedTestUtils */,
-				C4037AAC24342E2300150D47 /* Mu_AUT_Function */,
-				C465839225A2ACAB00E4418D /* Mu_AUT_Performance */,
-				C4037AB724342E2300150D47 /* MuUITests */,
+				C4037AAC24342E2300150D47 /* Mintee_AUT_Function */,
+				C465839225A2ACAB00E4418D /* Mintee_AUT_Performance */,
+				C4037AB724342E2300150D47 /* MinteeUITests */,
 				C4EC7B8125958EB1003B6DD5 /* Versions */,
 			);
 		};
@@ -1101,7 +1113,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Mu_AUT_Performance-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Mintee_AUT_Performance-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1123,7 +1135,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Mu-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Mintee-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1145,7 +1157,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Mu_AUT_Function-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Mintee_AUT_Function-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1399,7 +1411,7 @@
 /* Begin PBXTargetDependency section */
 		C4037ABA24342E2300150D47 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C4037A9324342E1F00150D47 /* Mu */;
+			target = C4037A9324342E1F00150D47 /* Mintee */;
 			targetProxy = C4037AB924342E2300150D47 /* PBXContainerItemProxy */;
 		};
 		C465819B25A27DC400E4418D /* PBXTargetDependency */ = {
@@ -1409,17 +1421,17 @@
 		};
 		C465822525A292C600E4418D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C4037A9324342E1F00150D47 /* Mu */;
+			target = C4037A9324342E1F00150D47 /* Mintee */;
 			targetProxy = C465822425A292C600E4418D /* PBXContainerItemProxy */;
 		};
 		C465822925A292E000E4418D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C4037A9324342E1F00150D47 /* Mu */;
+			target = C4037A9324342E1F00150D47 /* Mintee */;
 			targetProxy = C465822825A292E000E4418D /* PBXContainerItemProxy */;
 		};
 		C465839925A2ACAB00E4418D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C4037A9324342E1F00150D47 /* Mu */;
+			target = C4037A9324342E1F00150D47 /* Mintee */;
 			targetProxy = C465839825A2ACAB00E4418D /* PBXContainerItemProxy */;
 		};
 		C46583AA25A2ACBC00E4418D /* PBXTargetDependency */ = {
@@ -1557,7 +1569,7 @@
 		};
 		C4037AC224342E2300150D47 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3152598BE06FF5A4A09550D /* Pods-Mu.debug.xcconfig */;
+			baseConfigurationReference = 7A58002E646D111AF179E942 /* Pods-Mintee.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1569,13 +1581,13 @@
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
 					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
 				);
-				INFOPLIST_FILE = Mu/Info.plist;
+				INFOPLIST_FILE = Mintee/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mintee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1584,7 +1596,7 @@
 		};
 		C4037AC324342E2300150D47 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93F818CCB99A1927A9AB33BB /* Pods-Mu.release.xcconfig */;
+			baseConfigurationReference = 5871670AC74B0F4CE6684FEE /* Pods-Mintee.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1596,13 +1608,13 @@
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
 					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
 				);
-				INFOPLIST_FILE = Mu/Info.plist;
+				INFOPLIST_FILE = Mintee/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mu;
+				PRODUCT_BUNDLE_IDENTIFIER = Leko.Mintee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1611,7 +1623,7 @@
 		};
 		C4037AC524342E2300150D47 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7C335750AD2B685FE639E3DE /* Pods-Mu_AUT_Function.debug.xcconfig */;
+			baseConfigurationReference = 28B2B43E74F392EA14EA285F /* Pods-Mintee_AUT_Function.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1629,13 +1641,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mu.app/Mu";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mintee.app/Mintee";
 			};
 			name = Debug;
 		};
 		C4037AC624342E2300150D47 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44EADB854E2DD1067EE7C493 /* Pods-Mu_AUT_Function.release.xcconfig */;
+			baseConfigurationReference = 7058FD6A45C3DBA193180019 /* Pods-Mintee_AUT_Function.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1653,7 +1665,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mu.app/Mu";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mintee.app/Mintee";
 			};
 			name = Release;
 		};
@@ -1730,7 +1742,7 @@
 		};
 		C465839B25A2ACAB00E4418D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A42EEF8790153313551F5B71 /* Pods-Mu_AUT_Performance.debug.xcconfig */;
+			baseConfigurationReference = 1510162C2998365A11307B94 /* Pods-Mintee_AUT_Performance.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1747,13 +1759,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mu.app/Mu";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mintee.app/Mintee";
 			};
 			name = Debug;
 		};
 		C465839C25A2ACAB00E4418D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52A0B081CA2AE527419E07AE /* Pods-Mu_AUT_Performance.release.xcconfig */;
+			baseConfigurationReference = F1EC786721357F9A14CA6390 /* Pods-Mintee_AUT_Performance.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1769,7 +1781,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mu.app/Mu";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mintee.app/Mintee";
 			};
 			name = Release;
 		};
@@ -1794,7 +1806,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C4037A8F24342E1F00150D47 /* Build configuration list for PBXProject "Mu" */ = {
+		C4037A8F24342E1F00150D47 /* Build configuration list for PBXProject "Mintee" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037ABF24342E2300150D47 /* Debug */,
@@ -1803,7 +1815,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4037AC124342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu" */ = {
+		C4037AC124342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037AC224342E2300150D47 /* Debug */,
@@ -1812,7 +1824,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mu_AUT_Function" */ = {
+		C4037AC424342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee_AUT_Function" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037AC524342E2300150D47 /* Debug */,
@@ -1821,7 +1833,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "MuUITests" */ = {
+		C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "MinteeUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4037AC824342E2300150D47 /* Debug */,
@@ -1839,7 +1851,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C465839A25A2ACAB00E4418D /* Build configuration list for PBXNativeTarget "Mu_AUT_Performance" */ = {
+		C465839A25A2ACAB00E4418D /* Build configuration list for PBXNativeTarget "Mintee_AUT_Performance" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C465839B25A2ACAB00E4418D /* Debug */,
