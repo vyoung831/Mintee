@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>649000414060-abb4k7m3qqmpifmaaiar5urnsbno9knm.apps.googleusercontent.com</string>
+	<string>649000414060-l37i3r1l4v4vs43c9r1evb1fi2hnvcm8.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.649000414060-abb4k7m3qqmpifmaaiar5urnsbno9knm</string>
+	<string>com.googleusercontent.apps.649000414060-l37i3r1l4v4vs43c9r1evb1fi2hnvcm8</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB65E-VBQGi_GpiZj8CQuXLMeQzzklVecM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>Leko.Mu</string>
+	<string>Leko.Mintee</string>
 	<key>PROJECT_ID</key>
 	<string>leko-mu</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:649000414060:ios:8e91c5342f04ffe4622149</string>
+	<string>1:649000414060:ios:52861888a75b5963622149</string>
 	<key>DATABASE_URL</key>
 	<string>https://leko-mu.firebaseio.com</string>
 </dict>
