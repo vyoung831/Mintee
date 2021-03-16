@@ -30,6 +30,7 @@ class ThemeManager: NSObject, ObservableObject {
         case panelContent = "panelContent"
         case buttonText = "buttonText"
         case textFieldBorder = "textFieldBorder"
+        case disabledButton = "disabledButton"
         case disabledTextField = "disabledTextField"
         case disabledTextFieldText = "disabledTextFieldText"
         case collectionItem = "collectionItem"
@@ -56,6 +57,7 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var buttonText: Color
     
     @Published var textFieldBorder: Color
+    @Published var disabledButton: Color
     @Published var disabledTextField: Color
     @Published var disabledTextFieldText: Color
     
@@ -82,6 +84,7 @@ class ThemeManager: NSObject, ObservableObject {
         self.button = ThemeManager.getElementColor(.button, savedTheme)
         self.buttonText = ThemeManager.getElementColor(.buttonText, savedTheme)
         self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, savedTheme)
+        self.disabledButton = ThemeManager.getElementColor(.disabledButton, savedTheme)
         self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, savedTheme)
         self.disabledTextFieldText = ThemeManager.getElementColor(.disabledTextFieldText, savedTheme)
         self.collectionItem = ThemeManager.getElementColor(.collectionItem, savedTheme)
@@ -126,6 +129,7 @@ class ThemeManager: NSObject, ObservableObject {
             self.button = ThemeManager.getElementColor(.button, newTheme)
             self.buttonText = ThemeManager.getElementColor(.buttonText, newTheme)
             self.textFieldBorder = ThemeManager.getElementColor(.textFieldBorder, newTheme)
+            self.disabledButton = ThemeManager.getElementColor(.disabledButton, newTheme)
             self.disabledTextField = ThemeManager.getElementColor(.disabledTextField, newTheme)
             self.disabledTextFieldText = ThemeManager.getElementColor(.disabledTextFieldText, newTheme)
             self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
@@ -170,6 +174,8 @@ class ThemeManager: NSObject, ObservableObject {
                 return .accentColor
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
+            case .disabledTextField, .disabledButton:
+                return Color("theme-system-\(assetKey)")
             default:
                 return .primary
             }

@@ -119,7 +119,7 @@ struct BubbleRows<BubbleType : Day>: View {
                                 if presentationBase == .panel {
                                     Circle()
                                         .foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                            ? themeManager.button : .clear)
+                                                            ? themeManager.button : themeManager.disabledButton)
                                         .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
                                         .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
                                                height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
