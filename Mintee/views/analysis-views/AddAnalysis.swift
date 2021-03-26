@@ -20,7 +20,9 @@ struct AddAnalysis: View {
     @State var tags: [String] = []
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
-    @State var legendEntries: [LegendEntryView] = []
+    @State var legendEntries: [LegendEntryView] = [LegendEntryView(label: "Reached target", color: .green),
+                                                   LegendEntryView(label: "Under target", color: .blue),
+                                                   LegendEntryView(label: "Over target", color: .red)]
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -59,20 +61,7 @@ struct AddAnalysis: View {
                                            endDate: self.$endDate)
                     
                     // MARK: - Legend entries
-                    LegendSection(isPresentingLegendEntryPopup: self.$isPresentingLegendEntryPopup,
-                                  legendEntries: self.$legendEntries)
-                    .popover(isPresented: self.$isPresentingLegendEntryPopup, content: {
-                        AddLegendEntryPopup(isBeingPresented: self.$isPresentingLegendEntryPopup,
-                                            save: { label, color in
-                                                
-                                                // LegendEntryViews are deleted by their indices that were calculated here. It's assumed that the LegendEntryViews will not be reordered
-                                                let idx = self.legendEntries.count
-                                                self.legendEntries.append(
-                                                    LegendEntryView(delete: { self.legendEntries.remove(at: idx) },
-                                                                    label: label,
-                                                                    color: color))
-                                            })
-                    })
+                    LegendSection(legendEntries: self.$legendEntries)
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
