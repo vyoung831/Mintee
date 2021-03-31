@@ -18,12 +18,14 @@ public class Analysis: NSManagedObject {
     @NSManaged private var legend: AnalysisLegend?
     @NSManaged private var name: String?
     @NSManaged private var startDate: String?
+    @NSManaged private var dateRange: Int16
     @NSManaged private var tags: NSSet?
     
-    var _analysisType: Int16 { get { return self.analysisType } }
-    var _endDate: String? { get { return self.endDate } }
     var _name: String? { get { return self.name } }
+    var _analysisType: Int16 { get { return self.analysisType } }
     var _startDate: String? { get { return self.startDate } }
+    var _endDate: String? { get { return self.endDate } }
+    var _dateRange: Int16 { get { return self.dateRange } }
     var _legend: AnalysisLegend? { get { return self.legend } }
     var _tags: NSSet? { get { return self.tags } }
     
