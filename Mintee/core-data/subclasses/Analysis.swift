@@ -48,3 +48,50 @@ extension Analysis {
     @NSManaged private func removeFromTags(_ values: NSSet)
     
 }
+
+// MARK: - Initializers, deletion, and entity association utility funcs
+
+extension Analysis {
+    
+    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?,
+                     name: String,
+                     type: SaveFormatter.analysisType,
+                     startDate: Date,
+                     endDate: Date,
+                     legend: AnalysisLegend,
+                     tags: Set<String>) throws {
+        self.init(entity: entity, insertInto: context)
+        self.name = name
+        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.startDate = SaveFormatter.dateToStoredString(startDate)
+        self.endDate = SaveFormatter.dateToStoredString(endDate)
+        self.legend = legend
+        try self.associateTags(tags)
+    }
+    
+    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?,
+                     name: String,
+                     type: SaveFormatter.analysisType,
+                     dateRange: Int16,
+                     legend: AnalysisLegend,
+                     tags: Set<String>) throws {
+        self.init(entity: entity, insertInto: context)
+        self.name = name
+        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.dateRange = dateRange
+        self.legend = legend
+        try self.associateTags(tags)
+    }
+    
+    /**
+     Gets new or existing Tags with the given names, and associates them with this Analysis.
+     - parameter tags: Set of Strings for which to get/create Tags by name and associate with this Analysis
+     */
+    func associateTags(_ tags: Set<String>) throws {
+        for tagName in tags {
+            let tag = try Tag.getOrCreateTag(tagName: tagName)
+            self.addToTags(tag) // NSSet ignores dupliates
+        }
+    }
+    
+}

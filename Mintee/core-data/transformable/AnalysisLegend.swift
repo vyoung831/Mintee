@@ -14,12 +14,11 @@ import UIKit
 class AnalysisLegend: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
+    var entries: Set<LegendEntry>
     
     enum Keys: String {
         case entries = "entries"
     }
-    
-    var entries: Set<LegendEntry>
     
     init(legendEntries: Set<LegendEntry>) {
         self.entries = legendEntries
@@ -69,6 +68,8 @@ class AnalysisLegend: NSObject, NSSecureCoding {
     
 }
 
+// MARK: - AnalysisLegendTransformer
+
 // Subclass from `NSSecureUnarchiveFromDataTransformer`
 @objc(AnalysisLegendTransformer)
 final class AnalysisLegendTransformer: NSSecureUnarchiveFromDataTransformer {
@@ -92,6 +93,11 @@ final class AnalysisLegendTransformer: NSSecureUnarchiveFromDataTransformer {
 class LegendEntry: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
+    var color: String
+    var min: Float
+    var max: Float
+    var minOperator: Int16
+    var maxOperator: Int16
     
     enum Keys: String {
         case color = "color"
@@ -100,12 +106,6 @@ class LegendEntry: NSObject, NSSecureCoding {
         case minOperator = "minOperator"
         case maxOperator = "maxOperator"
     }
-    
-    var color: String
-    var min: Float
-    var max: Float
-    var minOperator: Int16
-    var maxOperator: Int16
     
     init(color: String, min: Float, max: Float, minOperator: Int16, maxOperator: Int16) {
         self.color = color
