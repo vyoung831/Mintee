@@ -20,6 +20,18 @@ struct SaveFormatterSelectionSection<Type: SelectableType>: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    /**
+     Returns an array of plain GridItems for SelectableType selection. The number of elements is equal to the number of selectable options.
+     - returns: Array of GridItems to use in this View's LazyVGrid.
+     */
+    func getGridItemArray() -> [GridItem] {
+        var items: [GridItem] = []
+        for _ in 0 ..< options.count {
+            items.append(GridItem())
+        }
+        return items
+    }
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 8) {
@@ -27,14 +39,21 @@ struct SaveFormatterSelectionSection<Type: SelectableType>: View {
             Text(self.sectionLabel)
                 .bold()
             
-            ForEach(0 ..< self.options.count, id: \.self) { idx in
-                Button(self.options[idx].stringValue, action: {
-                    self.selection = self.options[idx]
-                })
-                .padding(12)
-                .foregroundColor(self.options[idx] == self.selection ? themeManager.buttonText : themeManager.panelContent)
-                .background(self.options[idx] == self.selection ? themeManager.button : Color.clear )
-                .cornerRadius(3)
+            LazyVGrid(columns: self.getGridItemArray(),
+                      alignment: .center,
+                      spacing: 10) {
+                
+                ForEach(0 ..< self.options.count, id: \.self) { idx in
+                    Button(self.options[idx].stringValue, action: {
+                        self.selection = self.options[idx]
+                    })
+                    .frame(maxWidth: .infinity)
+                    .padding(12)
+                    .foregroundColor(self.options[idx] == self.selection ? themeManager.buttonText : themeManager.panelContent)
+                    .background(self.options[idx] == self.selection ? themeManager.button : Color.clear )
+                    .cornerRadius(3)
+                }
+                
             }
             
         }
