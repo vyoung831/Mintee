@@ -23,8 +23,6 @@ struct StartAndEndDateSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15, content: {
-            Text("Start and End Date")
-                .bold()
             
             /*
              The start and end dates are represented as buttons.

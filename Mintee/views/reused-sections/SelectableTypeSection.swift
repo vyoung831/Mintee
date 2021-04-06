@@ -1,5 +1,5 @@
 //
-//  SaveFormatterSelectionSection.swift
+//  SelectableTypeSection.swift
 //  Mintee
 //
 //  Section for presenting SaveFormatter enums that conform to SelectableType and updating the value of one on a form.
@@ -11,7 +11,17 @@
 import Foundation
 import SwiftUI
 
-struct SaveFormatterSelectionSection<Type: SelectableType>: View {
+/*
+ Enums that have all cases displayed to the user for selection/interaction conform to SelectableType.
+ */
+protocol SelectableType: Equatable {
+    
+    // String that's displayed to the user for selection
+    var stringValue: String { get }
+    
+}
+
+struct SelectableTypeSection<Type: SelectableType>: View {
     
     var sectionLabel: String
     

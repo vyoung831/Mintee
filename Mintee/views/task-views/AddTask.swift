@@ -117,9 +117,9 @@ struct AddTask: View {
                     
                     // MARK: - Task type
                     
-                    SaveFormatterSelectionSection<SaveFormatter.taskType>(sectionLabel: "Task type",
-                                                                          options: SaveFormatter.taskType.allCases,
-                                                                          selection: self.$taskType)
+                    SelectableTypeSection<SaveFormatter.taskType>(sectionLabel: "Task type",
+                                                                  options: SaveFormatter.taskType.allCases,
+                                                                  selection: self.$taskType)
                     
                     // MARK: - Dates
                     

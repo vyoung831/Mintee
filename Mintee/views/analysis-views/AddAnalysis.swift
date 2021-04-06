@@ -18,8 +18,13 @@ struct AddAnalysis: View {
     @State var analysisName: String = ""
     @State var analysisType: SaveFormatter.analysisType = .box
     @State var tags: [String] = []
+    
+    // Date range selection vars
+    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
+    @State var dateRange: String = ""
+    
     @State var legendSection: LegendSection = LegendSection()
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
@@ -50,13 +55,21 @@ struct AddAnalysis: View {
                                 tags: self.$tags)
                     
                     // MARK: - Analysis type
-                    SaveFormatterSelectionSection<SaveFormatter.analysisType>(sectionLabel: "Analysis type",
-                                                                              options: SaveFormatter.analysisType.allCases,
-                                                                              selection: self.$analysisType)
+                    SelectableTypeSection<SaveFormatter.analysisType>(sectionLabel: "Analysis type",
+                                                                      options: SaveFormatter.analysisType.allCases,
+                                                                      selection: self.$analysisType)
                     
-                    // MARK: - Start and end date
-                    StartAndEndDateSection(startDate: self.$startDate,
-                                           endDate: self.$endDate)
+                    // MARK: - Date range selection
+                    SelectableTypeSection<AnalysisUtils.dateRangeType>(sectionLabel: "Date range",
+                                                                       options: AnalysisUtils.dateRangeType.allCases,
+                                                                       selection: self.$rangeType)
+                    
+                    if self.rangeType == .startEnd {
+                        StartAndEndDateSection(startDate: self.$startDate,
+                                               endDate: self.$endDate)
+                    } else {
+                        DateRangeTextFieldSection(dateRange: self.$dateRange)
+                    }
                     
                     // MARK: - Legend entries
                     legendSection
