@@ -10,7 +10,9 @@ import SwiftUI
 
 struct LegendSection: View {
     
-    @Binding var legendEntries: [LegendEntryView]
+    @State var legendEntryViews: [LegendEntryView] = [ LegendEntryView(type: .categorized, color: .green, category: .reachedTarget),
+                                                       LegendEntryView(type: .categorized, color: .red, category: .overTarget),
+                                                       LegendEntryView(type: .categorized, color: .red, category: .underTarget)]
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -24,8 +26,8 @@ struct LegendSection: View {
                 Spacer()
             }
             
-            ForEach(0 ..< legendEntries.count, id: \.self) { idx in
-                legendEntries[idx]
+            ForEach(0 ..< legendEntryViews.count, id: \.self) { idx in
+                legendEntryViews[idx]
             }
             
         }

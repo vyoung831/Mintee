@@ -20,9 +20,7 @@ struct AddAnalysis: View {
     @State var tags: [String] = []
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
-    @State var legendEntries: [LegendEntryView] = [LegendEntryView(label: "Reached target", color: .green),
-                                                   LegendEntryView(label: "Under target", color: .blue),
-                                                   LegendEntryView(label: "Over target", color: .red)]
+    @State var legendSection: LegendSection = LegendSection()
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -61,7 +59,7 @@ struct AddAnalysis: View {
                                            endDate: self.$endDate)
                     
                     // MARK: - Legend entries
-                    LegendSection(legendEntries: self.$legendEntries)
+                    legendSection
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
