@@ -16,6 +16,19 @@ struct LegendSection: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    /**
+     - returns: AnalysisLegend representing this View's legend entries
+     */
+    func createAnalysisLegend() throws -> AnalysisLegend {
+        var categorizedLegendEntries = Set<CategorizedLegendEntry>()
+        for lev in legendEntryViews {
+            categorizedLegendEntries.insert(
+                try CategorizedLegendEntry(category: lev.category, color: UIColor(lev.color))
+            )
+        }
+        return AnalysisLegend(categorizedEntries: categorizedLegendEntries, completionEntries: Set())
+    }
+    
     var body: some View {
         
         VStack(spacing: 10) {

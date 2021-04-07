@@ -64,7 +64,7 @@ class AnalysisLegend: NSObject, NSSecureCoding {
         var idx = 0;
         for entry in self.categorizedEntries {
             debugDictionary["CategorizedLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            debugDictionary["CategorizedLegendEntry[\(idx)].type"] = entry.type
+            debugDictionary["CategorizedLegendEntry[\(idx)].type"] = entry.category.rawValue
             idx += 1
         }
         
@@ -111,7 +111,7 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
     var color: String
-    var type: Category
+    var category: Category
     
     enum Category: Int16 {
         case reachedTarget = 1
@@ -120,46 +120,46 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     }
     
     enum Keys: String {
-        case type = "type"
+        case category = "category"
         case color = "color"
     }
     
-    init(type: Category, color: UIColor) throws {
+    init(category: Category, color: UIColor) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
                                               ["Message" : "CategorizedLegendEntry.init() received color that could not converted to a hex String",
                                                "color" : color.debugDescription])
         }
-        self.type = type
+        self.category = category
         self.color = hexStringColor
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(NSNumber(value: self.type.rawValue), forKey: CategorizedLegendEntry.Keys.type.rawValue)
+        coder.encode(NSNumber(value: self.category.rawValue), forKey: CategorizedLegendEntry.Keys.category.rawValue)
         coder.encode(self.color as NSString, forKey: CategorizedLegendEntry.Keys.color.rawValue)
     }
     
     required init?(coder: NSCoder) {
         
-        guard let type = coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.type.rawValue) as? Int16,
+        guard let category = coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue) as? Int16,
               let color = coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue) as String? else {
             
             let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() could not decode its properties",
-                                            CategorizedLegendEntry.Keys.type.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.type.rawValue).debugDescription,
+                                            CategorizedLegendEntry.Keys.category.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
                                             CategorizedLegendEntry.Keys.color.rawValue : coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
             
         }
         
-        guard let category = Category.init(rawValue: type) else {
-            let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() found an Int16 under `type` that could not be converted to a valid value of type Category",
-                                            "type" : type]
+        guard let cat = Category.init(rawValue: category) else {
+            let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() found an Int16 under `category` that could not be converted to a valid value of type Category",
+                                            "category" : category]
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
         }
         
-        self.type = category
+        self.category = cat
         self.color = color
         
     }
