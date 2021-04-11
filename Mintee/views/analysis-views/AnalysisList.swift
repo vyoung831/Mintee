@@ -15,6 +15,8 @@ struct AnalysisList: View {
         sortDescriptors: []
     ) var analysesFetch: FetchedResults<Analysis>
     
+    @Binding var isBeingPresented: Bool
+    
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     var body: some View {
@@ -33,8 +35,15 @@ struct AnalysisList: View {
             .padding(CollectionSizer.gridVerticalPadding)
             .background(themeManager.panel)
             .navigationTitle("Analyses")
+            .navigationBarItems(trailing:
+                                    Button(action: {
+                                        self.isBeingPresented = false
+                                    }, label: {
+                                        Text("Done")
+                                    })
+            )
             
-        }
+        }.accentColor(themeManager.accent)
         
     }
     
