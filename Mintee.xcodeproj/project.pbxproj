@@ -63,6 +63,7 @@
 		C4578D2324B4065C008BD3D4 /* LabelAndTextFieldSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2224B4065C008BD3D4 /* LabelAndTextFieldSection.swift */; };
 		C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */; };
 		C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45790AD249FE74C002E16D5 /* Task-Tests.swift */; };
+		C45AA22B261E32DB001F6A28 /* AnalysisList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45AA22A261E32DB001F6A28 /* AnalysisList.swift */; };
 		C462C054243A1F9600EBB940 /* TodayViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */; };
 		C465819425A27D7300E4418D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C465819325A27D7300E4418D /* XCTest.framework */; };
 		C46581B325A289FD00E4418D /* TestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43205F424A0B7C0004D3AA1 /* TestContainer.swift */; };
@@ -251,6 +252,7 @@
 		C4578D2224B4065C008BD3D4 /* LabelAndTextFieldSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelAndTextFieldSection.swift; sourceTree = "<group>"; };
 		C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartAndEndDateSection.swift; sourceTree = "<group>"; };
 		C45790AD249FE74C002E16D5 /* Task-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-Tests.swift"; sourceTree = "<group>"; };
+		C45AA22A261E32DB001F6A28 /* AnalysisList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisList.swift; sourceTree = "<group>"; };
 		C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerUITests.swift; sourceTree = "<group>"; };
 		C465818025A27D6800E4418D /* libSharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSharedTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C465819325A27D7300E4418D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -609,8 +611,8 @@
 		C45F55C6261B35A6007A66A6 /* reused-sections */ = {
 			isa = PBXGroup;
 			children = (
-				C447C18225DFE786006FF43A /* LegendSection.swift */,
 				C49221A2261D0AC500B92453 /* DateRangeTextFieldSection.swift */,
+				C447C18225DFE786006FF43A /* LegendSection.swift */,
 			);
 			path = "reused-sections";
 			sourceTree = "<group>";
@@ -891,6 +893,7 @@
 			children = (
 				C4DACF8C25D8BB02001F3468 /* AddAnalysis.swift */,
 				C4EBC1D625DF4D6C006EACD4 /* LegendEntryView.swift */,
+				C45AA22A261E32DB001F6A28 /* AnalysisList.swift */,
 				C45F55C6261B35A6007A66A6 /* reused-sections */,
 				C492217F261D049F00B92453 /* util */,
 			);
@@ -1357,6 +1360,7 @@
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
 				C4EBC1D725DF4D6C006EACD4 /* LegendEntryView.swift in Sources */,
 				C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */,
+				C45AA22B261E32DB001F6A28 /* AnalysisList.swift in Sources */,
 				C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,

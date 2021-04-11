@@ -13,6 +13,7 @@ struct AnalysisView: View {
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     @State var isPresentingAddAnalysis: Bool = false
+    @State var isPresentingAnalysisList: Bool = false
     
     init() {
         UIPageControl.appearance().currentPageIndicatorTintColor = .red
@@ -34,23 +35,38 @@ struct AnalysisView: View {
             }
             .background(themeManager.panel)
             .navigationBarTitle("Analysis")
-            .navigationBarItems(trailing:
-                                    Button(action: {
-                                        self.isPresentingAddAnalysis = true
-                                    }, label: {
-                                        Image(systemName: "plus.circle")
-                                            .frame(width: 30, height: 30, alignment: .center)
-                                            .foregroundColor(themeManager.panelContent)
-                                            .accessibility(identifier: "add-analysis-button")
-                                    })
-                                    .scaleEffect(1.5)
-            )
+            .navigationBarItems(trailing: HStack {
+                
+                Button(action: {
+                    self.isPresentingAddAnalysis = true
+                }, label: {
+                    Image(systemName: "plus.circle")
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .foregroundColor(themeManager.panelContent)
+                        .accessibility(identifier: "add-analysis-button")
+                })
+                .scaleEffect(1.5)
+                .sheet(isPresented: self.$isPresentingAddAnalysis, content: {
+                    AddAnalysis(isBeingPresented: self.$isPresentingAddAnalysis)
+                })
+                
+                Button(action: {
+                    self.isPresentingAnalysisList = true
+                }, label: {
+                    Image(systemName: "list.bullet")
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .foregroundColor(themeManager.panelContent)
+                        .accessibility(identifier: "analysis-list-button")
+                })
+                .scaleEffect(1.5)
+                .sheet(isPresented: self.$isPresentingAnalysisList, content: {
+                    AnalysisList()
+                        .environment(\.managedObjectContext, CDCoordinator.moc)
+                })
+            
+            })
             
         }
-        .sheet(isPresented: self.$isPresentingAddAnalysis, content: {
-            AddAnalysis(isBeingPresented: self.$isPresentingAddAnalysis)
-        })
-        
         
     }
 }
