@@ -118,6 +118,7 @@ struct EditTask: View {
                     
                     LabelAndTextFieldSection(label: "Task name",
                                              labelIdentifier: "task-name-label",
+                                             placeHolder: "Task name",
                                              textField: self.$taskName,
                                              textFieldIdentifier: "task-name-text-field")
                     if (saveErrorMessage.count > 0) {

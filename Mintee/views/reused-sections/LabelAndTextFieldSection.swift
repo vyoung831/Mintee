@@ -15,6 +15,7 @@ struct LabelAndTextFieldSection: View {
     
     var label: String?
     var labelIdentifier: String
+    var placeHolder: String
     
     @Binding var textField: String
     var textFieldIdentifier: String
@@ -28,7 +29,7 @@ struct LabelAndTextFieldSection: View {
                     .accessibility(identifier: labelIdentifier)
             }
             
-            TextField("Task name", text: self.$textField)
+            TextField(self.placeHolder, text: self.$textField)
                 .foregroundColor(.primary)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .accessibility(identifier: self.textFieldIdentifier)

@@ -11,7 +11,6 @@ import SwiftUI
 struct AddAnalysis: View {
     
     @Binding var isBeingPresented: Bool
-    @State var isPresentingLegendEntryPopup: Bool = false
     
     @State var errorMessage: String = ""
     
@@ -86,6 +85,7 @@ struct AddAnalysis: View {
                     
                     LabelAndTextFieldSection(label: "Analysis name",
                                              labelIdentifier: "analysis-name-label",
+                                             placeHolder: "Analysis name",
                                              textField: self.$analysisName,
                                              textFieldIdentifier: "analysis-name-text-field")
                     if (errorMessage.count > 0) {
