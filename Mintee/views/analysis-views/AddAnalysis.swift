@@ -45,6 +45,7 @@ struct AddAnalysis: View {
                                             startDate: self.startDate,
                                             endDate: self.endDate,
                                             legend: legendSection.createAnalysisLegend(),
+                                            order: -1,
                                             tags: Set(self.tags))
             case .dateRange:
                 guard let range = Int16(dateRangeString) else {
@@ -57,6 +58,7 @@ struct AddAnalysis: View {
                                             type: self.analysisType,
                                             dateRange: range,
                                             legend: legendSection.createAnalysisLegend(),
+                                            order: -1,
                                             tags: Set(self.tags))
             }
         } catch {

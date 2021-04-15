@@ -19,8 +19,10 @@ public class Analysis: NSManagedObject {
     @NSManaged private var name: String?
     @NSManaged private var startDate: String?
     @NSManaged private var dateRange: Int16
+    @NSManaged private var order: Int16
     @NSManaged private var tags: NSSet?
     
+    var _order: Int16 { get { return self.order }}
     var _name: String? { get { return self.name } }
     var _analysisType: Int16 { get { return self.analysisType } }
     var _startDate: String? { get { return self.startDate } }
@@ -59,6 +61,7 @@ extension Analysis {
                      startDate: Date,
                      endDate: Date,
                      legend: AnalysisLegend,
+                     order: Int16,
                      tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
@@ -66,6 +69,7 @@ extension Analysis {
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         self.legend = legend
+        self.order = order
         try self.associateTags(tags)
     }
     
@@ -74,12 +78,14 @@ extension Analysis {
                      type: SaveFormatter.analysisType,
                      dateRange: Int16,
                      legend: AnalysisLegend,
+                     order: Int16,
                      tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.analysisType = SaveFormatter.analysisTypeToStored(type)
         self.dateRange = dateRange
         self.legend = legend
+        self.order = order
         try self.associateTags(tags)
     }
     

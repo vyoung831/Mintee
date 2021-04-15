@@ -11,8 +11,9 @@ import SwiftUI
 struct AnalysisList: View {
     
     @FetchRequest(
+        // TO-DO: Update NSSortDescriptor to use more robust way to sort Analyses by order
         entity: Analysis.entity(),
-        sortDescriptors: []
+        sortDescriptors: [NSSortDescriptor(key: "order", ascending: true)]
     ) var analysesFetch: FetchedResults<Analysis>
     
     @Binding var isBeingPresented: Bool
@@ -35,7 +36,13 @@ struct AnalysisList: View {
             .padding(CollectionSizer.gridVerticalPadding)
             .background(themeManager.panel)
             .navigationTitle("Analyses")
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading:
+                                    Button(action: {
+                                        self.isBeingPresented = false
+                                    }, label: {
+                                        Text("Cancel")
+                                    }),
+                                trailing:
                                     Button(action: {
                                         self.isBeingPresented = false
                                     }, label: {
