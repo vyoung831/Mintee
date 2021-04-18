@@ -63,7 +63,7 @@ struct AnalysisView: View {
                     AnalysisList(isBeingPresented: self.$isPresentingAnalysisList)
                         .environment(\.managedObjectContext, CDCoordinator.moc)
                 })
-            
+                
             })
             
         }
