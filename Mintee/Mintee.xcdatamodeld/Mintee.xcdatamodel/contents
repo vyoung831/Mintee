@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D80" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Analysis" representedClassName="Analysis" syncable="YES">
         <attribute name="analysisType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dateRange" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="endDate" optional="YES" attributeType="String"/>
         <attribute name="legend" optional="YES" attributeType="Transformable" valueTransformerName="AnalysisLegendTransformer" customClassName="AnalysisLegend"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -63,7 +64,7 @@
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="targetSets" inverseEntity="Task"/>
     </entity>
     <elements>
-        <element name="Analysis" positionX="-9381.968017578125" positionY="1956.215362548828" width="128" height="119"/>
+        <element name="Analysis" positionX="-9381.968017578125" positionY="1956.215362548828" width="128" height="134"/>
         <element name="Tag" positionX="-9576.1591796875" positionY="2091.435958862305" width="128" height="88"/>
         <element name="Task" positionX="-9748.8037109375" positionY="2124.302429199219" width="128" height="163"/>
         <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="103"/>

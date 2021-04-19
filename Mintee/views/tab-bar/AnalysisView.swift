@@ -35,7 +35,9 @@ struct AnalysisView: View {
             .background(themeManager.panel)
             .navigationBarTitle("Analysis")
             .navigationBarItems(trailing:
-                                    Button(action: {}, label: {
+                                    Button(action: {
+                                        self.isPresentingAddAnalysis = true
+                                    }, label: {
                                         Image(systemName: "plus.circle")
                                             .frame(width: 30, height: 30, alignment: .center)
                                             .foregroundColor(themeManager.panelContent)
