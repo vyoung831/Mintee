@@ -36,7 +36,7 @@ struct StartAndEndDateSection: View {
                     }
                 })
             
-            HStack(alignment: .center, spacing: 0) {
+            HStack(alignment: .center, spacing: 8) {
                 Text("Start:")
                 DatePicker("", selection: startDateBinding, displayedComponents: [.date])
                     .labelsHidden()
@@ -44,7 +44,7 @@ struct StartAndEndDateSection: View {
                 Spacer()
             }
             
-            HStack(alignment: .center, spacing: 8) {
+            HStack(alignment: .center, spacing: 16) {
                 Text("End:")
                 DatePicker("", selection: endDateBinding, displayedComponents: .date)
                     .labelsHidden()

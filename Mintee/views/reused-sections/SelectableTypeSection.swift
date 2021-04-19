@@ -2,7 +2,7 @@
 //  SelectableTypeSection.swift
 //  Mintee
 //
-//  Section for presenting SaveFormatter enums that conform to SelectableType and updating the value of one on a form.
+//  Section re-used on forms for presenting and interacting with enums that conform to SelectableType.
 //
 //  Created by Vincent Young on 7/22/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
