@@ -101,3 +101,46 @@ extension Analysis {
     }
     
 }
+
+// MARK: - Ordering utility functions
+
+extension Analysis {
+    
+    /**
+     Sets the order in which this Analysis will be displayed on the Analysis homepage. Highest priority `order` = 0
+     - parameter order: The Int16 to assign to this Analysis' `order`.
+     */
+    func setOrder(_ order: Int16) {
+        self.order = order
+    }
+    
+    /**
+     Marks this Analysis as not to be displayed on the Analysis homepage.
+     */
+    func setUnincluded() {
+        self.order = -1
+    }
+    
+}
+
+extension Analysis {
+    
+    /**
+     Gathers debug descriptions of this Analysis' legend and tags, and adds them to an existing inout Dictionary.
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info
+     */
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        
+        if let tagsArray = self.tags?.sortedArray(using: []) as? [Tag] {
+            var tagsIndex = 0
+            for unwrappedTag in tagsArray {
+                userInfo["\(prefix)tags[\(tagsIndex)]"] = unwrappedTag._name
+                tagsIndex += 1
+            }
+        }
+
+        self.legend?.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
+        
+    }
+    
+}

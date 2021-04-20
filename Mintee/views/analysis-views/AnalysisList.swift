@@ -14,11 +14,29 @@ import UniformTypeIdentifiers
 
 struct AnalysisList: View {
     
+    @State var errorMessage: String = ""
     @State var draggedPreview: AnalysisListModel.AnalysisListCardPreview?
     @Binding var isBeingPresented: Bool
     
     @StateObject var model: AnalysisListModel = AnalysisListModel()
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
+    /**
+     Re-assigns `order` to Analyses in the MOC by iterating over the model's previews.
+     */
+    func saveAnalysisOrdering() throws {
+        
+        for preview in model.sortedPreviews {
+            if preview.order >= 0 {
+                (preview.id as Analysis).setOrder(Int16(preview.order))
+            } else {
+                (preview.id as Analysis).setUnincluded()
+            }
+        }
+        
+        try CDCoordinator.moc.save()
+        
+    }
     
     var body: some View {
         
@@ -26,6 +44,12 @@ struct AnalysisList: View {
             
             GeometryReader { gr in
                 ScrollView(.vertical, showsIndicators: true) {
+                    
+                    if errorMessage.count > 0 {
+                        Text(self.errorMessage)
+                            .foregroundColor(.red)
+                    }
+                    
                     LazyVGrid(columns: [GridItem(.fixed(gr.size.width))]) {
                         
                         /*
@@ -66,7 +90,19 @@ struct AnalysisList: View {
                                     }),
                                 trailing:
                                     Button(action: {
-                                        self.isBeingPresented = false
+                                        do {
+                                            try saveAnalysisOrdering()
+                                            self.isBeingPresented = false
+                                        } catch {
+                                            var userInfo: [String : Any] = ["Message" : "AnalysisList failed to save new Analysis orders"]
+                                            for idx in 0 ..< model.sortedPreviews.count {
+                                                userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
+                                                userInfo["preview[\(idx)].id"] = (model.sortedPreviews[idx].id as Analysis).debugDescription
+                                                (model.sortedPreviews[idx].id as Analysis).mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
+                                            }
+                                            ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
+                                            self.errorMessage = ErrorManager.unexpectedErrorMessage
+                                        }
                                     }, label: {
                                         Text("Save")
                                     })
