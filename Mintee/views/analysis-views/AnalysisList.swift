@@ -10,9 +10,11 @@
 
 import SwiftUI
 import CoreData
+import UniformTypeIdentifiers
 
 struct AnalysisList: View {
     
+    @State var draggedPreview: AnalysisListModel.AnalysisListCardPreview?
     @Binding var isBeingPresented: Bool
     
     @StateObject var model: AnalysisListModel = AnalysisListModel()
@@ -26,15 +28,31 @@ struct AnalysisList: View {
                 ScrollView(.vertical, showsIndicators: true) {
                     LazyVGrid(columns: [GridItem(.fixed(gr.size.width))]) {
                         
+                        /*
+                         Each AnalysisListCard's drop delegate re-sorts the model's sorted previews if the dragged preview enters.
+                         Because each drop delegate must know the current position of the dragged preview, it maintains binding to the dragged preview and the model's sorted array of previews.
+                         AnalysisList and its AnalysisListCards' drag delegates use those bindings to communicate rather than use the required NSItemProvider.
+                         */
                         ForEach(model.sortedPreviews) { preview in
                             AnalysisListCard(togglePreview: {
                                 AnalysisListModel.togglePreview(preview: preview, previews: &model.sortedPreviews)
                             },
                             isChecked: preview.id._order >= 0 ? true : false,
                             analysis: preview.id)
+                            .onDrag({
+                                // Since each drop delegate relies on draggedPreview, only "included" previews can be dragged and reordered within AnalysisList.
+                                if preview.order >= 0 {
+                                    self.draggedPreview = preview
+                                }
+                                return NSItemProvider(object: "" as NSString)
+                            })
+                            .onDrop(of: [UTType.text], delegate: AnalysisListModel.AnalysisListCardDropDelegate(item: preview,
+                                                                                                                sortedPreviews: $model.sortedPreviews,
+                                                                                                                draggedPreview: self.$draggedPreview))
                         }
                         
                     }.animation(.default)
+                    
                 }
             }
             .padding(CollectionSizer.gridVerticalPadding)
@@ -153,6 +171,38 @@ class AnalysisListModel: NSObject, ObservableObject {
         
     }
     
+    struct AnalysisListCardDropDelegate: DropDelegate {
+        
+        let item: AnalysisListCardPreview
+        @Binding var sortedPreviews: [AnalysisListCardPreview]
+        @Binding var draggedPreview: AnalysisListCardPreview?
+        
+        /**
+         Called when a drop enters an AnalysisListCard with NSItemProvider of type `UTType.text`.
+         If the binded-to dragged preview is non-nil, swap it with the AnalysisListPreview that's associated with this drop delegate.
+         */
+        func dropEntered(info: DropInfo) {
+            if item != draggedPreview,
+               item.order >= 0,
+               let preview = draggedPreview,
+               let draggedIndex = sortedPreviews.firstIndex(of: preview),
+               let currentIndex = sortedPreviews.firstIndex(of: item) {
+                sortedPreviews.swapAt(draggedIndex, currentIndex)
+            }
+        }
+        
+        func dropUpdated(info: DropInfo) -> DropProposal? {
+            return DropProposal(operation: .move)
+        }
+        
+        func performDrop(info: DropInfo) -> Bool {
+            AnalysisListModel.reorderPreviews(&sortedPreviews)
+            draggedPreview = nil
+            return true
+        }
+        
+    }
+    
     private var fetchedResultsController: NSFetchedResultsController<Analysis> = NSFetchedResultsController()
     @Published var sortedPreviews: [AnalysisListCardPreview] = []
     
@@ -160,6 +210,25 @@ class AnalysisListModel: NSObject, ObservableObject {
         super.init()
         setUpFetchedResults()
         AnalysisListModel.sortPreviews(&self.sortedPreviews)
+    }
+    
+    /**
+     Re-assigns `order` to an array of AnalysListCardPreview.
+     All "included" previews before the first "nonincluded" preview have `order` reassigned based on their order in the array of previews.
+     All previews after (and including) the first 'nonincluded' preview have `order` set to -1.
+     - parameter previews: (inout) The array of AnalysisListCardPreview to reorder.
+     */
+    static func reorderPreviews(_ previews: inout [AnalysisListCardPreview]) {
+        var order = 0
+        let endIndex = previews.firstIndex(where: { $0.order < 0 } ) ?? previews.count
+        for idx in 0 ..< endIndex {
+            previews[idx].order = order
+            order += 1
+        }
+        
+        for idx in endIndex ..< previews.count {
+            previews[idx].order = -1
+        }
     }
     
     /**

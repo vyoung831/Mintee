@@ -84,4 +84,33 @@ extension AnalysisList_Tests {
         
     }
     
+    func test_analysisListModel_reorderPreviews_maintainOrder() {
+        
+        var previews = [AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: 3),
+                        AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: 2),
+                        AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: -1),
+                        AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: -1)]
+        let firstAnalysis = previews[0]
+        let secondAnalysis = previews[1]
+        
+        AnalysisListModel.reorderPreviews(&previews)
+        let mappedOrders = previews.map{ $0.order }
+        XCTAssert(mappedOrders == [0,1,-1,-1])
+        XCTAssert(firstAnalysis == previews[0])
+        XCTAssert(secondAnalysis == previews[1])
+        
+    }
+    
+    func test_analysisListModel_reorderPreviews_reorderUpToFirstUnincluded() {
+        
+        var previews = [AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: 3),
+                        AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: 2),
+                        AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: -1),
+                        AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: 0)]
+        AnalysisListModel.reorderPreviews(&previews)
+        let mappedOrders = previews.map{ $0.order }
+        XCTAssert(mappedOrders == [0,1,-1,-1])
+        
+    }
+    
 }
