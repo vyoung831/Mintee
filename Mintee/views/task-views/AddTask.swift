@@ -100,6 +100,7 @@ struct AddTask: View {
                     
                     LabelAndTextFieldSection(label: "Task name",
                                              labelIdentifier: "task-name-label",
+                                             placeHolder: "Task name",
                                              textField: self.$taskName,
                                              textFieldIdentifier: "task-name-text-field")
                     if (errorMessage.count > 0) {

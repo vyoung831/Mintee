@@ -76,7 +76,7 @@ struct SearchTagPopup: View {
                 }
             }
             
-            LabelAndTextFieldSection(label: nil, labelIdentifier: "", textField: self.$tagText, textFieldIdentifier: "add-tag-popup-text-field")
+            LabelAndTextFieldSection(label: nil, labelIdentifier: "", placeHolder: "Tag name", textField: self.$tagText, textFieldIdentifier: "add-tag-popup-text-field")
             
             if errorMessage.count > 0 {
                 Text(errorMessage)

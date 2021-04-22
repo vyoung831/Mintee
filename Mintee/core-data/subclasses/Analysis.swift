@@ -19,8 +19,10 @@ public class Analysis: NSManagedObject {
     @NSManaged private var name: String?
     @NSManaged private var startDate: String?
     @NSManaged private var dateRange: Int16
+    @NSManaged private var order: Int16
     @NSManaged private var tags: NSSet?
     
+    var _order: Int16 { get { return self.order }}
     var _name: String? { get { return self.name } }
     var _analysisType: Int16 { get { return self.analysisType } }
     var _startDate: String? { get { return self.startDate } }
@@ -59,6 +61,7 @@ extension Analysis {
                      startDate: Date,
                      endDate: Date,
                      legend: AnalysisLegend,
+                     order: Int16,
                      tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
@@ -66,6 +69,7 @@ extension Analysis {
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         self.legend = legend
+        self.order = order
         try self.associateTags(tags)
     }
     
@@ -74,12 +78,14 @@ extension Analysis {
                      type: SaveFormatter.analysisType,
                      dateRange: Int16,
                      legend: AnalysisLegend,
+                     order: Int16,
                      tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.analysisType = SaveFormatter.analysisTypeToStored(type)
         self.dateRange = dateRange
         self.legend = legend
+        self.order = order
         try self.associateTags(tags)
     }
     
@@ -92,6 +98,52 @@ extension Analysis {
             let tag = try Tag.getOrCreateTag(tagName: tagName)
             self.addToTags(tag) // NSSet ignores dupliates
         }
+    }
+    
+}
+
+// MARK: - Ordering utility functions
+
+extension Analysis {
+    
+    /**
+     Sets the order in which this Analysis will be displayed on the Analysis homepage. Highest priority `order` = 0
+     - parameter order: The Int16 to assign to this Analysis' `order`.
+     */
+    func setOrder(_ order: Int16) {
+        self.order = order
+    }
+    
+    /**
+     Marks this Analysis as not to be displayed on the Analysis homepage.
+     */
+    func setUnincluded() {
+        self.order = -1
+    }
+    
+}
+
+extension Analysis {
+    
+    /**
+     Gathers debug descriptions of this Analysis' legend and tags, and adds them to an existing inout Dictionary.
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
+     */
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        
+        // Add associated tag names
+        if let tagsArray = self.tags?.sortedArray(using: []) as? [Tag] {
+            var tagsIndex = 0
+            for unwrappedTag in tagsArray {
+                userInfo["\(prefix)tags[\(tagsIndex)]"] = unwrappedTag._name
+                tagsIndex += 1
+            }
+        }
+        
+        // Add AnalysisLegend debug info
+        self.legend?.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
+        
     }
     
 }

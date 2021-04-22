@@ -53,34 +53,29 @@ class AnalysisLegend: NSObject, NSSecureCoding {
     }
     
     /**
-     Gathers debug descriptions of this AnalysisLegend's LegendEntries and their properties.
-     - parameter userInfo: [String : Any] Dictionary containing existing debug info
-     - returns: Dictionary containing existing debug info + debug descriptions of LegendEntries' properties
+     Gathers debug descriptions of this AnalysisLegend's legend entries and adds them to an existing inout Dictionary.
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
      */
-    func mergeDebugDictionary(userInfo: [String : Any]) -> [String : Any] {
-        
-        var debugDictionary: [String : Any] = [:]
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
         
         var idx = 0;
         for entry in self.categorizedEntries {
-            debugDictionary["CategorizedLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            debugDictionary["CategorizedLegendEntry[\(idx)].type"] = entry.category.rawValue
+            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].color"] = entry.color.debugDescription
+            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].type"] = entry.category.rawValue
             idx += 1
         }
         
+        idx = 0
         for entry in self.completionEntries {
-            debugDictionary["CompletionLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            debugDictionary["CompletionLegendEntry[\(idx)].min"] = entry.min
-            debugDictionary["CompletionLegendEntry[\(idx)].max"] = entry.max
-            debugDictionary["CompletionLegendEntry[\(idx)].minOperator"] = entry.minOperator
-            debugDictionary["CompletionLegendEntry[\(idx)].maxOperator"] = entry.maxOperator
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].color"] = entry.color.debugDescription
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].min"] = entry.min
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].max"] = entry.max
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].minOperator"] = entry.minOperator
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].maxOperator"] = entry.maxOperator
             idx += 1
         }
         
-        debugDictionary.merge(userInfo, uniquingKeysWith: {
-            return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)"
-        })
-        return debugDictionary
     }
     
 }

@@ -11,7 +11,6 @@ import SwiftUI
 struct AddAnalysis: View {
     
     @Binding var isBeingPresented: Bool
-    @State var isPresentingLegendEntryPopup: Bool = false
     
     @State var errorMessage: String = ""
     
@@ -46,6 +45,7 @@ struct AddAnalysis: View {
                                             startDate: self.startDate,
                                             endDate: self.endDate,
                                             legend: legendSection.createAnalysisLegend(),
+                                            order: -1,
                                             tags: Set(self.tags))
             case .dateRange:
                 guard let range = Int16(dateRangeString) else {
@@ -58,6 +58,7 @@ struct AddAnalysis: View {
                                             type: self.analysisType,
                                             dateRange: range,
                                             legend: legendSection.createAnalysisLegend(),
+                                            order: -1,
                                             tags: Set(self.tags))
             }
         } catch {
@@ -86,6 +87,7 @@ struct AddAnalysis: View {
                     
                     LabelAndTextFieldSection(label: "Analysis name",
                                              labelIdentifier: "analysis-name-label",
+                                             placeHolder: "Analysis name",
                                              textField: self.$analysisName,
                                              textFieldIdentifier: "analysis-name-text-field")
                     if (errorMessage.count > 0) {
