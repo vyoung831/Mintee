@@ -78,9 +78,12 @@ extension AnalysisList_Tests {
                         AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: -1),
                         AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: -1),
                         AnalysisListModel.AnalysisListCardPreview(id: Analysis(), order: -1)]
+        let toggledPreview = previews[3]
+        
         AnalysisListModel.togglePreview(preview: previews[3], previews: &previews)
         let mappedOrders = previews.map{ $0.order }
         XCTAssert(mappedOrders == [0,1,2,-1,-1])
+        XCTAssert(toggledPreview == previews[2])
         
     }
     

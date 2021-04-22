@@ -53,8 +53,9 @@ class AnalysisLegend: NSObject, NSSecureCoding {
     }
     
     /**
-     Gathers debug descriptions of this AnalysisLegend's LegendEntries and adds them to an existing inout Dictionary.
-     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info
+     Gathers debug descriptions of this AnalysisLegend's legend entries and adds them to an existing inout Dictionary.
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
      */
     func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
         

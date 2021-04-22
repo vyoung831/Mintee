@@ -4,6 +4,11 @@
 //
 //  This View's implementation was based largely on the accepted answer here: https://stackoverflow.com/questions/62606907/swiftui-using-ondrag-and-ondrop-to-reorder-items-within-one-single-lazygrid
 //
+//  Analyses are loaded from the MOC to present to the user. However, to avoid letting user interaction with AnalysisListCard edit the MOC in place, a model class (AnalysisListModel) serves as AnalysisList's source of truth.
+//  AnalysisListModel fetches and maintains Analyses as a sorted array of identifiable and equatable previews, and AnalysisList draws/re-draws AnalysisListCards based on the AnalysisListModel's data.
+//  AnalysisListModel's previews reflect both user interaction with AnalysisListCards (through closures), and changes to the MOC (through NSFetchedResultsControllerDelegate functions).
+//  When the user presses `Save` on AnalysisList, the Analyses in the MOC are updated based on the previews' values.
+//
 //  Created by Vincent Young on 4/7/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
@@ -54,17 +59,18 @@ struct AnalysisList: View {
                         
                         /*
                          Each AnalysisListCard's drop delegate re-sorts the model's sorted previews if the dragged preview enters.
-                         Because each drop delegate must know the current position of the dragged preview, it maintains binding to the dragged preview and the model's sorted array of previews.
-                         AnalysisList and its AnalysisListCards' drag delegates use those bindings to communicate rather than use the required NSItemProvider.
+                         To only allow AnalysisListCards to be dropped onto this page, each drop delegate maintains bindings to the dragged preview and to the model's sorted array of previews rather than using information in NSItemProvider.
                          */
                         ForEach(model.sortedPreviews) { preview in
-                            AnalysisListCard(togglePreview: {
-                                AnalysisListModel.togglePreview(preview: preview, previews: &model.sortedPreviews)
-                            },
-                            isChecked: preview.id._order >= 0 ? true : false,
-                            analysis: preview.id)
+                            AnalysisListCard(
+                                togglePreview: {
+                                    AnalysisListModel.togglePreview(preview: preview, previews: &model.sortedPreviews)
+                                },
+                                analysis: preview.id,
+                                isChecked: preview.id._order >= 0 ? true : false
+                            )
                             .onDrag({
-                                // Since each drop delegate relies on draggedPreview, only "included" previews can be dragged and reordered within AnalysisList.
+                                // Only "included" previews can be dragged and reordered within AnalysisList.
                                 if preview.order >= 0 {
                                     self.draggedPreview = preview
                                 }
@@ -120,10 +126,10 @@ struct AnalysisListCard: View {
     
     let cardPadding: CGFloat = 15
     let togglePreview: () -> () // Closure for toggling the order of the AnalysisListCardPreview held in AnalysisListModel.
+    var analysis: Analysis
     
     @State var isChecked: Bool
     
-    @ObservedObject var analysis: Analysis
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     var body: some View {
@@ -183,17 +189,11 @@ struct AnalysisListCard: View {
 
 // MARK: - Mock model
 
-/*
- This class fetches and maintains Analyses as a sorted array of identifiable and equatable previews.
- Because AnalysisList's user interaction doesn't edit the MOC in place, and because it needs a source of truth for its AnalysisListCards', this class serves as its source of truth.
- This class' previews thus represents both user interaction with AnalysisList's AnalysisListCards (through closures), and changes to the MOC (through NSFetchedResultsControllerDelegate functions).
- When the user presses save, the Analyses in the MOC are updated based on the previews' values.
- */
 class AnalysisListModel: NSObject, ObservableObject {
     
     class AnalysisListCardPreview: Identifiable, Equatable {
         
-        var id: Analysis
+        @ObservedObject var id: Analysis
         var order: Int
         
         static func == (lhs: AnalysisListModel.AnalysisListCardPreview, rhs: AnalysisListModel.AnalysisListCardPreview) -> Bool {
@@ -214,8 +214,9 @@ class AnalysisListModel: NSObject, ObservableObject {
         @Binding var draggedPreview: AnalysisListCardPreview?
         
         /**
-         Called when a drop enters an AnalysisListCard with NSItemProvider of type `UTType.text`.
-         If the binded-to dragged preview is non-nil, swap it with the AnalysisListPreview that's associated with this drop delegate.
+         Called when a drop enters an AnalysisListCard with NSItemProvider of type `UTType.text` (AnalysisListCards' onDrag modifiers return NSItemProviders that carry empty NSStrings)
+         If the binded-to dragged preview is non-nil, it's swapped with the AnalysisListPreview that's associated with this drop delegate.
+         If the binded-to dragged preview is nil, a drop that originated elswhere entered, and this function disregards it.
          */
         func dropEntered(info: DropInfo) {
             if item != draggedPreview,
@@ -256,13 +257,13 @@ class AnalysisListModel: NSObject, ObservableObject {
      */
     static func reorderPreviews(_ previews: inout [AnalysisListCardPreview]) {
         var order = 0
-        let endIndex = previews.firstIndex(where: { $0.order < 0 } ) ?? previews.count
-        for idx in 0 ..< endIndex {
+        let firstUnincluded = previews.firstIndex(where: { $0.order < 0 } ) ?? previews.count
+        for idx in 0 ..< firstUnincluded {
             previews[idx].order = order
             order += 1
         }
         
-        for idx in endIndex ..< previews.count {
+        for idx in firstUnincluded ..< previews.count {
             previews[idx].order = -1
         }
     }
@@ -344,7 +345,7 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
             
             // A new Analysis was inserted into the MOC; insert it into the previews but set it as not included on Analysis homepage.
             if let insertedAnalysis = anObject as? Analysis {
-                sortedPreviews.append(AnalysisListCardPreview(id: insertedAnalysis, order: -1))
+                sortedPreviews.append(AnalysisListCardPreview(id: insertedAnalysis, order: Int(insertedAnalysis._order)))
                 AnalysisListModel.sortPreviews(&self.sortedPreviews)
             }
             break
