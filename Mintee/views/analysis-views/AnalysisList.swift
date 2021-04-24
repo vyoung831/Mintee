@@ -134,10 +134,10 @@ struct AnalysisListCard: View {
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     /**
-     Using the `Analysis` assigned to this View, converts its AnalysisLegend to a LegendSection.
-     - returns: (Optional) LegendSection
+     Using the `Analysis` assigned to this View, converts its AnalysisLegend to an array of CategorizedLegendEntryPreview.
+     - returns: (Optional) Array of CategorizedLegendEntryPreview representing the Analysis' legend.
      */
-    func buildLegendSection() -> LegendSection? {
+    func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
         
         guard let legend = self.analysis._legend else {
             var userInfo: [String : Any] = ["Message" : "AnalysisList.buildLegendSection() found nil legend in an Analysis"]
@@ -146,7 +146,7 @@ struct AnalysisListCard: View {
             return nil
         }
         
-        var legendEntryViews: [LegendEntryView] = []
+        var previews: [CategorizedLegendEntryPreview] = []
         for categorizedEntry in legend.categorizedEntries {
             guard let color = UIColor(hex: categorizedEntry.color) else {
                 var userInfo: [String : Any] = ["Message" : "AnalysisList.buildLegendSection() could not initialize a UIColor from a CategorizedLegendEntry's color String"]
@@ -154,9 +154,9 @@ struct AnalysisListCard: View {
                 ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
                 return nil
             }
-            legendEntryViews.append(LegendEntryView(type: .categorized, color: Color(color), category: categorizedEntry.category))
+            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry.category))
         }
-        return LegendSection(legendEntryViews: legendEntryViews)
+        return previews
         
     }
     
@@ -175,7 +175,7 @@ struct AnalysisListCard: View {
                     })
                     .foregroundColor(.primary)
                     .sheet(isPresented: self.$isPresentingEditAnalysis, content: {
-                        if let legendSection = buildLegendSection() {
+                        if let legendPreviews = extractCategorizedPreviews() {
                             if let startString = analysis._startDate,
                                let endString = analysis._endDate,
                                let start = SaveFormatter.storedStringToDate(startString),
@@ -185,7 +185,8 @@ struct AnalysisListCard: View {
                                              tags: analysis.getTagNames().sorted(),
                                              analysisType: analysisType,
                                              rangeType: .startEnd,
-                                             legendSection: legendSection,
+                                             legendType: .categorized,
+                                             legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
                                              analysis: analysis,
                                              startDate: start,
                                              endDate: end)
@@ -195,7 +196,8 @@ struct AnalysisListCard: View {
                                              tags: analysis.getTagNames().sorted(),
                                              analysisType: analysisType,
                                              rangeType: .dateRange,
-                                             legendSection: legendSection,
+                                             legendType: .categorized,
+                                             legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
                                              analysis: analysis,
                                              dateRangeString: String(analysis._dateRange))
                             }

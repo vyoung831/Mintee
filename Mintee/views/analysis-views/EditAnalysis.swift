@@ -18,7 +18,8 @@ struct EditAnalysis: View {
     @State var tags: [String]
     @State var analysisType: SaveFormatter.analysisType
     @State var rangeType: AnalysisUtils.dateRangeType
-    @State var legendSection: LegendSection
+    @State var legendType: AnalysisLegend.EntryType
+    @State var legendPreviews: [CategorizedLegendEntryPreview]
     @ObservedObject var analysis: Analysis
     
     // Vars that may not exist depending on rangeType's value. Initial values are assigned in case user toggles rangeType.
@@ -70,7 +71,14 @@ struct EditAnalysis: View {
                     }
                     
                     // MARK: - Legend entries
-                    legendSection
+                    ForEach(0 ..< legendPreviews.count, id: \.self) { idx in
+                        ColorPicker("\(legendPreviews[idx].getLabel())", selection: $legendPreviews[idx].color)
+                            .frame(maxWidth: .infinity)
+                            .padding(12)
+                            .background(legendPreviews[idx].color)
+                            .border(themeManager.collectionItemBorder, width: 3)
+                            .cornerRadius(5)
+                    }
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })

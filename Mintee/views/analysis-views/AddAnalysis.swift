@@ -24,7 +24,9 @@ struct AddAnalysis: View {
     @State var endDate: Date = Date()
     @State var dateRangeString: String = ""
     
-    @State var legendSection: LegendSection = LegendSection()
+    // Legend vars
+    @State var legendType: AnalysisLegend.EntryType = .categorized
+    @State var legendPreviews: [CategorizedLegendEntryPreview] = CategorizedLegendEntryPreview.getDefaults()
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -35,6 +37,19 @@ struct AddAnalysis: View {
             return false
         }
         
+        var categorizedLegendEntries = Set<CategorizedLegendEntry>()
+        for preview in legendPreviews {
+            do {
+                categorizedLegendEntries.insert(
+                    try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
+                )
+            } catch {
+                self.errorMessage = ErrorManager.unexpectedErrorMessage
+                return false
+            }
+        }
+        let legend = AnalysisLegend(categorizedEntries: categorizedLegendEntries, completionEntries: Set())
+        
         do {
             switch rangeType {
             case .startEnd:
@@ -44,7 +59,7 @@ struct AddAnalysis: View {
                                             type: self.analysisType,
                                             startDate: self.startDate,
                                             endDate: self.endDate,
-                                            legend: legendSection.createAnalysisLegend(),
+                                            legend: legend,
                                             order: -1,
                                             tags: Set(self.tags))
             case .dateRange:
@@ -63,7 +78,7 @@ struct AddAnalysis: View {
                                             name: analysisName,
                                             type: self.analysisType,
                                             dateRange: range,
-                                            legend: legendSection.createAnalysisLegend(),
+                                            legend: legend,
                                             order: -1,
                                             tags: Set(self.tags))
             }
@@ -128,7 +143,14 @@ struct AddAnalysis: View {
                     }
                     
                     // MARK: - Legend entries
-                    legendSection
+                    ForEach(0 ..< legendPreviews.count, id: \.self) { idx in
+                        ColorPicker("\(legendPreviews[idx].getLabel())", selection: $legendPreviews[idx].color)
+                            .frame(maxWidth: .infinity)
+                            .padding(12)
+                            .background(legendPreviews[idx].color)
+                            .border(themeManager.collectionItemBorder, width: 3)
+                            .cornerRadius(5)
+                    }
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
