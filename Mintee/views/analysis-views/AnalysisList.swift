@@ -129,8 +129,36 @@ struct AnalysisListCard: View {
     var analysis: Analysis
     
     @State var isChecked: Bool
+    @State var isPresentingEditAnalysis: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
+    
+    /**
+     Using the `Analysis` assigned to this View, converts its AnalysisLegend to a LegendSection.
+     - returns: (Optional) LegendSection
+     */
+    func buildLegendSection() -> LegendSection? {
+        
+        guard let legend = self.analysis._legend else {
+            var userInfo: [String : Any] = ["Message" : "AnalysisList.buildLegendSection() found nil legend in an Analysis"]
+            self.analysis.mergeDebugDictionary(userInfo: &userInfo)
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            return nil
+        }
+        
+        var legendEntryViews: [LegendEntryView] = []
+        for categorizedEntry in legend.categorizedEntries {
+            guard let color = UIColor(hex: categorizedEntry.color) else {
+                var userInfo: [String : Any] = ["Message" : "AnalysisList.buildLegendSection() could not initialize a UIColor from a CategorizedLegendEntry's color String"]
+                self.analysis.mergeDebugDictionary(userInfo: &userInfo)
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                return nil
+            }
+            legendEntryViews.append(LegendEntryView(type: .categorized, color: Color(color), category: categorizedEntry.category))
+        }
+        return LegendSection(legendEntryViews: legendEntryViews)
+        
+    }
     
     var body: some View {
         
@@ -142,6 +170,39 @@ struct AnalysisListCard: View {
                 HStack {
                     Text(analysisName)
                     Spacer()
+                    Button("Edit", action: {
+                        self.isPresentingEditAnalysis = true
+                    })
+                    .foregroundColor(.primary)
+                    .sheet(isPresented: self.$isPresentingEditAnalysis, content: {
+                        if let legendSection = buildLegendSection() {
+                            if let startString = analysis._startDate,
+                               let endString = analysis._endDate,
+                               let start = SaveFormatter.storedStringToDate(startString),
+                               let end = SaveFormatter.storedStringToDate(endString) {
+                                EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
+                                             analysisName: analysisName,
+                                             tags: analysis.getTagNames().sorted(),
+                                             analysisType: analysisType,
+                                             rangeType: .startEnd,
+                                             legendSection: legendSection,
+                                             analysis: analysis,
+                                             startDate: start,
+                                             endDate: end)
+                            } else {
+                                EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
+                                             analysisName: analysisName,
+                                             tags: analysis.getTagNames().sorted(),
+                                             analysisType: analysisType,
+                                             rangeType: .dateRange,
+                                             legendSection: legendSection,
+                                             analysis: analysis,
+                                             dateRangeString: String(analysis._dateRange))
+                            }
+                        } else {
+                            ErrorView()
+                        }
+                    })
                 }
                 
                 Text("Type: \(analysisType.stringValue)")

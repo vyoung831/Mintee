@@ -102,26 +102,7 @@ extension Analysis {
     
 }
 
-// MARK: - Ordering utility functions
-
-extension Analysis {
-    
-    /**
-     Sets the order in which this Analysis will be displayed on the Analysis homepage. Highest priority `order` = 0
-     - parameter order: The Int16 to assign to this Analysis' `order`.
-     */
-    func setOrder(_ order: Int16) {
-        self.order = order
-    }
-    
-    /**
-     Marks this Analysis as not to be displayed on the Analysis homepage.
-     */
-    func setUnincluded() {
-        self.order = -1
-    }
-    
-}
+// MARK: - Debug logging
 
 extension Analysis {
     
@@ -144,6 +125,45 @@ extension Analysis {
         // Add AnalysisLegend debug info
         self.legend?.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
         
+    }
+    
+}
+
+// MARK: - Tag utility functions
+
+extension Analysis {
+    
+    /**
+     - returns: A set of strings representing the tagNames of this Analysis' tags
+     */
+    public func getTagNames() -> Set<String> {
+        if let tags = self.tags as? Set<Tag> {
+            let tagNames = Set(tags.map({$0._name ?? ""}))
+            return tagNames
+        }
+        return Set<String>()
+    }
+    
+}
+
+
+// MARK: - Ordering utility functions
+
+extension Analysis {
+    
+    /**
+     Sets the order in which this Analysis will be displayed on the Analysis homepage. Highest priority `order` = 0
+     - parameter order: The Int16 to assign to this Analysis' `order`.
+     */
+    func setOrder(_ order: Int16) {
+        self.order = order
+    }
+    
+    /**
+     Marks this Analysis as not to be displayed on the Analysis homepage.
+     */
+    func setUnincluded() {
+        self.order = -1
     }
     
 }

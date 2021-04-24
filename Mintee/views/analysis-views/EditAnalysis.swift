@@ -1,98 +1,40 @@
 //
-//  AddAnalysis.swift
+//  EditAnalysis.swift
 //  Mintee
 //
-//  Created by Vincent Young on 2/13/21.
+//  Created by Vincent Young on 4/22/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddAnalysis: View {
-    
-    @Binding var isBeingPresented: Bool
+struct EditAnalysis: View {
     
     @State var errorMessage: String = ""
+    @Binding var isBeingPresented: Bool
     
-    @State var analysisName: String = ""
-    @State var analysisType: SaveFormatter.analysisType = .box
-    @State var tags: [String] = []
+    // Vars that must be supplied by the parent View
+    @State var analysisName: String
+    @State var tags: [String]
+    @State var analysisType: SaveFormatter.analysisType
+    @State var rangeType: AnalysisUtils.dateRangeType
+    @State var legendSection: LegendSection
+    @ObservedObject var analysis: Analysis
     
-    // Date range selection vars
-    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
+    // Vars that may not exist depending on rangeType's value. Initial values are assigned in case user toggles rangeType.
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var dateRangeString: String = ""
     
-    @State var legendSection: LegendSection = LegendSection()
-    
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
-    
-    private func saveAnalysis() -> Bool {
-        
-        if tags.count < 1 {
-            self.errorMessage = "Add at least one Tag for the Analysis to use"
-            return false
-        }
-        
-        do {
-            switch rangeType {
-            case .startEnd:
-                let _ = try Analysis(entity: Analysis.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            name: analysisName,
-                                            type: self.analysisType,
-                                            startDate: self.startDate,
-                                            endDate: self.endDate,
-                                            legend: legendSection.createAnalysisLegend(),
-                                            order: -1,
-                                            tags: Set(self.tags))
-            case .dateRange:
-                
-                if self.dateRangeString.count < 1 {
-                    self.errorMessage = "Specify a date range"
-                    return false
-                }
-                
-                guard let range = Int16(dateRangeString) else {
-                    self.errorMessage = "Remove invalid input from date range"
-                    return false
-                }
-                let _ = try Analysis(entity: Analysis.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            name: analysisName,
-                                            type: self.analysisType,
-                                            dateRange: range,
-                                            legend: legendSection.createAnalysisLegend(),
-                                            order: -1,
-                                            tags: Set(self.tags))
-            }
-        } catch {
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
-        }
-        
-        do {
-            try CDCoordinator.moc.save()
-            return true
-        } catch {
-            self.errorMessage = "Save failed. Please check if another Analysis with this name already exists"
-            CDCoordinator.moc.rollback()
-            return false
-        }
-        
-    }
     
     var body: some View {
         
         NavigationView {
-            
             ScrollView(.vertical, showsIndicators: true, content: {
                 VStack(alignment: .leading, spacing: 15, content: {
                     
                     // MARK: - Analysis name text field
-                    
                     LabelAndTextFieldSection(label: "Analysis name",
                                              labelIdentifier: "analysis-name-label",
                                              placeHolder: "Analysis name",
@@ -101,7 +43,7 @@ struct AddAnalysis: View {
                     if (errorMessage.count > 0) {
                         Text(errorMessage)
                             .foregroundColor(.red)
-                            .accessibility(identifier: "add-analysis-error-message")
+                            .accessibility(identifier: "edit-analysis-error-message")
                     }
                     
                     // MARK: - Tags
@@ -132,19 +74,17 @@ struct AddAnalysis: View {
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
-            .navigationTitle("Add Analysis")
+            .navigationTitle("Edit Analysis")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 
                 leading: Button(action: {
-                    if self.saveAnalysis() {
-                        self.isBeingPresented = false
-                    }
+                    self.isBeingPresented = false
                 }, label: {
                     Text("Save")
                 })
                 .foregroundColor(.accentColor)
-                .accessibility(identifier: "add-analysis-save-button")
+                .accessibility(identifier: "edit-analysis-save-button")
                 .disabled(self.analysisName.count < 1),
                 
                 trailing: Button(action: {
