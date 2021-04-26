@@ -218,3 +218,16 @@ extension Analysis {
     }
     
 }
+
+// MARK: - analysisType functions
+
+extension Analysis {
+    
+    /**
+     - parameter analysistype: Value of type `SaveFormatter.analysisType` to assign to this Analysis
+     */
+    func updateAnalysisType(_ type: SaveFormatter.analysisType) {
+        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+    }
+    
+}

@@ -48,9 +48,12 @@ struct EditAnalysis: View {
             }
         }
         
+        /*
+         Update analysis' values in MOC
+         */
         analysis.updateLegend(categorizedEntries: categorizedLegendEntries)
         self.analysis._name = analysisName
-        
+        self.analysis.updateAnalysisType(self.analysisType)
         switch self.rangeType {
         case .dateRange:
             guard let range = Int16(dateRangeString) else {
