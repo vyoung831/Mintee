@@ -51,6 +51,19 @@ struct EditAnalysis: View {
         analysis.updateLegend(categorizedEntries: categorizedLegendEntries)
         self.analysis._name = analysisName
         
+        switch self.rangeType {
+        case .dateRange:
+            guard let range = Int16(dateRangeString) else {
+                self.errorMessage = "Remove invalid input from date range"
+                return false
+            }
+            self.analysis.updateDateRange(range)
+            break
+        case .startEnd:
+            self.analysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
+            break
+        }
+        
         do {
             try CDCoordinator.moc.save()
             return true

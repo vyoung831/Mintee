@@ -136,7 +136,7 @@ extension Analysis {
     /**
      - returns: A set of strings representing the tagNames of this Analysis' tags
      */
-    public func getTagNames() -> Set<String> {
+    func getTagNames() -> Set<String> {
         if let tags = self.tags as? Set<Tag> {
             let tagNames = Set(tags.map({$0._name ?? ""}))
             return tagNames
@@ -188,6 +188,33 @@ extension Analysis {
     func updateLegend(completionEntries: Set<CompletionLegendEntry>) {
         let legend = AnalysisLegend(categorizedEntries: Set(), completionEntries: completionEntries)
         self.legend = legend
+    }
+    
+}
+
+// MARK: - Date and rangeType functions
+
+extension Analysis {
+    
+    /**
+     Updates this Analysis' start and end dates and resets dateRange to the default Int16 value.
+     - parameter start: New start date
+     - parameter end: New end date
+     */
+    func updateStartAndEndDates(start: Date, end: Date) {
+        self.startDate = SaveFormatter.dateToStoredString(start)
+        self.endDate = SaveFormatter.dateToStoredString(end)
+        self.dateRange = 0 // TO-DO: Update this assignment with a more robust way of obtaining the default value that Core Data assigns to Int16
+    }
+    
+    /**
+     Updates date range and resets startDate and endDate to nil.
+     - parameter range: New date range
+     */
+    func updateDateRange(_ range: Int16) {
+        self.dateRange = range
+        self.startDate = nil
+        self.endDate = nil
     }
     
 }
