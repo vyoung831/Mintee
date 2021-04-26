@@ -23,7 +23,7 @@ public class Analysis: NSManagedObject {
     @NSManaged private var tags: NSSet?
     
     var _order: Int16 { get { return self.order }}
-    var _name: String? { get { return self.name } }
+    var _name: String? { get { return self.name } set { self.name = newValue } }
     var _analysisType: Int16 { get { return self.analysisType } }
     var _startDate: String? { get { return self.startDate } }
     var _endDate: String? { get { return self.endDate } }
@@ -164,6 +164,30 @@ extension Analysis {
      */
     func setUnincluded() {
         self.order = -1
+    }
+    
+}
+
+// MARK: - Legend update functions
+
+extension Analysis {
+    
+    /**
+     Initializes a new instance of AnalysisLegend and assigns it to this Analysis
+     - parameter categorizedEntries: Set of `CategorizedLegendEntry` to use to build new AnalysisLegend.
+     */
+    func updateLegend(categorizedEntries: Set<CategorizedLegendEntry>) {
+        let legend = AnalysisLegend(categorizedEntries: categorizedEntries, completionEntries: Set())
+        self.legend = legend
+    }
+    
+    /**
+     Initializes a new instance of AnalysisLegend and assigns it to this Analysis
+     - parameter completionEntries: Set of `CompletionLegendEntry` to use to build new AnalysisLegend.
+     */
+    func updateLegend(completionEntries: Set<CompletionLegendEntry>) {
+        let legend = AnalysisLegend(categorizedEntries: Set(), completionEntries: completionEntries)
+        self.legend = legend
     }
     
 }

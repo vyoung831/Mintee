@@ -29,6 +29,39 @@ struct EditAnalysis: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    func saveAnalysis() -> Bool {
+        
+        if tags.count < 1 {
+            self.errorMessage = "Add at least one Tag for the Analysis to use"
+            return false
+        }
+        
+        var categorizedLegendEntries = Set<CategorizedLegendEntry>()
+        for preview in legendPreviews {
+            do {
+                categorizedLegendEntries.insert(
+                    try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
+                )
+            } catch {
+                self.errorMessage = ErrorManager.unexpectedErrorMessage
+                return false
+            }
+        }
+        
+        analysis.updateLegend(categorizedEntries: categorizedLegendEntries)
+        self.analysis._name = analysisName
+        
+        do {
+            try CDCoordinator.moc.save()
+            return true
+        } catch {
+            self.errorMessage = "Save failed. Please check if another Analysis with this name already exists"
+            CDCoordinator.moc.rollback()
+            return false
+        }
+        
+    }
+    
     var body: some View {
         
         NavigationView {
@@ -87,7 +120,9 @@ struct EditAnalysis: View {
             .navigationBarItems(
                 
                 leading: Button(action: {
-                    self.isBeingPresented = false
+                    if saveAnalysis() {
+                        self.isBeingPresented = false
+                    }
                 }, label: {
                     Text("Save")
                 })
