@@ -15,7 +15,7 @@ struct EditAnalysis: View {
     
     // Vars that must be supplied by the parent View
     @State var analysisName: String
-    @State var tags: [String]
+    @State var tags: [String] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
     @State var analysisType: SaveFormatter.analysisType
     @State var rangeType: AnalysisUtils.dateRangeType
     @State var legendType: AnalysisLegend.EntryType
@@ -37,15 +37,26 @@ struct EditAnalysis: View {
         }
         
         var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-        for preview in legendPreviews {
-            do {
+        do {
+            
+            for preview in legendPreviews {
                 categorizedLegendEntries.insert(
                     try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
                 )
-            } catch {
-                self.errorMessage = ErrorManager.unexpectedErrorMessage
-                return false
             }
+            
+            var tagsToAssociate: Set<Tag> = Set()
+            for tagName in self.tags {
+                if let tag = try Tag.getTag(tagName: tagName) {
+                    tagsToAssociate.insert(tag)
+                }
+            }
+            try self.analysis.associateTags(tagsToAssociate)
+            
+        } catch {
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
+            return false
         }
         
         /*

@@ -37,7 +37,7 @@ public class Tag: NSManagedObject {
      - parameter tagName: Case and diacritic insensitive name of the Tag to attempt to find
      - returns: Tag NSManagedObject with its tagName set to the input parm tagName
      */
-    static func getOrCreateTag ( tagName : String ) throws -> Tag {
+    static func getOrCreateTag(tagName: String) throws -> Tag {
         
         if tagName.count < 1 {
             let userInfo: [String : Any] = ["Message" : "Tag.getOrCreateTag() received tagName with count < 1"]
@@ -62,6 +62,33 @@ public class Tag: NSManagedObject {
         
         // No tag already exists in MOC. Return Tag from initiaizlier
         return Tag( tagName: tagName )
+    }
+    
+    /**
+     Given a tagName, returns the existing Tag object with that tagName.
+     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate
+     - parameter tagName: Case and diacritic insensitive name of the Tag to find
+     - returns: (Optional) Tag with name = `tagName`
+     */
+    static func getTag(tagName: String) throws -> Tag? {
+        
+        // TO-DO: Update FetchRequest wiht more robust way to obtain name of `Tag` entity.
+        // Set up case and diacritic insensitive predicate
+        let request = NSFetchRequest<Tag>(entityName: "Tag")
+        request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
+        do {
+            let results = try CDCoordinator.moc.fetch(request)
+            if let first = results.first {
+                return first
+            }
+        } catch (let error) {
+            throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                              ["Message" : "Tag.getTag() failed to execute NSFetchRequest",
+                                               "request" : request.debugDescription,
+                                               "error.localizedDescription" : error.localizedDescription])
+        }
+        return nil
+        
     }
     
 }

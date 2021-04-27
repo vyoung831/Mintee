@@ -209,7 +209,7 @@ extension Task {
     }
     
     /**
-     Removes Tags that are no longer would be associated with this Task if only Tags passed in are to be associated with this Task.
+     Removes Tags that are no longer to be associated with this Task.
      Tags that were already associated with this Task but that don't exist in the new tags passed in are removed and checked for possible deletion.
      - parameter newTags: Set of Tags to be set as this Task's tags relationship
      */

@@ -16,7 +16,7 @@ struct AddAnalysis: View {
     
     @State var analysisName: String = ""
     @State var analysisType: SaveFormatter.analysisType = .box
-    @State var tags: [String] = []
+    @State var tags: [String] = [] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
     
     // Date range selection vars
     @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
@@ -38,15 +38,25 @@ struct AddAnalysis: View {
         }
         
         var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-        for preview in legendPreviews {
-            do {
+        var tagsToAssociate = Set<Tag>()
+        do {
+            
+            for preview in legendPreviews {
                 categorizedLegendEntries.insert(
                     try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
                 )
-            } catch {
-                self.errorMessage = ErrorManager.unexpectedErrorMessage
-                return false
             }
+            
+            for tagName in self.tags {
+                if let tag = try Tag.getTag(tagName: tagName) {
+                    tagsToAssociate.insert(tag)
+                }
+            }
+            
+        } catch {
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
+            return false
         }
         let legend = AnalysisLegend(categorizedEntries: categorizedLegendEntries, completionEntries: Set())
         
@@ -61,7 +71,7 @@ struct AddAnalysis: View {
                                             endDate: self.endDate,
                                             legend: legend,
                                             order: -1,
-                                            tags: Set(self.tags))
+                                            tags: tagsToAssociate)
             case .dateRange:
                 
                 if self.dateRangeString.count < 1 {
@@ -80,7 +90,7 @@ struct AddAnalysis: View {
                                             dateRange: range,
                                             legend: legend,
                                             order: -1,
-                                            tags: Set(self.tags))
+                                            tags: tagsToAssociate)
             }
         } catch {
             self.errorMessage = ErrorManager.unexpectedErrorMessage

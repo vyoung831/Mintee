@@ -62,7 +62,7 @@ extension Analysis {
                      endDate: Date,
                      legend: AnalysisLegend,
                      order: Int16,
-                     tags: Set<String>) throws {
+                     tags: Set<Tag>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.analysisType = SaveFormatter.analysisTypeToStored(type)
@@ -79,7 +79,7 @@ extension Analysis {
                      dateRange: Int16,
                      legend: AnalysisLegend,
                      order: Int16,
-                     tags: Set<String>) throws {
+                     tags: Set<Tag>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.analysisType = SaveFormatter.analysisTypeToStored(type)
@@ -87,17 +87,6 @@ extension Analysis {
         self.legend = legend
         self.order = order
         try self.associateTags(tags)
-    }
-    
-    /**
-     Gets new or existing Tags with the given names, and associates them with this Analysis.
-     - parameter tags: Set of Strings for which to get/create Tags by name and associate with this Analysis
-     */
-    func associateTags(_ tags: Set<String>) throws {
-        for tagName in tags {
-            let tag = try Tag.getOrCreateTag(tagName: tagName)
-            self.addToTags(tag) // NSSet ignores dupliates
-        }
     }
     
 }
@@ -142,6 +131,32 @@ extension Analysis {
             return tagNames
         }
         return Set<String>()
+    }
+    
+    /**
+     Fetches Tags with names equal to the supplied `tagNames`and associates them with this Analysis.
+     - parameter tags: Set of Strings for which to get Tags by name and associate with this Analysis.
+     */
+    func associateTags(_ tags: Set<Tag>) throws {
+        self.removeUnrelatedTags(newTags: tags)
+        for tag in tags {
+            self.addToTags(tag) // NSSet ignores dupliates
+        }
+    }
+    
+    /**
+     Removes Tags that are no longer to be associated with this Analysis.
+     Tags that were already but no longer to be associated with this Analysis are removed.
+     - parameter newTags: Set of Tags to be set as this Analysis' tags relationship
+     */
+    private func removeUnrelatedTags(newTags: Set<Tag>) {
+        if let tags = self.tags {
+            for case let tag as Tag in tags {
+                if !newTags.contains(tag) {
+                    self.removeFromTags(tag)
+                }
+            }
+        }
     }
     
 }
