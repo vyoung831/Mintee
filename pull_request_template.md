@@ -41,7 +41,7 @@ Delete N/A options
     - If a failure is first detected in a throwing function, that function reports the failure.
     - If a failure is first detected by a view component receiving a nil return value, that view component reports the failure.
 
-# [Testing checklist]
+# Testing checklist
 - [ ] New AUT are implemented that comply with [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 - [ ] New UIT are implemented that comply to [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 - [ ] New and existing unit tests pass locally with my changes

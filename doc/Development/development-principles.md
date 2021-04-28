@@ -31,9 +31,9 @@ Mintee places all application code into 1 of the following 3 categories:
 To maintain separation of concerns between view, model, and utility components, the following table illustrates each component's responsibilities.
 | Component | Responsibilities | What the component should __NEVER__ do |
 |-|-|-|
-| Model components | <ul> <li/> Implement and provide APIs for other components to use to execute business logic. <li/> Implement and provide APIs for other components to use to validate data against business rules. </ul> | |
-| View components | <ul> <li/> Provide UI for data presentation and user input. <li/> Validate user input against business rules. <li/> Format user input to pass to model component APIs (see [SaveFormatter](#saveformatter)). <li/> Use model component APIs to execute business logic. <li/> Commit or rollback MOC changes based on results of calls to model components' APIs. </ul> | <ul> <li/> Update the MOC (except for instantiating NSManagedObjects and calling model component functions). </ul> |
-| Utility components | <ul> <li/> Provide helper functions for other components. </ul> | <ul> <li/> Update the MOC. </ul> |
+| Model components | <ul> <li/> Implement and provide APIs for other components to use to execute business logic. <li/> Implement and provide APIs for other components to use to validate data against business rules. </ul> | <ul> <li/> Save or rollback MOC changes. </ul> |
+| View components | <ul> <li/> Validate user input against business rules. <li/> Use model component APIs to execute business logic. <li/> Save or rollback MOC changes. </ul> | |
+| Utility components | <ul> <li/> Provide helper functions. </ul> | <ul> <li/> Update the MOC. </ul> |
 
 # Model development
 
@@ -47,9 +47,9 @@ Mintee uses transformables to represent various custom objects. To allow for sec
 * A custom transformer is subclassed from `NSSecureUnarchiveFromDataTransformer` and specified under the transformable's attributes in the Core Data model. The custom transformer does the following:  
     * Includes the `@objc` attribute in order to be accessible to the objective-C runtime and to Core Data.
     * Includes the custom class in its allowed top-level classes.
-* SceneDelegate is updated to register the custom transformer before initializing the persistent container.
+* SceneDelegate is updated to register the custom transformer before initializing the persistent container.  
 
-More can be read [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).
+More on transformable properties [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).
 
 # View development
 
