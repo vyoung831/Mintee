@@ -21,10 +21,10 @@ Mintee places all application code into 1 of the following 3 categories:
     1. Custom data types used as transformables.
 1. View components. Stored in the `views` dir and comprised of the following:  
     1. SwiftUI Views.
-    1. UIKit components (to be migrated to SwiftUI):  
+    1. UIKit components:  
         1. UIViewController subclasses.
         1. UIView subclasses.
-    1. SwiftUI/UIKit bridging components (to be migrated to SwiftUI):  
+    1. SwiftUI/UIKit bridging components:  
         1. UIViewControllerRepresentable subclasses.
         1. UIHostingController subclasses.
 
@@ -54,7 +54,7 @@ More can be read [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-an
 # View development
 
 ## Navigation
-Every view in Mintee declares a `NavigationView` to prepare for additional navigation if decided upon by UI/UX.
+To prepare for additional navigation and ensure consistent UI, every SwiftUI View in Mintee declares a `NavigationView`.
 
 ## Accessibility
 Accessibility is only used for identifying UI elements for UI testing.  

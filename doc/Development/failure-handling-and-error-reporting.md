@@ -18,7 +18,7 @@ The following definitions are used as such throughout the document:
 1. [Build versioning](#build-versioning)
 
 # Failure handling
-In Mintee, all failures are [reported to Crashlytics](#error-reporting) and handled by view components.  
+All failures are [reported to Crashlytics](#error-reporting) and handled by view components.  
 The following table and sections detail how view components detect failures and which components/functions are responsible for reporting to Crashlytics.
 | How view component detects failure | Component/function responsible for reporting |
 |-|-|
@@ -39,6 +39,7 @@ __Ex.__ `Task.generateAndPruneInstances()` includes code with several possible r
     * Finding persistent store data that violates business logic (A relationship that should be non-nil is nil)
     * Failing to convert persistent store data to valid in-memory value via `SaveFormatter` (corrupted data)
     * Swift's `Date` conversion/incrementation functions returns nil un-expectedly.
+1. The function calls a throwing function.
 1. The function is defined in a model component (See [throwing in model components](#throwing-in-model-components)).
 
 The following figure illustrates how errors that are reported to Crashlytics are thrown to view components to handle.
