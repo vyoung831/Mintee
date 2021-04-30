@@ -137,7 +137,7 @@ struct AnalysisListCard: View {
      Using the `Analysis` assigned to this View, converts its AnalysisLegend to an array of CategorizedLegendEntryPreview.
      - returns: (Optional) Array of CategorizedLegendEntryPreview representing the Analysis' legend.
      */
-    func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
+    private func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
         
         guard let legend = self.analysis._legend else {
             var userInfo: [String : Any] = ["Message" : "AnalysisList.extractCategorizedPreviews() found nil legend in an Analysis"]

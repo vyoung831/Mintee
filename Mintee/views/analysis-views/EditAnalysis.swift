@@ -29,7 +29,7 @@ struct EditAnalysis: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    func saveAnalysis() -> Bool {
+    private func saveAnalysis() -> Bool {
         
         if tags.count < 1 {
             self.errorMessage = "Add at least one Tag for the Analysis to use"
