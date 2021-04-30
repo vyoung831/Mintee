@@ -134,8 +134,8 @@ extension Analysis {
     }
     
     /**
-     Fetches Tags with names equal to the supplied `tagNames`and associates them with this Analysis.
-     - parameter tags: Set of Strings for which to get Tags by name and associate with this Analysis.
+     Updates this Analysis' tags relationship to contain only the Tags passed in.
+     - parameter tags: Set of Tags to be set as this Analysis' tags relationship
      */
     func associateTags(_ tags: Set<Tag>) throws {
         self.removeUnrelatedTags(newTags: tags)
@@ -188,7 +188,7 @@ extension Analysis {
 extension Analysis {
     
     /**
-     Initializes a new instance of AnalysisLegend and assigns it to this Analysis
+     Initializes a new instance of AnalysisLegend and assigns it to this Analysis.
      - parameter categorizedEntries: Set of `CategorizedLegendEntry` to use to build new AnalysisLegend.
      */
     func updateLegend(categorizedEntries: Set<CategorizedLegendEntry>) {
@@ -197,7 +197,7 @@ extension Analysis {
     }
     
     /**
-     Initializes a new instance of AnalysisLegend and assigns it to this Analysis
+     Initializes a new instance of AnalysisLegend and assigns it to this Analysis.
      - parameter completionEntries: Set of `CompletionLegendEntry` to use to build new AnalysisLegend.
      */
     func updateLegend(completionEntries: Set<CompletionLegendEntry>) {
@@ -223,8 +223,8 @@ extension Analysis {
     }
     
     /**
-     Updates date range and resets startDate and endDate to nil.
-     - parameter range: New date range
+     Updates dateRange and resets startDate and endDate to nil.
+     - parameter range: New dateRange value
      */
     func updateDateRange(_ range: Int16) {
         self.dateRange = range

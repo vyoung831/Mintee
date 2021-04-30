@@ -14,13 +14,13 @@ struct EditAnalysis: View {
     @Binding var isBeingPresented: Bool
     
     // Vars that must be supplied by the parent View
+    var analysis: Analysis
     @State var analysisName: String
     @State var tags: [String] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
     @State var analysisType: SaveFormatter.analysisType
     @State var rangeType: AnalysisUtils.dateRangeType
     @State var legendType: AnalysisLegend.EntryType
     @State var legendPreviews: [CategorizedLegendEntryPreview]
-    @ObservedObject var analysis: Analysis
     
     // Vars that may not exist depending on rangeType's value. Initial values are assigned in case user toggles rangeType.
     @State var startDate: Date = Date()
@@ -34,6 +34,20 @@ struct EditAnalysis: View {
         if tags.count < 1 {
             self.errorMessage = "Add at least one Tag for the Analysis to use"
             return false
+        }
+        
+        switch self.rangeType {
+        case .dateRange:
+            guard let range = Int16(dateRangeString) else {
+                self.errorMessage = "Remove invalid input from date range"
+                CDCoordinator.moc.rollback()
+                return false
+            }
+            self.analysis.updateDateRange(range)
+            break
+        case .startEnd:
+            self.analysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
+            break
         }
         
         var categorizedLegendEntries = Set<CategorizedLegendEntry>()
@@ -65,19 +79,6 @@ struct EditAnalysis: View {
         analysis.updateLegend(categorizedEntries: categorizedLegendEntries)
         self.analysis._name = analysisName
         self.analysis.updateAnalysisType(self.analysisType)
-        switch self.rangeType {
-        case .dateRange:
-            guard let range = Int16(dateRangeString) else {
-                self.errorMessage = "Remove invalid input from date range"
-                return false
-            }
-            self.analysis.updateDateRange(range)
-            break
-        case .startEnd:
-            self.analysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
-            break
-        }
-        
         do {
             try CDCoordinator.moc.save()
             return true

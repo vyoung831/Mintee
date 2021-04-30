@@ -140,7 +140,7 @@ struct AnalysisListCard: View {
     func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
         
         guard let legend = self.analysis._legend else {
-            var userInfo: [String : Any] = ["Message" : "AnalysisList.buildLegendSection() found nil legend in an Analysis"]
+            var userInfo: [String : Any] = ["Message" : "AnalysisList.extractCategorizedPreviews() found nil legend in an Analysis"]
             self.analysis.mergeDebugDictionary(userInfo: &userInfo)
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
@@ -149,7 +149,7 @@ struct AnalysisListCard: View {
         var previews: [CategorizedLegendEntryPreview] = []
         for categorizedEntry in legend.categorizedEntries {
             guard let color = UIColor(hex: categorizedEntry.color) else {
-                var userInfo: [String : Any] = ["Message" : "AnalysisList.buildLegendSection() could not initialize a UIColor from a CategorizedLegendEntry's color String"]
+                var userInfo: [String : Any] = ["Message" : "AnalysisList.extractCategorizedPreviews() could not initialize a UIColor from a CategorizedLegendEntry's color String"]
                 self.analysis.mergeDebugDictionary(userInfo: &userInfo)
                 ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
                 return nil
@@ -181,24 +181,24 @@ struct AnalysisListCard: View {
                                let start = SaveFormatter.storedStringToDate(startString),
                                let end = SaveFormatter.storedStringToDate(endString) {
                                 EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
+                                             analysis: analysis,
                                              analysisName: analysisName,
                                              tags: analysis.getTagNames().sorted(),
                                              analysisType: analysisType,
                                              rangeType: .startEnd,
                                              legendType: .categorized,
                                              legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
-                                             analysis: analysis,
                                              startDate: start,
                                              endDate: end)
                             } else {
                                 EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
+                                             analysis: analysis,
                                              analysisName: analysisName,
                                              tags: analysis.getTagNames().sorted(),
                                              analysisType: analysisType,
                                              rangeType: .dateRange,
                                              legendType: .categorized,
                                              legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
-                                             analysis: analysis,
                                              dateRangeString: String(analysis._dateRange))
                             }
                         } else {

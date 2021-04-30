@@ -65,8 +65,8 @@ public class Tag: NSManagedObject {
     }
     
     /**
-     Given a tagName, returns the existing Tag object with that tagName.
-     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate
+     Given a tagName, returns the existing Tag object with that tagName (if such a Tag exists).
+     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate.
      - parameter tagName: Case and diacritic insensitive name of the Tag to find
      - returns: (Optional) Tag with name = `tagName`
      */

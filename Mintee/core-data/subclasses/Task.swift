@@ -197,7 +197,7 @@ extension Task {
     
     /**
      Updates this Task's tags relationship to contain only the Tags passed in.
-     Tags that were already associated with this Task but that don't exist in the new tags passed in are removed and checked for possible deletion.
+     Tags that were already associated with this Task but that don't exist in the new tags passed in are un-associated and checked for possible deletion.
      - parameter newTags: Set of Tags to set as this Task's tags relationship
      */
     public func updateTags(newTags: Set<Tag>) {
@@ -210,7 +210,7 @@ extension Task {
     
     /**
      Removes Tags that are no longer to be associated with this Task.
-     Tags that were already associated with this Task but that don't exist in the new tags passed in are removed and checked for possible deletion.
+     Tags that were already associated with this Task but that don't exist in the new tags passed in are un-associated and checked for possible deletion.
      - parameter newTags: Set of Tags to be set as this Task's tags relationship
      */
     private func removeUnrelatedTags(newTags: Set<Tag>) {
