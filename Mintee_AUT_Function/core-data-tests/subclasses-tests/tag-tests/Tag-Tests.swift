@@ -21,6 +21,12 @@ class Tag_Tests: XCTestCase {
         CDCoordinator.moc.rollback()
     }
     
+}
+
+// MARK: - getOrCreateTag tests
+
+extension Tag_Tests {
+    
     /**
      Test that getOrCreateTag creates a new Tag if one doesn't already exist
      */
@@ -49,6 +55,27 @@ class Tag_Tests: XCTestCase {
         XCTAssert(tagFetch.count == 1)
         
         XCTAssert(tag1 == tag2)
+        
+    }
+    
+}
+
+// MARK: - getTag	 tests
+
+extension Tag_Tests {
+    
+    func test_getTag_nonExistingTag() throws {
+        
+        let tag = try Tag.getTag(tagName: "Tag")
+        XCTAssert(tag == nil)
+        
+    }
+    
+    func test_getTag_existingTag() throws {
+        
+        let _ = try Tag.getOrCreateTag(tagName: "Tag")
+        let tag = try Tag.getTag(tagName: "Tag")
+        XCTAssert(tag != nil)
         
     }
     

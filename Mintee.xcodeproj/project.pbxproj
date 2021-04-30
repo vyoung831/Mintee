@@ -56,7 +56,7 @@
 		C43AE1D42560C12700F1D560 /* CollectionSizer-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */; };
 		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
 		C442AE0D2546D71000A9EB72 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C442AE0C2546D71000A9EB72 /* ErrorManager.swift */; };
-		C447C18325DFE786006FF43A /* LegendSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C447C18225DFE786006FF43A /* LegendSection.swift */; };
+		C4478CCC2634CE4A00632352 /* LegendUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4478CCB2634CE4A00632352 /* LegendUtils.swift */; };
 		C44940C92498D713009FE818 /* SaveFormatter-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */; };
 		C44940CD2498F113009FE818 /* BubbleRows-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940CC2498F113009FE818 /* BubbleRows-Tests.swift */; };
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
@@ -109,6 +109,7 @@
 		C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ACD3CA250D715100D56277 /* TagsSection.swift */; };
 		C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */; };
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */; };
+		C4BDB83C26323CB200CC0391 /* EditAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BDB83B26323CB200CC0391 /* EditAnalysis.swift */; };
 		C4C5FDE5250E7189004FAE47 /* AddTagPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */; };
 		C4C961C6250A432000C7EEEA /* DayBubbleLabels-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */; };
 		C4CFC59B259259F3000BA4DA /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = C429D08D25912C99008A46BC /* GoogleService-Info-Debug.plist */; };
@@ -125,7 +126,6 @@
 		C4E5D5F525042F9400557373 /* Task-InstanceHandling-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5F425042F9400557373 /* Task-InstanceHandling-Tests.swift */; };
 		C4EADF7324889D1C0080CD01 /* BubbleRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EADF7224889D1C0080CD01 /* BubbleRows.swift */; };
 		C4EBC1BD25DE9474006EACD4 /* MinAndMaxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EBC1BC25DE9474006EACD4 /* MinAndMaxSection.swift */; };
-		C4EBC1D725DF4D6C006EACD4 /* LegendEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EBC1D625DF4D6C006EACD4 /* LegendEntryView.swift */; };
 		C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */; };
 		C4FA83FF25323A3C0079BB81 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */; };
 		C4FC99D8253BF15200E2359F /* Notification.Name-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC99D7253BF15200E2359F /* Notification.Name-Extensions.swift */; };
@@ -246,7 +246,7 @@
 		C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionSizer-Tests.swift"; sourceTree = "<group>"; };
 		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
 		C442AE0C2546D71000A9EB72 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
-		C447C18225DFE786006FF43A /* LegendSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendSection.swift; sourceTree = "<group>"; };
+		C4478CCB2634CE4A00632352 /* LegendUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendUtils.swift; sourceTree = "<group>"; };
 		C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SaveFormatter-Tests.swift"; sourceTree = "<group>"; };
 		C44940CC2498F113009FE818 /* BubbleRows-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleRows-Tests.swift"; sourceTree = "<group>"; };
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -299,6 +299,7 @@
 		C4ACD3CA250D715100D56277 /* TagsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSection.swift; sourceTree = "<group>"; };
 		C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetView-Tests.swift"; sourceTree = "<group>"; };
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetPopup-Tests.swift"; sourceTree = "<group>"; };
+		C4BDB83B26323CB200CC0391 /* EditAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnalysis.swift; sourceTree = "<group>"; };
 		C4C5FDE4250E7188004FAE47 /* AddTagPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddTagPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayBubbleLabels-Tests.swift"; sourceTree = "<group>"; };
 		C4D618F7252EA085009A9751 /* UserDefaultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsListView.swift; sourceTree = "<group>"; };
@@ -313,7 +314,6 @@
 		C4E5D5F425042F9400557373 /* Task-InstanceHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests.swift"; sourceTree = "<group>"; };
 		C4EADF7224889D1C0080CD01 /* BubbleRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleRows.swift; sourceTree = "<group>"; };
 		C4EBC1BC25DE9474006EACD4 /* MinAndMaxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinAndMaxSection.swift; sourceTree = "<group>"; };
-		C4EBC1D625DF4D6C006EACD4 /* LegendEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendEntryView.swift; sourceTree = "<group>"; };
 		C4F4BBC12471C30900065E4B /* TaskTargetSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetView.swift; sourceTree = "<group>"; };
 		C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C4FC99D7253BF15200E2359F /* Notification.Name-Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name-Extensions.swift"; sourceTree = "<group>"; };
@@ -623,7 +623,6 @@
 			isa = PBXGroup;
 			children = (
 				C49221A2261D0AC500B92453 /* DateRangeTextFieldSection.swift */,
-				C447C18225DFE786006FF43A /* LegendSection.swift */,
 			);
 			path = "reused-sections";
 			sourceTree = "<group>";
@@ -760,6 +759,7 @@
 			isa = PBXGroup;
 			children = (
 				C4922180261D058600B92453 /* AnalysisUtils.swift */,
+				C4478CCB2634CE4A00632352 /* LegendUtils.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -904,7 +904,7 @@
 			children = (
 				C4DACF8C25D8BB02001F3468 /* AddAnalysis.swift */,
 				C45AA22A261E32DB001F6A28 /* AnalysisList.swift */,
-				C4EBC1D625DF4D6C006EACD4 /* LegendEntryView.swift */,
+				C4BDB83B26323CB200CC0391 /* EditAnalysis.swift */,
 				C45F55C6261B35A6007A66A6 /* reused-sections */,
 				C492217F261D049F00B92453 /* util */,
 			);
@@ -1329,10 +1329,11 @@
 				C466A7A624473A2500EC3E97 /* Date-Extensions.swift in Sources */,
 				C4ACD3C9250D6FCB00D56277 /* AddTagPopup.swift in Sources */,
 				C46C466B247DFC83001431B8 /* TaskInstance.swift in Sources */,
+				C4BDB83C26323CB200CC0391 /* EditAnalysis.swift in Sources */,
 				C42B5B4D259ACD6E00E6A093 /* ErrorView.swift in Sources */,
 				C433E88725D9FA240053A47A /* AnalysisLegend.swift in Sources */,
+				C4478CCC2634CE4A00632352 /* LegendUtils.swift in Sources */,
 				C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */,
-				C447C18325DFE786006FF43A /* LegendSection.swift in Sources */,
 				C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */,
 				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,
@@ -1369,7 +1370,6 @@
 				C48F024E2448A5730088227F /* Task.swift in Sources */,
 				C4EADF7324889D1C0080CD01 /* BubbleRows.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
-				C4EBC1D725DF4D6C006EACD4 /* LegendEntryView.swift in Sources */,
 				C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */,
 				C45AA22B261E32DB001F6A28 /* AnalysisList.swift in Sources */,
 				C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */,
