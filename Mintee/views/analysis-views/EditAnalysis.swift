@@ -10,6 +10,8 @@ import SwiftUI
 
 struct EditAnalysis: View {
     
+    let deleteMessage: String = "Are you sure you want to delete this Analysis?"
+    
     @State var errorMessage: String = ""
     @Binding var isBeingPresented: Bool
     
@@ -26,6 +28,9 @@ struct EditAnalysis: View {
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var dateRangeString: String = ""
+    
+    @State var deleteErrorMessage: String = ""
+    @State var isPresentingConfirmDeletePopup: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -90,6 +95,19 @@ struct EditAnalysis: View {
         
     }
     
+    private func deleteAnalysis() {
+        
+        do {
+            self.analysis.deleteSelf()
+            try CDCoordinator.moc.save()
+            self.isBeingPresented = false
+        } catch {
+            CDCoordinator.moc.rollback()
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
+        }
+        
+    }
+    
     var body: some View {
         
         NavigationView {
@@ -140,6 +158,32 @@ struct EditAnalysis: View {
                             .border(themeManager.collectionItemBorder, width: 3)
                             .cornerRadius(5)
                     }
+                    
+                    // MARK: - Analysis deletion
+                    
+                    Group {
+                        Button(action: {
+                            self.isPresentingConfirmDeletePopup = true
+                        }, label: {
+                            Text("Delete Analysis")
+                                .padding(.all, 10)
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(3)
+                        })
+                        
+                        if (deleteErrorMessage.count > 0) {
+                            Text(deleteErrorMessage)
+                                .foregroundColor(.red)
+                        }
+                    }
+                    .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
+                        ConfirmDeletePopup(deleteMessage: self.deleteMessage,
+                                           deleteList: [],
+                                           delete: { self.deleteAnalysis() },
+                                           isBeingPresented: self.$isPresentingConfirmDeletePopup)
+                    })
+                    
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })

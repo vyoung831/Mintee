@@ -246,3 +246,16 @@ extension Analysis {
     }
     
 }
+
+// MARK: - Deletion
+
+extension Analysis {
+    
+    /**
+     Deletes this Analysis.
+     */
+    func deleteSelf() {
+        CDCoordinator.moc.delete(self)
+    }
+    
+}

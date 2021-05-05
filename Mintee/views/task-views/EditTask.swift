@@ -102,8 +102,8 @@ struct EditTask: View {
             try CDCoordinator.moc.save()
             self.dismiss(); self.isBeingPresented = false;
         } catch {
-            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
             CDCoordinator.moc.rollback()
+            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
         }
     }
     
@@ -165,6 +165,7 @@ struct EditTask: View {
                                 .padding(.all, 10)
                                 .background(Color.red)
                                 .foregroundColor(.white)
+                                .cornerRadius(3)
                         })
                         
                         if (deleteErrorMessage.count > 0) {
