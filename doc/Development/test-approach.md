@@ -30,6 +30,6 @@ Both AUT targets list `SharedTestUtils` as a target dependency.
 
 # AUT coverage
 Development makes AUT coverage decisions and documents them in the comments of the XCTestCase(s) itself.  
-AUTs are separated by the [component](./development-principles.md) that is tested. In some cases, such as `Task`'s tests, AUTs are split further and multiple XCTestCases exist for one component. 
+AUTs are separated by the [component](./application-architecture.md) that is tested. In some cases, such as `Task`'s tests, AUTs are split further and multiple XCTestCases exist for one component. 
 
 # UIT coverage

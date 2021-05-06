@@ -18,7 +18,7 @@ The following definitions are used as such throughout the document:
 1. [Build versioning](#build-versioning)
 
 # Failure handling
-All failures are [reported to Crashlytics](#error-reporting) and handled by view components.  
+All failures are [reported to Crashlytics](#error-reporting) and handled by view components by presenting error messages or graphics to the UI.  
 The following table and sections detail how view components detect failures and which components/functions are responsible for reporting to Crashlytics.
 | How view component detects failure | Component/function responsible for reporting |
 |-|-|
@@ -33,7 +33,7 @@ The following figure illustrates how view components handle optional returns and
 ![](./img/failure-handling-and-error-reporting-optionals.png)
 
 ## Throwing functions
-Failable functions throw if either of the following are true:  
+Failable functions throw if any of the following are true:  
 1. There are multiple possible reasons for failure.  
 __Ex.__ `Task.generateAndPruneInstances()` includes code with several possible reasons for failure. These include:
     * Finding persistent store data that violates business logic (A relationship that should be non-nil is nil)

@@ -1,5 +1,5 @@
-# Development Principles
-This document outlines the development principles that Mintee adheres to in implementing application code.  
+# Application architecture
+This document outlines Mintee's code components and their integration with one another.  
 
 # Table of Contents
 1. [Application components](#application-components)

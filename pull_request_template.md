@@ -9,18 +9,18 @@ Delete N/A options
 
 ## Related issue(s)
 
-# [Development checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/development-principles.md)
+# [Application architecture checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
 - [ ] Model, view, and utility components maintain separation of concerns.
 
 ## Model components
-- Transformables:
+- __Transformables__
     - [ ] Custom objects for transformables conform to NSSecureCoding.
     - [ ] Custom objects for transformables are specified in the Core Data model.
     - [ ] Custom data transformers are implemented and registered.
 
 ## View components
 - [ ] New SwiftUI `Views` define `NavigationViews`.
-- [ ] View components use accessibility only for identification.
+- [ ] View components use accessibility for UIT identification __only__.
 
 # [Failure handling checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)
 
@@ -29,19 +29,19 @@ Delete N/A options
 - [ ] New Swift code avoids `if let` blocks and handles errors via `guard let else` blocks.
 
 ## Failure detection and propagation
-- [ ] Failable functions in model components are defined as throwing functions.
-- Failable functions in non-model components:
+- __Failable functions in non-model components__
     - [ ] Return optionals if there is one (and only one) possible reason of failure.
-    - [ ] Throw if there are multiple possible failure detection.
-    - [ ] Re-throw if there are calls to other throwing functions
+    - [ ] Throw if there are multiple possible reasons for failure.
+    - [ ] Re-throw if there are calls to other throwing functions.
+- [ ] Failable functions in model components are defined as throwing functions.
 
 ## Failure reporting
+- __Failure reporting responsibilities__
+    - [ ] If a failure is first detected in a throwing function, that function reports the failure.
+    - [ ] If a failure is first detected by a view component receiving a nil return value, that view component reports the failure.
 - [ ] All failures are reported to Crashlytics via `ErrorManager`.
-- Failure reporting responsibilities:
-    - If a failure is first detected in a throwing function, that function reports the failure.
-    - If a failure is first detected by a view component receiving a nil return value, that view component reports the failure.
 
 # Testing checklist
-- [ ] New AUT are implemented that comply with [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
-- [ ] New UIT are implemented that comply to [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
-- [ ] New and existing unit tests pass locally with my changes
+- [ ] New AUT are implemented that comply with [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md).
+- [ ] New UIT are implemented that comply to [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md).
+- [ ] New and existing unit tests pass locally with proposed changes.
