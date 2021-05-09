@@ -38,7 +38,10 @@ class AnalysisListUITests: XCTestCase {
  VDO: None (Analysis page views are counted as PCDO)
  PCDO:
     1. Analyses' orders
- Combinations: AnalysisListCard re-ordering dragging + checkbox tests
+ Combinations:
+ VDI1
+    - AnalysisListCard dragging tests
+    - AnalysisListCard checkbox tests
  */
 extension AnalysisListUITests {}
 
@@ -81,7 +84,7 @@ extension AnalysisListUITests {}
     - Check last unincluded card
     - Un-check first included card
     - Un-check middle included card
-    - Un-check lasti included card
+    - Un-check last included card
  */
 extension AnalysisListUITests {}
 

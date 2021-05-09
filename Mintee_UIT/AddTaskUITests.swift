@@ -4,7 +4,8 @@
 //
 //  UIT for the `AddTask` form.
 //
-//  The following UI elements are not tested in isolation
+//  The following UI elements are NOT tested
+//  - Cancel button
 //
 //  Created by Vincent Young on 3/31/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.
@@ -26,9 +27,7 @@ class AddTaskUITests: XCTestCase {
 
 // MARK: - Helper functions
 
-extension AddTaskUITests: XCTestCase {
-    
-}
+extension AddTaskUITests: XCTestCase {}
 
 // MARK: - Done button tests
 
@@ -56,35 +55,26 @@ extension AddTaskUITests: XCTestCase {
     - Empty
     - Non-empty
  VDI2
-    - No Tags
-    - Multiple tags
+    - AddTagPopup integration tests
  VDI3
-    - Recurring selected
-    - Specific selected
+    - Task type button tests
  VDI4
     - No dates
     - Multiple dates with same day
     - Multiple dates with different dates
  VDI5
     - No TTSes
-    - TTSes from TaskTargetSetPopup tests (references are tagged)
+    - TaskTargetSet tests
+ VDI6
+    - One year apart
  PCDI1
     - Task with (name == VDI1) already exists
     - Task with (name == VDI1) does not exist
  PCDI2
-    - Tags with (name == one of VDI2) already exists
-    - Tags with (name == one of VDI2) already exists
+    - Tag with (name == one of VDI2) already exists
+    - Tag with (name == one of VDI2) does not already exist
  */
-extension AddTaskUITests: XCTestCase {
-    
-    /**
-     A sample test function that uses UI flows from [edit task target set tests](x-source-tag://editTTSTest)
-     */
-    func doneButtonTest() {
-        
-    }
-    
-}
+extension AddTaskUITests: XCTestCase {}
 
 // MARK: - AddTagPopup integration tests
 
@@ -98,16 +88,16 @@ extension AddTaskUITests: XCTestCase {}
     2. TaskTargetSets
  PCDI: None
  VDO:
-    1. Dates already defined (when switching to `Specific`)
-    2. TaskTargetSets (when switching to `Recurring`)
+    1. Dates already added and updated (when switching to `Specific`)
+    2. TaskTargetSets already added and updated (when switching to `Recurring`)
  PCDO: None
  Combinations:
  VDI1
     - No dates added
-    - Multiple dates added
+    - Multiple dates added and edited
  VDI2
     - No TTSes added
-    - Multiple TTSes added
+    - TaskTargetSet tests
  */
 extension AddTaskUITests: XCTestCase {}
 
@@ -170,17 +160,16 @@ extension AddTaskUITests: XCTestCase {
  Move up button tests
  VDI:
     1. Order of TTSes
-    2. Count of TTSes
  PCDI: None
  VDO:
     1. Order of TTSes
-    2. Count of TTSes
  PCDO: None
  Combinations:
  VDI1:
     - 1 TTS
     - First TTS of multiple
-    - Middle TTS of multiple
+    - Middle TTS of (>2)
+    - Last TTS of multiple
  */
 extension AddTaskUITests: XCTestCase {}
 
@@ -188,11 +177,9 @@ extension AddTaskUITests: XCTestCase {}
  Move down button tests
  VDI:
     1. Order of TTSes
-    2. Count of TTSes
  PCDI: None
  VDO:
     1. Order of TTSes
-    2. Count of TTSes
  PCDO: None
  Combinations:
  VDI1:

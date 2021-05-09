@@ -33,23 +33,25 @@ class AddTagPopupUITests: XCTestCase {
 
 // MARK: - Helper functions
 
-extension AddTagPopupUITests: XCTestCase {
-    
-}
+extension AddTagPopupUITests: XCTestCase {}
 
 // MARK: - Done button tests
 
 /*
  VDI:
     1. Tag name text field
+    2. Parent view's tags section
  PCDI: None
  VDO:
     1. Parent view's tags section
  PCDO: None
- 1. Empty text field; tag does not exist in parent view's tags section
- 2. Empty text field; tag exists in parent view's tags section
- 3. Non-empty text field; tag does not exist in parent view's tags section
- 4. Non-empty text field; tag exists in parent view's tags section
+ Combinations:
+ VDI1
+    - Empty text field
+    - Non-empty text field
+ VDI2
+    - Tag name text field content exists in parent view's tags section
+    - Tag name text field content does not exist in parent view's tags section
  */
 extension AddTagPopupUITests: XCTestCase {
     
@@ -58,16 +60,23 @@ extension AddTagPopupUITests: XCTestCase {
 // MARK: - Tag list
 
 /*
- Tag List
- VDI: Tag name text field
- PCDI: Tags in MOC
- VDO: Subset of Tags in MOC; checkbox for selected Tag
+ Tags displayed in List
+ VDI:
+    1. Tag name text field
+ PCDI:
+    1. Tags in MOC
+ VDO:
+    1. Subset of Tags in MOC
  PCDO: None
- 1. Empty text field; no existing tags in MOC
- 2. Empty text field; existing tags in MOC
- 3. Non-empty text field and existing tags in MOC; no matching character sequence
- 4. Non-empty text field and existing tags in MOC; matching character sequence
-    a. Case mismatches
+ Combinations:
+ VDI1
+    - Empty text field
+    - Non-empty text field
+ PCDI1
+    - No existing tags in MOC
+    - Existing tags in MOC; no matching character sequence with Tag name text field
+    - Existing tags in MOC; matching character sequence with Tag name text field (case mismatch)
+    - Existing tags in MOC; matching character sequence with Tag name text field (case match)
  */
 extension AddTagPopupUITests: XCTestCase {
     
@@ -75,13 +84,16 @@ extension AddTagPopupUITests: XCTestCase {
 
 /*
  Tag List rows
- VDI: None
+ VDI:
+    1. Tag name row
  PCDI: None
- VDO: Tag name text field
+ VDO:
+    1. Tag name text field
+    2. Checkbox for selected Tag
  PCDO: None
- 1. Tap to fill tag name text field contents
-    a. Case in text field matches Tag name before tap
-    a. Case in text field didn't match Tag name before tap
+ Combinations:
+ VDI1
+    - Tap a row
  */
 extension AddTagPopupUITests: XCTestCase {
     
