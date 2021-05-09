@@ -239,7 +239,7 @@ struct EditTask: View {
                 })
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "edit-task-save-button")
-                .disabled(self.taskName == "")
+                .disabled(self.taskName.count < 1)
                 .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ?
                         self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
                             if self.isPresentingConfirmDeletePopupForSaveTask {

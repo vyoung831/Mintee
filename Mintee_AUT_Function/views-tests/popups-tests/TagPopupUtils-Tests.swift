@@ -1,5 +1,5 @@
 //
-//  AddTagPopup-Tests.swift
+//  TagPopupUtils-Tests.swift
 //  MinteeTests
 //
 //  Created by Vincent Young on 9/13/20.
@@ -11,7 +11,7 @@
 import XCTest
 import SwiftUI
 
-class AddTagPopup_Tests: XCTestCase {
+class TagPopupUtils_Tests: XCTestCase {
     
     var tag: Tag!
     
@@ -25,27 +25,27 @@ class AddTagPopup_Tests: XCTestCase {
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {
         tag = try Tag.getOrCreateTag( tagName: "tag" )
-        XCTAssert(AddTagPopup.tagShouldBeDisplayed(tag, "tag"))
+        XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "tag"))
     }
     
     func test_tagShouldBeDisplayed_sameContent_differentCase() throws {
         tag = try Tag.getOrCreateTag( tagName: "tag" )
-        XCTAssert(AddTagPopup.tagShouldBeDisplayed(tag, "TAG"))
+        XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "TAG"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_contained() throws {
         tag = try Tag.getOrCreateTag( tagName: "tag1" )
-        XCTAssert(AddTagPopup.tagShouldBeDisplayed(tag, "tag"))
+        XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "tag"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_sameCase() throws {
         tag = try Tag.getOrCreateTag( tagName: "tag2" )
-        XCTAssertFalse(AddTagPopup.tagShouldBeDisplayed(tag, "tag1"))
+        XCTAssertFalse(TagPopupUtils.tagShouldBeDisplayed(tag, "tag1"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_differentCase() throws {
         tag = try Tag.getOrCreateTag( tagName: "tag2" )
-        XCTAssertFalse(AddTagPopup.tagShouldBeDisplayed(tag, "TAG1"))
+        XCTAssertFalse(TagPopupUtils.tagShouldBeDisplayed(tag, "TAG1"))
     }
     
 }

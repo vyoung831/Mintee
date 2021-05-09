@@ -65,14 +65,14 @@ public class Tag: NSManagedObject {
     }
     
     /**
-     Given a tagName, returns the existing Tag object with that tagName (if such a Tag exists).
+     Given a tagName, returns the existing Tag object with that tagName if such a Tag exists. Otherwise, returns nil.
      This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate.
      - parameter tagName: Case and diacritic insensitive name of the Tag to find
      - returns: (Optional) Tag with name = `tagName`
      */
     static func getTag(tagName: String) throws -> Tag? {
         
-        // TO-DO: Update FetchRequest wiht more robust way to obtain name of `Tag` entity.
+        // TO-DO: Update FetchRequest with more robust way to obtain name of `Tag` entity.
         // Set up case and diacritic insensitive predicate
         let request = NSFetchRequest<Tag>(entityName: "Tag")
         request.predicate = NSPredicate(format: "name == [cd] %@", tagName)

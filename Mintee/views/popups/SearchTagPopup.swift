@@ -22,7 +22,7 @@ struct SearchTagPopup: View {
     
     @State var selectedTag: Tag?
     
-    // SearchTagPopup expects an error message to be returned from the containing view should the addTag closure fail
+    // SearchTagPopup expects an error message to be returned from the parent view should the addTag closure fail
     var addTag: (String) -> String?
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
@@ -42,7 +42,7 @@ struct SearchTagPopup: View {
                     .accessibility(identifier: "search-tag-popup-cancel-button")
                     
                     Spacer()
-                    Text("Search for Tag")
+                    Text("Tag search")
                         .font(.title)
                     Spacer()
                     
@@ -55,7 +55,7 @@ struct SearchTagPopup: View {
                         
                         guard let tagName = tag._name else {
                             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                        ["Message" : "SearchTagPopup.Done found a tag with nil _name",
+                                                        ["Message" : "SearchTagPopup.Done() found a tag with nil _name",
                                                          "Tag" : tag])
                             self.errorMessage = ErrorManager.unexpectedErrorMessage
                             return
@@ -76,7 +76,7 @@ struct SearchTagPopup: View {
                 }
             }
             
-            LabelAndTextFieldSection(label: nil, labelIdentifier: "", placeHolder: "Tag name", textField: self.$tagText, textFieldIdentifier: "add-tag-popup-text-field")
+            LabelAndTextFieldSection(label: nil, labelIdentifier: "", placeHolder: "Tag name", textField: self.$tagText, textFieldIdentifier: "search-tag-popup-text-field")
             
             if errorMessage.count > 0 {
                 Text(errorMessage)
@@ -84,7 +84,7 @@ struct SearchTagPopup: View {
             }
             
             // tagsFetch is filtered for Tag names containing the TextField's value
-            List(tagsFetch.filter{ AddTagPopup.tagShouldBeDisplayed($0, self.tagText) || selectedTag == $0 }, id: \.self) { tag in
+            List(tagsFetch.filter{ TagPopupUtils.tagShouldBeDisplayed($0, self.tagText) || selectedTag == $0 }, id: \.self) { tag in
                 if let tagName = tag._name {
                     
                     if self.selectedTag == tag {

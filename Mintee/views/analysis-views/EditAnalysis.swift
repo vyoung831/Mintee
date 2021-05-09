@@ -103,7 +103,7 @@ struct EditAnalysis: View {
             self.isBeingPresented = false
         } catch {
             CDCoordinator.moc.rollback()
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
+            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
         }
         
     }
@@ -183,7 +183,6 @@ struct EditAnalysis: View {
                                            delete: { self.deleteAnalysis() },
                                            isBeingPresented: self.$isPresentingConfirmDeletePopup)
                     })
-                    
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })

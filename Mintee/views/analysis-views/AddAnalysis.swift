@@ -76,13 +76,16 @@ struct AddAnalysis: View {
                 
                 if self.dateRangeString.count < 1 {
                     self.errorMessage = "Specify a date range"
+                    CDCoordinator.moc.rollback()
                     return false
                 }
                 
                 guard let range = Int16(dateRangeString) else {
                     self.errorMessage = "Remove invalid input from date range"
+                    CDCoordinator.moc.rollback()
                     return false
                 }
+                
                 let _ = try Analysis(entity: Analysis.entity(),
                                             insertInto: CDCoordinator.moc,
                                             name: analysisName,

@@ -16,7 +16,7 @@ struct DateRangeTextFieldSection: View {
         
         HStack {
             Text("Last")
-            TextField("0", text: self.$dateRange)
+            TextField("", text: self.$dateRange)
                 .keyboardType(.decimalPad)
                 .frame(width: 160)
                 .foregroundColor(.primary)

@@ -165,7 +165,7 @@ struct AddTask: View {
                 })
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "add-task-save-button")
-                .disabled(self.taskName == ""),
+                .disabled(self.taskName.count < 1),
                 
                 trailing: Button(action: {
                     self.isBeingPresented = false

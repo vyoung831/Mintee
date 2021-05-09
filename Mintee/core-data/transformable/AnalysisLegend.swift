@@ -71,8 +71,8 @@ class AnalysisLegend: NSObject, NSSecureCoding {
             userInfo["\(prefix)CompletionLegendEntry[\(idx)].color"] = entry.color.debugDescription
             userInfo["\(prefix)CompletionLegendEntry[\(idx)].min"] = entry.min
             userInfo["\(prefix)CompletionLegendEntry[\(idx)].max"] = entry.max
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].minOperator"] = entry.minOperator
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].maxOperator"] = entry.maxOperator
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].minOperator"] = entry.minOperator.rawValue
+            userInfo["\(prefix)CompletionLegendEntry[\(idx)].maxOperator"] = entry.maxOperator.rawValue
             idx += 1
         }
         
@@ -100,7 +100,7 @@ final class AnalysisLegendTransformer: NSSecureUnarchiveFromDataTransformer {
     
 }
 
-// MARK: - Legend entry types
+// MARK: - CategorizedLegendEntry
 
 class CategorizedLegendEntry: NSObject, NSSecureCoding {
     
@@ -161,14 +161,16 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     
 }
 
+// MARK: - CompletionLegendEntry
+
 class CompletionLegendEntry: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
     var color : String
     var min: Float
     var max: Float
-    var minOperator: Int16
-    var maxOperator: Int16
+    var minOperator: SaveFormatter.equalityOperator
+    var maxOperator: SaveFormatter.equalityOperator
     
     enum Keys: String {
         case color = "color"
@@ -187,16 +189,16 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         self.color = hexStringColor
         self.min = min
         self.max = max
-        self.minOperator = SaveFormatter.equalityOperatorToStored(minOperator)
-        self.maxOperator = SaveFormatter.equalityOperatorToStored(maxOperator)
+        self.minOperator = minOperator
+        self.maxOperator = maxOperator
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(self.color as NSString, forKey: CompletionLegendEntry.Keys.color.rawValue)
         coder.encode(NSNumber(value: self.min), forKey: CompletionLegendEntry.Keys.min.rawValue)
         coder.encode(NSNumber(value: self.max), forKey: CompletionLegendEntry.Keys.max.rawValue)
-        coder.encode(NSNumber(value: self.minOperator), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
-        coder.encode(NSNumber(value: self.maxOperator), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
+        coder.encode(NSNumber(value: SaveFormatter.equalityOperatorToStored(self.minOperator)), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
+        coder.encode(NSNumber(value: SaveFormatter.equalityOperatorToStored(self.maxOperator)), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
     }
     
     required init?(coder: NSCoder) {
@@ -204,8 +206,8 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         guard let color = coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue) as String?,
               let min = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.min.rawValue) as? Float,
               let max = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.max.rawValue) as? Float,
-              let minOperator = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue) as? Int16,
-              let maxOperator = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue) as? Int16 else {
+              let minOp = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue) as? Int16,
+              let maxOp = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue) as? Int16 else {
             
             let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not decode its properties",
                                             CompletionLegendEntry.Keys.color.rawValue : coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue).debugDescription,
@@ -218,11 +220,20 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
             
         }
         
+        guard let minOperatorEnum = SaveFormatter.storedToEqualityOperator(minOp),
+              let maxOperatorEnum = SaveFormatter.storedToEqualityOperator(maxOp) else {
+            let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not convert the decoded minOperator and/or maxOperator to values of type SaveFormatter.equalityOperator",
+                                            "minOp" : minOp,
+                                            "maxOp" : maxOp]
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            return nil
+        }
+        
         self.color = color
         self.min = min
         self.max = max
-        self.minOperator = minOperator
-        self.maxOperator = maxOperator
+        self.minOperator = minOperatorEnum
+        self.maxOperator = maxOperatorEnum
         
     }
     

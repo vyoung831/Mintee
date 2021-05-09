@@ -13,7 +13,7 @@ struct TagsSection: View {
     var allowedToAddNewTags: Bool
     var label: String
     
-    // Specifies the type of form that is used to present TagsSection. formType is used on error messages when attempting to add a tag that has already been added to a task/analysis form.
+    // Specifies the type of form that is used to present TagsSection - used on error messages to indicate that a Tag has already been added to a `formType` (ex. analysis, task etc.)
     var formType: String
     
     @State var isPresentingAddTagPopup: Bool = false
@@ -25,8 +25,8 @@ struct TagsSection: View {
     /**
      Adds a new entry to tags if one with the same name doesn't already exist.
      If one with the same name already exists, returns error message.
-     - parameter: Value of the new entry.
-     - return: Error message to return to the View attempted to add the entry to tags.
+     - parameter newTagName: Value of the new entry.
+     - returns (Optional) Error message to return to the View that attempted to add the entry to tags.
      */
     func addTag(_ newTagName: String) -> String? {
         if self.tags.contains(where: {$0.lowercased() == newTagName.lowercased()}) {

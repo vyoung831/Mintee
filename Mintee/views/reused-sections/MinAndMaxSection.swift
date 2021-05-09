@@ -11,8 +11,8 @@ import SwiftUI
 struct MinAndMaxSection: View {
     
     // UI Constants
-    let operationWidth: CGFloat = 55
-    let operationHeight: CGFloat = 100
+    let pickerWidth: CGFloat = 55
+    let pickerHeight: CGFloat = 100
     
     @Binding var minOperator: SaveFormatter.equalityOperator
     @Binding var maxOperator: SaveFormatter.equalityOperator
@@ -29,7 +29,7 @@ struct MinAndMaxSection: View {
                 .disabled(self.maxOperator == .eq || self.minOperator == .na)
                 .keyboardType( .decimalPad )
                 .padding(10)
-                .border(themeManager.textFieldBorder, width: 2)
+                .border(Color.primary, width: 2)
                 .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
                 .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
                 .cornerRadius(3)
@@ -38,28 +38,30 @@ struct MinAndMaxSection: View {
             Picker("Low op", selection: self.$minOperator) {
                 ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
                     Text(op.stringValue)
-                }}
-                .foregroundColor(.accentColor)
-                .frame(width: operationWidth, height: operationHeight)
-                .clipped()
+                }
+            }
+            .foregroundColor(.accentColor)
+            .frame(width: pickerWidth, height: pickerHeight)
+            .clipped()
             
             Text("Target")
             
             Picker("High op", selection: self.$maxOperator) {
                 ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
                     Text(op.stringValue)
-                }}
-                .foregroundColor(.accentColor)
-                .frame(width: operationWidth, height: operationHeight)
-                .clipped()
+                }
+            }
+            .foregroundColor(.accentColor)
+            .frame(width: pickerWidth, height: pickerHeight)
+            .clipped()
             
             TextField("", text: self.$maxValueString)
                 .disabled(self.minOperator == .eq || self.maxOperator == .na)
                 .keyboardType( .decimalPad )
                 .padding(10)
-                .border(themeManager.textFieldBorder, width: 2)
+                .border(Color.primary, width: 2)
                 .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
-                .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
+                .foregroundColor(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextFieldText : .primary)
                 .cornerRadius(3)
                 .accessibility(identifier: "maximum-value")
             

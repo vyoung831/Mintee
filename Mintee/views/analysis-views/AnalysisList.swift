@@ -5,9 +5,9 @@
 //  This View's implementation was based largely on the accepted answer here: https://stackoverflow.com/questions/62606907/swiftui-using-ondrag-and-ondrop-to-reorder-items-within-one-single-lazygrid
 //
 //  Analyses are loaded from the MOC to present to the user. However, to avoid letting user interaction with AnalysisListCard edit the MOC in place, a model class (AnalysisListModel) serves as AnalysisList's source of truth.
-//  AnalysisListModel fetches and maintains Analyses as a sorted array of identifiable and equatable previews, and AnalysisList draws/re-draws AnalysisListCards based on the AnalysisListModel's data.
+//  AnalysisListModel fetches and maintains Analyses as a sorted array of identifiable and equatable previews, and AnalysisList draws/re-draws AnalysisListCards based on the AnalysisListModel's @Published data.
 //  AnalysisListModel's previews reflect both user interaction with AnalysisListCards (through closures), and changes to the MOC (through NSFetchedResultsControllerDelegate functions).
-//  When the user presses `Save` on AnalysisList, the Analyses in the MOC are updated based on the previews' values.
+//  When the user presses `Save` on AnalysisList, the Analyses in the MOC are updated based on the model's previews.
 //
 //  Created by Vincent Young on 4/7/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -28,18 +28,34 @@ struct AnalysisList: View {
     
     /**
      Re-assigns `order` to Analyses in the MOC by iterating over the model's previews.
+     - returns: True if update and MOC save were successful.
      */
-    func saveAnalysisOrdering() throws {
+    func saveAnalysisOrdering() -> Bool {
         
         for preview in model.sortedPreviews {
             if preview.order >= 0 {
-                (preview.id as Analysis).setOrder(Int16(preview.order))
+                preview.id.setOrder(Int16(preview.order))
             } else {
-                (preview.id as Analysis).setUnincluded()
+                preview.id.setUnincluded()
             }
         }
         
-        try CDCoordinator.moc.save()
+        do {
+            try CDCoordinator.moc.save()
+            return true
+        } catch {
+            var userInfo: [String : Any] = ["Message" : "AnalysisList.saveAnalysisOrdering() failed"]
+            for idx in 0 ..< model.sortedPreviews.count {
+                userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
+                userInfo["preview[\(idx)].id"] = model.sortedPreviews[idx].id.debugDescription
+                model.sortedPreviews[idx].id.mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
+            }
+            ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
+            
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
+            CDCoordinator.moc.rollback()
+            return false
+        }
         
     }
     
@@ -96,18 +112,8 @@ struct AnalysisList: View {
                                     }),
                                 trailing:
                                     Button(action: {
-                                        do {
-                                            try saveAnalysisOrdering()
+                                        if self.saveAnalysisOrdering() {
                                             self.isBeingPresented = false
-                                        } catch {
-                                            var userInfo: [String : Any] = ["Message" : "AnalysisList failed to save new Analysis orders"]
-                                            for idx in 0 ..< model.sortedPreviews.count {
-                                                userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
-                                                userInfo["preview[\(idx)].id"] = (model.sortedPreviews[idx].id as Analysis).debugDescription
-                                                (model.sortedPreviews[idx].id as Analysis).mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
-                                            }
-                                            ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
-                                            self.errorMessage = ErrorManager.unexpectedErrorMessage
                                         }
                                     }, label: {
                                         Text("Save")
@@ -140,7 +146,7 @@ struct AnalysisListCard: View {
     private func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
         
         guard let legend = self.analysis._legend else {
-            var userInfo: [String : Any] = ["Message" : "AnalysisList.extractCategorizedPreviews() found nil legend in an Analysis"]
+            var userInfo: [String : Any] = ["Message" : "AnalysisListCard.extractCategorizedPreviews() found nil legend in an Analysis"]
             self.analysis.mergeDebugDictionary(userInfo: &userInfo)
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
@@ -149,7 +155,7 @@ struct AnalysisListCard: View {
         var previews: [CategorizedLegendEntryPreview] = []
         for categorizedEntry in legend.categorizedEntries {
             guard let color = UIColor(hex: categorizedEntry.color) else {
-                var userInfo: [String : Any] = ["Message" : "AnalysisList.extractCategorizedPreviews() could not initialize a UIColor from a CategorizedLegendEntry's color String"]
+                var userInfo: [String : Any] = ["Message" : "AnalysisListCard.extractCategorizedPreviews() found a CategorizedLegendEntry with `color` that could not be converted to value of type UIColor"]
                 self.analysis.mergeDebugDictionary(userInfo: &userInfo)
                 ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
                 return nil
@@ -256,7 +262,7 @@ class AnalysisListModel: NSObject, ObservableObject {
     
     class AnalysisListCardPreview: Identifiable, Equatable {
         
-        @ObservedObject var id: Analysis
+        var id: Analysis
         var order: Int
         
         static func == (lhs: AnalysisListModel.AnalysisListCardPreview, rhs: AnalysisListModel.AnalysisListCardPreview) -> Bool {
@@ -313,17 +319,15 @@ class AnalysisListModel: NSObject, ObservableObject {
     }
     
     /**
-     Re-assigns `order` to an array of AnalysListCardPreview.
+     Re-assigns `order` to an array of AnalysisListCardPreview.
      All "included" previews before the first "nonincluded" preview have `order` reassigned based on their order in the array of previews.
      All previews after (and including) the first 'nonincluded' preview have `order` set to -1.
      - parameter previews: (inout) The array of AnalysisListCardPreview to reorder.
      */
     static func reorderPreviews(_ previews: inout [AnalysisListCardPreview]) {
-        var order = 0
         let firstUnincluded = previews.firstIndex(where: { $0.order < 0 } ) ?? previews.count
         for idx in 0 ..< firstUnincluded {
-            previews[idx].order = order
-            order += 1
+            previews[idx].order = idx
         }
         
         for idx in firstUnincluded ..< previews.count {
@@ -332,7 +336,7 @@ class AnalysisListModel: NSObject, ObservableObject {
     }
     
     /**
-     Sorts an array of AnalysListCardPreview.
+     Sorts an array of AnalysisListCardPreview.
      Previews with order == -1 are sorted to the end of the array; others are sorted at the front of the array in ascending order of var `order`.
      - parameter previews: (inout) The array of AnalysisListCardPreview to sort.
      */
@@ -351,7 +355,7 @@ class AnalysisListModel: NSObject, ObservableObject {
     /**
      Toggles the order of an AnalysisListCardPreview and re-sorts the provided (inout) previews.
      A preview that was to be included on the Analysis homepage (positive, non-zero order) has its order toggled to -1.
-     Otherwise, the preview's order is set to the lowest priority compared to all currently  'included' previews.
+     Otherwise, the preview's order is set to the lowest priority compared to all currently 'included' previews.
      - parameter preview: The AnalysisListCardPreview in the previews for which to toggle order.
      - parameter previews: (inout) Array of AnalysisListCardPreview to look for `preview` in, and to re-sort.
      */

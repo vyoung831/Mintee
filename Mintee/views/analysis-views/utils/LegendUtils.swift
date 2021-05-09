@@ -40,7 +40,7 @@ class CategorizedLegendEntryPreview: ObservableObject {
     }
     
     /**
-     Sorts an array of CategorizedLegendEntryPreviews by `category` in the order in which they would be presented by `CategorizedLegendEntryPreview.getDefaults()`.
+     Returns the provided array of CategorizedLegendEntryPreviews, sorted by `category` in the order in which they would be presented by `CategorizedLegendEntryPreview.getDefaults()`.
      Used to sort previews when being read from persistent store and displayed on a form, ensuring that the user has a consistent experience across forms.
      - parameter previews: Array of CategorizedLegendEntryPreview to sort
      - returns: Contents of CategorizedLegendEntryPreview, sorted by `category` in the same order as the array returned by `CategorizedLegendEntryPreview.getDefaults()`

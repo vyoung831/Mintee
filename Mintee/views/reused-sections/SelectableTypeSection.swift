@@ -30,18 +30,6 @@ struct SelectableTypeSection<Type: SelectableType>: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    /**
-     Returns an array of plain GridItems for SelectableType selection. The number of elements is equal to the number of selectable options.
-     - returns: Array of GridItems to use in this View's LazyVGrid.
-     */
-    func getGridItemArray() -> [GridItem] {
-        var items: [GridItem] = []
-        for _ in 0 ..< options.count {
-            items.append(GridItem())
-        }
-        return items
-    }
-    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 8) {
@@ -49,7 +37,7 @@ struct SelectableTypeSection<Type: SelectableType>: View {
             Text(self.sectionLabel)
                 .bold()
             
-            LazyVGrid(columns: self.getGridItemArray(),
+            LazyVGrid(columns: options.map{ _ in GridItem() },
                       alignment: .center,
                       spacing: 10) {
                 

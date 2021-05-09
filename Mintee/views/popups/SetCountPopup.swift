@@ -48,9 +48,8 @@ struct SetCountPopup: View {
                             .keyboardType( .decimalPad )
                             .frame(width: gr.size.width/2)
                             .padding(10)
-                            .border(themeManager.textFieldBorder, width: 2)
+                            .border(Color.primary, width: 2)
                             .background(Color(UIColor.systemBackground))
-                        
                         Button(action: {
                             if let countCast = Float(count){
                                 count = String((countCast.rounded(.down) + 1).clean)

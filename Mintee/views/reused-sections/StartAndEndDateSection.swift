@@ -2,7 +2,8 @@
 //  StartAndEndDateSection.swift
 //  Mintee
 //
-//  Section for presenting start date and end date in recurring type Tasks, re-used by AddTask and EditTask
+//  Section for presenting start date and end date that automatically update.
+//  Setting start date to later than the current end date "fast-forwards" end date, and vice versa for setting end date to earlier than start date.
 //
 //  Created by Vincent Young on 7/6/20.
 //  Copyright © 2020 Vincent Young. All rights reserved.

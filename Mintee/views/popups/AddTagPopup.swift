@@ -72,7 +72,7 @@ struct AddTagPopup: View {
             
             // tagsFetch is filtered for Tag names containing the TextField's value
             List(tagsFetch.filter{
-                AddTagPopup.tagShouldBeDisplayed($0, self.tagText)
+                TagPopupUtils.tagShouldBeDisplayed($0, self.tagText)
             }, id: \.self) { tag in
                 if let tagName = tag._name {
                     Button(tagName) {
@@ -90,24 +90,4 @@ struct AddTagPopup: View {
         .foregroundColor(themeManager.panelContent)
         
     }
-}
-
-extension AddTagPopup {
-    
-    /**
-     Compares a Tag's name to the content in a TextField to determine if the Tag should be displayed to the user to be selected.
-     Also used by SearchTagPopup.
-     - parameter tag: Tag to evaluate
-     - parameter textFieldContent: Content of TextField to evaluate against Tag in question.
-     - returns: True if tagText is a substring of tag's name
-     */
-    static func tagShouldBeDisplayed(_ tag: Tag,_ textFieldContent: String) -> Bool {
-        if let tagName = tag._name {
-            if tagName.lowercased().contains(textFieldContent.lowercased()) || textFieldContent.count == 0 {
-                return true
-            }
-        }
-        return false
-    }
-    
 }
