@@ -58,6 +58,7 @@
 		C44940CD2498F113009FE818 /* BubbleRows-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940CC2498F113009FE818 /* BubbleRows-Tests.swift */; };
 		C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */; };
 		C44C7F8B243DCD3D00072AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */; };
+		C45506B32645923B009541CE /* AddTagPopupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45506B22645923B009541CE /* AddTagPopupUITests.swift */; };
 		C4578D2324B4065C008BD3D4 /* LabelAndTextFieldSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2224B4065C008BD3D4 /* LabelAndTextFieldSection.swift */; };
 		C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */; };
 		C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45790AD249FE74C002E16D5 /* Task-Tests.swift */; };
@@ -240,6 +241,7 @@
 		C44940CC2498F113009FE818 /* BubbleRows-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleRows-Tests.swift"; sourceTree = "<group>"; };
 		C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
 		C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C45506B22645923B009541CE /* AddTagPopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagPopupUITests.swift; sourceTree = "<group>"; };
 		C4578D2224B4065C008BD3D4 /* LabelAndTextFieldSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelAndTextFieldSection.swift; sourceTree = "<group>"; };
 		C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartAndEndDateSection.swift; sourceTree = "<group>"; };
 		C45790AD249FE74C002E16D5 /* Task-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-Tests.swift"; sourceTree = "<group>"; };
@@ -437,12 +439,13 @@
 		C4037ABB24342E2300150D47 /* Mintee_UIT */ = {
 			isa = PBXGroup;
 			children = (
-				C430EEAA24BF820400BD98FD /* task-target-set-popup-ui-tests */,
 				C4037ABE24342E2300150D47 /* Info.plist */,
+				C45506B22645923B009541CE /* AddTagPopupUITests.swift */,
 				C4037ABC24342E2300150D47 /* AddTaskUITests.swift */,
 				C408445C25FFC532007C4105 /* MainTabBarUITests.swift */,
 				C4FE995024BB8E3F0050C217 /* SetDatePopupUITests.swift */,
 				C462C053243A1F9600EBB940 /* TodayViewControllerUITests.swift */,
+				C430EEAA24BF820400BD98FD /* task-target-set-popup-ui-tests */,
 				C4DCDFBC24B144E8008F727F /* util */,
 			);
 			path = Mintee_UIT;
@@ -1351,6 +1354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4130C1D24C6FB6B003EF047 /* LowEqualToHighTests.swift in Sources */,
+				C45506B32645923B009541CE /* AddTagPopupUITests.swift in Sources */,
 				C430EEAC24BF822A00BD98FD /* InsufficientInputUITests.swift in Sources */,
 				C408445D25FFC532007C4105 /* MainTabBarUITests.swift in Sources */,
 				C4130C1924C6FB4F003EF047 /* LowOnlyTests.swift in Sources */,
