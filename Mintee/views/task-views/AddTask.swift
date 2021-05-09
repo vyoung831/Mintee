@@ -100,6 +100,7 @@ struct AddTask: View {
                     
                     LabelAndTextFieldSection(label: "Task name",
                                              labelIdentifier: "task-name-label",
+                                             placeHolder: "Task name",
                                              textField: self.$taskName,
                                              textFieldIdentifier: "task-name-text-field")
                     if (errorMessage.count > 0) {
@@ -110,14 +111,16 @@ struct AddTask: View {
                     
                     // MARK: - Tags
                     
-                    TagsSection(label: "Tags",
+                    TagsSection(allowedToAddNewTags: true,
+                                label: "Tags",
+                                formType: "task",
                                 tags: self.$tags)
                     
                     // MARK: - Task type
                     
-                    SaveFormatterSelectionSection<SaveFormatter.taskType>(sectionLabel: "Task type",
-                                                                          options: SaveFormatter.taskType.allCases,
-                                                                          selection: self.$taskType)
+                    SelectableTypeSection<SaveFormatter.taskType>(sectionLabel: "Task type",
+                                                                  options: SaveFormatter.taskType.allCases,
+                                                                  selection: self.$taskType)
                     
                     // MARK: - Dates
                     
@@ -162,7 +165,7 @@ struct AddTask: View {
                 })
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "add-task-save-button")
-                .disabled(self.taskName == ""),
+                .disabled(self.taskName.count < 1),
                 
                 trailing: Button(action: {
                     self.isBeingPresented = false

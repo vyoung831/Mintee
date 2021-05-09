@@ -37,4 +37,28 @@ extension UIColor {
         
     }
     
+    /**
+     Returns a hex String representing this UIColor.
+     - returns: (Optional) String representing this UIColor's hex value, including alpha.
+     */
+    func toHex() -> String? {
+        
+        guard let components = self.cgColor.components, components.count >= 3 else {
+            return nil
+        }
+        
+        // Get cgColor's rgb components and round as Floats to Ints
+        let r = lroundf( Float(components[0]) * 255 )
+        let g = lroundf( Float(components[1]) * 255 )
+        let b = lroundf( Float(components[2]) * 255 )
+        
+        var a: Int = 255
+        if components.count >= 4 {
+            a = lroundf( Float(components[3]) * 255 )
+        }
+
+        return String(format: "%02X%02X%02X%02X", r, g, b, a)
+        
+    }
+    
 }

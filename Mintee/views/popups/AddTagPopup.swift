@@ -26,20 +26,6 @@ struct AddTagPopup: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    /**
-     Compares a Tag's name to the content in the tag name TextField and determines if the Tag should be displayed to the user to be selected
-     - parameter tag: Tag to evaluate
-     - returns: True if tag's name is
-     */
-    func tagShouldBeDisplayed(_ tag: Tag) -> Bool {
-        if let tagName = tag._name {
-            if tagName.lowercased().contains(self.tagText.lowercased()) || self.tagText.count == 0 {
-                return true
-            }
-        }
-        return false
-    }
-    
     var body: some View {
         
         VStack(alignment: .center, spacing: 30) {
@@ -63,8 +49,8 @@ struct AddTagPopup: View {
                         
                         if self.tagText.count == 0 {
                             self.isBeingPresented = false
-                        } else if let closureErrorMessage = self.addTag(self.tagText) {
-                            self.errorMessage = closureErrorMessage
+                        } else if let addTagErrorMessage = self.addTag(self.tagText) {
+                            self.errorMessage = addTagErrorMessage
                         } else {
                             self.isBeingPresented = false
                         }
@@ -77,10 +63,7 @@ struct AddTagPopup: View {
                 }
             }
             
-            TextField("Tag name", text: self.$tagText)
-                .padding(10)
-                .border(themeManager.textFieldBorder, width: 2)
-                .cornerRadius(3)
+            LabelAndTextFieldSection(label: nil, labelIdentifier: "", placeHolder: "Tag name", textField: self.$tagText, textFieldIdentifier: "add-tag-popup-text-field")
             
             if errorMessage.count > 0 {
                 Text(errorMessage)
@@ -89,17 +72,17 @@ struct AddTagPopup: View {
             
             // tagsFetch is filtered for Tag names containing the TextField's value
             List(tagsFetch.filter{
-                tagShouldBeDisplayed($0)
+                TagPopupUtils.tagShouldBeDisplayed($0, self.tagText)
             }, id: \.self) { tag in
                 if let tagName = tag._name {
                     Button(tagName) {
                         // Sets the TextField value to the tapped Tag
-                        self.tagText = tagName // TO-DO: Add foregroundColor modifier when List background is able to be set to themeManager.panel
+                        self.tagText = tagName // TO-DO: Add foregroundColor modifier as panelContent when SwiftUI is updated with ability to change List background color
                     }
                 }
             }
+            .foregroundColor(.primary) // TO-DO: Update foregroundColor to panelContent after SwiftUI is updated with ability to change List background color
             
-            Spacer()
         }
         .padding(15)
         .accentColor(themeManager.accent)

@@ -6,3 +6,6 @@ Pods/
 
 # Versioning header files
 Versions/versions.h
+
+# System files
+.DS_Store
