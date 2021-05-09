@@ -70,7 +70,7 @@ class TodayCollectionViewController: UICollectionViewController {
             try fetchedResultsController?.performFetch()
         } catch (let error) {
             ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                        ["Message" : "TodayCollectionViewController.setUpFetchedResults failed to call performFetch on fetchedResultsController",
+                                        ["Message" : "TodayCollectionViewController.setUpFetchedResults() failed to call performFetch on fetchedResultsController",
                                          "fetchRequest" : fetchRequest.debugDescription,
                                          "error.localizedDescription" : error.localizedDescription])
             return

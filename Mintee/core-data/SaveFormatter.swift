@@ -234,17 +234,7 @@ extension SaveFormatter {
     
 }
 
-// MARK: - Selectable types (used with SaveFormatterSelectionSection)
-
-/*
- SaveFormatter enums that have all cases displayed to the user for selection/interaction (used with SaveFormatterSelectionSection) conform to SelectableType. This pertains to enums that can only save one value to persistent store.
- */
-protocol SelectableType: Equatable {
-    
-    // String that's displayed to the user for selection
-    var stringValue: String { get }
-    
-}
+// MARK: - Selectable types (used with SelectableTypeSection)
 
 // MARK: - Task type
 

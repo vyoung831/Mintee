@@ -102,8 +102,8 @@ struct EditTask: View {
             try CDCoordinator.moc.save()
             self.dismiss(); self.isBeingPresented = false;
         } catch {
-            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
             CDCoordinator.moc.rollback()
+            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
         }
     }
     
@@ -118,6 +118,7 @@ struct EditTask: View {
                     
                     LabelAndTextFieldSection(label: "Task name",
                                              labelIdentifier: "task-name-label",
+                                             placeHolder: "Task name",
                                              textField: self.$taskName,
                                              textFieldIdentifier: "task-name-text-field")
                     if (saveErrorMessage.count > 0) {
@@ -128,14 +129,16 @@ struct EditTask: View {
                     
                     // MARK: - Tags
                     
-                    TagsSection(label: "Tags",
+                    TagsSection(allowedToAddNewTags: true,
+                                label: "Tags",
+                                formType: "task",
                                 tags: self.$tags)
                     
                     // MARK: - Task type
                     
-                    SaveFormatterSelectionSection<SaveFormatter.taskType>(sectionLabel: "Task type",
-                                                                          options: SaveFormatter.taskType.allCases,
-                                                                          selection: self.$taskType)
+                    SelectableTypeSection<SaveFormatter.taskType>(sectionLabel: "Task type",
+                                                                  options: SaveFormatter.taskType.allCases,
+                                                                  selection: self.$taskType)
                     
                     // MARK: - Dates
                     
@@ -162,6 +165,7 @@ struct EditTask: View {
                                 .padding(.all, 10)
                                 .background(Color.red)
                                 .foregroundColor(.white)
+                                .cornerRadius(3)
                         })
                         
                         if (deleteErrorMessage.count > 0) {
@@ -235,18 +239,21 @@ struct EditTask: View {
                 })
                 .foregroundColor(.accentColor)
                 .accessibility(identifier: "edit-task-save-button")
-                .disabled(self.taskName == "")
-                .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ? self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
-                    self.isPresentingConfirmDeletePopupForSaveTask ?
-                        ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
-                                           deleteList: self.datesToDelete,
-                                           delete: self.saveTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask) :
-                        ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
-                                           deleteList: [],
-                                           delete: self.deleteTask,
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
-                }),
+                .disabled(self.taskName.count < 1)
+                .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ?
+                        self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
+                            if self.isPresentingConfirmDeletePopupForSaveTask {
+                                ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
+                                                   deleteList: self.datesToDelete,
+                                                   delete: self.saveTask,
+                                                   isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask)
+                            } else {
+                                ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
+                                                   deleteList: [],
+                                                   delete: self.deleteTask,
+                                                   isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
+                            }
+                        }),
                 trailing: Button(action: {
                     CDCoordinator.moc.rollback()
                     self.dismiss(); self.isBeingPresented = false;

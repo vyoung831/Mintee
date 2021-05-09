@@ -1,32 +1,36 @@
 //
-//  AddAnalysis.swift
+//  EditAnalysis.swift
 //  Mintee
 //
-//  Created by Vincent Young on 2/13/21.
+//  Created by Vincent Young on 4/22/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddAnalysis: View {
+struct EditAnalysis: View {
     
-    @Binding var isBeingPresented: Bool
+    let deleteMessage: String = "Are you sure you want to delete this Analysis?"
     
     @State var errorMessage: String = ""
+    @Binding var isBeingPresented: Bool
     
-    @State var analysisName: String = ""
-    @State var analysisType: SaveFormatter.analysisType = .box
-    @State var tags: [String] = [] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
+    // Vars that must be supplied by the parent View
+    var analysis: Analysis
+    @State var analysisName: String
+    @State var tags: [String] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
+    @State var analysisType: SaveFormatter.analysisType
+    @State var rangeType: AnalysisUtils.dateRangeType
+    @State var legendType: AnalysisLegend.EntryType
+    @State var legendPreviews: [CategorizedLegendEntryPreview]
     
-    // Date range selection vars
-    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
+    // Vars that may not exist depending on rangeType's value. Initial values are assigned in case user toggles rangeType.
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var dateRangeString: String = ""
     
-    // Legend vars
-    @State var legendType: AnalysisLegend.EntryType = .categorized
-    @State var legendPreviews: [CategorizedLegendEntryPreview] = CategorizedLegendEntryPreview.getDefaults()
+    @State var deleteErrorMessage: String = ""
+    @State var isPresentingConfirmDeletePopup: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -37,8 +41,21 @@ struct AddAnalysis: View {
             return false
         }
         
+        switch self.rangeType {
+        case .dateRange:
+            guard let range = Int16(dateRangeString) else {
+                self.errorMessage = "Remove invalid input from date range"
+                CDCoordinator.moc.rollback()
+                return false
+            }
+            self.analysis.updateDateRange(range)
+            break
+        case .startEnd:
+            self.analysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
+            break
+        }
+        
         var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-        var tagsToAssociate = Set<Tag>()
         do {
             
             for preview in legendPreviews {
@@ -47,60 +64,26 @@ struct AddAnalysis: View {
                 )
             }
             
+            var tagsToAssociate: Set<Tag> = Set()
             for tagName in self.tags {
                 if let tag = try Tag.getTag(tagName: tagName) {
                     tagsToAssociate.insert(tag)
                 }
             }
+            try self.analysis.associateTags(tagsToAssociate)
             
         } catch {
             self.errorMessage = ErrorManager.unexpectedErrorMessage
             CDCoordinator.moc.rollback()
             return false
         }
-        let legend = AnalysisLegend(categorizedEntries: categorizedLegendEntries, completionEntries: Set())
         
-        do {
-            switch rangeType {
-            case .startEnd:
-                let _ = try Analysis(entity: Analysis.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            name: analysisName,
-                                            type: self.analysisType,
-                                            startDate: self.startDate,
-                                            endDate: self.endDate,
-                                            legend: legend,
-                                            order: -1,
-                                            tags: tagsToAssociate)
-            case .dateRange:
-                
-                if self.dateRangeString.count < 1 {
-                    self.errorMessage = "Specify a date range"
-                    CDCoordinator.moc.rollback()
-                    return false
-                }
-                
-                guard let range = Int16(dateRangeString) else {
-                    self.errorMessage = "Remove invalid input from date range"
-                    CDCoordinator.moc.rollback()
-                    return false
-                }
-                
-                let _ = try Analysis(entity: Analysis.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            name: analysisName,
-                                            type: self.analysisType,
-                                            dateRange: range,
-                                            legend: legend,
-                                            order: -1,
-                                            tags: tagsToAssociate)
-            }
-        } catch {
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
-        }
-        
+        /*
+         Update analysis' values in MOC
+         */
+        analysis.updateLegend(categorizedEntries: categorizedLegendEntries)
+        self.analysis._name = analysisName
+        self.analysis.updateAnalysisType(self.analysisType)
         do {
             try CDCoordinator.moc.save()
             return true
@@ -112,15 +95,26 @@ struct AddAnalysis: View {
         
     }
     
+    private func deleteAnalysis() {
+        
+        do {
+            self.analysis.deleteSelf()
+            try CDCoordinator.moc.save()
+            self.isBeingPresented = false
+        } catch {
+            CDCoordinator.moc.rollback()
+            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
+        }
+        
+    }
+    
     var body: some View {
         
         NavigationView {
-            
             ScrollView(.vertical, showsIndicators: true, content: {
                 VStack(alignment: .leading, spacing: 15, content: {
                     
                     // MARK: - Analysis name text field
-                    
                     LabelAndTextFieldSection(label: "Analysis name",
                                              labelIdentifier: "analysis-name-label",
                                              placeHolder: "Analysis name",
@@ -129,7 +123,7 @@ struct AddAnalysis: View {
                     if (errorMessage.count > 0) {
                         Text(errorMessage)
                             .foregroundColor(.red)
-                            .accessibility(identifier: "add-analysis-error-message")
+                            .accessibility(identifier: "edit-analysis-error-message")
                     }
                     
                     // MARK: - Tags
@@ -165,21 +159,46 @@ struct AddAnalysis: View {
                             .cornerRadius(5)
                     }
                     
+                    // MARK: - Analysis deletion
+                    
+                    Group {
+                        Button(action: {
+                            self.isPresentingConfirmDeletePopup = true
+                        }, label: {
+                            Text("Delete Analysis")
+                                .padding(.all, 10)
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(3)
+                        })
+                        
+                        if (deleteErrorMessage.count > 0) {
+                            Text(deleteErrorMessage)
+                                .foregroundColor(.red)
+                        }
+                    }
+                    .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
+                        ConfirmDeletePopup(deleteMessage: self.deleteMessage,
+                                           deleteList: [],
+                                           delete: { self.deleteAnalysis() },
+                                           isBeingPresented: self.$isPresentingConfirmDeletePopup)
+                    })
+                    
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
-            .navigationTitle("Add Analysis")
+            .navigationTitle("Edit Analysis")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 
                 leading: Button(action: {
-                    if self.saveAnalysis() {
+                    if saveAnalysis() {
                         self.isBeingPresented = false
                     }
                 }, label: {
                     Text("Save")
                 })
                 .foregroundColor(.accentColor)
-                .accessibility(identifier: "add-analysis-save-button")
+                .accessibility(identifier: "edit-analysis-save-button")
                 .disabled(self.analysisName.count < 1),
                 
                 trailing: Button(action: {

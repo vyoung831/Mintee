@@ -16,14 +16,10 @@ struct TaskTargetSetPopup: View {
                                                                   .wom: "Weekdays of month",
                                                                   .dom: "Days of month"]
     
-    // MARK: - UI and calculated variables
-    
-    let typePickerHeight: CGFloat = 125
-    let textFieldWidth: CGFloat = 55
-    let operationWidth: CGFloat = 55
-    let operationHeight: CGFloat = 100
+    // MARK: - UI variables
     
     var title: String
+    let typePickerHeight: CGFloat = 125
     let bubblesPerRow: Int = 5
     
     // MARK: - State variables
@@ -176,48 +172,8 @@ struct TaskTargetSetPopup: View {
                     }
                     
                     // MARK: - Target setter
+                    MinAndMaxSection(minOperator: self.$minOperator, maxOperator: self.$maxOperator, minValueString: self.$minValueString, maxValueString: self.$maxValueString)
                     
-                    HStack(alignment: .center, spacing: 10) {
-                        
-                        TextField("", text: self.$minValueString)
-                            .disabled(self.maxOperator == .eq || self.minOperator == .na)
-                            .keyboardType( .decimalPad )
-                            .padding(10)
-                            .border(themeManager.textFieldBorder, width: 2)
-                            .background(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
-                            .foregroundColor(self.maxOperator == .eq || self.minOperator == .na ? themeManager.disabledTextFieldText : .primary)
-                            .cornerRadius(3)
-                            .accessibility(identifier: "minimum-value")
-                        
-                        Picker("Low op", selection: self.$minOperator) {
-                            ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                                Text(op.stringValue)
-                            }}
-                            .foregroundColor(.accentColor)
-                            .frame(width: operationWidth, height: operationHeight)
-                            .clipped()
-                        
-                        Text("Target")
-                        
-                        Picker("High op", selection: self.$maxOperator) {
-                            ForEach(SaveFormatter.equalityOperator.allCases, id: \.self) { op in
-                                Text(op.stringValue)
-                            }}
-                            .foregroundColor(.accentColor)
-                            .frame(width: operationWidth, height: operationHeight)
-                            .clipped()
-                        
-                        TextField("", text: self.$maxValueString)
-                            .disabled(self.minOperator == .eq || self.maxOperator == .na)
-                            .keyboardType( .decimalPad )
-                            .padding(10)
-                            .border(themeManager.textFieldBorder, width: 2)
-                            .background(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextField : Color(UIColor.systemBackground))
-                            .foregroundColor(self.minOperator == .eq || self.maxOperator == .na ? themeManager.disabledTextFieldText : .primary)
-                            .cornerRadius(3)
-                            .accessibility(identifier: "maximum-value")
-                        
-                    }.labelsHidden()
                 }
             })
             .padding(15)

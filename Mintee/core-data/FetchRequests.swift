@@ -19,14 +19,6 @@ extension Analysis {
 
 }
 
-extension LegendEntry {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<LegendEntry> {
-        return NSFetchRequest<LegendEntry>(entityName: "LegendEntry")
-    }
-
-}
-
 extension Tag {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Tag> {
