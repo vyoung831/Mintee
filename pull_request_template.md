@@ -41,7 +41,17 @@ Delete N/A options
     - [ ] If a failure is first detected by a view component receiving a nil return value, that view component reports the failure.
 - [ ] All failures are reported to Crashlytics via `ErrorManager`.
 
-# Testing checklist
+# [Testing checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
+- [ ] New and existing tests pass locally with proposed changes.
+
+## AUT
 - [ ] New AUT are implemented that comply with [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md).
-- [ ] New UIT are implemented that comply to [test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md).
-- [ ] New and existing unit tests pass locally with proposed changes.
+
+## UIT
+- For each new UI element,
+    - [ ] Its UIT class' comments are updated with VDI, PCDI, VDO, and PCDO
+    - Its UIT class' comments are updated with either
+        - [ ] Combinations of VDI and PCDI to test for
+        - [ ] Other UI elements whose combinations are to be used for test combinations
+    - [ ] UIT are implemented
+
