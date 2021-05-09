@@ -736,9 +736,11 @@
 		C48F022F2448A4700088227F /* core-data */ = {
 			isa = PBXGroup;
 			children = (
+				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
+				C492BDDB255B93EF0054CD2A /* FetchRequests.swift */,
+				C499FFEC247364DF00ABB64C /* SaveFormatter.swift */,
 				C4D04366245988D200A75BC9 /* subclasses */,
 				C46826D02482EC0B006670A8 /* transformable */,
-				C4D05C2A25B905FA00E6DF55 /* utils */,
 			);
 			path = "core-data";
 			sourceTree = "<group>";
@@ -839,16 +841,6 @@
 				C46DC967243DEBB20037C74C /* TodayView.swift */,
 			);
 			path = "tab-bar";
-			sourceTree = "<group>";
-		};
-		C4D05C2A25B905FA00E6DF55 /* utils */ = {
-			isa = PBXGroup;
-			children = (
-				C4697EE124561BEF00B028A2 /* CDCoordinator.swift */,
-				C492BDDB255B93EF0054CD2A /* FetchRequests.swift */,
-				C499FFEC247364DF00ABB64C /* SaveFormatter.swift */,
-			);
-			path = utils;
 			sourceTree = "<group>";
 		};
 		C4D05C2B25B9060800E6DF55 /* utils-tests */ = {
