@@ -42,11 +42,11 @@ extension AddTaskUITests: XCTestCase {
     4. Dates (Specific)
     5. TaskTargetSets (Recurring)
     6. Start and end date (Recurring)
- PSDI:
+ PCDI:
     1. Existing Tasks
     2. Existing Tags
  VDO: None
- PSDO:
+ PCDO:
     1. New Task in MOC
     2. Relationships with new Tags in MOC
     3. Relationships with existing Tags in MOC
@@ -68,10 +68,10 @@ extension AddTaskUITests: XCTestCase {
  VDI5
     - No TTSes
     - TTSes from TaskTargetSetPopup tests (references are tagged)
- PSDI1
+ PCDI1
     - Task with (name == VDI1) already exists
     - Task with (name == VDI1) does not exist
- PSDI2
+ PCDI2
     - Tags with (name == one of VDI2) already exists
     - Tags with (name == one of VDI2) already exists
  */
@@ -96,11 +96,11 @@ extension AddTaskUITests: XCTestCase {}
  VDI:
     1. Dates
     2. TaskTargetSets
- PSDI: None
+ PCDI: None
  VDO:
     1. Dates already defined (when switching to `Specific`)
     2. TaskTargetSets (when switching to `Recurring`)
- PSDO: None
+ PCDO: None
  Combinations:
  VDI1
     - No dates added
@@ -118,11 +118,11 @@ extension AddTaskUITests: XCTestCase {}
  VDI:
     1. Start date
     2. End date
- PSDI: None
+ PCDI: None
  VDO:
     1. Start date
     2. End date
- PSDO: None
+ PCDO: None
  Combinations:
  VDI1
     - (== end date) -> (earlier)
@@ -146,10 +146,10 @@ extension AddTaskUITests: XCTestCase {}
  Integration with TaskTargetSetPopup for editing TaskTargetSets
  VDI:
     1. Added TTSes
- PSDI: None
+ PCDI: None
  VDO:
     1. Updated TTSes
- PSDO: None
+ PCDO: None
  Combinations:
  VDI1
     - Lone TTS added
@@ -171,11 +171,11 @@ extension AddTaskUITests: XCTestCase {
  VDI:
     1. Order of TTSes
     2. Count of TTSes
- PSDI: None
+ PCDI: None
  VDO:
     1. Order of TTSes
     2. Count of TTSes
- PSDO: None
+ PCDO: None
  Combinations:
  VDI1:
     - 1 TTS
@@ -189,11 +189,11 @@ extension AddTaskUITests: XCTestCase {}
  VDI:
     1. Order of TTSes
     2. Count of TTSes
- PSDI: None
+ PCDI: None
  VDO:
     1. Order of TTSes
     2. Count of TTSes
- PSDO: None
+ PCDO: None
  Combinations:
  VDI1:
     - 1 TTS
@@ -208,11 +208,11 @@ extension AddTaskUITests: XCTestCase {}
  VDI:
     1. Order of TTSes
     2. Count of TTSes
- PSDI: None
+ PCDI: None
  VDO:
     1. Order of TTSes
     2. Count of TTSes
- PSDO: None
+ PCDO: None
  Combinations:
  VDI1:
     - 1 TTS

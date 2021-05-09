@@ -35,18 +35,18 @@ AUTs are separated by the [component](./application-architecture.md) that is tes
 # UIT coverage
 Mintee UIT does __not__ cover UI appearance, including colors and sizing.  
 Instead, Mintee's UIT coverage only tests for UI elements' interaction with the following types of data:  
-* __PSD (Persistent store data):__ Data in the persistent container.
-* __VD (View data):__ Data that exists outside of persistent store (__ex:__ data on forms like `AddAnalysis`).
+* __PCD (Persistent container data):__ Data in the persistent container.
+* __VD (View data):__ Data that exists outside of persistent container (__ex:__ data on forms like `AddAnalysis`).
 
 Each UIT class defines, in comments, the following for each UI element to test: 
 * VDI: VD input
-* PSDI: PSD input
+* PCDI: PCD input
 * VDO: VD output
-* PSDO: PSD output
-* Combinations of each VDI and each PSDI for test scenarios
+* PCDO: PCD output
+* Combinations of each VDI and each PCDI for test scenarios
 
 In addition to listing inputs and outputs for test scenarios, the following questions should be considered when determining UIT coverage:  
 | Characteristic of UI element | Considerations |
 |-|-|
-| Element displays PSD(PSDO) | <ul> <li/> Does the element successfully refresh after PSD is updated? </ul> |
+| Element displays PCD(PCDO) | <ul> <li/> Does the element successfully refresh after PCD is updated? </ul> |
 | Element updates VD(VDO) | <ul> <li/> Does the updated view successfully refresh after VD is updated? <li/> Is the VD actually updated? Incorrect usage of SwiftUI property wrappers can cause Views to appear to be updated, even when the underlying value has not. </ul> |

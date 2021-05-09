@@ -42,10 +42,10 @@ extension AddTagPopupUITests: XCTestCase {
 /*
  VDI:
     1. Tag name text field
- PSDI: None
+ PCDI: None
  VDO:
     1. Parent view's tags section
- PSDO: None
+ PCDO: None
  1. Empty text field; tag does not exist in parent view's tags section
  2. Empty text field; tag exists in parent view's tags section
  3. Non-empty text field; tag does not exist in parent view's tags section
@@ -60,9 +60,9 @@ extension AddTagPopupUITests: XCTestCase {
 /*
  Tag List
  VDI: Tag name text field
- PSDI: Tags in MOC
+ PCDI: Tags in MOC
  VDO: Subset of Tags in MOC; checkbox for selected Tag
- PSDO: None
+ PCDO: None
  1. Empty text field; no existing tags in MOC
  2. Empty text field; existing tags in MOC
  3. Non-empty text field and existing tags in MOC; no matching character sequence
@@ -76,9 +76,9 @@ extension AddTagPopupUITests: XCTestCase {
 /*
  Tag List rows
  VDI: None
- PSDI: None
+ PCDI: None
  VDO: Tag name text field
- PSDO: None
+ PCDO: None
  1. Tap to fill tag name text field contents
     a. Case in text field matches Tag name before tap
     a. Case in text field didn't match Tag name before tap

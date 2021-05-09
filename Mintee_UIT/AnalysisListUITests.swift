@@ -34,9 +34,9 @@ class AnalysisListUITests: XCTestCase {
 /*
  VDI:
     1. Order of Analysis cards
- PSDI: None
- VDO: None (Analysis page views are counted as PSDO)
- PSDO:
+ PCDI: None
+ VDO: None (Analysis page views are counted as PCDO)
+ PCDO:
     1. Analyses' orders
  Combinations: AnalysisListCard re-ordering dragging + checkbox tests
  */
@@ -48,10 +48,10 @@ extension AnalysisListUITests {}
  Dragging tests
  VDI:
     1. Order of Analysis cards
- PSDI: None
+ PCDI: None
  VDO:
     1. Order of Analysis cards
- PSDO: None
+ PCDO: None
  Combinations (assuming (>2) unincluded and (>2) included cards):
  VDI1
     - Drag top included card to middle
@@ -69,11 +69,11 @@ extension AnalysisListUITests {}
  Checkbox tests
  VDI:
     1. `Include on Homepage` checkboxes of Analysis cards
- PSDI: None
+ PCDI: None
  VDO:
     1. Order of Analysis cards
     2. Checkboxes of Analysis cards
- PSDO: None
+ PCDO: None
  Combinations (assuming (>2) unincluded and (>2) included cards):
  VDI1
     - Check first unincluded card
