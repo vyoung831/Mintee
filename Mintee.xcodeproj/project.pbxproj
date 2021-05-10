@@ -94,7 +94,6 @@
 		C48F02482448A5730088227F /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02342448A5730088227F /* Tag.swift */; };
 		C48F024E2448A5730088227F /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F023A2448A5730088227F /* Task.swift */; };
 		C48F02562448A5730088227F /* Analysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis.swift */; };
-		C48F9762245ADBC3000339E9 /* SetDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F9761245ADBC3000339E9 /* SetDatePopup.swift */; };
 		C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4908D27253E20A100B51ADF /* SelectDatePopup.swift */; };
 		C4922181261D058600B92453 /* AnalysisUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4922180261D058600B92453 /* AnalysisUtils.swift */; };
 		C49221A3261D0AC500B92453 /* DateRangeTextFieldSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49221A2261D0AC500B92453 /* DateRangeTextFieldSection.swift */; };
@@ -286,7 +285,6 @@
 		C48F02342448A5730088227F /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		C48F023A2448A5730088227F /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C48F02422448A5730088227F /* Analysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analysis.swift; sourceTree = "<group>"; };
-		C48F9761245ADBC3000339E9 /* SetDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDatePopup.swift; sourceTree = "<group>"; };
 		C4908D27253E20A100B51ADF /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
 		C4922180261D058600B92453 /* AnalysisUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisUtils.swift; sourceTree = "<group>"; };
 		C49221A2261D0AC500B92453 /* DateRangeTextFieldSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeTextFieldSection.swift; sourceTree = "<group>"; };
@@ -760,7 +758,6 @@
 				C493C03425E1EEC900538B59 /* SearchTagPopup.swift */,
 				C4908D27253E20A100B51ADF /* SelectDatePopup.swift */,
 				C4D9DB6325475771002F0B40 /* SetCountPopup.swift */,
-				C48F9761245ADBC3000339E9 /* SetDatePopup.swift */,
 				C4B435772647716E00FB87A0 /* utils */,
 			);
 			path = popups;
@@ -1388,7 +1385,6 @@
 				C40416EF259E7AA400849E1D /* ErrorViewHostingController.swift in Sources */,
 				C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */,
 				C4DACF8D25D8BB02001F3468 /* AddAnalysis.swift in Sources */,
-				C48F9762245ADBC3000339E9 /* SetDatePopup.swift in Sources */,
 				C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */,
 				C4A10C7F24E9C29000F015A4 /* AddDatePopup.swift in Sources */,
 				C4FC99D8253BF15200E2359F /* Notification.Name-Extensions.swift in Sources */,
