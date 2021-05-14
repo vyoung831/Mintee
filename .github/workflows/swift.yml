@@ -1,4 +1,4 @@
-name: Swift
+name: Run AUT and UIT
 
 on:
   push:
@@ -7,17 +7,9 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  test:
     runs-on: macos-latest
-
     steps:
     - uses: actions/checkout@v2
-    - name: Test output
-      run: echo "Hello World!"
     - name: Run tests
       run: xcodebuild -workspace Mintee.xcworkspace -scheme Mintee -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=14.4' test
-#     - name: Build
-#       run: swift build -v
-#     - name: Run tests
-#       run: swift test -v
