@@ -11,5 +11,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Update pods
+      run: pod install
     - name: Run tests
       run: xcodebuild -workspace Mintee.xcworkspace -scheme Mintee -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=14.4' test
