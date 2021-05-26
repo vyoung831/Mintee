@@ -13,7 +13,9 @@ class SaveFormatter_Tests: XCTestCase {
     
     override func setUpWithError() throws {}
 
-    override func tearDownWithError() throws {}
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
     
     /**
      Test the storedStringToDate function

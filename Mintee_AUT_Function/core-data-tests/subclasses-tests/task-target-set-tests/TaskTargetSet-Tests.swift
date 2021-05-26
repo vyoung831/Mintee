@@ -23,6 +23,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
+        MOC_Validator.validate()
         CDCoordinator.moc.rollback()
     }
     

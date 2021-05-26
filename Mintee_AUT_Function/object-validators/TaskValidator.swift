@@ -54,7 +54,7 @@ class TaskValidator {
         }
     }
     
-    static func validateTasks(tasks: Set<Task>) {
+    static func validateTasks(_ tasks: Set<Task>) {
         for task in tasks {
             for validator in TaskValidator.validators {
                 validator(task)

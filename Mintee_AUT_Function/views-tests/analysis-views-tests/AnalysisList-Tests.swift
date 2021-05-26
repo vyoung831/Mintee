@@ -12,7 +12,10 @@ import XCTest
 class AnalysisList_Tests: XCTestCase {
 
     override func setUpWithError() throws {}
-    override func tearDownWithError() throws {}
+    
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
 
 }
 

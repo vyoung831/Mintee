@@ -18,6 +18,7 @@ class Task_TagHandling_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
+        MOC_Validator.validate()
         Task_TagHandling_Tests_Util.tearDown()
     }
     

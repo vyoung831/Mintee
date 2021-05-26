@@ -13,7 +13,9 @@ class Date_Extension_Tests: XCTestCase {
 
     override func setUpWithError() throws {}
 
-    override func tearDownWithError() throws {}
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
 
     /**
      Test with GMT June 16, 2001 10:29:11 AM

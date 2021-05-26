@@ -20,7 +20,9 @@ class DayBubbleLabels_Tests: XCTestCase {
     
     override func setUpWithError() throws {}
 
-    override func tearDownWithError() throws {}
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
 
     func test_getDividedBubbleLabels_singleSubarray() throws {
         let dividedLabels = DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7)

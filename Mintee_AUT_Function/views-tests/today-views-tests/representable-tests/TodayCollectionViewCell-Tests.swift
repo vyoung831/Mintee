@@ -14,7 +14,10 @@ import XCTest
 class TodayCollectionViewCell_Tests: XCTestCase {
     
     override func setUpWithError() throws {}
-    override func tearDownWithError() throws {}
+    
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
     
     let negativeMinTarget: Float = -10
     let negativeMaxTarget: Float = -5

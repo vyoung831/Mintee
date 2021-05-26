@@ -89,6 +89,7 @@
 		C46DC96C243DEC420037C74C /* ManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96B243DEC420037C74C /* ManageView.swift */; };
 		C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46DC96D243DEC480037C74C /* SettingsView.swift */; };
 		C46FD050253CE81300CE489E /* UINavigationController-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46FD04F253CE81300CE489E /* UINavigationController-Extensions.swift */; };
+		C472029F265ECF3C00BBD049 /* MOC-Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472029E265ECF3C00BBD049 /* MOC-Validator.swift */; };
 		C47389992482CCB400462134 /* DayPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47389982482CCB400462134 /* DayPattern.swift */; };
 		C482233324BA57B000E6426E /* TaskTargetSetSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C482233224BA57B000E6426E /* TaskTargetSetSection.swift */; };
 		C48F02442448A5730088227F /* TaskSummaryAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02302448A5730088227F /* TaskSummaryAnalysis.swift */; };
@@ -281,6 +282,7 @@
 		C46DC96B243DEC420037C74C /* ManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageView.swift; sourceTree = "<group>"; };
 		C46DC96D243DEC480037C74C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C46FD04F253CE81300CE489E /* UINavigationController-Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController-Extensions.swift"; sourceTree = "<group>"; };
+		C472029E265ECF3C00BBD049 /* MOC-Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MOC-Validator.swift"; sourceTree = "<group>"; };
 		C47389982482CCB400462134 /* DayPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPattern.swift; sourceTree = "<group>"; };
 		C482233224BA57B000E6426E /* TaskTargetSetSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetSection.swift; sourceTree = "<group>"; };
 		C48F02302448A5730088227F /* TaskSummaryAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSummaryAnalysis.swift; sourceTree = "<group>"; };
@@ -521,6 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				C41419F526544E5B00B96484 /* TaskValidator.swift */,
+				C472029E265ECF3C00BBD049 /* MOC-Validator.swift */,
 			);
 			path = "object-validators";
 			sourceTree = "<group>";
@@ -1422,6 +1425,7 @@
 				C4E5D5F525042F9400557373 /* Task-InstanceHandling-Tests.swift in Sources */,
 				C4D8A34D249EB1D7008B3B9C /* Date-Extensions-Tests.swift in Sources */,
 				C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift in Sources */,
+				C472029F265ECF3C00BBD049 /* MOC-Validator.swift in Sources */,
 				C46C2BD62505D69C000320B4 /* Float-Extensions-Tests.swift in Sources */,
 				C44940CD2498F113009FE818 /* BubbleRows-Tests.swift in Sources */,
 				C43AE1D42560C12700F1D560 /* CollectionSizer-Tests.swift in Sources */,
