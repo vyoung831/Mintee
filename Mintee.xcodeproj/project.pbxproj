@@ -40,6 +40,7 @@
 		C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */; };
 		C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */; };
 		C4130C2324C86E9A003EF047 /* SelectableTypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2224C86E9A003EF047 /* SelectableTypeSection.swift */; };
+		C41419F626544E5B00B96484 /* TaskValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41419F526544E5B00B96484 /* TaskValidator.swift */; };
 		C416E6BF251808000063309F /* SettingsPresentationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416E6BE251808000063309F /* SettingsPresentationView.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
@@ -229,6 +230,7 @@
 		C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowGreaterThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLessThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2224C86E9A003EF047 /* SelectableTypeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableTypeSection.swift; sourceTree = "<group>"; };
+		C41419F526544E5B00B96484 /* TaskValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskValidator.swift; sourceTree = "<group>"; };
 		C416E6BE251808000063309F /* SettingsPresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationView.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 			children = (
 				C4037AB324342E2300150D47 /* Info.plist */,
 				C45790AC249FE72A002E16D5 /* core-data-tests */,
+				C41419F426544E4200B96484 /* object-validators */,
 				C405FA0124F15BDB00F6A547 /* utils-tests */,
 				C405FA0224F15BE200F6A547 /* views-tests */,
 			);
@@ -512,6 +515,14 @@
 				C406563624AA08E9002926EB /* Tag-Tests.swift */,
 			);
 			path = "tag-tests";
+			sourceTree = "<group>";
+		};
+		C41419F426544E4200B96484 /* object-validators */ = {
+			isa = PBXGroup;
+			children = (
+				C41419F526544E5B00B96484 /* TaskValidator.swift */,
+			);
+			path = "object-validators";
 			sourceTree = "<group>";
 		};
 		C416E6BD251807EA0063309F /* settings-views */ = {
@@ -1396,6 +1407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */,
+				C41419F626544E5B00B96484 /* TaskValidator.swift in Sources */,
 				C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */,
 				C4E5D5F225042F6C00557373 /* Task-InstanceDelta-Tests.swift in Sources */,
 				C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */,
@@ -1552,7 +1564,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/Versions/versions.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1609,7 +1621,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/Versions/versions.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1634,7 +1646,7 @@
 					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
 				);
 				INFOPLIST_FILE = Mintee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1661,7 +1673,7 @@
 					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
 				);
 				INFOPLIST_FILE = Mintee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1683,7 +1695,7 @@
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"${PODS_ROOT}/Firebase/CoreOnly/Sources\"/**";
 				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1707,7 +1719,7 @@
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"${PODS_ROOT}/Firebase/CoreOnly/Sources\"/**";
 				INFOPLIST_FILE = "${TARGET_NAME}/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1768,7 +1780,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1783,7 +1795,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1801,7 +1813,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				INFOPLIST_FILE = Mintee_AUT_Performance/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1823,7 +1835,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
 				INFOPLIST_FILE = Mintee_AUT_Performance/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
