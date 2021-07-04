@@ -9,6 +9,7 @@
 @testable import Mintee
 import Foundation
 import CoreData
+import XCTest
 
 class MOC_Validator {
     
@@ -22,6 +23,23 @@ class MOC_Validator {
         let tags = Set<Tag>(tagsFetch as! [Tag])
         TagValidator.validateTags(tags)
         
+        let analysesFetch = try! CDCoordinator.moc.fetch(Analysis.fetchRequest())
+        let analyses = Set<Analysis>(analysesFetch as! [Analysis])
+        AnalysisValidator.validateAnalyses(analyses)
+        MOC_Validator.validateAnalysesOrdering(analyses)
+        
+    }
+    
+    /**
+     ANL-5: An Analysis' order must be either
+        * -1 OR
+        * A unique number greater than or equal to 0
+     */
+    static func validateAnalysesOrdering(_ analyses: Set<Analysis>) {
+        XCTAssert( analyses.map{ $0._order < -1 }.count == 0 )
+        let nonNegativeOrders = analyses.filter{ $0._order >= 0 }.map{ $0._order }
+        let duplicates = Dictionary(grouping: nonNegativeOrders, by: {$0}).filter{ $1.count > 1 }.keys
+        XCTAssert( duplicates.count == 0)
     }
     
 }

@@ -109,6 +109,7 @@
 		C4A657F325F28D9800A0756A /* UIColor-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A657F225F28D9800A0756A /* UIColor-Extensions.swift */; };
 		C4ACD3C9250D6FCB00D56277 /* AddTagPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */; };
 		C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ACD3CA250D715100D56277 /* TagsSection.swift */; };
+		C4AD94FE2692420B00020E35 /* AnalysisValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */; };
 		C4B1AFFB26923BB500325E99 /* TagValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1AFFA26923BB500325E99 /* TagValidator.swift */; };
 		C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */; };
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */; };
@@ -304,6 +305,7 @@
 		C4A657F225F28D9800A0756A /* UIColor-Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extensions.swift"; sourceTree = "<group>"; };
 		C4ACD3C8250D6FCB00D56277 /* AddTagPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagPopup.swift; sourceTree = "<group>"; };
 		C4ACD3CA250D715100D56277 /* TagsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSection.swift; sourceTree = "<group>"; };
+		C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisValidator.swift; sourceTree = "<group>"; };
 		C4B1AFFA26923BB500325E99 /* TagValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagValidator.swift; sourceTree = "<group>"; };
 		C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetView-Tests.swift"; sourceTree = "<group>"; };
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetPopup-Tests.swift"; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				C41419F526544E5B00B96484 /* TaskValidator.swift */,
 				C4B1AFFA26923BB500325E99 /* TagValidator.swift */,
 				C472029E265ECF3C00BBD049 /* MOC-Validator.swift */,
+				C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */,
 			);
 			path = "object-validators";
 			sourceTree = "<group>";
@@ -1432,6 +1435,7 @@
 				C472029F265ECF3C00BBD049 /* MOC-Validator.swift in Sources */,
 				C46C2BD62505D69C000320B4 /* Float-Extensions-Tests.swift in Sources */,
 				C44940CD2498F113009FE818 /* BubbleRows-Tests.swift in Sources */,
+				C4AD94FE2692420B00020E35 /* AnalysisValidator.swift in Sources */,
 				C43AE1D42560C12700F1D560 /* CollectionSizer-Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

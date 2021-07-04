@@ -47,7 +47,7 @@ class TaskValidator {
         if task._taskType == 0 {
             // TASK-2 and TASK-6
             XCTAssert(SaveFormatter.storedStringToDate(task._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(task._endDate!)!))
-            
+
             // TASK-3
             XCTAssert(task._targetSets!.count > 0)
         }
