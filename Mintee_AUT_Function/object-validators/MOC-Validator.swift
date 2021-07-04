@@ -15,8 +15,12 @@ class MOC_Validator {
     static func validate() {
         
         let tasksFetch = try! CDCoordinator.moc.fetch(Task.fetchRequest())
-        let tasks = Set<Task>(results as! [Task])
+        let tasks = Set<Task>(tasksFetch as! [Task])
         TaskValidator.validateTasks(tasks)
+        
+        let tagsFetch = try! CDCoordinator.moc.fetch(Tag.fetchRequest())
+        let tags = Set<Tag>(tagsFetch as! [Tag])
+        TagValidator.validateTags(tags)
         
     }
     

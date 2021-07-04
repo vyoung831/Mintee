@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  - TASK-5: Constrained by XC data model
+//  - TASK-5: A Task's name must be unique. (constrained by XC data model)
 //
 //  Created by Vincent Young on 5/18/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -20,6 +20,14 @@ class TaskValidator {
         TaskValidator.validateRecurringTask,
         TaskValidator.validateSpecificTask
     ]
+    
+    static func validateTasks(_ tasks: Set<Task>) {
+        for task in tasks {
+            for validator in TaskValidator.validators {
+                validator(task)
+            }
+        }
+    }
     
     /**
      TASK-1: A Task's taskType can only be one of the following values:
@@ -51,14 +59,6 @@ class TaskValidator {
     static var validateSpecificTask: (Task) -> () = { task in
         if task._taskType == 1 {
             XCTAssert(task._instances!.count > 0)
-        }
-    }
-    
-    static func validateTasks(_ tasks: Set<Task>) {
-        for task in tasks {
-            for validator in TaskValidator.validators {
-                validator(task)
-            }
         }
     }
     
