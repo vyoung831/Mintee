@@ -32,6 +32,10 @@ class MOC_Validator {
         let taskInstances = Set<TaskInstance>(taskInstancesFetch as! [TaskInstance])
         TaskInstanceValidator.validateInstances(taskInstances)
         
+        let taskSummaryAnalysesFetch = try! CDCoordinator.moc.fetch(TaskSummaryAnalysis.fetchRequest())
+        let taskSummaryAnalyses = Set<TaskSummaryAnalysis>(taskSummaryAnalysesFetch as! [TaskSummaryAnalysis])
+        TaskSummaryAnalysisValidator.validateAnalyses(taskSummaryAnalyses)
+        
     }
     
     /**

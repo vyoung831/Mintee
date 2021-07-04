@@ -1,0 +1,62 @@
+//
+//  TaskSummaryAnalysisValidator.swift
+//  Mintee_AUT_Function
+//
+//  Created by Vincent Young on 7/4/21.
+//  Copyright © 2021 Vincent Young. All rights reserved.
+//
+
+import Foundation
+import XCTest
+@testable import Mintee
+
+class TaskSummaryAnalysisValidator {
+    
+    static var validators: [(TaskSummaryAnalysis) -> ()] = [
+        TaskSummaryAnalysisValidator.validateAnalysisType,
+        TaskSummaryAnalysisValidator.validateAnalysisDateValues,
+        TaskSummaryAnalysisValidator.validateTaskAssociation
+    ]
+    
+    static func validateAnalyses(_ analyses: Set<TaskSummaryAnalysis>) {
+        for analysis in analyses {
+            for validator in TaskSummaryAnalysisValidator.validators {
+                validator(analysis)
+            }
+        }
+    }
+    
+    /**
+     TSA-1: A TaskSummaryAnalysis' analysisType can only be one of the following values:
+     - Box
+     - Line
+     */
+    static var validateAnalysisType: (TaskSummaryAnalysis) -> () = { tsa in
+        XCTAssert(tsa._analysisType == 0 || tsa._analysisType == 1)
+    }
+    
+    /**
+     TSA-2: A TaskSummaryAnalysis' startDate and endDate must
+        - both be non-nil, OR
+        - both be nil
+     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both non-nil, its dateRange must be 0.
+     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both nil, its dateRange must be greater than 0.
+     */
+    static var validateAnalysisDateValues: (TaskSummaryAnalysis) -> () = { tsa in
+        // TSA-2
+        if tsa._startDate == nil && tsa._endDate == nil {
+            XCTAssert(tsa._dateRange > 0) // TSA-4
+        } else if tsa._startDate != nil && tsa._endDate != nil {
+            XCTAssert(tsa._dateRange == 0) // TSA-3
+        }
+        XCTFail()
+    }
+    
+    /**
+     TSA-5: A TaskSummaryAnalysis must be associated with one and only one Task.
+     */
+    static var validateTaskAssociation: (TaskSummaryAnalysis) -> () = { tsa in
+        XCTAssert(tsa._task != nil)
+    }
+    
+}

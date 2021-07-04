@@ -33,7 +33,7 @@ class AnalysisValidator {
     }
     
     /**
-     ANL-1: An Analysis' analysisType can only be one of the following values
+     ANL-1: An Analysis' analysisType can only be one of the following values:
      - Box
      - Line
      */

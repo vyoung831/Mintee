@@ -18,7 +18,9 @@ class TaskValidator {
     static var validators: [(Task) -> ()] = [
         TaskValidator.validateTaskType,
         TaskValidator.validateRecurringTask,
-        TaskValidator.validateSpecificTask
+        TaskValidator.validateSpecificTask,
+        TaskValidator.validateUniqueTaskInstanceDates,
+        TaskValidator.validateTaskSummaryAnalysisAssociation
     ]
     
     static func validateTasks(_ tasks: Set<Task>) {
@@ -86,14 +88,19 @@ class TaskValidator {
      TI-4: TaskInstances with the same associated Task must each have a unique date. (validated by Task_Validator)
      */
     static var validateUniqueTaskInstanceDates: (Task) -> () = { task in
-        if let instances = task._instances,
-           let taskInstances = instances as! Set<TaskInstance> {
-            
+        if let instances = task._instances {
+            let taskInstances = instances as! Set<TaskInstance>
             let instanceDates = taskInstances.map{ $0._date }
             let duplicates = Dictionary(grouping: instanceDates, by: {$0}).filter{ $1.count > 1 }.keys
             XCTAssert( duplicates.count == 0)
-            
         }
+    }
+    
+    /**
+     TASK-7: A Task must be associated with one and only one TaskSummaryAnalysis.
+     */
+    static var validateTaskSummaryAnalysisAssociation: (Task) -> () = { task in
+        XCTAssert(task._taskSummaryAnalysis != nil)
     }
     
 }
