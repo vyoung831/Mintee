@@ -20,7 +20,8 @@ class TaskValidator {
         TaskValidator.validateRecurringTask,
         TaskValidator.validateSpecificTask,
         TaskValidator.validateUniqueTaskInstanceDates,
-        TaskValidator.validateTaskSummaryAnalysisAssociation
+        TaskValidator.validateTaskSummaryAnalysisAssociation,
+        validateUniqueTTSPriorities
     ]
     
     static func validateTasks(_ tasks: Set<Task>) {
@@ -101,6 +102,18 @@ class TaskValidator {
      */
     static var validateTaskSummaryAnalysisAssociation: (Task) -> () = { task in
         XCTAssert(task._taskSummaryAnalysis != nil)
+    }
+    
+    /**
+     TTS-9: TaskTargetSets with the same associated Task must have each have a unique priority.
+     */
+    static var validateUniqueTTSPriorities: (Task) -> () = { task in
+        if let sets = task._targetSets {
+            let targetSets = sets as! Set<TaskTargetSet>
+            let priorities = targetSets.map{ $0._priority }
+            let duplicates = Dictionary(grouping: priorities, by: {$0}).filter{ $1.count > 1 }.keys
+            XCTAssert( duplicates.count == 0)
+        }
     }
     
 }

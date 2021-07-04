@@ -112,6 +112,7 @@
 		C4AD94FE2692420B00020E35 /* AnalysisValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */; };
 		C4AD950626924E1700020E35 /* TaskInstanceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */; };
 		C4AD950E26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */; };
+		C4AD952B2692631000020E35 /* TaskTargetSetValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */; };
 		C4B1AFFB26923BB500325E99 /* TagValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1AFFA26923BB500325E99 /* TagValidator.swift */; };
 		C4B2AC6F249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */; };
 		C4B2AC73249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */; };
@@ -310,6 +311,7 @@
 		C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisValidator.swift; sourceTree = "<group>"; };
 		C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInstanceValidator.swift; sourceTree = "<group>"; };
 		C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSummaryAnalysisValidator.swift; sourceTree = "<group>"; };
+		C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetValidator.swift; sourceTree = "<group>"; };
 		C4B1AFFA26923BB500325E99 /* TagValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagValidator.swift; sourceTree = "<group>"; };
 		C4B2AC6E249ECDD000FC98F1 /* TaskTargetSetView-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetView-Tests.swift"; sourceTree = "<group>"; };
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetPopup-Tests.swift"; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */,
 				C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */,
 				C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */,
+				C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */,
 			);
 			path = "object-validators";
 			sourceTree = "<group>";
@@ -1421,6 +1424,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4AD952B2692631000020E35 /* TaskTargetSetValidator.swift in Sources */,
 				C45790AE249FE74C002E16D5 /* Task-Tests.swift in Sources */,
 				C41419F626544E5B00B96484 /* TaskValidator.swift in Sources */,
 				C4925036254F942400A3C424 /* TodayCollectionViewCell-Tests.swift in Sources */,
