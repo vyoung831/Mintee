@@ -45,7 +45,7 @@ This document specifies business rules that govern how Mintee stores data.
 | BR code | Entity | Rule |
 |-|-|-|
 | TI-1 | TaskInstance | A TaskInstance must be associated with one and only one Task. |
-| TI-2 | TaskInstance | If a TaskInstance's associated Task's taskType is `Recurring`, the TaskInstance is associated with one and only one TaskTargetSet. |
+| TI-2 | TaskInstance | If a TaskInstance's associated Task's taskType is `Recurring`, the TaskInstance is associated with a TaskTargetSet. |
 | TI-3 | TaskInstance | If a TaskInstance's associated Task's taskType is `Specific`, the TaskInstance is not associated with a TaskTargetSet. |
 | TI-4 | TaskInstance | TaskInstances with the same associated Task must each have a unique date. |
 

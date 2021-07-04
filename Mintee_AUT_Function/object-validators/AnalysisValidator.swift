@@ -6,7 +6,7 @@
 //  ANL-5: An Analysis' order must be either
 //      * -1 OR
 //      * A unique number greater than or equal to 0
-//  (validated by MOC-Validator)
+//  (validated by MOC_Validator)
 //  ANL-6: An Analysis' name must be unique. (constrained by XC data model)
 //
 //  Created by Vincent Young on 7/4/21.

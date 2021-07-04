@@ -42,6 +42,7 @@ class TaskValidator {
      TASK-2: If a Task's taskType is recurring, startDate and endDate must be non-nil.
      TASK-3: If a Task's taskType is recurring, targetSets must contain at least one TaskTargetSet.
      TASK-6: If a Task's taskType is recurring, endDate must be later than or equal startDate.
+     TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, the TaskInstance is associated with a TaskTargetSet.
      */
     static var validateRecurringTask: (Task) -> () = { task in
         if task._taskType == 0 {
@@ -50,15 +51,48 @@ class TaskValidator {
 
             // TASK-3
             XCTAssert(task._targetSets!.count > 0)
+            
+            // TI-2
+            if let instances = task._instances {
+                for instance in instances as! Set<TaskInstance> {
+                    XCTAssert(instance._targetSet != nil)
+                }
+            }
+            
         }
     }
     
     /**
      TASK-4: If a Task's taskType is specific, instances must contain at least one TaskInstance.
+     TI-3: If a TaskInstance's associated Task's taskType is `Specific`, the TaskInstance is not associated with a TaskTargetSet.
      */
     static var validateSpecificTask: (Task) -> () = { task in
+        
+        // TASK-4
         if task._taskType == 1 {
             XCTAssert(task._instances!.count > 0)
+        }
+        
+        // TI-3
+        if let instances = task._instances {
+            for instance in instances as! Set<TaskInstance> {
+                XCTAssert(instance._targetSet == nil)
+            }
+        }
+        
+    }
+    
+    /**
+     TI-4: TaskInstances with the same associated Task must each have a unique date. (validated by Task_Validator)
+     */
+    static var validateUniqueTaskInstanceDates: (Task) -> () = { task in
+        if let instances = task._instances,
+           let taskInstances = instances as! Set<TaskInstance> {
+            
+            let instanceDates = taskInstances.map{ $0._date }
+            let duplicates = Dictionary(grouping: instanceDates, by: {$0}).filter{ $1.count > 1 }.keys
+            XCTAssert( duplicates.count == 0)
+            
         }
     }
     

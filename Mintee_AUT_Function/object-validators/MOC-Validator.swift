@@ -28,6 +28,10 @@ class MOC_Validator {
         AnalysisValidator.validateAnalyses(analyses)
         MOC_Validator.validateAnalysesOrdering(analyses)
         
+        let taskInstancesFetch = try! CDCoordinator.moc.fetch(TaskInstance.fetchRequest())
+        let taskInstances = Set<TaskInstance>(taskInstancesFetch as! [TaskInstance])
+        TaskInstanceValidator.validateInstances(taskInstances)
+        
     }
     
     /**
