@@ -166,7 +166,7 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
 class CompletionLegendEntry: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
-    var color : String
+    var color: String
     var min: Float
     var max: Float
     var minOperator: SaveFormatter.equalityOperator

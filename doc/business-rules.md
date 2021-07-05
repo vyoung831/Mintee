@@ -10,6 +10,8 @@ This document specifies business rules that govern how Mintee stores data.
     1. [TaskTargetSet](#tasktargetset)
 1. [Transformables](#transformables)
     1. [AnalysisLegend](#analysislegend)
+        1. [CategorizedLegendEntry](#categorizedlegendentry)
+        1. [CompletionLegendEntry](#completionlegendentry)
     1. [DayPattern](#pattern)
 
 # Model objects
@@ -74,5 +76,31 @@ This document specifies business rules that govern how Mintee stores data.
 # Transformables
 
 ## AnalysisLegend
+| BR code | Transformable custom class | Rule |
+|-|-|-|
+| ALGND-1 | ALGND-1 | If an AnalysisLegend's categorizedEntries is non-empty, then its completionEntries is empty. |
+| ALGND-1 | ALGND-2 | If an AnalysisLegend's completionEntries is non-empty, then its categorizedEntries is empty. |
+
+### CategorizedLegendEntry
+| BR code | Class | Rule |
+|-|-|-|
+| CATLE-1 | CategorizedLegendEntry | A CategorizedLegendEntry's category can only be one of the following values: <ul> <li/> Reached target <li/> Under target <li/> Over target </ul> |
+
+### CompletionLegendEntry
+| BR code | Class | Rule |
+|-|-|-|
+| CMPLE-1 | CompletionLegendEntry | A CompletionLegendEntry's minOperator can only be one of the following values: <ul> <li/> Less than <li/> Less than or equal to <li/> Equal to <li/> N/A </ul> |
+| CMPLE-2 | CompletionLegendEntry | A CompletionLegendEntry's maxOperator can only be one of the following values: <ul> <li/> Less than <li/> Less than or equal to <li/> N/A </ul> |
+| CMPLE-3 | CompletionLegendEntry | If a CompletionLegendEntry's maxOperator is `N/A`, then its max is 0. |
+| CMPLE-4 | CompletionLegendEntry | If a CompletionLegendEntry's minOperator is `N/A`, then its min is 0. |
+| CMPLE-5 | CompletionLegendEntry | A CompletionLegendEntry's minOperator and maxOperator cannot both be `N/A`. |
+| CMPLE-6 | CompletionLegendEntry | If a CompletionLegendEntry's minOperator is `Equal to`, then its maxOperator must be `N/A`. |
+| CMPLE-7 | CompletionLegendEntry | If a CompletionLegendEntry's minOperator and maxOperator are both not `N/A`, then min must be less than max. |
 
 ## DayPattern
+| BR code | Transformable custom class | Rule |
+|-|-|-|
+| DP-1 | DayPattern | A DayPattern's type can only be one of the following values: <ul> <li/> Days of week <li/> Weekdays of month <li/> Days of month </ul> |
+| DP-2 | DayPattern | If a DayPattern's type is `Days of week`, then the following are true: <ul> <li/> daysOfWeek is non-empty <li/> weekdaysOfMonth is empty <li/> daysOfMonth is empty </ul> |
+| DP-3 | DayPattern | If a DayPattern's type is `Weekdays of month`, then the following are true: <ul> <li/> daysOfWeek is empty <li/> weekdaysOfMonth is non-empty <li/> daysOfMonth is empty </ul> |
+| DP-4 | DayPattern | If a DayPattern's type is `Days of month`, then the following are true: <ul> <li/> daysOfWeek is empty <li/> weekdaysOfMonth is empty <li/> daysOfMonth is non-empty </ul> |
