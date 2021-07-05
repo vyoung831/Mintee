@@ -462,7 +462,6 @@
 			children = (
 				C4037AB324342E2300150D47 /* Info.plist */,
 				C45790AC249FE72A002E16D5 /* core-data-tests */,
-				C41419F426544E4200B96484 /* object-validators */,
 				C405FA0124F15BDB00F6A547 /* utils-tests */,
 				C405FA0224F15BE200F6A547 /* views-tests */,
 			);
@@ -529,7 +528,7 @@
 			path = "tag-tests";
 			sourceTree = "<group>";
 		};
-		C41419F426544E4200B96484 /* object-validators */ = {
+		C41419F426544E4200B96484 /* data-validators */ = {
 			isa = PBXGroup;
 			children = (
 				C41419F526544E5B00B96484 /* TaskValidator.swift */,
@@ -540,7 +539,7 @@
 				C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */,
 				C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */,
 			);
-			path = "object-validators";
+			path = "data-validators";
 			sourceTree = "<group>";
 		};
 		C416E6BD251807EA0063309F /* settings-views */ = {
@@ -681,6 +680,7 @@
 				C465840B25A2B61000E4418D /* Task-InstanceHandling-Tests-Util.swift */,
 				C46583DF25A2AF4F00E4418D /* Task-TagHandling-Tests-Util.swift */,
 				C43205F424A0B7C0004D3AA1 /* TestContainer.swift */,
+				C41419F426544E4200B96484 /* data-validators */,
 			);
 			path = SharedTestUtils;
 			sourceTree = "<group>";
