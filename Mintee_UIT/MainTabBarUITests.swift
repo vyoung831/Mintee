@@ -9,6 +9,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 
 class MainTabBarUITests: XCTestCase {
     
@@ -18,7 +19,9 @@ class MainTabBarUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
     
-    override func tearDown() { }
+    override func tearDown() {
+        MOC_Validator.validate()
+    }
     
     func testNavigateToAnalysisTab() {
         let app = XCUIApplication()

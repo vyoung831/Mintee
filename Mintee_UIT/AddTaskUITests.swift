@@ -12,6 +12,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 
 class AddTaskUITests: XCTestCase {
     
@@ -21,7 +22,9 @@ class AddTaskUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
     
-    override func tearDown() {}
+    override func tearDown() {
+        MOC_Validator.validate()
+    }
     
 }
 
