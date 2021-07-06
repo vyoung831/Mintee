@@ -535,15 +535,9 @@
 		C41419F426544E4200B96484 /* data-validators */ = {
 			isa = PBXGroup;
 			children = (
-				C41419F526544E5B00B96484 /* TaskValidator.swift */,
-				C4B1AFFA26923BB500325E99 /* TagValidator.swift */,
 				C472029E265ECF3C00BBD049 /* MOC-Validator.swift */,
-				C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */,
-				C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */,
-				C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */,
-				C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */,
-				C45D926A2694A7F200606594 /* AnalysisLegendValidator.swift */,
-				C45D92722694A97100606594 /* DayPatternValidator.swift */,
+				C4B5D9B126950F6700E58FCD /* transformable-validators */,
+				C4B5D9B026950F6200E58FCD /* entity-validators */,
 			);
 			path = "data-validators";
 			sourceTree = "<group>";
@@ -821,6 +815,28 @@
 				C4B4357E2647718500FB87A0 /* TagPopupUtils.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		C4B5D9B026950F6200E58FCD /* entity-validators */ = {
+			isa = PBXGroup;
+			children = (
+				C41419F526544E5B00B96484 /* TaskValidator.swift */,
+				C4B1AFFA26923BB500325E99 /* TagValidator.swift */,
+				C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */,
+				C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */,
+				C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */,
+				C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */,
+			);
+			path = "entity-validators";
+			sourceTree = "<group>";
+		};
+		C4B5D9B126950F6700E58FCD /* transformable-validators */ = {
+			isa = PBXGroup;
+			children = (
+				C45D926A2694A7F200606594 /* AnalysisLegendValidator.swift */,
+				C45D92722694A97100606594 /* DayPatternValidator.swift */,
+			);
+			path = "transformable-validators";
 			sourceTree = "<group>";
 		};
 		C4BEA99B25894F370079818B /* today-views */ = {
