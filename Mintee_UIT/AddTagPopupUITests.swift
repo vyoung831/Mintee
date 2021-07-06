@@ -33,7 +33,7 @@ class AddTagPopupUITests: XCTestCase {
 
 // MARK: - Helper functions
 
-extension AddTagPopupUITests: XCTestCase {}
+extension AddTagPopupUITests {}
 
 // MARK: - Done button tests
 
@@ -53,7 +53,7 @@ extension AddTagPopupUITests: XCTestCase {}
     - Tag name text field content exists in parent view's tags section
     - Tag name text field content does not exist in parent view's tags section
  */
-extension AddTagPopupUITests: XCTestCase {
+extension AddTagPopupUITests {
     
 }
 
@@ -78,7 +78,7 @@ extension AddTagPopupUITests: XCTestCase {
     - Existing tags in MOC; matching character sequence with Tag name text field (case mismatch)
     - Existing tags in MOC; matching character sequence with Tag name text field (case match)
  */
-extension AddTagPopupUITests: XCTestCase {
+extension AddTagPopupUITests {
     
 }
 
@@ -95,6 +95,6 @@ extension AddTagPopupUITests: XCTestCase {
  VDI1
     - Tap a row
  */
-extension AddTagPopupUITests: XCTestCase {
+extension AddTagPopupUITests {
     
 }

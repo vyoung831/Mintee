@@ -27,7 +27,8 @@ class AddTaskUITests: XCTestCase {
 
 // MARK: - Helper functions
 
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {
+}
 
 // MARK: - Done button tests
 
@@ -74,11 +75,11 @@ extension AddTaskUITests: XCTestCase {}
     - Tag with (name == one of VDI2) already exists
     - Tag with (name == one of VDI2) does not already exist
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 // MARK: - AddTagPopup integration tests
 
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 // MARK: - Task type button tests
 
@@ -99,7 +100,7 @@ extension AddTaskUITests: XCTestCase {}
     - No TTSes added
     - TaskTargetSet tests
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 // MARK: - TaskTargetSet tests
 
@@ -125,12 +126,12 @@ extension AddTaskUITests: XCTestCase {}
     - (later than end date) -> (==)
     - (later than end date) -> (earlier)
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Integration with TaskTargetSetPopup for adding TaskTargetSets
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Integration with TaskTargetSetPopup for editing TaskTargetSets
@@ -147,7 +148,7 @@ extension AddTaskUITests: XCTestCase {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {
+extension AddTaskUITests {
     
     /// - Tag: editTTSTest
     func editTTSTest() {
@@ -171,7 +172,7 @@ extension AddTaskUITests: XCTestCase {
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Move down button tests
@@ -188,7 +189,7 @@ extension AddTaskUITests: XCTestCase {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Delete button tests
@@ -207,7 +208,8 @@ extension AddTaskUITests: XCTestCase {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {
+}
 
 // MARK: - Older tests
 
