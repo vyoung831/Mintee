@@ -31,8 +31,8 @@ Mintee uses XCTest to perform AUT on application code, and UIT on the applicatio
 - [Data validators](#data-validators)
 
 ### Data validators
-Data validators are used to examine the persistent store after each test case that touches persistent store data, ensuring that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) for data storage are being followed. The following rules are followed:  
-- Every test case that touches persistent store data must run the MOC validator as part of teardown.
+Data validators are used to examine the persistent store after each test case, ensuring that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) for data storage are being followed. The following rules are observed (and included in the PR template):  
+- Every test case must run the MOC validator as part of teardown, even those that don't appear to touch the persistent store.
 - Separate data validator classes are defined for each entity or transformable defined in business rules. Custom classes used by transformables are validated in the transformable's validator.
 - The validation of each business rule must be either:
     - Labeled in the comments of its validating function, OR

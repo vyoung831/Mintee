@@ -63,4 +63,3 @@ Delete N/A options
         - [ ] Combinations of VDI and PCDI to test for
         - [ ] Other UI elements whose combinations are to be used for test combinations
     - [ ] UIT are implemented
-

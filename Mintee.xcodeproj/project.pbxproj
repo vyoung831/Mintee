@@ -536,8 +536,8 @@
 			isa = PBXGroup;
 			children = (
 				C472029E265ECF3C00BBD049 /* MOC-Validator.swift */,
-				C4B5D9B126950F6700E58FCD /* transformable-validators */,
 				C4B5D9B026950F6200E58FCD /* entity-validators */,
+				C4B5D9B126950F6700E58FCD /* transformable-validators */,
 			);
 			path = "data-validators";
 			sourceTree = "<group>";
