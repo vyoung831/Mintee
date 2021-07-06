@@ -187,6 +187,13 @@
 			remoteGlobalIDString = C465817F25A27D6800E4418D;
 			remoteInfo = SharedTestUtils;
 		};
+		C4B5D9CF269513A500E58FCD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C465817F25A27D6800E4418D;
+			remoteInfo = SharedTestUtils;
+		};
 		C4EC7B8925958EB9003B6DD5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C4037A8C24342E1F00150D47 /* Project object */;
@@ -1053,6 +1060,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C4B5D9D0269513A500E58FCD /* PBXTargetDependency */,
 				C4037ABA24342E2300150D47 /* PBXTargetDependency */,
 			);
 			name = Mintee_UIT;
@@ -1550,6 +1558,11 @@
 			isa = PBXTargetDependency;
 			target = C465817F25A27D6800E4418D /* SharedTestUtils */;
 			targetProxy = C46583A925A2ACBC00E4418D /* PBXContainerItemProxy */;
+		};
+		C4B5D9D0269513A500E58FCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C465817F25A27D6800E4418D /* SharedTestUtils */;
+			targetProxy = C4B5D9CF269513A500E58FCD /* PBXContainerItemProxy */;
 		};
 		C4EC7B8A25958EB9003B6DD5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

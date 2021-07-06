@@ -9,6 +9,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 
 class TodayViewControllerUITests: XCTestCase {
     
@@ -18,7 +19,9 @@ class TodayViewControllerUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
 
-    override func tearDown() { }
+    override func tearDown() {
+        MOC_Validator.validate()
+    }
     
     func testSearchButtonPressed() {
         let app = XCUIApplication()

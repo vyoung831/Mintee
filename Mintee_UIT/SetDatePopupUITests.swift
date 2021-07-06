@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import SharedTestUtils
+@testable import Mintee
 
 class SetDatePopupUITests: XCTestCase {
     
@@ -22,7 +24,9 @@ class SetDatePopupUITests: XCTestCase {
         app.navigationBars["Today"].buttons["add-task-button"].tap()
     }
     
-    override func tearDownWithError() throws {}
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
     
     /**
      Navigate to AddTask and to SetDatePopup.
