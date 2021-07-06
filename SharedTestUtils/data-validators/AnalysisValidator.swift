@@ -21,7 +21,8 @@ class AnalysisValidator {
     
     static var validators: [(Analysis) -> ()] = [
         AnalysisValidator.validateAnalysisType,
-        AnalysisValidator.validateAnalysisDateValues
+        AnalysisValidator.validateAnalysisDateValues,
+        AnalysisValidator.validateLegend
     ]
     
     static func validateAnalyses(_ analyses: Set<Analysis>) {
@@ -43,8 +44,8 @@ class AnalysisValidator {
     
     /**
      ANL-2: An Analysis' startDate and endDate must
-        - both be non-nil, OR
-        - both be nil
+     - both be non-nil, OR
+     - both be nil
      ANL-3: If an Analysis' startDate and endDate are both non-nil, its dateRange must be 0.
      ANL-4: If an Analysis' startDate and endDate are both nil, its dateRange must be greater than 0.
      */
@@ -56,6 +57,16 @@ class AnalysisValidator {
             XCTAssert(analysis._dateRange == 0) // ANL-3
         }
         XCTFail()
+    }
+    
+}
+
+// MARK: - AnalysisLegend transformable validation
+
+extension AnalysisValidator {
+    
+    static var validateLegend: (Analysis) -> () = { analysis in
+        AnalysisLegendValidator.validateAnalysisLegend(analysis._legend!)
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 @testable import Mintee
 
 class CollectionSizer_Tests: XCTestCase {

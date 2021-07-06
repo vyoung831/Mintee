@@ -81,8 +81,8 @@ __Note:__ In this document, fields are `backticked` and values are __bolded__.
 ## AnalysisLegend
 | BR code | Transformable custom class | Rule |
 |-|-|-|
-| ALGND-1 | ALGND-1 | If an AnalysisLegend's categorizedEntries is non-empty, then its completionEntries is empty. |
-| ALGND-1 | ALGND-2 | If an AnalysisLegend's completionEntries is non-empty, then its categorizedEntries is empty. |
+| ALGND-1 | AnalysisLegend | If an AnalysisLegend's categorizedEntries is non-empty, then its completionEntries is empty. |
+| ALGND-1 | AnalysisLegend | If an AnalysisLegend's completionEntries is non-empty, then its categorizedEntries is empty. |
 
 ### CategorizedLegendEntry
 | BR code | Class | Rule |
@@ -105,5 +105,5 @@ __Note:__ In this document, fields are `backticked` and values are __bolded__.
 |-|-|-|
 | DP-1 | DayPattern | A DayPattern's type can only be one of the following values: <ul> <li/> Days of week <li/> Weekdays of month <li/> Days of month </ul> |
 | DP-2 | DayPattern | If a DayPattern's type is `Days of week`, then the following are true: <ul> <li/> daysOfWeek is non-empty <li/> weekdaysOfMonth is empty <li/> daysOfMonth is empty </ul> |
-| DP-3 | DayPattern | If a DayPattern's type is `Weekdays of month`, then the following are true: <ul> <li/> daysOfWeek is empty <li/> weekdaysOfMonth is non-empty <li/> daysOfMonth is empty </ul> |
+| DP-3 | DayPattern | If a DayPattern's type is `Weekdays of month`, then the following are true: <ul> <li/> daysOfWeek is non-empty <li/> weekdaysOfMonth is non-empty <li/> daysOfMonth is empty </ul> |
 | DP-4 | DayPattern | If a DayPattern's type is `Days of month`, then the following are true: <ul> <li/> daysOfWeek is empty <li/> weekdaysOfMonth is empty <li/> daysOfMonth is non-empty </ul> |
