@@ -10,6 +10,7 @@
 
 @testable import Mintee
 import XCTest
+import SharedTestUtils
 
 class TodayCollectionViewCell_Tests: XCTestCase {
     

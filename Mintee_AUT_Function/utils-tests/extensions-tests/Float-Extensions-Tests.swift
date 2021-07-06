@@ -8,6 +8,7 @@
 
 @testable import Mintee
 import XCTest
+import SharedTestUtils
 
 class Float_Extension_Tests: XCTestCase {
 

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 @testable import Mintee
 
 class AnalysisList_Tests: XCTestCase {

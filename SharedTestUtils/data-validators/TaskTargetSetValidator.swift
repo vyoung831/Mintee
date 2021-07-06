@@ -17,7 +17,8 @@ class TaskTargetSetValidator {
     
     static var validators: [(TaskTargetSet) -> ()] = [
         TaskTargetSetValidator.validateOperatorsAndValues,
-        TaskTargetSetValidator.validateTaskAssociation
+        TaskTargetSetValidator.validateTaskAssociation,
+        TaskTargetSetValidator.validateDayPattern
     ]
     
     static func validateTaskTargetSets(_ taskTargetSets: Set<TaskTargetSet>) {
@@ -82,3 +83,14 @@ class TaskTargetSetValidator {
     }
     
 }
+
+// MARK: - DayPattern transformable validation
+
+extension TaskTargetSetValidator {
+    
+    static var validateDayPattern: (TaskTargetSet) -> () = { tts in
+        DayPatternValidator.validateDayPattern(tts._pattern!)
+    }
+    
+}
+

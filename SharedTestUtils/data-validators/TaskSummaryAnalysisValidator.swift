@@ -15,7 +15,8 @@ class TaskSummaryAnalysisValidator {
     static var validators: [(TaskSummaryAnalysis) -> ()] = [
         TaskSummaryAnalysisValidator.validateAnalysisType,
         TaskSummaryAnalysisValidator.validateAnalysisDateValues,
-        TaskSummaryAnalysisValidator.validateTaskAssociation
+        TaskSummaryAnalysisValidator.validateTaskAssociation,
+        TaskSummaryAnalysisValidator.validateLegend
     ]
     
     static func validateAnalyses(_ analyses: Set<TaskSummaryAnalysis>) {
@@ -60,3 +61,14 @@ class TaskSummaryAnalysisValidator {
     }
     
 }
+
+// MARK: - AnalysisLegend transformable validation
+
+extension TaskSummaryAnalysisValidator {
+    
+    static var validateLegend: (TaskSummaryAnalysis) -> () = { tsa in
+        AnalysisLegendValidator.validateAnalysisLegend(tsa._legend!)
+    }
+    
+}
+
