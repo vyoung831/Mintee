@@ -34,6 +34,7 @@ class Task_InstanceDelta_Tests_Performance: XCTestCase {
     }
     
     override func tearDownWithError() throws {
+        MOC_Validator.validate()
         Task_InstanceDelta_Tests_Util.tearDown()
     }
     
