@@ -77,7 +77,7 @@ extension AnalysisLegendValidator {
      CMPLE-4: If a CompletionLegendEntry's minOperator is `N/A`, then its min is 0.
      CMPLE-5: A CompletionLegendEntry's minOperator and maxOperator cannot both be `N/A`.
      CMPLE-6: If a CompletionLegendEntry's minOperator is `Equal to`, then its maxOperator must be `N/A`.
-     CMPLE-7: If a CompletionLegendEntry's minOperator and maxOperator are both not `N/A`, then min must be less than max.
+     CMPLE-7: If a CompletionLegendEntry's minOperator and maxOperator are both not `N/A`, then its min must be less than its max.
      */
     static var validate_completionLegendEntries: (AnalysisLegend) -> () = { legend in
         

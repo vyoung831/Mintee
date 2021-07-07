@@ -45,7 +45,7 @@ class TaskValidator {
      TASK-2: If a Task's taskType is recurring, startDate and endDate must be non-nil.
      TASK-3: If a Task's taskType is recurring, targetSets must contain at least one TaskTargetSet.
      TASK-6: If a Task's taskType is recurring, endDate must be later than or equal startDate.
-     TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, the TaskInstance is associated with a TaskTargetSet.
+     TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with a TaskTargetSet.
      */
     static var validateRecurringTask: (Task) -> () = { task in
         if task._taskType == 0 {
@@ -67,7 +67,7 @@ class TaskValidator {
     
     /**
      TASK-4: If a Task's taskType is specific, instances must contain at least one TaskInstance.
-     TI-3: If a TaskInstance's associated Task's taskType is `Specific`, the TaskInstance is not associated with a TaskTargetSet.
+     TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
      */
     static var validateSpecificTask: (Task) -> () = { task in
         

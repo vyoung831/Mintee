@@ -39,11 +39,11 @@ class TaskTargetSetValidator {
      - Less than
      - Less than or equal to
      - N/A
-     TTS-3: If maxOperator is `N/A`, max is 0.
-     TTS-4: If minOperator is `N/A`, min is 0.
+     TTS-3: If a TaskTargetSet's maxOperator is `N/A`, then its max is `0`.
+     TTS-4: If a TaskTargetSet's minOperator is `N/A`, then its min is `0`.
      TTS-5: A TaskTargetSet's minOperator and maxOperator cannot both be `N/A`.
-     TTS-6: If a TaskTargetSet's minOperator is `Equal to`, its maxOperator must be `N/A`.
-     TTS-7: If a TaskTargetSet's minOperator and maxOperator are both not `N/A`, min must be less than max.
+     TTS-6: If a TaskTargetSet's minOperator is `Equal to`, then its maxOperator must be `N/A`.
+     TTS-7: If a TaskTargetSet's minOperator and maxOperator are both not `N/A`, then its min must be less than its max.
      */
     static var validateOperatorsAndValues: (TaskTargetSet) -> () = { tts in
         

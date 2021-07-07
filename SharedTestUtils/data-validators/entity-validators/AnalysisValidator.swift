@@ -43,11 +43,11 @@ class AnalysisValidator {
     }
     
     /**
-     ANL-2: An Analysis' startDate and endDate must
+     ANL-2: An Analysis' startDate and endDate must either:
      - both be non-nil, OR
      - both be nil
-     ANL-3: If an Analysis' startDate and endDate are both non-nil, its dateRange must be 0.
-     ANL-4: If an Analysis' startDate and endDate are both nil, its dateRange must be greater than 0.
+     ANL-3: If an Analysis' startDate and endDate are both non-nil, then its dateRange must be 0.
+     ANL-4: If an Analysis' startDate and endDate are both nil, then its dateRange must be greater than 0.
      */
     static var validateAnalysisDateValues: (Analysis) -> () = { analysis in
         // ANL-2
