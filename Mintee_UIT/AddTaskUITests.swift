@@ -13,6 +13,7 @@
 
 import XCTest
 import SharedTestUtils
+@testable import Mintee
 
 class AddTaskUITests: XCTestCase {
     
@@ -31,6 +32,27 @@ class AddTaskUITests: XCTestCase {
 // MARK: - Helper functions
 
 extension AddTaskUITests {
+    
+    func navigate_to_AddTask() {
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Today"].tap()
+        app.navigationBars["Today"].buttons["add-task-button"].tap()
+    }
+    
+    /**
+     Adds a TaskTargetSet, assuming that AddTask is already navigated to
+     */
+    func add_TaskTargetSet(type: DayPattern.type, bubbles: [String]) {
+        let app = XCUIApplication()
+        app.scrollViews.otherElements.buttons["add-task-target-set-button"].tap()
+        app.staticTexts["Add Target Set"].tap()
+        app.staticTexts["day-bubble-monday"].tap()
+        app.textFields["minimum-value"].tap()
+        app.textFields["minimum-value"].typeText("2")
+        app.buttons["task-target-set-popup-done-button"].tap()
+    }
+    
 }
 
 // MARK: - Done button tests
@@ -151,14 +173,7 @@ extension AddTaskUITests {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests {
-    
-    /// - Tag: editTTSTest
-    func editTTSTest() {
-        
-    }
-    
-}
+extension AddTaskUITests {}
 
 /*
  Move up button tests
