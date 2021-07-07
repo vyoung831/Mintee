@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		29C54CAC12EA6CAF2248FECA /* libPods-Mintee_AUT_Performance.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C253F78A40E446C6E68CBD /* libPods-Mintee_AUT_Performance.a */; };
 		6B7B35B9C0FF05C817B9BCE0 /* libPods-SharedTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A916E8169D5FEDB6A2D2121 /* libPods-SharedTestUtils.a */; };
+		89F65BDE6D1B233B242F5DB8 /* libPods-Mintee_UIT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 444CFF6BCF5EB649FE552349 /* libPods-Mintee_UIT.a */; };
 		90C17391E3385ECEB9C8DA12 /* libPods-Mintee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA2C3861A510FA5952549039 /* libPods-Mintee.a */; };
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
@@ -219,11 +220,13 @@
 		1A916E8169D5FEDB6A2D2121 /* libPods-SharedTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SharedTestUtils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DE8D82B51C297DB552A2891 /* Pods-Mintee_AUT_Function.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Function.release.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Function/Pods-Mintee_AUT_Function.release.xcconfig"; sourceTree = "<group>"; };
 		240C8922F685AA2390B054AB /* Pods-Mintee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee.release.xcconfig"; path = "Target Support Files/Pods-Mintee/Pods-Mintee.release.xcconfig"; sourceTree = "<group>"; };
+		444CFF6BCF5EB649FE552349 /* libPods-Mintee_UIT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee_UIT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		739F18B61F9AB9EA7E7CFC54 /* Pods-Mintee_AUT_Function.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Function.debug.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Function/Pods-Mintee_AUT_Function.debug.xcconfig"; sourceTree = "<group>"; };
 		73D3B00E62CAF7A418619FD7 /* Pods-Mintee_AUT_Performance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Performance.release.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Performance/Pods-Mintee_AUT_Performance.release.xcconfig"; sourceTree = "<group>"; };
 		77ABFA4E9D4C02AC47C511B8 /* Pods-Mintee_AUT_Performance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_AUT_Performance.debug.xcconfig"; path = "Target Support Files/Pods-Mintee_AUT_Performance/Pods-Mintee_AUT_Performance.debug.xcconfig"; sourceTree = "<group>"; };
 		AABA2D1A8FC54590AB0C8A73 /* Pods-SharedTestUtils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.release.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.release.xcconfig"; sourceTree = "<group>"; };
 		B5A3C00BA8274715B11649C7 /* Pods-SharedTestUtils.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTestUtils.debug.xcconfig"; path = "Target Support Files/Pods-SharedTestUtils/Pods-SharedTestUtils.debug.xcconfig"; sourceTree = "<group>"; };
+		B78E3C7F2D3D0B3FB2AFF09A /* Pods-Mintee_UIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_UIT.debug.xcconfig"; path = "Target Support Files/Pods-Mintee_UIT/Pods-Mintee_UIT.debug.xcconfig"; sourceTree = "<group>"; };
 		C4037A9424342E1F00150D47 /* Mintee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mintee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037A9724342E1F00150D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4037AA024342E2300150D47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -350,6 +353,7 @@
 		CA2C3861A510FA5952549039 /* libPods-Mintee.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62705A9362952076D014C52 /* libPods-Mintee_AUT_Function.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee_AUT_Function.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8EE49E6CBD38F2E973E07D3 /* Pods-Mintee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee.debug.xcconfig"; path = "Target Support Files/Pods-Mintee/Pods-Mintee.debug.xcconfig"; sourceTree = "<group>"; };
+		E24046AB5C2EB74D3FE50150 /* Pods-Mintee_UIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mintee_UIT.release.xcconfig"; path = "Target Support Files/Pods-Mintee_UIT/Pods-Mintee_UIT.release.xcconfig"; sourceTree = "<group>"; };
 		E5C253F78A40E446C6E68CBD /* libPods-Mintee_AUT_Performance.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mintee_AUT_Performance.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -375,6 +379,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F65BDE6D1B233B242F5DB8 /* libPods-Mintee_UIT.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +415,8 @@
 				73D3B00E62CAF7A418619FD7 /* Pods-Mintee_AUT_Performance.release.xcconfig */,
 				B5A3C00BA8274715B11649C7 /* Pods-SharedTestUtils.debug.xcconfig */,
 				AABA2D1A8FC54590AB0C8A73 /* Pods-SharedTestUtils.release.xcconfig */,
+				B78E3C7F2D3D0B3FB2AFF09A /* Pods-Mintee_UIT.debug.xcconfig */,
+				E24046AB5C2EB74D3FE50150 /* Pods-Mintee_UIT.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -422,6 +429,7 @@
 				D62705A9362952076D014C52 /* libPods-Mintee_AUT_Function.a */,
 				E5C253F78A40E446C6E68CBD /* libPods-Mintee_AUT_Performance.a */,
 				1A916E8169D5FEDB6A2D2121 /* libPods-SharedTestUtils.a */,
+				444CFF6BCF5EB649FE552349 /* libPods-Mintee_UIT.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1053,6 +1061,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C4037AC724342E2300150D47 /* Build configuration list for PBXNativeTarget "Mintee_UIT" */;
 			buildPhases = (
+				F66C0C3F826C1B6BA729D9CA /* [CP] Check Pods Manifest.lock */,
 				C4037AB424342E2300150D47 /* Sources */,
 				C4037AB524342E2300150D47 /* Frameworks */,
 				C4037AB624342E2300150D47 /* Resources */,
@@ -1350,6 +1359,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-SharedTestUtils-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F66C0C3F826C1B6BA729D9CA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mintee_UIT-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1796,6 +1827,7 @@
 		};
 		C4037AC824342E2300150D47 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B78E3C7F2D3D0B3FB2AFF09A /* Pods-Mintee_UIT.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1816,6 +1848,7 @@
 		};
 		C4037AC924342E2300150D47 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E24046AB5C2EB74D3FE50150 /* Pods-Mintee_UIT.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
