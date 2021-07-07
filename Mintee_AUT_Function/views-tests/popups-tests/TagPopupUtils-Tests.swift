@@ -20,7 +20,7 @@ class TagPopupUtils_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.rollbackTestContainer()
+        TestContainer.teardownTestContainer()
     }
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {

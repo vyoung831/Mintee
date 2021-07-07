@@ -17,7 +17,7 @@ class TaskTargetSetView_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.rollbackTestContainer()
+        TestContainer.teardownTestContainer()
     }
     
     // MARK: - getLabel tests

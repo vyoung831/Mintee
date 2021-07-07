@@ -17,7 +17,7 @@ class BubbleRows_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.rollbackTestContainer()
+        TestContainer.teardownTestContainer()
     }
     
     /**

@@ -31,12 +31,12 @@ class Task_InstanceDelta_Tests: XCTestCase {
     var task: Task!
     
     override func setUpWithError() throws {
+        TestContainer.setUpTestContainer()
         task = try Task_InstanceDelta_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
-        Task_InstanceDelta_Tests_Util.tearDown()
+        TestContainer.teardownTestContainer()
     }
     
 }

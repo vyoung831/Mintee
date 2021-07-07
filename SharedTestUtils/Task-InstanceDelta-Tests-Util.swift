@@ -13,7 +13,6 @@ import CoreData
 class Task_InstanceDelta_Tests_Util {
     
     static func setUp() throws -> Task {
-        CDCoordinator.moc = TestContainer.testMoc
         return try Task(entity: Task.entity(),
                         insertInto: CDCoordinator.moc,
                         name: "Task",
@@ -23,10 +22,6 @@ class Task_InstanceDelta_Tests_Util {
                         targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),
                                         getWomTargetSet(CDCoordinator.moc),
                                         getDomTargetSet(CDCoordinator.moc)))
-    }
-    
-    static func tearDown() {
-        CDCoordinator.moc.rollback()
     }
     
 }

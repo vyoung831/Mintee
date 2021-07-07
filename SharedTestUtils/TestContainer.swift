@@ -19,7 +19,7 @@ class TestContainer {
         CDCoordinator.moc = TestContainer.testMoc
     }
     
-    static func rollbackTestContainer() {
+    static func teardownTestContainer() {
         MOC_Validator.validate()
         CDCoordinator.moc.rollback()
     }

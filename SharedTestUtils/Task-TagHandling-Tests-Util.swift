@@ -11,12 +11,6 @@ import Foundation
 
 class Task_TagHandling_Tests_Util {
     
-    static func setUp() {
-        CDCoordinator.moc = TestContainer.testMoc
-    }
-    
-    static func tearDown() {
-        CDCoordinator.moc.rollback()
-    }
+    static func setUp() {}
     
 }
