@@ -9,15 +9,17 @@
 //
 
 @testable import Mintee
+@testable import SharedTestUtils
 import XCTest
-import SharedTestUtils
 
 class TodayCollectionViewCell_Tests: XCTestCase {
     
-    override func setUpWithError() throws {}
+    override func setUpWithError() throws {
+        TestContainer.setUpTestContainer()
+    }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
+        TestContainer.rollbackTestContainer()
     }
     
     let negativeMinTarget: Float = -10

@@ -14,12 +14,11 @@ import CoreData
 class Task_Tests: XCTestCase {
     
     override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
-        CDCoordinator.moc.rollback()
+        TestContainer.rollbackTestContainer()
     }
     
     // MARK: - Core Data Restraint tests

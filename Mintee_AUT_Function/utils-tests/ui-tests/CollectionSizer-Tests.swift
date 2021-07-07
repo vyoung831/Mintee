@@ -7,15 +7,17 @@
 //
 
 import XCTest
-import SharedTestUtils
+@testable import SharedTestUtils
 @testable import Mintee
 
 class CollectionSizer_Tests: XCTestCase {
     
-    override func setUpWithError() throws {}
+    override func setUpWithError() throws {
+        TestContainer.setUpTestContainer()
+    }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
+        TestContainer.rollbackTestContainer()
     }
     
 }

@@ -7,8 +7,8 @@
 //
 
 @testable import Mintee
+@testable import SharedTestUtils
 import XCTest
-import SharedTestUtils
 
 class DayBubbleLabels_Tests: XCTestCase {
     
@@ -19,10 +19,12 @@ class DayBubbleLabels_Tests: XCTestCase {
                                         "20","21","22","23","24","25","26","27","28","29",
                                         "30","31"]
     
-    override func setUpWithError() throws {}
-
+    override func setUpWithError() throws {
+        TestContainer.setUpTestContainer()
+    }
+    
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
+        TestContainer.rollbackTestContainer()
     }
 
     func test_getDividedBubbleLabels_singleSubarray() throws {

@@ -16,12 +16,11 @@ class TagPopupUtils_Tests: XCTestCase {
     var tag: Tag!
     
     override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
-        CDCoordinator.moc.rollback()
+        TestContainer.rollbackTestContainer()
     }
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {

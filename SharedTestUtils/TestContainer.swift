@@ -15,6 +15,15 @@ class TestContainer {
     static var testShared = TestContainer()
     static var testMoc = testShared.persistentContainer.viewContext
     
+    static func setUpTestContainer() {
+        CDCoordinator.moc = TestContainer.testMoc
+    }
+    
+    static func rollbackTestContainer() {
+        MOC_Validator.validate()
+        CDCoordinator.moc.rollback()
+    }
+    
     /*
      A test NSPersistentContainer that saves to an in-memory store and who's MOC is used for unit testing.
      To avoid having multiple NSEntityDescriptions of the same NSManagedObject, this var uses the NSManagedObjectModel that CDCoordinator's static shared container had already loaded and registered
