@@ -18,7 +18,7 @@ class TaskTargetSet_Tests: XCTestCase {
     let eq_storeValue: Int16 = SaveFormatter.equalityOperatorToStored(.eq)
     let na_storeValue: Int16 = SaveFormatter.equalityOperatorToStored(.na)
     
-    override func setUpWithError() throws {
+    override class func setUp() {
         TestContainer.setUpTestContainer()
     }
     

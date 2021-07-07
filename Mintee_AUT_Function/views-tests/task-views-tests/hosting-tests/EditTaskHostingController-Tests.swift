@@ -26,7 +26,7 @@ class EditTaskHostingController_Tests: XCTestCase {
                                  pattern: dowPattern)
     }
     
-    override func setUpWithError() throws {
+    override class func setUp() {
         TestContainer.setUpTestContainer()
     }
     

@@ -15,7 +15,7 @@ class TagPopupUtils_Tests: XCTestCase {
     
     var tag: Tag!
     
-    override func setUpWithError() throws {
+    override class func setUp() {
         TestContainer.setUpTestContainer()
     }
     

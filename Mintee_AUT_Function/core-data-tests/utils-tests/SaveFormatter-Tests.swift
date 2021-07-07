@@ -12,7 +12,7 @@ import XCTest
 
 class SaveFormatter_Tests: XCTestCase {
     
-    override func setUpWithError() throws {
+    override class func setUp() {
         TestContainer.setUpTestContainer()
     }
 
