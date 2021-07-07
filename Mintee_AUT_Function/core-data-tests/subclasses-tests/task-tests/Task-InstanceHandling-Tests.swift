@@ -30,8 +30,11 @@ class Task_InstanceHandling_Tests: XCTestCase {
     
     var task: Task!
     
-    override func setUpWithError() throws {
+    override class func setUp() {
         TestContainer.setUpTestContainer()
+    }
+    
+    override func setUpWithError() throws {
         task = try Task_InstanceHandling_Tests_Util.setUp()
     }
     

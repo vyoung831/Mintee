@@ -13,8 +13,11 @@ import XCTest
 
 class Task_TagHandling_Tests: XCTestCase {
     
-    override func setUpWithError() throws {
+    override class func setUp() {
         TestContainer.setUpTestContainer()
+    }
+    
+    override func setUpWithError() throws {
         Task_TagHandling_Tests_Util.setUp()
     }
     
