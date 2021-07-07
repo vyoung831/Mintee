@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-import SharedTestUtils
+@testable import SharedTestUtils
 import XCTest
 
 class Task_TagHandling_Tests_Performance: XCTestCase {

@@ -1099,8 +1099,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				C465839925A2ACAB00E4418D /* PBXTargetDependency */,
 				C46583AA25A2ACBC00E4418D /* PBXTargetDependency */,
+				C465839925A2ACAB00E4418D /* PBXTargetDependency */,
 			);
 			name = Mintee_AUT_Performance;
 			productName = Mintee_AUT_Performance;

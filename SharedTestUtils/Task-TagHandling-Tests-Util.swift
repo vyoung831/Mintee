@@ -9,13 +9,13 @@
 @testable import Mintee
 import Foundation
 
-public class Task_TagHandling_Tests_Util {
+class Task_TagHandling_Tests_Util {
     
-    public static func setUp() {
+    static func setUp() {
         CDCoordinator.moc = TestContainer.testMoc
     }
     
-    public static func tearDown() {
+    static func tearDown() {
         CDCoordinator.moc.rollback()
     }
     
