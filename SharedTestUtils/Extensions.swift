@@ -13,13 +13,13 @@ extension Date {
     
     // MARK: - Date to String conversion
     
-    static let ymdFormatter: DateFormatter = {
+    public static let ymdFormatter: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         return df
     }()
     
-    static func toYMDTest(_ date: Date) -> String {
+    public static func toYMDTest(_ date: Date) -> String {
         return ymdFormatter.string(from: date)
     }
     

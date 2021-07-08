@@ -9,8 +9,8 @@
 @testable import Mintee
 import Foundation
 
-class Task_TagHandling_Tests_Util {
+public class Task_TagHandling_Tests_Util {
     
-    static func setUp() {}
+    public static func setUp() {}
     
 }
