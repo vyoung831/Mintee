@@ -8,15 +8,17 @@
 
 import SwiftUI
 import XCTest
-import SharedTestUtils
+@testable import SharedTestUtils
 @testable import Mintee
 
 class TaskTargetSetPopup_Tests: XCTestCase {
     
-    override func setUpWithError() throws {}
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
+        TestContainer.teardownTestContainer()
     }
     
     // MARK: - Insufficient input tests

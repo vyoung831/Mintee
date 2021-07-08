@@ -13,13 +13,16 @@ import XCTest
 
 class Task_TagHandling_Tests: XCTestCase {
     
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
+    
     override func setUpWithError() throws {
         Task_TagHandling_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
-        Task_TagHandling_Tests_Util.tearDown()
+        TestContainer.teardownTestContainer()
     }
     
     /**

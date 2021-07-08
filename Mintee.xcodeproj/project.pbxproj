@@ -835,12 +835,12 @@
 		C4B5D9B026950F6200E58FCD /* entity-validators */ = {
 			isa = PBXGroup;
 			children = (
-				C41419F526544E5B00B96484 /* TaskValidator.swift */,
-				C4B1AFFA26923BB500325E99 /* TagValidator.swift */,
 				C4AD94FD2692420B00020E35 /* AnalysisValidator.swift */,
+				C4B1AFFA26923BB500325E99 /* TagValidator.swift */,
 				C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */,
 				C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */,
 				C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */,
+				C41419F526544E5B00B96484 /* TaskValidator.swift */,
 			);
 			path = "entity-validators";
 			sourceTree = "<group>";

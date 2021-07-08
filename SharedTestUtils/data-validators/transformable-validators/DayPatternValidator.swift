@@ -2,13 +2,6 @@
 //  DayPatternValidator.swift
 //  SharedTestUtils
 //
-//  Business rules NOT checked for by this validator:
-//  DP-1: A DayPattern's type can only be one of the following values:
-//  - Days of week
-//  - Weekdays of month
-//  - Days of month
-//  (constrained by DayPattern's encoding/decoding functions and usage of enum)
-//
 //  Created by Vincent Young on 7/6/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
@@ -27,6 +20,16 @@ class DayPatternValidator {
         for validator in DayPatternValidator.validators {
             validator(pattern)
         }
+    }
+    
+    /**
+     DP-1: A DayPattern's type can only be one of the following values:
+     - `Days of week`
+     - `Weekdays of month`
+     - `Days of month`
+     */
+    static var validateDayPatternType: (DayPattern) -> () = { pattern in
+        XCTAssert(pattern.type == .dow || pattern.type == .wom || pattern.type == .dom)
     }
     
     /**

@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  - TASK-5: A Task's name must be unique. (constrained by XC data model)
+//  - TASK-5: A Task's name must be unique. (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 5/18/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -34,18 +34,18 @@ class TaskValidator {
     
     /**
      TASK-1: A Task's taskType can only be one of the following values:
-     - Recurring
-     - Specific
+     - `Recurring`
+     - `Specific`
      */
     static var validateTaskType: (Task) -> () = { task in
         XCTAssert(task._taskType == 0 || task._taskType == 1)
     }
     
     /**
-     TASK-2: If a Task's taskType is recurring, startDate and endDate must be non-nil.
-     TASK-3: If a Task's taskType is recurring, targetSets must contain at least one TaskTargetSet.
-     TASK-6: If a Task's taskType is recurring, endDate must be later than or equal startDate.
-     TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, the TaskInstance is associated with a TaskTargetSet.
+     TASK-2: If a Task's taskType is `Recurring`, startDate and endDate must be non-nil.
+     TASK-3: If a Task's taskType is `Recurring`, targetSets must contain at least one TaskTargetSet.
+     TASK-6: If a Task's taskType is `Recurring`, endDate must be later than or equal startDate.
+     TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with a TaskTargetSet.
      */
     static var validateRecurringTask: (Task) -> () = { task in
         if task._taskType == 0 {
@@ -66,8 +66,8 @@ class TaskValidator {
     }
     
     /**
-     TASK-4: If a Task's taskType is specific, instances must contain at least one TaskInstance.
-     TI-3: If a TaskInstance's associated Task's taskType is `Specific`, the TaskInstance is not associated with a TaskTargetSet.
+     TASK-4: If a Task's taskType is `Specific`, instances must contain at least one TaskInstance.
+     TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
      */
     static var validateSpecificTask: (Task) -> () = { task in
         

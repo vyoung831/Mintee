@@ -18,13 +18,12 @@ class TaskTargetSet_Tests: XCTestCase {
     let eq_storeValue: Int16 = SaveFormatter.equalityOperatorToStored(.eq)
     let na_storeValue: Int16 = SaveFormatter.equalityOperatorToStored(.na)
     
-    override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        MOC_Validator.validate()
-        CDCoordinator.moc.rollback()
+        TestContainer.teardownTestContainer()
     }
     
     // MARK: - checkDay tests

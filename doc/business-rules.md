@@ -1,7 +1,7 @@
 # Business Rules
 This document specifies business rules that govern how Mintee stores data in persistent store.  
 Business rules listed here serve to not only highlight business restrictions, but also centralize rules about how stored data represents different user scenarios.  
-All business rules are verified after each test that touches the persistent store. For more info, read [Mintee's test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).  
+All business rules are verified after every test. For more info, read [Mintee's test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).  
 __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 
 1. [Model objects](#model-objects)
@@ -23,21 +23,21 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | ANL-1 | Analysis | An Analysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ must <ul> <li/> both be `non-nil`, OR <li/> both be `nil` </ul> |
-| ANL-3 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `non-nil`, its __dateRange__ must be `0`. |
-| ANL-4 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `nil`, its __dateRange__ must be greater than `0`. |
-| ANL-5 | Analysis | An Analysis' __order__ must be either <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
+| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ must either: <ul> <li/> both be `non-nil` OR <li/> both be `nil` </ul> |
+| ANL-3 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `non-nil`, then its __dateRange__ must be `0`. |
+| ANL-4 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `nil`, then its __dateRange__ must be greater than `0`. |
+| ANL-5 | Analysis | An Analysis' __order__ must be either: <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
 | ANL-6 | Analysis | An Analysis' __name__ must be unique. |
 
 ## Task
 | BR code | Entity | Rule |
 |-|-|-|
 | TASK-1 | Task | A Task's __taskType__ can only be one of the following values: <ul> <li/> `Recurring` <li/> `Specific` </ul> |
-| TASK-2 | Task | If a Task's __taskType__ is `recurring`, __startDate__ and __endDate__ must be `non-nil`. |
-| TASK-3 | Task | If a Task's __taskType__ is `recurring`, __targetSets__ must contain at least one TaskTargetSet. |
-| TASK-4 | Task | If a Task's __taskType__ is `specific`, __instances__ must contain at least one TaskInstance. |
+| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, __startDate__ and __endDate__ must be `non-nil`. |
+| TASK-3 | Task | If a Task's __taskType__ is `Recurring`, __targetSets__ must contain at least one TaskTargetSet. |
+| TASK-4 | Task | If a Task's __taskType__ is `Specific`, __instances__ must contain at least one TaskInstance. |
 | TASK-5 | Task | A Task's __name__ must be unique. |
-| TASK-6 | Task | If a Task's __taskType__ is `recurring`, __endDate__ must be later than or equal to __startDate__. |
+| TASK-6 | Task | If a Task's __taskType__ is `Recurring`, __endDate__ must be later than or equal to __startDate__. |
 | TASK-7 | Task | A Task must be associated with one and only one TaskSummaryAnalysis. |
 
 ## Tag
@@ -50,17 +50,17 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | TI-1 | TaskInstance | A TaskInstance must be associated with one and only one Task. |
-| TI-2 | TaskInstance | If a TaskInstance's associated Task's __taskType__ is `Recurring`, the TaskInstance is associated with a TaskTargetSet. |
-| TI-3 | TaskInstance | If a TaskInstance's associated Task's __taskType__ is `Specific`, the TaskInstance is not associated with a TaskTargetSet. |
+| TI-2 | TaskInstance | If a TaskInstance's associated Task's __taskType__ is `Recurring`, then the TaskInstance is associated with a TaskTargetSet. |
+| TI-3 | TaskInstance | If a TaskInstance's associated Task's __taskType__ is `Specific`, then the TaskInstance is not associated with a TaskTargetSet. |
 | TI-4 | TaskInstance | TaskInstances with the same associated Task must each have a unique __date__. |
 
 ## TaskSummaryAnalysis
 | BR code | Entity | Rule |
 |-|-|-|
 | TSA-1 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ must <ul> <li/> both be `non-nil`, OR <li/> both be `nil` </ul> |
-| TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `non-nil`, its __dateRange__ must be `0`. |
-| TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `nil`, its __dateRange__ must be greater than `0`. |
+| TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ must either: <ul> <li/> both be `non-nil` OR <li/> both be `nil` </ul> |
+| TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `non-nil`, then its __dateRange__ must be `0`. |
+| TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `nil`, then its __dateRange__ must be greater than `0`. |
 | TSA-5 | TaskSummaryAnalysis | A TaskSummaryAnalysis must be associated with one and only one Task. |
 
 ## TaskTargetSet
@@ -68,11 +68,11 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 |-|-|-|
 | TTS-1 | TaskTargetSet | A TaskTargetSet's __minOperator__ can only be one of the following values: <ul> <li/> `Less than` <li/> `Less than or equal to` <li/> `Equal to` <li/> `N/A` </ul> |
 | TTS-2 | TaskTargetSet | A TaskTargetSet's __maxOperator__ can only be one of the following values: <ul> <li/> `Less than` <li/> `Less than or equal to` <li/> `N/A` </ul> |
-| TTS-3 | TaskTargetSet | If __maxOperator__ is `N/A`, __max__ is `0`. |
-| TTS-4 | TaskTargetSet | If __minOperator__ is `N/A`, __min__ is `0`. |
+| TTS-3 | TaskTargetSet | If a TaskTargetSet's __maxOperator__ is `N/A`, then its __max__ is `0`. |
+| TTS-4 | TaskTargetSet | If a TaskTargetSet's __minOperator__ is `N/A`, then its __min__ is `0`. |
 | TTS-5 | TaskTargetSet | A TaskTargetSet's __minOperator__ and __maxOperator__ cannot both be `N/A`. |
-| TTS-6 | TaskTargetSet | If a TaskTargetSet's __minOperator__ is `Equal to`, its __maxOperator__ must be `N/A`. |
-| TTS-7 | TaskTargetSet | If a TaskTargetSet's __minOperator__ and __maxOperator__ are both not `N/A`, __min__ must be less than __max__. |
+| TTS-6 | TaskTargetSet | If a TaskTargetSet's __minOperator__ is `Equal to`, then its __maxOperator__ must be `N/A`. |
+| TTS-7 | TaskTargetSet | If a TaskTargetSet's __minOperator__ and __maxOperator__ are both not `N/A`, then its __min__ must be less than its __max__. |
 | TTS-8 | TaskTargetSet | A TaskTargetSet must be associated with one and only one Task. |
 | TTS-9 | TaskTargetSet | TaskTargetSets with the same associated Task must have each have a unique priority. |
 
@@ -98,7 +98,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | CMPLE-4 | CompletionLegendEntry | If a CompletionLegendEntry's __minOperator__ is `N/A`, then its __min__ is `0`. |
 | CMPLE-5 | CompletionLegendEntry | A CompletionLegendEntry's __minOperator__ and __maxOperator__ cannot both be `N/A`. |
 | CMPLE-6 | CompletionLegendEntry | If a CompletionLegendEntry's __minOperator__ is `Equal to`, then its __maxOperator__ must be `N/A`. |
-| CMPLE-7 | CompletionLegendEntry | If a CompletionLegendEntry's __minOperator__ and __maxOperator__ are both not `N/A`, then __min__ must be less than __max__. |
+| CMPLE-7 | CompletionLegendEntry | If a CompletionLegendEntry's __minOperator__ and __maxOperator__ are both not `N/A`, then its __min__ must be less than its __max__. |
 
 ## DayPattern
 | BR code | Transformable custom class | Rule |

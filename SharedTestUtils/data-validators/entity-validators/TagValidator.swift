@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  - TAG-1: A Tag's name must be unique. (constrained by data model)
+//  - TAG-1: A Tag's name must be unique. (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.

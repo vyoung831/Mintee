@@ -18,15 +18,18 @@ public class MOC_Validator {
         let tasksFetch = try! CDCoordinator.moc.fetch(Task.fetchRequest())
         let tasks = Set<Task>(tasksFetch as! [Task])
         TaskValidator.validateTasks(tasks)
+        MOC_Validator.validateUniqueTaskNames(tasks) // TASK-5
         
         let tagsFetch = try! CDCoordinator.moc.fetch(Tag.fetchRequest())
         let tags = Set<Tag>(tagsFetch as! [Tag])
         TagValidator.validateTags(tags)
+        MOC_Validator.validateUniqueTagNames(tags) // TAG-1
         
         let analysesFetch = try! CDCoordinator.moc.fetch(Analysis.fetchRequest())
         let analyses = Set<Analysis>(analysesFetch as! [Analysis])
         AnalysisValidator.validateAnalyses(analyses)
-        MOC_Validator.validateAnalysesOrdering(analyses)
+        MOC_Validator.validateAnalysesOrdering(analyses) // ANL-5
+        MOC_Validator.validateUniqueAnalysisNames(analyses) // ANL-6
         
         let taskInstancesFetch = try! CDCoordinator.moc.fetch(TaskInstance.fetchRequest())
         let taskInstances = Set<TaskInstance>(taskInstancesFetch as! [TaskInstance])
@@ -51,6 +54,33 @@ public class MOC_Validator {
         XCTAssert( analyses.map{ $0._order < -1 }.count == 0 )
         let nonNegativeOrders = analyses.filter{ $0._order >= 0 }.map{ $0._order }
         let duplicates = Dictionary(grouping: nonNegativeOrders, by: {$0}).filter{ $1.count > 1 }.keys
+        XCTAssert( duplicates.count == 0)
+    }
+    
+    /**
+     ANL-6: An Analysis' name must be unique.
+     */
+    static func validateUniqueAnalysisNames(_ analyses: Set<Analysis>) {
+        let analysisNames = analyses.map{ $0._name }
+        let duplicates = Dictionary(grouping: analysisNames, by: {$0}).filter{ $1.count > 1 }.keys
+        XCTAssert( duplicates.count == 0)
+    }
+    
+    /**
+     TAG-1: A Tag's name must be unique.
+     */
+    static func validateUniqueTagNames(_ tags: Set<Tag>) {
+        let tagNames = tags.map{ $0._name }
+        let duplicates = Dictionary(grouping: tagNames, by: {$0}).filter{ $1.count > 1 }.keys
+        XCTAssert( duplicates.count == 0)
+    }
+    
+    /**
+     TASK-5: A Task's name must be unique.
+     */
+    static func validateUniqueTaskNames(_ tasks: Set<Task>) {
+        let taskNames = tasks.map{ $0._name }
+        let duplicates = Dictionary(grouping: taskNames, by: {$0}).filter{ $1.count > 1 }.keys
         XCTAssert( duplicates.count == 0)
     }
     
