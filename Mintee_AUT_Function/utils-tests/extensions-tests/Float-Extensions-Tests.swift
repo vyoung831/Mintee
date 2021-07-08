@@ -17,7 +17,7 @@ class Float_Extension_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
 
     func test_clean_TrimToWholeNumber() throws {

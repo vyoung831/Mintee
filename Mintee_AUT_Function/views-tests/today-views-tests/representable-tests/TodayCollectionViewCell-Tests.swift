@@ -19,7 +19,7 @@ class TodayCollectionViewCell_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     let negativeMinTarget: Float = -10

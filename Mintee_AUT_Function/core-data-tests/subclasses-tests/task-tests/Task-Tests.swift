@@ -18,7 +18,7 @@ class Task_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     // MARK: - Core Data Restraint tests
