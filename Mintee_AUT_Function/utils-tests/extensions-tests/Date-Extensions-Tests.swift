@@ -17,7 +17,7 @@ class Date_Extension_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
 
     /**

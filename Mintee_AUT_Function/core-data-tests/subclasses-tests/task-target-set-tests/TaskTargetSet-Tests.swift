@@ -23,7 +23,7 @@ class TaskTargetSet_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     // MARK: - checkDay tests

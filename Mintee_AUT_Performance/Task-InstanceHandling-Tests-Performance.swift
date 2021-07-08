@@ -38,7 +38,7 @@ class Task_InstanceHandling_Tests_Performance: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
 }

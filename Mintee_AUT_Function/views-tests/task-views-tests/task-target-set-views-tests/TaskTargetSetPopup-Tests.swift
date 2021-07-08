@@ -18,7 +18,7 @@ class TaskTargetSetPopup_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     // MARK: - Insufficient input tests

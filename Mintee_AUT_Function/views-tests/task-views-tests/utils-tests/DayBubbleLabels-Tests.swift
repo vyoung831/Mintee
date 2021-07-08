@@ -25,7 +25,7 @@ class DayBubbleLabels_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
 
     func test_getDividedBubbleLabels_singleSubarray() throws {
