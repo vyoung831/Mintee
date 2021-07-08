@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
 
 class DayBubbleLabels_Tests: XCTestCase {

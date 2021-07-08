@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SharedTestUtils
+import SharedTestUtils
 @testable import Mintee
 
 class SaveFormatter_Tests: XCTestCase {

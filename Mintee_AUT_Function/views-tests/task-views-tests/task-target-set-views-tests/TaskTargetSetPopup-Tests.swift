@@ -8,7 +8,7 @@
 
 import SwiftUI
 import XCTest
-@testable import SharedTestUtils
+import SharedTestUtils
 @testable import Mintee
 
 class TaskTargetSetPopup_Tests: XCTestCase {

@@ -10,16 +10,16 @@
 import Foundation
 import CoreData
 
-class TestContainer {
+public class TestContainer {
     
     static var testShared = TestContainer()
     static var testMoc = testShared.persistentContainer.viewContext
     
-    static func setUpTestContainer() {
+    public static func setUpTestContainer() {
         CDCoordinator.moc = TestContainer.testMoc
     }
     
-    static func teardownTestContainer() {
+    public static func teardownTestContainer() {
         MOC_Validator.validate()
         CDCoordinator.moc.rollback()
     }
