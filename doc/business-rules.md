@@ -33,11 +33,11 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | TASK-1 | Task | A Task's __taskType__ can only be one of the following values: <ul> <li/> `Recurring` <li/> `Specific` </ul> |
-| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, __startDate__ and __endDate__ must be `non-nil`. |
-| TASK-3 | Task | If a Task's __taskType__ is `Recurring`, __targetSets__ must contain at least one TaskTargetSet. |
-| TASK-4 | Task | If a Task's __taskType__ is `Specific`, __instances__ must contain at least one TaskInstance. |
+| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, then its __startDate__ and __endDate__ must be `non-nil`. |
+| TASK-3 | Task | If a Task's __taskType__ is `Recurring`, then its __targetSets__ must contain at least one TaskTargetSet. |
+| TASK-4 | Task | If a Task's __taskType__ is `Specific`, then its __instances__ must contain at least one TaskInstance. |
 | TASK-5 | Task | A Task's __name__ must be unique. |
-| TASK-6 | Task | If a Task's __taskType__ is `Recurring`, __endDate__ must be later than or equal to __startDate__. |
+| TASK-6 | Task | If a Task's __taskType__ is `Recurring`, then its __endDate__ must be later than or equal to __startDate__. |
 | TASK-7 | Task | A Task must be associated with one and only one TaskSummaryAnalysis. |
 
 ## Tag
