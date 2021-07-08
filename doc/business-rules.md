@@ -23,21 +23,21 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | ANL-1 | Analysis | An Analysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ must either: <ul> <li/> both be `non-nil`, OR <li/> both be `nil` </ul> |
+| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ must either: <ul> <li/> both be `non-nil` OR <li/> both be `nil` </ul> |
 | ANL-3 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `non-nil`, then its __dateRange__ must be `0`. |
 | ANL-4 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `nil`, then its __dateRange__ must be greater than `0`. |
-| ANL-5 | Analysis | An Analysis' __order__ must be either <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
+| ANL-5 | Analysis | An Analysis' __order__ must be either: <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
 | ANL-6 | Analysis | An Analysis' __name__ must be unique. |
 
 ## Task
 | BR code | Entity | Rule |
 |-|-|-|
 | TASK-1 | Task | A Task's __taskType__ can only be one of the following values: <ul> <li/> `Recurring` <li/> `Specific` </ul> |
-| TASK-2 | Task | If a Task's __taskType__ is `recurring`, __startDate__ and __endDate__ must be `non-nil`. |
-| TASK-3 | Task | If a Task's __taskType__ is `recurring`, __targetSets__ must contain at least one TaskTargetSet. |
-| TASK-4 | Task | If a Task's __taskType__ is `specific`, __instances__ must contain at least one TaskInstance. |
+| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, __startDate__ and __endDate__ must be `non-nil`. |
+| TASK-3 | Task | If a Task's __taskType__ is `Recurring`, __targetSets__ must contain at least one TaskTargetSet. |
+| TASK-4 | Task | If a Task's __taskType__ is `Specific`, __instances__ must contain at least one TaskInstance. |
 | TASK-5 | Task | A Task's __name__ must be unique. |
-| TASK-6 | Task | If a Task's __taskType__ is `recurring`, __endDate__ must be later than or equal to __startDate__. |
+| TASK-6 | Task | If a Task's __taskType__ is `Recurring`, __endDate__ must be later than or equal to __startDate__. |
 | TASK-7 | Task | A Task must be associated with one and only one TaskSummaryAnalysis. |
 
 ## Tag
@@ -58,7 +58,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | TSA-1 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ must either: <ul> <li/> both be `non-nil`, OR <li/> both be `nil` </ul> |
+| TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ must either: <ul> <li/> both be `non-nil` OR <li/> both be `nil` </ul> |
 | TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `non-nil`, then its __dateRange__ must be `0`. |
 | TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `nil`, then its __dateRange__ must be greater than `0`. |
 | TSA-5 | TaskSummaryAnalysis | A TaskSummaryAnalysis must be associated with one and only one Task. |

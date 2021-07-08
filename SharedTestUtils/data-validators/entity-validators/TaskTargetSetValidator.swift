@@ -31,14 +31,14 @@ class TaskTargetSetValidator {
     
     /**
      TTS-1: A TaskTargetSet's minOperator can only be one of the following values:
-     - Less than
-     - Less than or equal to
-     - Equal to
-     - N/A
+     - `Less than`
+     - `Less than or equal to`
+     - `Equal to`
+     - `N/A`
      TTS-2: A TaskTargetSet's maxOperator can only be one of the following values:
-     - Less than
-     - Less than or equal to
-     - N/A
+     - `Less than`
+     - `Less than or equal to`
+     - `N/A`
      TTS-3: If a TaskTargetSet's maxOperator is `N/A`, then its max is `0`.
      TTS-4: If a TaskTargetSet's minOperator is `N/A`, then its min is `0`.
      TTS-5: A TaskTargetSet's minOperator and maxOperator cannot both be `N/A`.

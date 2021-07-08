@@ -29,8 +29,8 @@ class TaskSummaryAnalysisValidator {
     
     /**
      TSA-1: A TaskSummaryAnalysis' analysisType can only be one of the following values:
-     - Box
-     - Line
+     - `Box`
+     - `Line`
      */
     static var validateAnalysisType: (TaskSummaryAnalysis) -> () = { tsa in
         XCTAssert(tsa._analysisType == 0 || tsa._analysisType == 1)
@@ -38,10 +38,10 @@ class TaskSummaryAnalysisValidator {
     
     /**
      TSA-2: A TaskSummaryAnalysis' startDate and endDate must either:
-        - both be non-nil, OR
-        - both be nil
-     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both non-nil, then its dateRange must be 0.
-     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both nil, then its dateRange must be greater than 0.
+        - both be `non-nil` OR
+        - both be `nil`
+     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both `non-nil`, then its dateRange must be `0`.
+     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both `nil`, then its dateRange must be greater than `0`.
      */
     static var validateAnalysisDateValues: (TaskSummaryAnalysis) -> () = { tsa in
         // TSA-2
