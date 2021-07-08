@@ -7,7 +7,7 @@
 //      * `-1` OR
 //      * A unique number greater than or equal to `0`
 //  (validated by MOC_Validator)
-//  ANL-6: An Analysis' name must be unique. (constrained by XC data model)
+//  ANL-6: An Analysis' name must be unique. (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.

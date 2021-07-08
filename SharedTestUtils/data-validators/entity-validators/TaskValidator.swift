@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  - TASK-5: A Task's name must be unique. (constrained by XC data model)
+//  - TASK-5: A Task's name must be unique. (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 5/18/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
