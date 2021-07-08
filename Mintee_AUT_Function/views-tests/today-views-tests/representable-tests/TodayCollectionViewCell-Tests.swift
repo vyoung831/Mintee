@@ -9,7 +9,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
 import SharedTestUtils
 
@@ -20,7 +20,7 @@ class TodayCollectionViewCell_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     let negativeMinTarget: Float = -10

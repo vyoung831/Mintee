@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SharedTestUtils
+import SharedTestUtils
 @testable import Mintee
 
 class Date_Extension_Tests: XCTestCase {
@@ -17,7 +17,7 @@ class Date_Extension_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
 
     /**

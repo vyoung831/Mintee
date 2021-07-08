@@ -8,7 +8,7 @@
 
 import SwiftUI
 import XCTest
-@testable import SharedTestUtils
+import SharedTestUtils
 @testable import Mintee
 
 class TaskTargetSetPopup_Tests: XCTestCase {
@@ -18,7 +18,7 @@ class TaskTargetSetPopup_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     // MARK: - Insufficient input tests

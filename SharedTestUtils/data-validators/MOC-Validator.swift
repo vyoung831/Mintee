@@ -11,9 +11,9 @@ import Foundation
 import CoreData
 import XCTest
 
-public class MOC_Validator {
+class MOC_Validator {
     
-    public static func validate() {
+    static func validate() {
         
         let tasksFetch = try! CDCoordinator.moc.fetch(Task.fetchRequest())
         let tasks = Set<Task>(tasksFetch as! [Task])

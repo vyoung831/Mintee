@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
 import SwiftUI
 
@@ -20,7 +20,7 @@ class TagPopupUtils_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        TestContainer.teardownTestContainer()
+        TestContainer.tearDownTestContainer()
     }
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {
