@@ -13,11 +13,15 @@ import SharedTestUtils
 
 class MainTabBarUITests: XCTestCase {
     
-    override func setUp() {
+    override func setUpWithError() throws {
         continueAfterFailure = false
         XCUIApplication().launch()
         XCUIDevice.shared.orientation = .portrait
     }
+    
+}
+
+extension MainTabBarUITests {
     
     func testNavigateToAnalysisTab() {
         let app = XCUIApplication()

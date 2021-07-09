@@ -8,7 +8,6 @@
 
 import XCTest
 import SharedTestUtils
-@testable import Mintee
 
 class SetDatePopupUITests: XCTestCase {
     

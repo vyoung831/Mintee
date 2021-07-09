@@ -13,7 +13,7 @@ import SharedTestUtils
 
 class TodayViewControllerUITests: XCTestCase {
     
-    override func setUp() {
+    override func setUpWithError() throws {
         continueAfterFailure = false
         XCUIApplication().launch()
         XCUIDevice.shared.orientation = .portrait
