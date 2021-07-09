@@ -18,10 +18,6 @@ class TodayViewControllerUITests: XCTestCase {
         XCUIApplication().launch()
         XCUIDevice.shared.orientation = .portrait
     }
-
-    override func tearDown() {
-        MOC_Validator.validate()
-    }
     
     func testSearchButtonPressed() {
         let app = XCUIApplication()

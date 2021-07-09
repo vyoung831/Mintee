@@ -25,10 +25,6 @@ class InsufficientInputUITests: XCTestCase {
         
     }
     
-    override func tearDownWithError() throws {
-        MOC_Validator.validate()
-    }
-    
     /**
      Set TaskTargetSetPopup's pattern type picker value to Days of Month and verify the following:
      - A dow bubble must be selected for the popup's Done button to be enabled

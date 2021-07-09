@@ -23,10 +23,6 @@ class AddTaskUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
     
-    override func tearDown() {
-        MOC_Validator.validate()
-    }
-    
 }
 
 // MARK: - Helper functions
@@ -43,7 +39,7 @@ extension AddTaskUITests {
     /**
      Adds a TaskTargetSet, assuming that AddTask is already navigated to
      */
-    func add_TaskTargetSet(type: DayPattern.type, bubbles: [String]) {
+    func add_TaskTargetSet() {
         let app = XCUIApplication()
         app.scrollViews.otherElements.buttons["add-task-target-set-button"].tap()
         app.staticTexts["Add Target Set"].tap()

@@ -36,10 +36,6 @@ class LowEqualToHighTests: XCTestCase {
         app.textFields["maximum-value"].typeText("5")
     }
 
-    override func tearDownWithError() throws {
-        MOC_Validator.validate()
-    }
-
 }
 
 // MARK: - Tests with lower operator set to [<]

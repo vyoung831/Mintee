@@ -19,10 +19,6 @@ class MainTabBarUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
     
-    override func tearDown() {
-        MOC_Validator.validate()
-    }
-    
     func testNavigateToAnalysisTab() {
         let app = XCUIApplication()
         app.tabBars.buttons["Analysis"].tap()

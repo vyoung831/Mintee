@@ -33,10 +33,6 @@ class LowOnlyTests: XCTestCase {
         app.textFields["minimum-value"].tap(); sleep(1)
         app.textFields["minimum-value"].typeText("10")
     }
-
-    override func tearDownWithError() throws {
-        MOC_Validator.validate()
-    }
     
 }
 

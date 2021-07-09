@@ -36,10 +36,6 @@ class LowLessThanHighTests: XCTestCase {
         app.textFields["maximum-value"].typeText("2")
     }
 
-    override func tearDownWithError() throws {
-        MOC_Validator.validate()
-    }
-
 }
 
 extension LowLessThanHighTests {

@@ -24,10 +24,6 @@ class SetDatePopupUITests: XCTestCase {
         app.navigationBars["Today"].buttons["add-task-button"].tap()
     }
     
-    override func tearDownWithError() throws {
-        MOC_Validator.validate()
-    }
-    
     /**
      Navigate to AddTask and to SetDatePopup.
      Set the start date and confirm that the start date label was updated on AddTask
