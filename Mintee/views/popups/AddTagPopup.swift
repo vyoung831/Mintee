@@ -68,6 +68,7 @@ struct AddTagPopup: View {
             if errorMessage.count > 0 {
                 Text(errorMessage)
                     .foregroundColor(.red)
+                    .accessibility(identifier: "AddTagPopup-error-message")
             }
             
             // tagsFetch is filtered for Tag names containing the TextField's value

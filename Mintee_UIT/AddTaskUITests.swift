@@ -28,7 +28,7 @@ class AddTaskUITests: XCTestCase {
 
 extension AddTaskUITests {
     
-    func navigate_to_AddTask() {
+    static func navigate_to_AddTask() {
         let app = XCUIApplication()
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Today"].tap()
@@ -38,7 +38,7 @@ extension AddTaskUITests {
     /**
      Adds a TaskTargetSet, assuming that AddTask is already navigated to
      */
-    func add_TaskTargetSet() {
+    static func add_TaskTargetSet() {
         let app = XCUIApplication()
         app.scrollViews.otherElements.buttons["add-task-target-set-button"].tap()
         app.staticTexts["Add Target Set"].tap()

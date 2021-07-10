@@ -121,7 +121,7 @@ struct TagView: View {
         .foregroundColor(themeManager.buttonText)
         .background(themeManager.button)
         .cornerRadius(3)
-        .accessibility(identifier: "tag")
+        .accessibility(identifier: "TagView-\(name)")
         
     }
     
