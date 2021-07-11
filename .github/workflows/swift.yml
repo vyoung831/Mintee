@@ -16,17 +16,19 @@ jobs:
           - { scheme: 'iPhone-11-iOS-14.4', destination: 'platform=iOS Simulator,name=iPhone 11,OS=14.4' }
     steps:
     - uses: actions/checkout@v2
-    - name: Update gems
+    - name: Update bundler
+      run: gem install bundler:2.2.23
+    - name: Install RubyGems
       run: bundle install
-    - name: Update pods
+    - name: Install pods
       run: pod install
-    # - name: Run functional AUT
-    #   run: xcodebuild -workspace Mintee.xcworkspace -scheme Mintee -sdk iphonesimulator -destination '${{ matrix.run-config['destination'] }}' '-only-testing:Mintee_AUT_Function' test | xcpretty --test --color --report html
-    # - name: Archive functional AUT artifacts
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #       name: functional-AUT-report
-    #       path: build/reports/tests.html
+    - name: Run functional AUT
+      run: xcodebuild -workspace Mintee.xcworkspace -scheme Mintee -sdk iphonesimulator -destination '${{ matrix.run-config['destination'] }}' '-only-testing:Mintee_AUT_Function' test | xcpretty --test --color --report html
+    - name: Archive functional AUT artifacts
+      uses: actions/upload-artifact@v2
+      with:
+          name: functional-AUT-report
+          path: build/reports/tests.html
     # - name: Run performance AUT
     #   run: xcodebuild -workspace Mintee.xcworkspace -scheme Mintee -sdk iphonesimulator -destination '${{ matrix.run-config['destination'] }}' '-only-testing:Mintee_AUT_Performance' test | xcpretty --test --color --report html
     # - name: Archive performance AUT artifacts
