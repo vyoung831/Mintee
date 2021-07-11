@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Update gems
-      run: bundle install
+      run: bundle update --bundler; bundle install
     - name: Update pods
       run: pod install
     - name: Run functional AUT
