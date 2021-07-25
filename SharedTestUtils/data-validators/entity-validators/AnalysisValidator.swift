@@ -52,14 +52,14 @@ class AnalysisValidator {
      ANL-8: If an Analysis' startDate and endDate are both non-nil, then its endDate is later than or equal to startDate.
      */
     static var validateAnalysisDateValues: (Analysis) -> () = { analysis in
-        // ANL-2
         if analysis._startDate == nil && analysis._endDate == nil {
             XCTAssert(analysis._dateRange > 0) // ANL-4
         } else if analysis._startDate != nil && analysis._endDate != nil {
             XCTAssert(analysis._dateRange == 0) // ANL-3
             XCTAssert(SaveFormatter.storedStringToDate(analysis._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(analysis._endDate!)!)) // ANL-8
+        } else {
+            XCTFail() // ANL-2
         }
-        XCTFail()
     }
     
 }

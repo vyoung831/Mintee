@@ -64,7 +64,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __dateRange__ is `0`. |
 | TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both nil, then its __dateRange__ is greater than `0`. |
 | TSA-5 | TaskSummaryAnalysis | A TaskSummaryAnalysis is associated with one and only one Task. |
-| TSA-7 | TaskSummaryAnalysis | An TaskSummaryAnalysis' __legend__ is non-nil. |
+| TSA-7 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __legend__ is non-nil. |
 | TSA-8 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __endDate__ is later than or equal to __startDate__. |
 
 ## TaskTargetSet

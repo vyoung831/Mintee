@@ -2,7 +2,7 @@
 //  TaskSummaryAnalysisValidator.swift
 //  Mintee_AUT_Function
 //
-//  TSA-7: An TaskSummaryAnalysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
+//  TSA-7: A TaskSummaryAnalysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
