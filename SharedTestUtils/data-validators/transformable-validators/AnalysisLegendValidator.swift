@@ -32,7 +32,7 @@ class AnalysisLegendValidator {
         if legend.categorizedEntries.count > 0 {
             XCTAssert(legend.completionEntries.count == 0) // ALGND-1
         } else if legend.completionEntries.count > 0 {
-            XCTAssert(legend.categorizedEntries.count == 0) //ALGND-2
+            XCTAssert(legend.categorizedEntries.count == 0) // ALGND-2
         } else {
             XCTFail()
         }

@@ -49,9 +49,12 @@ __Tests passing__
 - [ ] New and existing UIT pass locally with proposed changes.
 
 __Persistent store validation__
-- [ ] Changes to the data model include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md).
+- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md).
+    - The data model
+    - NSManagedObject subclasses
+    - Transformables used by NSManagedObject subclasses.
 - [ ] Changes to business rules include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).
-- [ ] New or updated test cases that touch the persistent store run the MOC validator as part of teardown.
+- [ ] New or updated AUT run the MOC validator as part of teardown.
 
 ### Functional AUT
 - [ ] Functional AUT are implemented for new function that is deemed likely to fail.

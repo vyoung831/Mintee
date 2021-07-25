@@ -42,14 +42,13 @@ class TaskValidator {
     }
     
     /**
-     TASK-2: If a Task's taskType is `Recurring`, then its startDate and endDate are non-nil.
      TASK-3: If a Task's taskType is `Recurring`, then its targetSets contains at least one TaskTargetSet.
      TASK-6: If a Task's taskType is `Recurring`, then its endDate is later than or equal to startDate.
      TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with a TaskTargetSet.
      */
     static var validateRecurringTask: (Task) -> () = { task in
         if task._taskType == 0 {
-            // TASK-2 and TASK-6
+            // TASK-6
             XCTAssert(SaveFormatter.storedStringToDate(task._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(task._endDate!)!))
             
             // TASK-3

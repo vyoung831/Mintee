@@ -28,6 +28,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | ANL-5 | Analysis | An Analysis' __order__ is either: <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
 | ANL-6 | Analysis | An Analysis' __name__ is unique. |
 | ANL-7 | Analysis | An Analysis' __legend__ is non-nil. |
+| ANL-8 | Analysis | If an Analysis' __startDate__ and __endDate__ are both non-nil, then its __endDate__ is later than or equal to __startDate__. |
 
 ## Tag
 | BR code | Entity | Rule |
@@ -39,7 +40,6 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | TASK-1 | Task | A Task's __taskType__ can only be one of the following values: <ul> <li/> `Recurring` <li/> `Specific` </ul> |
-| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, then its __startDate__ and __endDate__ are non-nil. |
 | TASK-3 | Task | If a Task's __taskType__ is `Recurring`, then its __targetSets__ contains at least one TaskTargetSet. |
 | TASK-4 | Task | If a Task's __taskType__ is `Specific`, then its __instances__ contains at least one TaskInstance. |
 | TASK-5 | Task | A Task's __name__ is unique. |
@@ -65,6 +65,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both nil, then its __dateRange__ is greater than `0`. |
 | TSA-5 | TaskSummaryAnalysis | A TaskSummaryAnalysis is associated with one and only one Task. |
 | TSA-7 | TaskSummaryAnalysis | An TaskSummaryAnalysis' __legend__ is non-nil. |
+| TSA-8 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __endDate__ is later than or equal to __startDate__. |
 
 ## TaskTargetSet
 | BR code | Entity | Rule |
@@ -86,7 +87,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Transformable custom class | Rule |
 |-|-|-|
 | ALGND-1 | AnalysisLegend | If an AnalysisLegend's __categorizedEntries__ is non-empty, then its __completionEntries__ is empty. |
-| ALGND-1 | AnalysisLegend | If an AnalysisLegend's __completionEntries__ is non-empty, then its __categorizedEntries__ is empty. |
+| ALGND-2 | AnalysisLegend | If an AnalysisLegend's __completionEntries__ is non-empty, then its __categorizedEntries__ is empty. |
 
 ### CategorizedLegendEntry
 | BR code | Class | Rule |
