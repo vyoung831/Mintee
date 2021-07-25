@@ -3,7 +3,8 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  TTS-9: TaskTargetSets with the same associated Task each have a unique priority. (validated by Task_Validator)
+//  TTS-9: TaskTargetSets with the same associated Task each have a unique priority. (validated by TaskValidator)
+//  TTS-10: A TaskTargetSet's pattern is non-nil. (validated as part of calling DayPatternValidator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.

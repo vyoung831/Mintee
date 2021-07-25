@@ -8,6 +8,7 @@
 //      * A unique number greater than or equal to `0`
 //  (validated by MOC_Validator)
 //  ANL-6: An Analysis' name is unique. (validated by MOC_Validator)
+//  ANL-7: An Analysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -44,10 +45,10 @@ class AnalysisValidator {
     
     /**
      ANL-2: An Analysis' startDate and endDate are either:
-     - both `non-nil` OR
-     - both `nil`
-     ANL-3: If an Analysis' startDate and endDate are both `non-nil`, then its dateRange is `0`.
-     ANL-4: If an Analysis' startDate and endDate are both `nil`, then its dateRange is greater than `0`.
+     - both non-nil OR
+     - both nil
+     ANL-3: If an Analysis' startDate and endDate are both non-nil, then its dateRange is `0`.
+     ANL-4: If an Analysis' startDate and endDate are both nil, then its dateRange is greater than `0`.
      */
     static var validateAnalysisDateValues: (Analysis) -> () = { analysis in
         // ANL-2

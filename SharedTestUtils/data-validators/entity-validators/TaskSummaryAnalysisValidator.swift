@@ -2,6 +2,8 @@
 //  TaskSummaryAnalysisValidator.swift
 //  Mintee_AUT_Function
 //
+//  TSA-7: An TaskSummaryAnalysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
+//
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
@@ -38,10 +40,10 @@ class TaskSummaryAnalysisValidator {
     
     /**
      TSA-2: A TaskSummaryAnalysis' startDate and endDate are either:
-        - both `non-nil` OR
-        - both `nil`
-     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both `non-nil`, then its dateRange is `0`.
-     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both `nil`, then its dateRange is greater than `0`.
+        - both non-nil OR
+        - both nil
+     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both non-nil, then its dateRange is `0`.
+     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both nil, then its dateRange is greater than `0`.
      */
     static var validateAnalysisDateValues: (TaskSummaryAnalysis) -> () = { tsa in
         // TSA-2

@@ -22,11 +22,12 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | ANL-1 | Analysis | An Analysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ are either: <ul> <li/> both `non-nil` OR <li/> both `nil` </ul> |
-| ANL-3 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `non-nil`, then its __dateRange__ is `0`. |
-| ANL-4 | Analysis | If an Analysis' __startDate__ and __endDate__ are both `nil`, then its __dateRange__ is greater than `0`. |
+| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ are either: <ul> <li/> both non-nil OR <li/> both nil </ul> |
+| ANL-3 | Analysis | If an Analysis' __startDate__ and __endDate__ are both non-nil, then its __dateRange__ is `0`. |
+| ANL-4 | Analysis | If an Analysis' __startDate__ and __endDate__ are both nil, then its __dateRange__ is greater than `0`. |
 | ANL-5 | Analysis | An Analysis' __order__ is either: <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
 | ANL-6 | Analysis | An Analysis' __name__ is unique. |
+| ANL-7 | Analysis | An Analysis' __legend__ is non-nil. |
 
 ## Tag
 | BR code | Entity | Rule |
@@ -38,13 +39,13 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | TASK-1 | Task | A Task's __taskType__ can only be one of the following values: <ul> <li/> `Recurring` <li/> `Specific` </ul> |
-| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, then its __startDate__ and __endDate__ are `non-nil`. |
+| TASK-2 | Task | If a Task's __taskType__ is `Recurring`, then its __startDate__ and __endDate__ are non-nil. |
 | TASK-3 | Task | If a Task's __taskType__ is `Recurring`, then its __targetSets__ contains at least one TaskTargetSet. |
 | TASK-4 | Task | If a Task's __taskType__ is `Specific`, then its __instances__ contains at least one TaskInstance. |
 | TASK-5 | Task | A Task's __name__ is unique. |
 | TASK-6 | Task | If a Task's __taskType__ is `Recurring`, then its __endDate__ is later than or equal to __startDate__. |
 | TASK-7 | Task | A Task is associated with one and only one TaskSummaryAnalysis. |
-| TASK-8 | Task | If a Task's __taskType__ is `Specific`, then its __startDate__ and __endDate__ are `nil`. |
+| TASK-8 | Task | If a Task's __taskType__ is `Specific`, then its __startDate__ and __endDate__ are nil. |
 | TASK-9 | Task | If a Task's __taskType__ is `Specific`, then its __targetSets__ is empty. |
 
 ## TaskInstance
@@ -59,10 +60,11 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | TSA-1 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ are either: <ul> <li/> both `non-nil` OR <li/> both `nil` </ul> |
-| TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `non-nil`, then its __dateRange__ is `0`. |
-| TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both `nil`, then its __dateRange__ is greater than `0`. |
+| TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ are either: <ul> <li/> both non-nil OR <li/> both nil </ul> |
+| TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __dateRange__ is `0`. |
+| TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both nil, then its __dateRange__ is greater than `0`. |
 | TSA-5 | TaskSummaryAnalysis | A TaskSummaryAnalysis is associated with one and only one Task. |
+| TSA-7 | TaskSummaryAnalysis | An TaskSummaryAnalysis' __legend__ is non-nil. |
 
 ## TaskTargetSet
 | BR code | Entity | Rule |
@@ -76,6 +78,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | TTS-7 | TaskTargetSet | If a TaskTargetSet's __minOperator__ and __maxOperator__ are both not `N/A`, then its __min__ is less than its __max__. |
 | TTS-8 | TaskTargetSet | A TaskTargetSet is associated with one and only one Task. |
 | TTS-9 | TaskTargetSet | TaskTargetSets with the same associated Task each have a unique priority. |
+| TTS-10| TaskTargetSet | A TaskTargetSet's __pattern__ is non-nil. |
 
 # Transformables
 

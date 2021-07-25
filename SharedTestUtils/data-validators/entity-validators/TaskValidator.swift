@@ -67,7 +67,7 @@ class TaskValidator {
     
     /**
      TASK-4: If a Task's taskType is `Specific`, then its instances contains at least one TaskInstance.
-     TASK-8: If a Task's taskType is `Specific`, then its startDate and endDate are `nil`.
+     TASK-8: If a Task's taskType is `Specific`, then its startDate and endDate are nil.
      TASK-9: If a Task's taskType is `Specific`, then its targetSets is empty.
      TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
      */
@@ -97,7 +97,7 @@ class TaskValidator {
     }
     
     /**
-     TI-4: TaskInstances with the same associated Task must each have a unique date. (validated by Task_Validator)
+     TI-4: TaskInstances with the same associated Task must each have a unique date. (validated by TaskValidator)
      */
     static var validateUniqueTaskInstanceDates: (Task) -> () = { task in
         if let instances = task._instances {
