@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  TTS-9: TaskTargetSets with the same associated Task must have each have a unique priority. (validated by Task_Validator)
+//  TTS-9: TaskTargetSets with the same associated Task each have a unique priority. (validated by Task_Validator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -42,8 +42,8 @@ class TaskTargetSetValidator {
      TTS-3: If a TaskTargetSet's maxOperator is `N/A`, then its max is `0`.
      TTS-4: If a TaskTargetSet's minOperator is `N/A`, then its min is `0`.
      TTS-5: A TaskTargetSet's minOperator and maxOperator cannot both be `N/A`.
-     TTS-6: If a TaskTargetSet's minOperator is `Equal to`, then its maxOperator must be `N/A`.
-     TTS-7: If a TaskTargetSet's minOperator and maxOperator are both not `N/A`, then its min must be less than its max.
+     TTS-6: If a TaskTargetSet's minOperator is `Equal to`, then its maxOperator is `N/A`.
+     TTS-7: If a TaskTargetSet's minOperator and maxOperator are both not `N/A`, then its min is less than its max.
      */
     static var validateOperatorsAndValues: (TaskTargetSet) -> () = { tts in
         
@@ -76,7 +76,7 @@ class TaskTargetSetValidator {
     }
     
     /**
-     TTS-8: A TaskTargetSet must be associated with one and only one Task.
+     TTS-8: A TaskTargetSet is associated with one and only one Task.
      */
     static var validateTaskAssociation: (TaskTargetSet) -> () = { tts in
         XCTAssert( tts._task != nil )

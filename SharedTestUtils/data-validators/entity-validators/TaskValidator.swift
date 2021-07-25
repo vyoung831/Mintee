@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  - TASK-5: A Task's name must be unique. (validated by MOC_Validator)
+//  - TASK-5: A Task's name is unique. (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 5/18/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -42,9 +42,9 @@ class TaskValidator {
     }
     
     /**
-     TASK-2: If a Task's taskType is `Recurring`, then its startDate and endDate must be non-nil.
-     TASK-3: If a Task's taskType is `Recurring`, then its targetSets must contain at least one TaskTargetSet.
-     TASK-6: If a Task's taskType is `Recurring`, then its endDate must be later than or equal startDate.
+     TASK-2: If a Task's taskType is `Recurring`, then its startDate and endDate are non-nil.
+     TASK-3: If a Task's taskType is `Recurring`, then its targetSets contains at least one TaskTargetSet.
+     TASK-6: If a Task's taskType is `Recurring`, then its endDate is later than or equal to startDate.
      TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with a TaskTargetSet.
      */
     static var validateRecurringTask: (Task) -> () = { task in
@@ -66,9 +66,9 @@ class TaskValidator {
     }
     
     /**
-     TASK-4: If a Task's taskType is `Specific`, then its instances must contain at least one TaskInstance.
-     TASK-8: If a Task's taskType is `Specific`, then its startDate and endDate must be `nil`.
-     TASK-9: If a Task's taskType is `Specific`, then its targetSets must be empty.
+     TASK-4: If a Task's taskType is `Specific`, then its instances contains at least one TaskInstance.
+     TASK-8: If a Task's taskType is `Specific`, then its startDate and endDate are `nil`.
+     TASK-9: If a Task's taskType is `Specific`, then its targetSets is empty.
      TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
      */
     static var validateSpecificTask: (Task) -> () = { task in
@@ -109,7 +109,7 @@ class TaskValidator {
     }
     
     /**
-     TASK-7: A Task must be associated with one and only one TaskSummaryAnalysis.
+     TASK-7: A Task is associated with one and only one TaskSummaryAnalysis.
      */
     static var validateTaskSummaryAnalysisAssociation: (Task) -> () = { task in
         XCTAssert(task._taskSummaryAnalysis != nil)

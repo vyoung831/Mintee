@@ -3,11 +3,11 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  ANL-5: An Analysis' order must be either:
+//  ANL-5: An Analysis' order is either:
 //      * `-1` OR
 //      * A unique number greater than or equal to `0`
 //  (validated by MOC_Validator)
-//  ANL-6: An Analysis' name must be unique. (validated by MOC_Validator)
+//  ANL-6: An Analysis' name is unique. (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -43,11 +43,11 @@ class AnalysisValidator {
     }
     
     /**
-     ANL-2: An Analysis' startDate and endDate must either:
-     - both be `non-nil` OR
-     - both be `nil`
-     ANL-3: If an Analysis' startDate and endDate are both `non-nil`, then its dateRange must be `0`.
-     ANL-4: If an Analysis' startDate and endDate are both `nil`, then its dateRange must be greater than `0`.
+     ANL-2: An Analysis' startDate and endDate are either:
+     - both `non-nil` OR
+     - both `nil`
+     ANL-3: If an Analysis' startDate and endDate are both `non-nil`, then its dateRange is `0`.
+     ANL-4: If an Analysis' startDate and endDate are both `nil`, then its dateRange is greater than `0`.
      */
     static var validateAnalysisDateValues: (Analysis) -> () = { analysis in
         // ANL-2

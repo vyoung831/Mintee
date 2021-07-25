@@ -37,11 +37,11 @@ class TaskSummaryAnalysisValidator {
     }
     
     /**
-     TSA-2: A TaskSummaryAnalysis' startDate and endDate must either:
-        - both be `non-nil` OR
-        - both be `nil`
-     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both `non-nil`, then its dateRange must be `0`.
-     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both `nil`, then its dateRange must be greater than `0`.
+     TSA-2: A TaskSummaryAnalysis' startDate and endDate are either:
+        - both `non-nil` OR
+        - both `nil`
+     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both `non-nil`, then its dateRange is `0`.
+     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both `nil`, then its dateRange is greater than `0`.
      */
     static var validateAnalysisDateValues: (TaskSummaryAnalysis) -> () = { tsa in
         // TSA-2
@@ -54,7 +54,7 @@ class TaskSummaryAnalysisValidator {
     }
     
     /**
-     TSA-5: A TaskSummaryAnalysis must be associated with one and only one Task.
+     TSA-5: A TaskSummaryAnalysis is associated with one and only one Task.
      */
     static var validateTaskAssociation: (TaskSummaryAnalysis) -> () = { tsa in
         XCTAssert(tsa._task != nil)
