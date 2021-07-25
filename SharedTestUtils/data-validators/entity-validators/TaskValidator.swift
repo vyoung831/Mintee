@@ -51,7 +51,7 @@ class TaskValidator {
         if task._taskType == 0 {
             // TASK-2 and TASK-6
             XCTAssert(SaveFormatter.storedStringToDate(task._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(task._endDate!)!))
-
+            
             // TASK-3
             XCTAssert(task._targetSets!.count > 0)
             
@@ -67,20 +67,31 @@ class TaskValidator {
     
     /**
      TASK-4: If a Task's taskType is `Specific`, then its instances must contain at least one TaskInstance.
+     TASK-8: If a Task's taskType is `Specific`, then its startDate and endDate must be `nil`.
+     TASK-9: If a Task's taskType is `Specific`, then its targetSets must be empty.
      TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
      */
     static var validateSpecificTask: (Task) -> () = { task in
         
-        // TASK-4
         if task._taskType == 1 {
+            
+            // TASK-4
             XCTAssert(task._instances!.count > 0)
-        }
-        
-        // TI-3
-        if let instances = task._instances {
-            for instance in instances as! Set<TaskInstance> {
-                XCTAssert(instance._targetSet == nil)
+            
+            // TASK-8
+            XCTAssert(task._startDate == nil)
+            XCTAssert(task._endDate == nil)
+            
+            // TASK-9
+            XCTAssert(task._targetSets!.count == 0)
+            
+            // TI-3
+            if let instances = task._instances {
+                for instance in instances as! Set<TaskInstance> {
+                    XCTAssert(instance._targetSet == nil)
+                }
             }
+            
         }
         
     }

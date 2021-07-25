@@ -1,13 +1,12 @@
 # Business Rules
-This document specifies business rules that govern how Mintee stores data in persistent store.  
-Business rules listed here serve to not only highlight business restrictions, but also centralize rules about how stored data represents different user scenarios.  
-All business rules are verified after every test. For more info, read [Mintee's test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).  
+This document specifies business rules that govern how Mintee stores data in persistent store. These business rules serve to both highlight business restrictions and centralize practices about how stored data represents different user scenarios.  
+All business rules are verified after every test. For more info, see [Mintee's test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).  
 __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 
 1. [Model objects](#model-objects)
     - [Analysis](#analysis)
-    - [Task](#task)
     - [Tag](#tag)
+    - [Task](#task)
     - [TaskInstance](#taskinstance)
     - [TaskSummaryAnalysis](#tasksummaryanalysis)
     - [TaskTargetSet](#tasktargetset)
@@ -15,7 +14,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
     - [AnalysisLegend](#analysislegend)
         - [CategorizedLegendEntry](#categorizedlegendentry)
         - [CompletionLegendEntry](#completionlegendentry)
-    - [DayPattern](#pattern)
+    - [DayPattern](#daypattern)
 
 # Model objects
 
@@ -29,6 +28,12 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | ANL-5 | Analysis | An Analysis' __order__ must be either: <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
 | ANL-6 | Analysis | An Analysis' __name__ must be unique. |
 
+## Tag
+| BR code | Entity | Rule |
+|-|-|-|
+| TAG-1 | Tag | A Tag's __name__ must be unique. |
+| TAG-2 | Tag | A Tag must be associated with at least one Task. |
+
 ## Task
 | BR code | Entity | Rule |
 |-|-|-|
@@ -39,12 +44,8 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | TASK-5 | Task | A Task's __name__ must be unique. |
 | TASK-6 | Task | If a Task's __taskType__ is `Recurring`, then its __endDate__ must be later than or equal to __startDate__. |
 | TASK-7 | Task | A Task must be associated with one and only one TaskSummaryAnalysis. |
-
-## Tag
-| BR code | Entity | Rule |
-|-|-|-|
-| TAG-1 | Tag | A Tag's __name__ must be unique. |
-| TAG-2 | Tag | A Tag must be associated with at least one Task. |
+| TASK-8 | Task | If a Task's __taskType__ is `Specific`, then its __startDate__ and __endDate__ must be `nil`. |
+| TASK-9 | Task | If a Task's __taskType__ is `Specific`, then its __targetSets__ must be empty. |
 
 ## TaskInstance
 | BR code | Entity | Rule |

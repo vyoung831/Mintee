@@ -736,8 +736,8 @@
 		C46826D02482EC0B006670A8 /* transformable */ = {
 			isa = PBXGroup;
 			children = (
-				C47389982482CCB400462134 /* DayPattern.swift */,
 				C433E88625D9FA240053A47A /* AnalysisLegend.swift */,
+				C47389982482CCB400462134 /* DayPattern.swift */,
 			);
 			path = transformable;
 			sourceTree = "<group>";
