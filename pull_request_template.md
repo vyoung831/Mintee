@@ -53,17 +53,10 @@ __Persistent store validation__
 - [ ] Changes to business rules include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).
 - [ ] New or updated test cases that touch the persistent store run the MOC validator as part of teardown.
 
-### AUT
-- [ ] AUT are implemented for new function that is deemed likely to fail.
-    - [ ] New function that is not included in AUT is specified in the below table.  
-
+### Functional AUT
+- [ ] Functional AUT are implemented for new function that is deemed likely to fail.
+- [ ] New function that is not included in AUT is specified in the below table.  
 | AUT exception | Reasoning |
 |-|-|
 
 ### UIT
-- For each new UI element,
-    - [ ] Its UIT class' comments are updated with VDI, PCDI, VDO, and PCDO
-    - Its UIT class' comments are updated with either
-        - [ ] Combinations of VDI and PCDI to test for
-        - [ ] Other UI elements whose combinations are to be used for test combinations
-    - [ ] UIT are implemented

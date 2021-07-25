@@ -5,17 +5,17 @@ All business rules are verified after every test. For more info, read [Mintee's 
 __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 
 1. [Model objects](#model-objects)
-    1. [Analysis](#analysis)
-    1. [Task](#task)
-    1. [Tag](#tag)
-    1. [TaskInstance](#taskinstance)
-    1. [TaskSummaryAnalysis](#tasksummaryanalysis)
-    1. [TaskTargetSet](#tasktargetset)
+    - [Analysis](#analysis)
+    - [Task](#task)
+    - [Tag](#tag)
+    - [TaskInstance](#taskinstance)
+    - [TaskSummaryAnalysis](#tasksummaryanalysis)
+    - [TaskTargetSet](#tasktargetset)
 1. [Transformables](#transformables)
-    1. [AnalysisLegend](#analysislegend)
-        1. [CategorizedLegendEntry](#categorizedlegendentry)
-        1. [CompletionLegendEntry](#completionlegendentry)
-    1. [DayPattern](#pattern)
+    - [AnalysisLegend](#analysislegend)
+        - [CategorizedLegendEntry](#categorizedlegendentry)
+        - [CompletionLegendEntry](#completionlegendentry)
+    - [DayPattern](#pattern)
 
 # Model objects
 
