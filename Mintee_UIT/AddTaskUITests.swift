@@ -12,6 +12,8 @@
 //
 
 import XCTest
+import SharedTestUtils
+@testable import Mintee
 
 class AddTaskUITests: XCTestCase {
     
@@ -21,13 +23,37 @@ class AddTaskUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
     
-    override func tearDown() {}
+    override func tearDown() {
+        MOC_Validator.validate()
+    }
     
 }
 
 // MARK: - Helper functions
 
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {
+    
+    func navigate_to_AddTask() {
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Today"].tap()
+        app.navigationBars["Today"].buttons["add-task-button"].tap()
+    }
+    
+    /**
+     Adds a TaskTargetSet, assuming that AddTask is already navigated to
+     */
+    func add_TaskTargetSet(type: DayPattern.type, bubbles: [String]) {
+        let app = XCUIApplication()
+        app.scrollViews.otherElements.buttons["add-task-target-set-button"].tap()
+        app.staticTexts["Add Target Set"].tap()
+        app.staticTexts["day-bubble-monday"].tap()
+        app.textFields["minimum-value"].tap()
+        app.textFields["minimum-value"].typeText("2")
+        app.buttons["task-target-set-popup-done-button"].tap()
+    }
+    
+}
 
 // MARK: - Done button tests
 
@@ -74,11 +100,11 @@ extension AddTaskUITests: XCTestCase {}
     - Tag with (name == one of VDI2) already exists
     - Tag with (name == one of VDI2) does not already exist
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 // MARK: - AddTagPopup integration tests
 
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 // MARK: - Task type button tests
 
@@ -99,7 +125,7 @@ extension AddTaskUITests: XCTestCase {}
     - No TTSes added
     - TaskTargetSet tests
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 // MARK: - TaskTargetSet tests
 
@@ -125,12 +151,12 @@ extension AddTaskUITests: XCTestCase {}
     - (later than end date) -> (==)
     - (later than end date) -> (earlier)
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Integration with TaskTargetSetPopup for adding TaskTargetSets
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Integration with TaskTargetSetPopup for editing TaskTargetSets
@@ -147,14 +173,7 @@ extension AddTaskUITests: XCTestCase {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {
-    
-    /// - Tag: editTTSTest
-    func editTTSTest() {
-        
-    }
-    
-}
+extension AddTaskUITests {}
 
 /*
  Move up button tests
@@ -171,7 +190,7 @@ extension AddTaskUITests: XCTestCase {
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Move down button tests
@@ -188,7 +207,7 @@ extension AddTaskUITests: XCTestCase {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {}
 
 /*
  Delete button tests
@@ -207,7 +226,8 @@ extension AddTaskUITests: XCTestCase {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests: XCTestCase {}
+extension AddTaskUITests {
+}
 
 // MARK: - Older tests
 

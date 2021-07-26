@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 
 class InsufficientInputUITests: XCTestCase {
     
@@ -24,7 +25,9 @@ class InsufficientInputUITests: XCTestCase {
         
     }
     
-    override func tearDownWithError() throws { }
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
     
     /**
      Set TaskTargetSetPopup's pattern type picker value to Days of Month and verify the following:

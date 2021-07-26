@@ -7,13 +7,18 @@
 //
 
 import XCTest
+import SharedTestUtils
 @testable import Mintee
 
 class Date_Extension_Tests: XCTestCase {
 
-    override func setUpWithError() throws {}
-
-    override func tearDownWithError() throws {}
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
+    
+    override func tearDownWithError() throws {
+        TestContainer.tearDownTestContainer()
+    }
 
     /**
      Test with GMT June 16, 2001 10:29:11 AM

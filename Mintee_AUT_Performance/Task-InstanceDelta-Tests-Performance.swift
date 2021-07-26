@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
 
 class Task_InstanceDelta_Tests_Performance: XCTestCase {
@@ -29,12 +29,16 @@ class Task_InstanceDelta_Tests_Performance: XCTestCase {
     
     var task: Task!
     
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
+    
     override func setUpWithError() throws {
         task = try Task_InstanceDelta_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
-        Task_InstanceDelta_Tests_Util.tearDown()
+        TestContainer.tearDownTestContainer()
     }
     
 }

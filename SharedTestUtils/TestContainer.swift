@@ -10,10 +10,19 @@
 import Foundation
 import CoreData
 
-class TestContainer {
+public class TestContainer {
     
     static var testShared = TestContainer()
     static var testMoc = testShared.persistentContainer.viewContext
+    
+    public static func setUpTestContainer() {
+        CDCoordinator.moc = TestContainer.testMoc
+    }
+    
+    public static func tearDownTestContainer() {
+        MOC_Validator.validate()
+        CDCoordinator.moc.rollback()
+    }
     
     /*
      A test NSPersistentContainer that saves to an in-memory store and who's MOC is used for unit testing.

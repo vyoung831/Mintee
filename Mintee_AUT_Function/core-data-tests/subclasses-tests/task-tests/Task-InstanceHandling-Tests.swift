@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import CoreData
 import XCTest
 
@@ -30,12 +30,16 @@ class Task_InstanceHandling_Tests: XCTestCase {
     
     var task: Task!
     
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
+    
     override func setUpWithError() throws {
         task = try Task_InstanceHandling_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
-        Task_InstanceHandling_Tests_Util.tearDown()
+        TestContainer.tearDownTestContainer()
     }
     
 }

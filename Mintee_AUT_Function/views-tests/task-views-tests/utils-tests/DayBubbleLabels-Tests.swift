@@ -7,6 +7,7 @@
 //
 
 @testable import Mintee
+import SharedTestUtils
 import XCTest
 
 class DayBubbleLabels_Tests: XCTestCase {
@@ -18,9 +19,13 @@ class DayBubbleLabels_Tests: XCTestCase {
                                         "20","21","22","23","24","25","26","27","28","29",
                                         "30","31"]
     
-    override func setUpWithError() throws {}
-
-    override func tearDownWithError() throws {}
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
+    
+    override func tearDownWithError() throws {
+        TestContainer.tearDownTestContainer()
+    }
 
     func test_getDividedBubbleLabels_singleSubarray() throws {
         let dividedLabels = DayBubbleLabels.getDividedBubbles_daysOfWeek(bubblesPerRow: 7)

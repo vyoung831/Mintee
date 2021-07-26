@@ -6,15 +6,19 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
-import SwiftUI
 import XCTest
+import SharedTestUtils
 @testable import Mintee
 
 class TaskTargetSetPopup_Tests: XCTestCase {
     
-    override func setUpWithError() throws {}
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
     
-    override func tearDownWithError() throws {}
+    override func tearDownWithError() throws {
+        TestContainer.tearDownTestContainer()
+    }
     
     // MARK: - Insufficient input tests
     
