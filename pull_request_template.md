@@ -14,12 +14,14 @@ Delete N/A options
 
 ### Model components
 __Transformables__
-- [ ] Custom objects for transformables conform to NSSecureCoding.
-- [ ] Custom objects for transformables are specified in the Core Data model.
-- [ ] Custom data transformers are implemented and registered.
+If changes include updates to or new transformables,
+- [ ] Custom classes for transformables conform to NSSecureCoding.
+- [ ] Custom classes for transformables are specified in the model (`xcdatamodeld`).
+- [ ] Custom data transformers are implemented and registered during app startup.
 
 ### View components
-- [ ] New SwiftUI `Views` define `NavigationViews`.
+If changes include new SwiftUI Views,
+- [ ] New SwiftUI Views define `NavigationViews`.
 - [ ] View components use accessibility for UIT identification __only__.
 
 # [Failure handling checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)
@@ -59,6 +61,7 @@ __Persistent store validation__
 ### Functional AUT
 - [ ] Functional AUT are implemented for new function that is deemed likely to fail.
 - [ ] New function that is not included in AUT is specified in the below table.  
+
 | AUT exception | Reasoning |
 |-|-|
 

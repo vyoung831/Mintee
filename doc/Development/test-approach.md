@@ -26,7 +26,7 @@ Mintee uses XCTest to perform AUT on application code, and UIT on the applicatio
 `Mintee_UIT` contains XCTestCases for Mintee's automated UITs.
 
 ## SharedTestUtils
-`SharedTestUtils` contains utility classes used by all test targets. It includes the following:
+`SharedTestUtils` contains utility classes used by test targets. It includes the following:
 - Setup and helper functions for function and performance AUTs that correspond to the same test scenario.  
 - The `TestContainer` class, used for
     - Setting up a persistent container separate from `CDCoordinator`.
@@ -34,9 +34,10 @@ Mintee uses XCTest to perform AUT on application code, and UIT on the applicatio
 
 ### Data validators
 Data validators are used to validate the MOC after each test case, ensuring that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) for data storage are being followed. The following rules are observed:  
-- Every test case must perform MOC validation (via [TestContainer](#sharedtestutils)) as part of teardown, even those that don't appear to touch the persistent store.
-- Separate validator classes are defined for each entity or transformable defined in business rules. Custom classes used by transformables are validated in the transformable's validator.
-- The validation of each business rule must be either:
+- Every AUT case performs MOC validation (via [TestContainer](#sharedtestutils)) as part of teardown, even those that don't appear to touch the persistent store.
+- Separate validator classes are defined for each entity and transformable defined in business rules.
+    - Custom classes used by transformables are validated in the transformable's validator.
+- The validation of each business rule is either:
     - Labeled in the comments of its validating function, OR
     - Done by another validator class (and noted in comments that the rule is validated by another validator).
 

@@ -47,8 +47,8 @@ class MOC_Validator {
     
     /**
      ANL-5: An Analysis' order must be either
-        * -1 OR
-        * A unique number greater than or equal to 0
+     * -1 OR
+     * A unique number greater than or equal to 0
      */
     static func validateAnalysesOrdering(_ analyses: Set<Analysis>) {
         XCTAssert( analyses.map{ $0._order < -1 }.count == 0 )
