@@ -47,14 +47,14 @@ class TaskSummaryAnalysisValidator {
      TSA-8: If a TaskSummaryAnalysis' startDate and endDate are both non-nil, then its endDate is later than or equal to startDate.
      */
     static var validateAnalysisDateValues: (TaskSummaryAnalysis) -> () = { tsa in
-        // TSA-2
         if tsa._startDate == nil && tsa._endDate == nil {
             XCTAssert(tsa._dateRange > 0) // TSA-4
         } else if tsa._startDate != nil && tsa._endDate != nil {
             XCTAssert(tsa._dateRange == 0) // TSA-3
             XCTAssert(SaveFormatter.storedStringToDate(tsa._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(tsa._endDate!)!)) // TSA-8
+        } else {
+            XCTFail() // TSA-2
         }
-        XCTFail()
     }
     
     /**
