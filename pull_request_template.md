@@ -28,10 +28,9 @@ Delete N/A options
 # [Testing checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 | Area | N/A | Checks |
 |-|-|-|
-|__Test coverage__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing functional AUT pass locally with proposed changes.<li/>- [ ] New and existing UIT pass locally with proposed changes.</ul>|
 |__Persistent store validation__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md).<ul><li/>The data model<li/>NSManagedObject subclasses<li/>Transformables used by NSManagedObject subclasses.</ul><li/>- [ ] Changes to business rules include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).<li/>- [ ] New or updated AUT run the MOC validator as part of teardown.</ul>|
-|__Functional AUT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Functional AUT are implemented for new function that is deemed likely to fail.<li/>- [ ] New function that is not included in AUT is specified in the below table.  </ul>|
-|__UIT__|<ul><li/>- [ ] N/A</ul>||
+|__Functional AUT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing functional AUT pass (via workflow).<li/>- [ ] Functional AUT are implemented for new function that is deemed likely to fail.<li/>- [ ] New function that is not included in AUT is specified in the below table.  </ul>|
+|__UIT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing UIT pass locally with proposed changes.</ul>|
 
 | AUT exception | Reasoning |
 |-|-|
