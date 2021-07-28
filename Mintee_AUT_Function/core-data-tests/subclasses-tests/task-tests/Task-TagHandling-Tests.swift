@@ -7,18 +7,22 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import CoreData
 import XCTest
 
 class Task_TagHandling_Tests: XCTestCase {
+    
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
     
     override func setUpWithError() throws {
         Task_TagHandling_Tests_Util.setUp()
     }
     
     override func tearDownWithError() throws {
-        Task_TagHandling_Tests_Util.tearDown()
+        TestContainer.tearDownTestContainer()
     }
     
     /**

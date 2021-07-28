@@ -7,20 +7,19 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
-import SwiftUI
 
 class TagPopupUtils_Tests: XCTestCase {
     
     var tag: Tag!
     
-    override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        CDCoordinator.moc.rollback()
+        TestContainer.tearDownTestContainer()
     }
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {

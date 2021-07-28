@@ -12,6 +12,7 @@
 //
 
 import XCTest
+import SharedTestUtils
 
 class AddTagPopupUITests: XCTestCase {
 
@@ -27,13 +28,15 @@ class AddTagPopupUITests: XCTestCase {
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
-    override func tearDownWithError() throws {}
+    override func tearDownWithError() throws {
+        MOC_Validator.validate()
+    }
 
 }
 
 // MARK: - Helper functions
 
-extension AddTagPopupUITests: XCTestCase {}
+extension AddTagPopupUITests {}
 
 // MARK: - Done button tests
 
@@ -53,7 +56,7 @@ extension AddTagPopupUITests: XCTestCase {}
     - Tag name text field content exists in parent view's tags section
     - Tag name text field content does not exist in parent view's tags section
  */
-extension AddTagPopupUITests: XCTestCase {
+extension AddTagPopupUITests {
     
 }
 
@@ -78,7 +81,7 @@ extension AddTagPopupUITests: XCTestCase {
     - Existing tags in MOC; matching character sequence with Tag name text field (case mismatch)
     - Existing tags in MOC; matching character sequence with Tag name text field (case match)
  */
-extension AddTagPopupUITests: XCTestCase {
+extension AddTagPopupUITests {
     
 }
 
@@ -95,6 +98,6 @@ extension AddTagPopupUITests: XCTestCase {
  VDI1
     - Tap a row
  */
-extension AddTagPopupUITests: XCTestCase {
+extension AddTagPopupUITests {
     
 }

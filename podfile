@@ -20,3 +20,7 @@ end
 target 'Mintee_AUT_Performance' do 
     shared_pods
 end
+
+target 'Mintee_UIT' do 
+    shared_pods
+end

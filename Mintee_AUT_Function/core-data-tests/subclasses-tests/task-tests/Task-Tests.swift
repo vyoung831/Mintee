@@ -7,18 +7,18 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
 import CoreData
 
 class Task_Tests: XCTestCase {
     
-    override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        CDCoordinator.moc.rollback()
+        TestContainer.tearDownTestContainer()
     }
     
     // MARK: - Core Data Restraint tests

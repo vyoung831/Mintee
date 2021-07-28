@@ -7,13 +7,18 @@
 //
 
 @testable import Mintee
+import SharedTestUtils
 import XCTest
 
 class Float_Extension_Tests: XCTestCase {
 
-    override func setUpWithError() throws {}
-
-    override func tearDownWithError() throws {}
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
+    }
+    
+    override func tearDownWithError() throws {
+        TestContainer.tearDownTestContainer()
+    }
 
     func test_clean_TrimToWholeNumber() throws {
         let someFloat = Float(3.0)

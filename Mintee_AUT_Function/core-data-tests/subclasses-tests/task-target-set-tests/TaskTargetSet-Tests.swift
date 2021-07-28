@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import XCTest
 import CoreData
 
@@ -18,12 +18,12 @@ class TaskTargetSet_Tests: XCTestCase {
     let eq_storeValue: Int16 = SaveFormatter.equalityOperatorToStored(.eq)
     let na_storeValue: Int16 = SaveFormatter.equalityOperatorToStored(.na)
     
-    override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        CDCoordinator.moc.rollback()
+        TestContainer.tearDownTestContainer()
     }
     
     // MARK: - checkDay tests

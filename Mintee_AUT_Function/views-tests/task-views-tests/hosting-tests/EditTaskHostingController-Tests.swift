@@ -7,7 +7,7 @@
 //
 
 @testable import Mintee
-@testable import SharedTestUtils
+import SharedTestUtils
 import CoreData
 import XCTest
 
@@ -26,12 +26,12 @@ class EditTaskHostingController_Tests: XCTestCase {
                                  pattern: dowPattern)
     }
     
-    override func setUpWithError() throws {
-        CDCoordinator.moc = TestContainer.testMoc
+    override class func setUp() {
+        TestContainer.setUpTestContainer()
     }
     
     override func tearDownWithError() throws {
-        CDCoordinator.moc.rollback()
+        TestContainer.tearDownTestContainer()
     }
     
 }
