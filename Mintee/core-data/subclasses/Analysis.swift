@@ -127,8 +127,7 @@ extension Analysis {
      */
     func getTagNames() -> Set<String> {
         if let tags = self.tags as? Set<Tag> {
-            let tagNames = Set(tags.map({$0._name ?? ""}))
-            return tagNames
+            return Set(tags.map({$0._name}))
         }
         return Set<String>()
     }

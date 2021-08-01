@@ -90,7 +90,7 @@ class TaskTargetSetValidator {
 extension TaskTargetSetValidator {
     
     static var validateDayPattern: (TaskTargetSet) -> () = { tts in
-        DayPatternValidator.validateDayPattern(tts._pattern!)
+        DayPatternValidator.validateDayPattern(tts._pattern)
     }
     
 }

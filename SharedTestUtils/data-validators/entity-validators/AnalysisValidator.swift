@@ -69,7 +69,7 @@ class AnalysisValidator {
 extension AnalysisValidator {
     
     static var validateLegend: (Analysis) -> () = { analysis in
-        AnalysisLegendValidator.validateAnalysisLegend(analysis._legend!)
+        AnalysisLegendValidator.validateAnalysisLegend(analysis._legend)
     }
     
 }

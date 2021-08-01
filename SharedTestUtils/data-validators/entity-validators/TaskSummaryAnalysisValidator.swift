@@ -71,7 +71,7 @@ class TaskSummaryAnalysisValidator {
 extension TaskSummaryAnalysisValidator {
     
     static var validateLegend: (TaskSummaryAnalysis) -> () = { tsa in
-        AnalysisLegendValidator.validateAnalysisLegend(tsa._legend!)
+        AnalysisLegendValidator.validateAnalysisLegend(tsa._legend)
     }
     
 }
