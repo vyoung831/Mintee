@@ -158,14 +158,11 @@ extension Task {
                 
                 // Add Dictionary entries for DayPatterns' sets and types
                 let patternIdentifier = "\(ttsIdentifier)._pattern"
-                if let pattern = ttsArray[idx]._pattern {
-                    debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
-                    debugDictionary["\(patternIdentifier).weeksOfMonth"] = pattern.weeksOfMonth
-                    debugDictionary["\(patternIdentifier).daysOfMonth"] = pattern.daysOfMonth
-                    debugDictionary["\(patternIdentifier).type"] = pattern.type
-                } else {
-                    debugDictionary["\(patternIdentifier)"] = nil
-                }
+                let pattern = ttsArray[idx]._pattern
+                debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
+                debugDictionary["\(patternIdentifier).weeksOfMonth"] = pattern.weeksOfMonth
+                debugDictionary["\(patternIdentifier).daysOfMonth"] = pattern.daysOfMonth
+                debugDictionary["\(patternIdentifier).type"] = pattern.type
                 
             }
         }
