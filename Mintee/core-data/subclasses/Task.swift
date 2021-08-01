@@ -263,14 +263,7 @@ extension Task {
         var datesDelta: [String] = []
         let newDateStrings = dates.map{SaveFormatter.dateToStoredString($0)}
         for instance in instances {
-            
-            guard let existingDate = instance._date else {
-                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() found nil in a TaskInstance's _date"]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
-            }
-            
-            !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
-            
+            !newDateStrings.contains(instance._date) ? datesDelta.append(instance._date) : nil
         }
         
         return datesDelta.sorted{ $0 < $1 }
@@ -294,8 +287,7 @@ extension Task {
         
         // Filter existing TaskInstances for ones before the proposed start date or after the proposed end date
         for instance in instances {
-            guard let dateString = instance._date,
-                  let date = SaveFormatter.storedStringToDate(dateString) else {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                 let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() found a TaskInstance with nil or invalid _date",
                                                 "TaskInstance" : instance.debugDescription]
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
@@ -405,19 +397,11 @@ extension Task {
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         for existingInstance in existingInstances {
-            
-            guard let existingDate = existingInstance._date else {
-                let userInfo: [String : Any] = ["Message" : "Task.updateSpecificInstances() found nil in a TaskInstance's _date",
-                                                "TaskInstance" : existingInstance.debugDescription]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
-            }
-            
-            if !newDatesStrings.contains(existingDate) {
+            if !newDatesStrings.contains(existingInstance._date) {
                 CDCoordinator.moc.delete(existingInstance)
             } else {
-                datesToBeAdded.remove(existingDate)
+                datesToBeAdded.remove(existingInstance._date)
             }
-            
         }
         
         // Generate TaskInstances for the remaining dates that don't already exist for this Task

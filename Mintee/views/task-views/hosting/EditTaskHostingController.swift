@@ -122,8 +122,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             }
             for case let instance as TaskInstance in instances {
                 
-                guard let dateString = instance._date,
-                      let date = SaveFormatter.storedStringToDate(dateString) else {
+                guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                     let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.init()? found a TaskInstance with a nil or invalid date belonging to a specific type task",
                                                     "TaskInstance" : instance]
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))

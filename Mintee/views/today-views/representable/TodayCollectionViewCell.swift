@@ -122,13 +122,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
               let maxOp = SaveFormatter.storedToEqualityOperator(maxOpInt) else {
             
             var userInfo: [String : Any] = ["Message" : "TodayCollectionViewCell.updateAppearance() found invalid _minOperator or _maxOperator in a TaskInstance's TaskTargetSet"]
-            if let task = instance._task {
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo) )
-            } else {
-                userInfo["TaskInstance"] = instance.debugDescription
-                userInfo["TaskTargetSet"] = instance._targetSet.debugDescription
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo )
-            }
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo) )
             
             return
         }
@@ -136,13 +130,7 @@ class TodayCollectionViewCell: UICollectionViewCell {
         guard let completionMeterHeightPercentage = TodayCollectionViewCell.getCompletionMeterPercentage(minOp: minOp, maxOp: maxOp, minTarget: minTarget, maxTarget: maxTarget, completion: instance._completion) else {
             
             var userInfo: [String : Any] = ["Message" : "TodayCollectionViewCell.updateAppearance() received nil on call to TodayCollectionViewCell.getCompletionMeterPercentage()"]
-            if let task = instance._task {
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo) )
-            } else {
-                userInfo["TaskInstance"] = instance.debugDescription
-                userInfo["TaskTargetSet"] = instance._targetSet.debugDescription
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo )
-            }
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo) )
             
             return
         }
