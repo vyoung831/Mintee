@@ -15,23 +15,23 @@ import Firebase
 @objc(Task)
 public class Task: NSManagedObject {
     
+    @NSManaged private var name: String
+    @NSManaged private var taskType: Int16
     @NSManaged private var startDate: String?
     @NSManaged private var endDate: String?
-    @NSManaged private var taskType: Int16
-    @NSManaged private var name: String?
+    @NSManaged private var taskSummaryAnalysis: TaskSummaryAnalysis
     @NSManaged private var instances: NSSet?
     @NSManaged private var tags: NSSet?
     @NSManaged private var targetSets: NSSet?
-    @NSManaged private var taskSummaryAnalysis: TaskSummaryAnalysis?
     
+    var _name: String { get { return self.name } set { self.name = newValue } }
+    var _taskType: Int16 { get { return self.taskType } }
     var _startDate: String? { get { return self.startDate } }
     var _endDate: String? { get { return self.endDate } }
-    var _taskType: Int16 { get { return self.taskType } }
-    var _name: String? { get { return self.name } set { self.name = newValue } }
+    var _taskSummaryAnalysis: TaskSummaryAnalysis { get { return self.taskSummaryAnalysis } }
     var _instances: NSSet? { get { return self.instances } }
     var _tags: NSSet? { get { return self.tags } }
     var _targetSets: NSSet? { get { return self.targetSets } }
-    var _taskSummaryAnalysis: TaskSummaryAnalysis? { get { return self.taskSummaryAnalysis } }
     
     /**
      Convenience init for recurring-type Task

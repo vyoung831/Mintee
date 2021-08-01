@@ -104,7 +104,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             let editTask = EditTask(isBeingPresented: .constant(true),
                                     dismiss: dismiss,
                                     task: task,
-                                    taskName: task._name ?? "",
+                                    taskName: task._name,
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
                                     startDate: startDate,
@@ -135,7 +135,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             let editTask = EditTask(isBeingPresented: .constant(true),
                                     dismiss: dismiss,
                                     task: task,
-                                    taskName: task._name ?? "",
+                                    taskName: task._name,
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
                                     dates: dates.sorted())

@@ -117,7 +117,7 @@ extension TodayCollectionViewController {
                 return cell
             }
             
-            cell.setTaskName(taskName: task._name ?? "")
+            cell.setTaskName(taskName: task._name)
             cell.updateAppearance(instance: instance)
             cell.handleEditButtonPressed = {
                 do {
