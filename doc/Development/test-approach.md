@@ -33,13 +33,15 @@ Mintee uses XCTest to perform AUT on application code, and UIT on the applicatio
     - Performing [validation](#data-validators) of the test MOC.
 
 ### Data validators
-Data validators are used to validate the MOC after each test case, ensuring that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) for data storage are being followed. The following rules are observed:  
+Data validators are used to validate the MOC after each test case, ensuring that [business rules](../business-rules.md) for data storage are being followed. The following rules are observed:  
 - Every AUT case performs MOC validation (via [TestContainer](#sharedtestutils)) as part of teardown, even those that don't appear to touch the persistent store.
 - Separate validator classes are defined for each entity and transformable defined in business rules.
     - Custom classes used by transformables are validated in the transformable's validator.
-- The validation of each business rule is either:
-    - Labeled in the comments of its validating function, OR
-    - Done by another validator class (and noted in comments that the rule is validated by another validator).
+- In validator classes, each business rule is either:
+    - Validated and labeled in the comments of its validating function, OR
+    - Not validated and noted in comments that the rule is:
+        - Validated by another validator class, OR
+        - [Enforced](./application-architecture.md#syncing-model-and-objects-with-business-rules) by the model or its subclassed objects. 
 
 # AUT coverage
 Development decides which new functions to include in AUT (and makes note of them in PRs), and makes and documents AUT coverage decisions in the comments of the XCTestCase(s) itself.  

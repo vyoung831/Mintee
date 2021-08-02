@@ -3,8 +3,9 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
+//  TTS-8: A TaskTargetSet is associated with one and only one Task. (defined as non-optional in NSManagedObject subclass)
 //  TTS-9: TaskTargetSets with the same associated Task each have a unique priority. (validated by TaskValidator)
-//  TTS-10: A TaskTargetSet's pattern is non-nil. (validated as part of calling DayPatternValidator)
+//  TTS-10: A TaskTargetSet's pattern is non-nil. (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -18,7 +19,6 @@ class TaskTargetSetValidator {
     
     static var validators: [(TaskTargetSet) -> ()] = [
         TaskTargetSetValidator.validateOperatorsAndValues,
-        TaskTargetSetValidator.validateTaskAssociation,
         TaskTargetSetValidator.validateDayPattern
     ]
     
@@ -74,13 +74,6 @@ class TaskTargetSetValidator {
             XCTAssert(tts._min < tts._max)
         }
         
-    }
-    
-    /**
-     TTS-8: A TaskTargetSet is associated with one and only one Task.
-     */
-    static var validateTaskAssociation: (TaskTargetSet) -> () = { tts in
-        XCTAssert( tts._task != nil )
     }
     
 }

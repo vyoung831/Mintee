@@ -215,7 +215,7 @@ extension Task {
                 
                 if !newTags.contains(tag) {
                     self.removeFromTags(tag)
-                    if tag._tasks?.count == 0 {
+                    if tag._tasks.count == 0 {
                         CDCoordinator.moc.delete(tag)
                     }
                 }
@@ -231,7 +231,7 @@ extension Task {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 self.removeFromTags(tag)
-                if tag._tasks?.count == 0 {
+                if tag._tasks.count == 0 {
                     CDCoordinator.moc.delete(tag)
                 }
             }

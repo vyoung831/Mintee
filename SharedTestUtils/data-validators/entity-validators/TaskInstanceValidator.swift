@@ -3,6 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
+//  TI-1: A TaskInstance is associated with one and only one Task. (defined as non-optional in NSManagedObject subclass)
 //  TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with one and only one TaskTargetSet. (validated by TaskValidator)
 //  TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet. (validated by TaskValidator)
 //  TI-4: TaskInstances with the same associated Task each have a unique date. (validated by TaskValidator)
@@ -17,9 +18,7 @@ import XCTest
 
 class TaskInstanceValidator {
     
-    static var validators: [(TaskInstance) -> ()] = [
-        validateTaskAssociation
-    ]
+    static var validators: [(TaskInstance) -> ()] = []
     
     static func validateInstances(_ instances: Set<TaskInstance>) {
         for instance in instances {
@@ -27,13 +26,6 @@ class TaskInstanceValidator {
                 validator(instance)
             }
         }
-    }
-    
-    /**
-     TI-1: A TaskInstance is associated with one and only one Task. (constrained by XC data model)
-     */
-    static var validateTaskAssociation: (TaskInstance) -> () = { ti in
-        XCTAssert(ti._task != nil)
     }
     
 }

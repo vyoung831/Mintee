@@ -2,7 +2,8 @@
 //  TaskSummaryAnalysisValidator.swift
 //  Mintee_AUT_Function
 //
-//  TSA-7: A TaskSummaryAnalysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
+//  TSA-5: A TaskSummaryAnalysis is associated with one and only one Task. (defined as non-optional in NSManagedObject subclass)
+//  TSA-7: A TaskSummaryAnalysis' legend is non-nil. (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -17,7 +18,6 @@ class TaskSummaryAnalysisValidator {
     static var validators: [(TaskSummaryAnalysis) -> ()] = [
         TaskSummaryAnalysisValidator.validateAnalysisType,
         TaskSummaryAnalysisValidator.validateAnalysisDateValues,
-        TaskSummaryAnalysisValidator.validateTaskAssociation,
         TaskSummaryAnalysisValidator.validateLegend
     ]
     
@@ -55,13 +55,6 @@ class TaskSummaryAnalysisValidator {
         } else {
             XCTFail() // TSA-2
         }
-    }
-    
-    /**
-     TSA-5: A TaskSummaryAnalysis is associated with one and only one Task.
-     */
-    static var validateTaskAssociation: (TaskSummaryAnalysis) -> () = { tsa in
-        XCTAssert(tsa._task != nil)
     }
     
 }
