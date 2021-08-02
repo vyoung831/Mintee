@@ -64,14 +64,14 @@ struct AddAnalysis: View {
             switch rangeType {
             case .startEnd:
                 let _ = try Analysis(entity: Analysis.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            name: analysisName,
-                                            type: self.analysisType,
-                                            startDate: self.startDate,
-                                            endDate: self.endDate,
-                                            legend: legend,
-                                            order: -1,
-                                            tags: tagsToAssociate)
+                                     insertInto: CDCoordinator.moc,
+                                     name: analysisName,
+                                     type: self.analysisType,
+                                     startDate: self.startDate,
+                                     endDate: self.endDate,
+                                     legend: legend,
+                                     order: -1,
+                                     tags: tagsToAssociate)
             case .dateRange:
                 
                 if self.dateRangeString.count < 1 {
@@ -87,13 +87,13 @@ struct AddAnalysis: View {
                 }
                 
                 let _ = try Analysis(entity: Analysis.entity(),
-                                            insertInto: CDCoordinator.moc,
-                                            name: analysisName,
-                                            type: self.analysisType,
-                                            dateRange: range,
-                                            legend: legend,
-                                            order: -1,
-                                            tags: tagsToAssociate)
+                                     insertInto: CDCoordinator.moc,
+                                     name: analysisName,
+                                     type: self.analysisType,
+                                     dateRange: range,
+                                     legend: legend,
+                                     order: -1,
+                                     tags: tagsToAssociate)
             }
         } catch {
             self.errorMessage = ErrorManager.unexpectedErrorMessage
