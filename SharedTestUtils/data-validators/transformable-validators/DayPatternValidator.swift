@@ -13,7 +13,8 @@ import XCTest
 class DayPatternValidator {
     
     static var validators: [(DayPattern) -> ()] = [
-        DayPatternValidator.validateArraysEmptiness,
+        DayPatternValidator.validateDayPatternType,
+        DayPatternValidator.validateArraysEmptiness
     ]
     
     static func validateDayPattern(_ pattern: DayPattern) {

@@ -2,6 +2,8 @@
 //  TaskSummaryAnalysisValidator.swift
 //  Mintee_AUT_Function
 //
+//  TSA-7: A TaskSummaryAnalysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
+//
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
 //
@@ -37,24 +39,26 @@ class TaskSummaryAnalysisValidator {
     }
     
     /**
-     TSA-2: A TaskSummaryAnalysis' startDate and endDate must either:
-        - both be `non-nil` OR
-        - both be `nil`
-     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both `non-nil`, then its dateRange must be `0`.
-     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both `nil`, then its dateRange must be greater than `0`.
+     TSA-2: A TaskSummaryAnalysis' startDate and endDate are either:
+        - both non-nil OR
+        - both nil
+     TSA-3: If a TaskSummaryAnalysis' startDate and endDate are both non-nil, then its dateRange is `0`.
+     TSA-4: If a TaskSummaryAnalysis' startDate and endDate are both nil, then its dateRange is greater than `0`.
+     TSA-8: If a TaskSummaryAnalysis' startDate and endDate are both non-nil, then its endDate is later than or equal to startDate.
      */
     static var validateAnalysisDateValues: (TaskSummaryAnalysis) -> () = { tsa in
-        // TSA-2
         if tsa._startDate == nil && tsa._endDate == nil {
             XCTAssert(tsa._dateRange > 0) // TSA-4
         } else if tsa._startDate != nil && tsa._endDate != nil {
             XCTAssert(tsa._dateRange == 0) // TSA-3
+            XCTAssert(SaveFormatter.storedStringToDate(tsa._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(tsa._endDate!)!)) // TSA-8
+        } else {
+            XCTFail() // TSA-2
         }
-        XCTFail()
     }
     
     /**
-     TSA-5: A TaskSummaryAnalysis must be associated with one and only one Task.
+     TSA-5: A TaskSummaryAnalysis is associated with one and only one Task.
      */
     static var validateTaskAssociation: (TaskSummaryAnalysis) -> () = { tsa in
         XCTAssert(tsa._task != nil)

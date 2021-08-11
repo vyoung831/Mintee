@@ -9,7 +9,6 @@
 @testable import Mintee
 import SharedTestUtils
 import XCTest
-import SwiftUI
 
 class TagPopupUtils_Tests: XCTestCase {
     

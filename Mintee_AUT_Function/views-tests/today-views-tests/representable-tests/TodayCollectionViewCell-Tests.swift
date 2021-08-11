@@ -11,7 +11,6 @@
 @testable import Mintee
 import SharedTestUtils
 import XCTest
-import SharedTestUtils
 
 class TodayCollectionViewCell_Tests: XCTestCase {
     

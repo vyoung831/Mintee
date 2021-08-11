@@ -6,7 +6,6 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
-import SwiftUI
 import XCTest
 import SharedTestUtils
 @testable import Mintee
