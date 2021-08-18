@@ -63,6 +63,7 @@ extension AddTagPopupUITests {
  VDO:
     1. Parent view's tags section
  PCDO: None
+ 
  Combinations:
  VDI1
     1. Empty text field
@@ -172,10 +173,17 @@ extension AddTagPopupUITests {
     1. Tag name text field
     2. Checkbox for selected Tag
  PCDO: None
+ 
  Combinations:
  VDI1
-    - Tap a row
+    1. Empty row
+    2. Non-empty row
  */
 extension AddTagPopupUITests {
+    
+    // VDI1(1)
+    func test_tappingRow() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask()
+    }
     
 }
