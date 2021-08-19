@@ -47,9 +47,9 @@ extension AddTagPopupUITests {
     // Types a String into AddTagPopup's TextField and presses the `Done` button.
     static func typeTagName_pressDone(_ tagName: String) {
         let app = XCUIApplication()
-        app.textFields["add-tag-popup-text-field"].tap()
+        app.textFields["AddTagPopup-text-field"].tap()
         app.typeText(tagName)
-        app.buttons["add-tag-popup-done-button"].tap()
+        app.buttons["AddTagPopup-done-button"].tap()
     }
     
 }
@@ -103,7 +103,7 @@ extension AddTagPopupUITests {
         XCTAssert(app.staticTexts["AddTagPopup-error-message"].exists)
         
         // Cancel out and confirm that still, only 1 TagView exists
-        app.buttons["add-tag-popup-cancel-button"].tap()
+        app.buttons["AddTagPopup-cancel-button"].tap()
         XCTAssert(app.scrollViews.otherElements.staticTexts.matching(AddTagPopupUITests.TagViewPredicate).count == 1)
         
     }
@@ -122,7 +122,7 @@ extension AddTagPopupUITests {
         XCTAssert(app.staticTexts["AddTagPopup-error-message"].exists)
         
         // Cancel out and confirm that still, only 1 TagView exists
-        app.buttons["add-tag-popup-cancel-button"].tap()
+        app.buttons["AddTagPopup-cancel-button"].tap()
         XCTAssert(app.scrollViews.otherElements.staticTexts.matching(AddTagPopupUITests.TagViewPredicate).count == 1)
         
     }
@@ -168,7 +168,7 @@ extension AddTagPopupUITests {
     func test_tagNameDisplayed_emptyTextField_noExistingTags() {
         AddTagPopupUITests.navigateToAddTagPopup()
         let app = XCUIApplication()
-        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
+        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
         XCTAssert(app.buttons.matching(AddTagPopupUITests.AddTagPopupRowPredicate).count == 0)
     }
     
@@ -196,8 +196,8 @@ extension AddTagPopupUITests {
         let app = XCUIApplication()
         
         XCTAssert(app.buttons.matching(AddTagPopupUITests.AddTagPopupRowPredicate).count == 0)
-        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
-        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.typeText("Text")
+        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
+        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.typeText("Text")
         XCTAssert(app.buttons.matching(AddTagPopupUITests.AddTagPopupRowPredicate).count == 0)
     }
     
