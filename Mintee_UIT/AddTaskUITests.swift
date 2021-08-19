@@ -11,6 +11,7 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
+@testable import Mintee
 import XCTest
 import SharedTestUtils
 
@@ -36,7 +37,7 @@ extension AddTaskUITests {
     }
     
     /**
-     Adds a TaskTargetSet, assuming that AddTask is already navigated to
+     Adds a TaskTargetSet, assuming that AddTask is presented.
      */
     static func add_TaskTargetSet() {
         let app = XCUIApplication()
@@ -47,6 +48,37 @@ extension AddTaskUITests {
         app.textFields["minimum-value"].typeText("2")
         app.buttons["task-target-set-popup-done-button"].tap()
     }
+    
+    /**
+     Creates and saves a specific-type Task, assuming that AddTask is presented.
+     */
+    static func saveSpecificTask(name: String = "Task", tags: [String] = [], dates: [Date] = [Date()]) {
+        let app = XCUIApplication()
+        app.otherElements.textFields["task-name-text-field"].tap()
+        app.otherElements.textFields["task-name-text-field"].typeText(name)
+        
+        for tag in tags {
+            app.scrollViews.otherElements.buttons["add-tag-button"].tap()
+            app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
+            app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.typeText(tag)
+            app/*@START_MENU_TOKEN@*/.buttons["AddTagPopup-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"AddTagPopup-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        }
+        XCUIApplication().scrollViews.otherElements.buttons["Specific"].tap()
+        // TO-DO: Add dates once DatePicker recording is fixed
+    }
+    
+    /**
+     Creates a saves a recurring-type Task, assuming that AddTask is presented.
+     */
+    static func saveRecurringTask(name: String = "Task",
+                                  tags: [String] = [],
+                                  startDate: Date = Date(),
+                                  endDate: Date = Date(),
+                                  taskTargetSets: [(SaveFormatter.dayOfWeek,
+                                                    SaveFormatter.weekOfMonth,
+                                                    SaveFormatter.dayOfMonth,
+                                                    min: Float, minOp: SaveFormatter.equalityOperator,
+                                                    max: Float, maxOp: SaveFormatter.equalityOperator)]) {}
     
 }
 

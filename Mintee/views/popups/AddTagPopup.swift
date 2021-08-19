@@ -38,7 +38,7 @@ struct AddTagPopup: View {
                         Text("Cancel")
                     })
                     .foregroundColor(.accentColor)
-                    .accessibility(identifier: "add-tag-popup-cancel-button")
+                    .accessibility(identifier: "AddTagPopup-cancel-button")
                     
                     Spacer()
                     Text("Add Tag")
@@ -59,11 +59,11 @@ struct AddTagPopup: View {
                         Text("Done")
                     })
                     .foregroundColor(.accentColor)
-                    .accessibility(identifier: "add-tag-popup-done-button")
+                    .accessibility(identifier: "AddTagPopup-done-button")
                 }
             }
             
-            LabelAndTextFieldSection(label: nil, labelIdentifier: "", placeHolder: "Tag name", textField: self.$tagText, textFieldIdentifier: "add-tag-popup-text-field")
+            LabelAndTextFieldSection(label: nil, labelIdentifier: "", placeHolder: "Tag name", textField: self.$tagText, textFieldIdentifier: "AddTagPopup-text-field")
             
             if errorMessage.count > 0 {
                 Text(errorMessage)
@@ -79,7 +79,7 @@ struct AddTagPopup: View {
                     Button(tagName) {
                         // Sets the TextField value to the tapped Tag
                         self.tagText = tagName // TO-DO: Add foregroundColor modifier as panelContent when SwiftUI is updated with ability to change List background color
-                    }
+                    }.accessibility(identifier: "AddTagPopup-list-row-\(tagName)")
                 }
             }
             .foregroundColor(.primary) // TO-DO: Update foregroundColor to panelContent after SwiftUI is updated with ability to change List background color
