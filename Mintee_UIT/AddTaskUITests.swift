@@ -11,6 +11,7 @@
 //  Copyright © 2020 Vincent Young. All rights reserved.
 //
 
+@testable import Mintee
 import XCTest
 import SharedTestUtils
 
@@ -49,7 +50,7 @@ extension AddTaskUITests {
     }
     
     /**
-     Creates and saves a specific type Task, assuming that AddTask is presented.
+     Creates and saves a specific-type Task, assuming that AddTask is presented.
      */
     static func saveSpecificTask(name: String = "Task", tags: [String] = [], dates: [Date] = [Date()]) {
         let app = XCUIApplication()
@@ -65,6 +66,19 @@ extension AddTaskUITests {
         XCUIApplication().scrollViews.otherElements.buttons["Specific"].tap()
         // TO-DO: Add dates once DatePicker recording is fixed
     }
+    
+    /**
+     Creates a saves a recurring-type Task, assuming that AddTask is presented.
+     */
+    static func saveRecurringTask(name: String = "Task",
+                                  tags: [String] = [],
+                                  startDate: Date = Date(),
+                                  endDate: Date = Date(),
+                                  taskTargetSets: [(SaveFormatter.dayOfWeek,
+                                                    SaveFormatter.weekOfMonth,
+                                                    SaveFormatter.dayOfMonth,
+                                                    min: Float, minOp: SaveFormatter.equalityOperator,
+                                                    max: Float, maxOp: SaveFormatter.equalityOperator)]) {}
     
 }
 
