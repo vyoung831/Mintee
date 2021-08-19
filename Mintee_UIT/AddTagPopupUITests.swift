@@ -35,6 +35,7 @@ class AddTagPopupUITests: XCTestCase {
 extension AddTagPopupUITests {
     
     static let TagViewPredicate: NSPredicate = NSPredicate(format: "identifier MATCHES 'TagView-.*'")
+    static let AddTagPopupRowPredicate: NSPredicate = NSPredicate(format: "identifier MATCHES 'AddTagPopup-list-row-.*'")
     
     // Navigates to (AddTask -> AddTagPopup) from one of the main tab bar views
     static func navigateToAddTagPopup() {
@@ -150,17 +151,73 @@ extension AddTagPopupUITests {
  VDO:
     1. Subset of Tags in MOC
  PCDO: None
+ 
  Combinations:
  VDI1
-    - Empty text field
-    - Non-empty text field
+    1. Empty text field
+    2. Non-empty text field
  PCDI1
-    - No existing tags in MOC
-    - Existing tags in MOC; no matching character sequence with Tag name text field
-    - Existing tags in MOC; matching character sequence with Tag name text field (case mismatch)
-    - Existing tags in MOC; matching character sequence with Tag name text field (case match)
+    1. No existing tags in MOC
+    2. Existing tags in MOC; no matching character sequence with Tag name text field
+    3. Existing tags in MOC; matching character sequence with Tag name text field (case mismatch)
+    4. Existing tags in MOC; matching character sequence with Tag name text field (case match)
  */
 extension AddTagPopupUITests {
+    
+    // VDI1(1), PCDI1(1)
+    func test_tagNameDisplayed_emptyTextField_noExistingTags() {
+        AddTagPopupUITests.navigateToAddTagPopup()
+        let app = XCUIApplication()
+        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
+        XCTAssert(app.buttons.matching(AddTagPopupUITests.AddTagPopupRowPredicate).count == 0)
+    }
+    
+    // VDI1(1), PCDI1(2)
+    func test_tagNameDisplayed_emptyTextField_noMatchingTagsExist() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
+    
+    // VDI1(1), PCDI1(3)
+    func test_tagNameDisplayed_emptyTextField_caseMismatchedTagExists() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
+    
+    // VDI1(1), PCDI1(4)
+    func test_tagNameDisplayed_emptyTextField_caseMatchedTagExists() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
+    
+    // VDI1(2), PCDI1(1)
+    func test_tagNameDisplayed_nonEmptyTextField_noExistingTags() {
+        AddTagPopupUITests.navigateToAddTagPopup()
+        let app = XCUIApplication()
+        
+        XCTAssert(app.buttons.matching(AddTagPopupUITests.AddTagPopupRowPredicate).count == 0)
+        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
+        app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.typeText("Text")
+        XCTAssert(app.buttons.matching(AddTagPopupUITests.AddTagPopupRowPredicate).count == 0)
+    }
+    
+    // VDI1(2), PCDI1(2)
+    func test_tagNameDisplayed_nonEmptyTextField_noMatchingTagsExist() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
+    
+    // VDI1(2), PCDI1(3)
+    func test_tagNameDisplayed_nonEmptyTextField_caseMismatchedTagExists() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
+    
+    // VDI1(2), PCDI1(4)
+    func test_tagNameDisplayed_nonEmptyTextField_caseMatchedTagExists() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
     
 }
 
@@ -182,8 +239,15 @@ extension AddTagPopupUITests {
 extension AddTagPopupUITests {
     
     // VDI1(1)
-    func test_tappingRow() {
-        // Blocked by implementation of AddTaskUITests.saveSpecificTask()
+    func test_tapTagRow_emptyRow() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
+    }
+    
+    // VDI1(1)
+    func test_tapTagRow_nonEmptyRow() {
+        // Blocked by implementation of AddTaskUITests.saveSpecificTask() or AddTaskUITests.saveRecurringTask()
+        XCTFail()
     }
     
 }
