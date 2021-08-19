@@ -166,24 +166,77 @@ extension AddTaskUITests {}
     1. Start date
     2. End date
  PCDO: None
+ 
  Combinations:
  VDI1
-    - (== end date) -> (earlier)
-    - (== end date) -> (later)
-    - (earlier than end date) -> (==)
-    - (earlier than end date) -> (later)
+    1. (== end date) -> (earlier)
+    2. (== end date) -> (later)
+    3. (earlier than end date) -> (==)
+    4. (earlier than end date) -> (later)
  VDI2
-    - (== start date) -> (earlier)
-    - (== start date) -> (later)
-    - (later than end date) -> (==)
-    - (later than end date) -> (earlier)
+    1. (== start date) -> (earlier)
+    2. (== start date) -> (later)
+    3. (later than end date) -> (==)
+    4. (later than end date) -> (earlier)
  */
-extension AddTaskUITests {}
+extension AddTaskUITests {
+    
+    // VDI1(1)
+    func test_startDate_equalToEarlier_thanEnd() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI1(2)
+    func test_startDate_equalToLater_thanEnd() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI1(3)
+    func test_startDate_earlierToEqual_toEnd() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI1(4)
+    func test_startDate_earlierToLater_thanEnd() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI2(1)
+    func test_endDate_equalToEarlier_thanStart() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI2(2)
+    func test_endDate_equalToLater_thanStart() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI2(3)
+    func test_endDate_laterToEqual_toStart() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+    // VDI2(4)
+    func test_endDate_laterToEarlier_thanStart() {
+        // Blocked until XCode DatePicker recording is repaired
+        XCTFail()
+    }
+    
+}
 
 /*
  Integration with TaskTargetSetPopup for adding TaskTargetSets
  */
-extension AddTaskUITests {}
+extension AddTaskUITests {
+    // TO-DO: Implement when TaskTargetSetPopup UIT are completed.
+}
 
 /*
  Integration with TaskTargetSetPopup for editing TaskTargetSets
@@ -200,7 +253,9 @@ extension AddTaskUITests {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests {}
+extension AddTaskUITests {
+    // TO-DO: Implement when TaskTargetSetPopup UIT are completed.
+}
 
 /*
  Move up button tests
@@ -217,7 +272,9 @@ extension AddTaskUITests {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests {}
+extension AddTaskUITests {
+    // TO-DO: Implement. These tests will likely be cancelled if TaskTargetSetSection's re-ordering is updated to be similar to AnalysisList
+}
 
 /*
  Move down button tests
@@ -234,7 +291,9 @@ extension AddTaskUITests {}
     - Middle TTS of (>2)
     - Last TTS of multiple
  */
-extension AddTaskUITests {}
+extension AddTaskUITests {
+    // TO-DO: Implement. These tests will likely be cancelled if TaskTargetSetSection's re-ordering is updated to be similar to AnalysisList
+}
 
 /*
  Delete button tests
