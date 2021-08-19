@@ -59,9 +59,9 @@ extension AddTaskUITests {
         
         for tag in tags {
             app.scrollViews.otherElements.buttons["add-tag-button"].tap()
-            app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
-            app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"add-tag-popup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.typeText(tag)
-            app/*@START_MENU_TOKEN@*/.buttons["add-tag-popup-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"add-tag-popup-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+            app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.tap()
+            app/*@START_MENU_TOKEN@*/.textFields["Tag name"]/*[[".textFields[\"Tag name\"]",".textFields[\"AddTagPopup-text-field\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.typeText(tag)
+            app/*@START_MENU_TOKEN@*/.buttons["AddTagPopup-done-button"]/*[[".buttons[\"Done\"]",".buttons[\"AddTagPopup-done-button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         }
         XCUIApplication().scrollViews.otherElements.buttons["Specific"].tap()
         // TO-DO: Add dates once DatePicker recording is fixed
