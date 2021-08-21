@@ -15,7 +15,7 @@ Delete N/A options
 | Area | N/A | Checks |
 |-|-|-|
 |__Model components - Transformables__|<ul><li/>- [ ] N/A</ul>|If changes include updates to or new transformables,<ul><li/>- [ ] Custom classes for transformables conform to NSSecureCoding.<li/>- [ ] Custom classes for transformables are specified in the model (`xcdatamodeld`).<li/>- [ ] Custom data transformers are implemented and registered during app startup.</ul>|
-|__View components - Keyboard dismissal__|<ul><li/>- [ ] N/A</ul>|- [ ] The keyboard is dismissed for all of the following scnearios<ul><li/> A button is tapped that presents a new modal or popover.<li/> A button is tapped that dismisses the current modal or popover.<li/> A tap is registered outside of the control that activated the keyboard. Ex: A tap is registered in the ScrollView of `AddTask`.</ul>|
+|__View components - Keyboard dismissal__|<ul><li/>- [ ] N/A</ul>|- [ ] If a control displays the keyboard, the keyboard is dismissed when any of the following occur:<ul><li/> A button is tapped that presents a new modal or popover.<li/> A button is tapped that dismisses the current modal or popover (handled automatically).</ul>|
 |__View components - New SwiftUI views__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New SwiftUI Views define `NavigationViews`.<li/>- [ ] View components use accessibility for UIT identification __only__.</ul>|
 
 # [Failure handling checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)

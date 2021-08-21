@@ -19,7 +19,7 @@ class UIUtil {
      - https://www.hackingwithswift.com/example-code/system/what-is-the-first-responder
      - https://swiftrocks.com/understanding-the-ios-responder-chain.html
      */
-    static func dismissKeyboard() {
+    static func resignFirstResponder() {
         let resign = #selector(UIResponder.resignFirstResponder)
         UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
     }

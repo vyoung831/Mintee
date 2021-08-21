@@ -55,10 +55,13 @@ More on transformable properties [here](https://www.kairadiagne.com/2020/01/13/n
 # View development
 
 ## Usability/UX
-In following the scenarios, the keyboard must be dimissed:
+If a control displays the keyboard, the keyboard must be dismissed when the following occurs:
 - A button is tapped that presents a new modal or popover.
-- A button is tapped that dismisses the current modal or popover.
-- A tap is registered outside of the control that activated the keyboard. Ex: A tap is registered in the ScrollView of `AddTask`.
+- A button is tapped that dismisses the current modal or popover (handled automatically).
+
+Some Views dismiss the keyboard when a tap is registered outside of the control that activated the keyboard. The Views and tap locations that exhibit this behavior are determined case-by-case. Examples include:
+- A tap is registered in the ScrollView of `AddTask`.
+- A row is tapped in `AddTagPopup`.
 
 ## Navigation
 To prepare for additional navigation and ensure consistent UI, every SwiftUI View in Mintee declares a `NavigationView`.

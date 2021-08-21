@@ -97,6 +97,7 @@ struct SearchTagPopup: View {
                     } else {
                         Button(tagName) {
                             selectedTag = tag
+                            UIUtil.resignFirstResponder()
                         }
                     }
                     

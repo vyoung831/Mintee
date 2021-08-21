@@ -46,7 +46,6 @@ struct AddTagPopup: View {
                     Spacer()
                     
                     Button(action: {
-                        
                         if self.tagText.count == 0 {
                             self.isBeingPresented = false
                         } else if let addTagErrorMessage = self.addTag(self.tagText) {
@@ -54,7 +53,6 @@ struct AddTagPopup: View {
                         } else {
                             self.isBeingPresented = false
                         }
-                        
                     }, label: {
                         Text("Done")
                     })
@@ -78,6 +76,7 @@ struct AddTagPopup: View {
                     Button(tagName) {
                         // Sets the TextField value to the tapped Tag
                         self.tagText = tagName // TO-DO: Add foregroundColor modifier as panelContent when SwiftUI is updated with ability to change List background color
+                        UIUtil.resignFirstResponder()
                     }
                 }
             }

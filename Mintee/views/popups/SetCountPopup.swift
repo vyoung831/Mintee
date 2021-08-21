@@ -34,7 +34,7 @@ struct SetCountPopup: View {
                         Spacer()
                         
                         Button(action: {
-                            if let countCast = Float(count){
+                            if let countCast = Float(count) {
                                 count = String((countCast.rounded(.up) - 1).clean)
                             }
                         }, label: {
@@ -45,13 +45,13 @@ struct SetCountPopup: View {
                         })
                         
                         TextField("", text: self.$count)
-                            .keyboardType( .decimalPad )
+                            .keyboardType(.decimalPad)
                             .frame(width: gr.size.width/2)
                             .padding(10)
                             .border(Color.primary, width: 2)
                             .background(Color(UIColor.systemBackground))
                         Button(action: {
-                            if let countCast = Float(count){
+                            if let countCast = Float(count) {
                                 count = String((countCast.rounded(.down) + 1).clean)
                             }
                         }, label: {
@@ -71,7 +71,7 @@ struct SetCountPopup: View {
             .navigationTitle("Set Count")
             .navigationBarItems(leading:
                                     Button("Done", action: {
-                                        if let valueToSave = Float(count){ done(valueToSave) }
+                                        if let valueToSave = Float(count) { done(valueToSave) }
                                         else { errorMessage = "Please remove invalid input" }
                                     })
                                     .foregroundColor(.accentColor),
