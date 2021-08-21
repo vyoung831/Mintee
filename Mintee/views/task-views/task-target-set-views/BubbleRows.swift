@@ -96,6 +96,36 @@ struct BubbleRows<BubbleType : Day>: View {
         return max(spacing, minimumInterBubbleSpacing)
     }
     
+    /**
+     - parameter selected: If the bubble background color to be returned is for a bubble that's selected.
+     - returns: The background color that a bubble should be set to, given what type of UI element this `BubbleRows` is presented on.
+     */
+    func getBubbleBackground(selected: Bool) -> Color {
+        switch self.presentationBase {
+        case .panel:
+            return selected ? themeManager.button : themeManager.disabledButton
+        case .collectionItem:
+            return selected ? themeManager.collectionItemContent : .clear
+        default:
+            return .clear
+        }
+    }
+    
+    /**
+     - parameter selected: If the bubble text color to be returned is for a bubble that's selected.
+     - returns: The color that a bubble's text should be set to, given what type of UI element this `BubbleRows` is presented on.
+     */
+    func getBubbleText(selected: Bool) -> Color {
+        switch self.presentationBase {
+        case .panel:
+            return selected ? themeManager.buttonText : themeManager.button
+        case .collectionItem:
+            return selected ? themeManager.collectionItem : themeManager.collectionItemContent
+        default:
+            return .clear
+        }
+    }
+    
     // MARK: - View
     
     var body: some View {
@@ -116,27 +146,14 @@ struct BubbleRows<BubbleType : Day>: View {
                         
                         ForEach(self.bubbles[row], id: \.self) { bubbleText in
                             ZStack {
-                                if presentationBase == .panel {
-                                    Circle()
-                                        .foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                            ? themeManager.button : themeManager.disabledButton)
-                                        .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
-                                        .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
-                                               height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
-                                               alignment: .center)
-                                    Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                                                    ? themeManager.buttonText : themeManager.button)
-                                } else if presentationBase == .collectionItem {
-                                    Circle()
-                                        .foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                            ? themeManager.collectionItemContent : .clear)
-                                        .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
-                                        .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
-                                               height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
-                                               alignment: .center)
-                                    Text(bubbleText.shortValue).foregroundColor(self.selectedBubbles.contains(bubbleText)
-                                                                                    ? themeManager.collectionItem : themeManager.collectionItemContent)
-                                }
+                                Circle()
+                                    .foregroundColor(getBubbleBackground(selected: self.selectedBubbles.contains(bubbleText)))
+                                    .cornerRadius(self.getBubbleRadius(totalWidth: gr.size.width))
+                                    .frame(width: 2*self.getBubbleRadius(totalWidth: gr.size.width),
+                                           height: 2*self.getBubbleRadius(totalWidth: gr.size.width),
+                                           alignment: .center)
+                                Text(bubbleText.shortValue)
+                                    .foregroundColor(getBubbleText(selected: self.selectedBubbles.contains(bubbleText)))
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
                             .onTapGesture {

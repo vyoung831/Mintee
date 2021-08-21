@@ -13,8 +13,6 @@ import Firebase
 struct AddTask: View {
     
     @Binding var isBeingPresented: Bool
-    @State var isPresentingAddTaskTargetSetPopup: Bool = false
-    @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var taskName: String = ""
     @State var taskType: SaveFormatter.taskType = .recurring
     @State var errorMessage: String = ""
@@ -44,8 +42,8 @@ struct AddTask: View {
             
             switch self.taskType {
             case .recurring:
-                for i in 0 ..< taskTargetSetViews.count {
-                    let ttsv = taskTargetSetViews[i]
+                for i in 0 ..< self.taskTargetSetViews.count {
+                    let ttsv = self.taskTargetSetViews[i]
                     let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: CDCoordinator.moc,
                                                 min: ttsv.minTarget, max: ttsv.maxTarget,
                                                 minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
@@ -103,8 +101,8 @@ struct AddTask: View {
                                              placeHolder: "Task name",
                                              textField: self.$taskName,
                                              textFieldIdentifier: "task-name-text-field")
-                    if (errorMessage.count > 0) {
-                        Text(errorMessage)
+                    if (self.errorMessage.count > 0) {
+                        Text(self.errorMessage)
                             .foregroundColor(.red)
                             .accessibility(identifier: "add-task-error-message")
                     }
@@ -147,7 +145,7 @@ struct AddTask: View {
                     
                     switch self.taskType {
                     case .recurring:
-                        if taskTargetSetViews.count < 1 {
+                        if self.taskTargetSetViews.count < 1 {
                             self.errorMessage = "Please add one or more target sets"; return
                         }
                     case .specific:
