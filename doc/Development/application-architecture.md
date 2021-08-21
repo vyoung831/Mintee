@@ -6,6 +6,7 @@ This document outlines Mintee's code components and their integration with one a
 1. [Model development](#model-development)
     1. [Transformables](#transformables)
 1. [View development](#view-development)
+    1. [Usability/UX](#usabilityux)
     1. [Navigation](#navigation)
     1. [Accessibility](#accessibility)
 1. [Notable components](#notable-components)
@@ -52,6 +53,12 @@ Mintee uses transformables to represent various custom objects. To allow for sec
 More on transformable properties [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).
 
 # View development
+
+## Usability/UX
+In following the scenarios, the keyboard must be dimissed:
+- A button is tapped that presents a new modal or popover.
+- A button is tapped that dismisses the current modal or popover.
+- A tap is registered outside of the control that activated the keyboard. Ex: A tap is registered in the ScrollView of `AddTask`.
 
 ## Navigation
 To prepare for additional navigation and ensure consistent UI, every SwiftUI View in Mintee declares a `NavigationView`.
