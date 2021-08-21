@@ -1,8 +1,6 @@
 # Description
-Provide a summary of the changes.
 
 ### Type of change
-Delete N/A options
 - [ ] New feature
 - [ ] Technical debt or bug fix
 - [ ] Documentation update
