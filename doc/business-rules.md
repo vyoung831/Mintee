@@ -55,6 +55,7 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | TI-2 | TaskInstance | If a TaskInstance's associated Task's __taskType__ is `Recurring`, then the TaskInstance is associated with a TaskTargetSet. |
 | TI-3 | TaskInstance | If a TaskInstance's associated Task's __taskType__ is `Specific`, then the TaskInstance is not associated with a TaskTargetSet. |
 | TI-4 | TaskInstance | TaskInstances with the same associated Task each have a unique __date__. |
+| TI-5 | TaskInstance | A TaskInstance's __date__ is non-nil. |
 
 ## TaskSummaryAnalysis
 | BR code | Entity | Rule |
