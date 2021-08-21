@@ -25,6 +25,7 @@ struct SelectDatesSection: View {
                 Text("Dates")
                     .bold()
                 Button(action: {
+                    UIUtil.resignFirstResponder()
                     self.isPresentingAddDatePopup = true
                 }, label: {
                     Image(systemName: "plus.circle")
@@ -40,6 +41,7 @@ struct SelectDatesSection: View {
                     Text(Date.toMDYPresent(self.dates[idx]))
                     
                     Button(action: {
+                        UIUtil.resignFirstResponder()
                         self.dates.remove(at: idx)
                     }, label: {
                         Image(systemName: "trash")

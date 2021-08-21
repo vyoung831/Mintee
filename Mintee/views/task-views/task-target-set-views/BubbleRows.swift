@@ -157,6 +157,7 @@ struct BubbleRows<BubbleType : Day>: View {
                             }
                             .accessibility(identifier: "day-bubble-\(bubbleText)")
                             .onTapGesture {
+                                UIUtil.resignFirstResponder()
                                 // Add or remove the bubbleText from selectedBubbles
                                 if self.toggleable {
                                     if !self.selectedBubbles.contains(bubbleText) {

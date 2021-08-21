@@ -26,6 +26,7 @@ struct TaskTargetSetSection: View {
                     .bold()
                 
                 Button(action: {
+                    UIUtil.resignFirstResponder()
                     self.isPresentingAddTaskTargetSetPopup = true
                 }, label: {
                     Image(systemName: "plus.circle")
