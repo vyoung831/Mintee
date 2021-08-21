@@ -145,15 +145,8 @@ struct AnalysisListCard: View {
      */
     private func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
         
-        guard let legend = self.analysis._legend else {
-            var userInfo: [String : Any] = ["Message" : "AnalysisListCard.extractCategorizedPreviews() found nil legend in an Analysis"]
-            self.analysis.mergeDebugDictionary(userInfo: &userInfo)
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
-        }
-        
         var previews: [CategorizedLegendEntryPreview] = []
-        for categorizedEntry in legend.categorizedEntries {
+        for categorizedEntry in analysis._legend.categorizedEntries {
             guard let color = UIColor(hex: categorizedEntry.color) else {
                 var userInfo: [String : Any] = ["Message" : "AnalysisListCard.extractCategorizedPreviews() found a CategorizedLegendEntry with `color` that could not be converted to value of type UIColor"]
                 self.analysis.mergeDebugDictionary(userInfo: &userInfo)

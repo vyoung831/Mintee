@@ -13,23 +13,23 @@ import CoreData
 @objc(Analysis)
 public class Analysis: NSManagedObject {
     
+    @NSManaged private var name: String
     @NSManaged private var analysisType: Int16
-    @NSManaged private var endDate: String?
-    @NSManaged private var legend: AnalysisLegend?
-    @NSManaged private var name: String?
+    @NSManaged private var tags: NSSet?
     @NSManaged private var startDate: String?
+    @NSManaged private var endDate: String?
     @NSManaged private var dateRange: Int16
     @NSManaged private var order: Int16
-    @NSManaged private var tags: NSSet?
+    @NSManaged private var legend: AnalysisLegend
     
-    var _order: Int16 { get { return self.order }}
-    var _name: String? { get { return self.name } set { self.name = newValue } }
+    var _name: String { get { return self.name } set { self.name = newValue } }
     var _analysisType: Int16 { get { return self.analysisType } }
+    var _tags: NSSet? { get { return self.tags } }
     var _startDate: String? { get { return self.startDate } }
     var _endDate: String? { get { return self.endDate } }
     var _dateRange: Int16 { get { return self.dateRange } }
-    var _legend: AnalysisLegend? { get { return self.legend } }
-    var _tags: NSSet? { get { return self.tags } }
+    var _order: Int16 { get { return self.order }}
+    var _legend: AnalysisLegend { get { return self.legend } }
     
 }
 
@@ -112,7 +112,7 @@ extension Analysis {
         }
         
         // Add AnalysisLegend debug info
-        self.legend?.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
+        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
         
     }
     
@@ -127,8 +127,7 @@ extension Analysis {
      */
     func getTagNames() -> Set<String> {
         if let tags = self.tags as? Set<Tag> {
-            let tagNames = Set(tags.map({$0._name ?? ""}))
-            return tagNames
+            return Set(tags.map({$0._name}))
         }
         return Set<String>()
     }

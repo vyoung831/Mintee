@@ -4,6 +4,7 @@ This document outlines Mintee's code components and their integration with one a
 # Table of Contents
 1. [Application components](#application-components)
 1. [Model development](#model-development)
+    1. [Syncing model and objects with business rules](#syncing-model-and-objects-with-business-rules)
     1. [Transformables](#transformables)
 1. [View development](#view-development)
     1. [Navigation](#navigation)
@@ -39,6 +40,15 @@ To maintain separation of concerns between view, model, and utility components, 
 
 __Notes__  
 * To ensure that user experience of dates remain consistent across time zones, dates are stored as strings. This avoids a Date object being created and saved to user data, only to be accessed later using a different Calendar object and displaying a potentially different day.
+
+## Syncing model and objects with business rules
+Where appropriate, Mintee uses the Core Data model editor or generated NSManagedObject subclasses to enforce [business rules](../business-rules.md). See the below table for development guidelines:
+| What the business rule states | Method of enforcing |
+|-|-|
+| Property is unique | Specify constraint in Core Data model editor. |
+| Property is non-nil (including transformables) | Specify property as non-optional in NSManagedObject subclass. |
+| To-one relationship is never nil | Specify property as non-optional in NSManagedObject subclass. |
+| To-many relationship is never nil | Specify NSSet as non-optional in NSManagedObject subclass. |
 
 ## Transformables
 Mintee uses transformables to represent various custom objects. To allow for secure reading from persistent store, the following are implemented for each transformable:  

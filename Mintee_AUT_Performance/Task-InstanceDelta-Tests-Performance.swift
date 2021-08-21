@@ -60,7 +60,7 @@ extension Task_InstanceDelta_Tests_Performance {
                                 try getDomTargetSet(CDCoordinator.moc))
         self.measure {
             do {
-                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern}))
             } catch {
                 XCTFail()
             }
@@ -79,7 +79,7 @@ extension Task_InstanceDelta_Tests_Performance {
                                 try getDomTargetSet(CDCoordinator.moc))
         self.measure {
             do {
-                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern}))
             } catch {
                 XCTFail()
             }
@@ -97,7 +97,7 @@ extension Task_InstanceDelta_Tests_Performance {
                                 try getDomTargetSet(CDCoordinator.moc))
         self.measure {
             do {
-                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern!}))
+                try task.getDeltaInstancesRecurring(startDate: startDate, endDate: endDate, dayPatterns: Set(newTargetSets.map{$0._pattern}))
             } catch {
                 XCTFail()
             }

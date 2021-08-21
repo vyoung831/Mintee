@@ -1,8 +1,6 @@
 # Description
-Provide a summary of the changes.
 
 ### Type of change
-Delete N/A options
 - [ ] New feature
 - [ ] Technical debt or bug fix
 - [ ] Documentation update
@@ -14,6 +12,7 @@ Delete N/A options
 
 | Area | N/A | Checks |
 |-|-|-|
+|__Model components - Business rules syncing__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md):<ul><li/>- [ ] The data model<li/>- [ ] NSManagedObject subclasses<li/>- [ ] Transformables used by NSManagedObject subclasses</ul><li>- [ ] New/updated business rules that include any of the following include [appropriate](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#syncing-model-and-objects-with-business-rules) updates to the Core Data model or NSManagedObject subclasses:<ul><li/>Property is unique<li/>Property is non-nil (including transformables)<li/>To-one relationship is never nil<li/>To-many relationship is never nil</ul></ul>|
 |__Model components - Transformables__|<ul><li/>- [ ] N/A</ul>|If changes include updates to or new transformables,<ul><li/>- [ ] Custom classes for transformables conform to NSSecureCoding.<li/>- [ ] Custom classes for transformables are specified in the model (`xcdatamodeld`).<li/>- [ ] Custom data transformers are implemented and registered during app startup.</ul>|
 |__View components - New SwiftUI views__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New SwiftUI Views define `NavigationViews`.<li/>- [ ] View components use accessibility for UIT identification __only__.</ul>|
 
@@ -28,7 +27,7 @@ Delete N/A options
 # [Testing checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 | Area | N/A | Checks |
 |-|-|-|
-|__Persistent store validation__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md).<ul><li/>The data model<li/>NSManagedObject subclasses<li/>Transformables used by NSManagedObject subclasses.</ul><li/>- [ ] Changes to business rules include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).<li/>- [ ] New or updated AUT run the MOC validator as part of teardown.</ul>|
+|__MOC validation__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).<li/>- [ ] New or updated AUT run the MOC validator as part of teardown.</ul>|
 |__Functional AUT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing functional AUT pass (via workflow).<li/>- [ ] Functional AUT are implemented for new function that is deemed likely to fail.<li/>- [ ] New function that is not included in AUT is specified in the below table.  </ul>|
 |__UIT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing UIT pass locally with proposed changes.</ul>|
 

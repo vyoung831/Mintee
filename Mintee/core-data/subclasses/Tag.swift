@@ -14,13 +14,13 @@ import Firebase
 @objc(Tag)
 public class Tag: NSManagedObject {
     
-    @NSManaged private var name: String?
+    @NSManaged private var name: String
     @NSManaged private var analyses: NSSet?
-    @NSManaged private var tasks: NSSet?
+    @NSManaged private var tasks: NSSet
     
-    var _name: String? { get { return self.name } }
+    var _name: String { get { return self.name } }
     var _analyses: NSSet? { get { return self.analyses } }
-    var _tasks: NSSet? { get { return self.tasks } }
+    var _tasks: NSSet { get { return self.tasks } }
     
     /**
      Creates a Tag instance and inserts it into the shared MOC. This initializer should only be used if there is no existing Tag with tagName=$tagName in the MOC.

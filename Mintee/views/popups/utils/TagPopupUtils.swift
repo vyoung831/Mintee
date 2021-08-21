@@ -19,12 +19,7 @@ class TagPopupUtils {
      - returns: True if tagText is a case-insensitive substring of tag's name
      */
     static func tagShouldBeDisplayed(_ tag: Tag,_ textFieldContent: String) -> Bool {
-        if let tagName = tag._name {
-            if tagName.lowercased().contains(textFieldContent.lowercased()) || textFieldContent.count == 0 {
-                return true
-            }
-        }
-        return false
+        return (tag._name.lowercased().contains(textFieldContent.lowercased()) || textFieldContent.count == 0)
     }
     
 }

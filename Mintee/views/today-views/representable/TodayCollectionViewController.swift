@@ -105,23 +105,11 @@ extension TodayCollectionViewController {
         
         if let instance = fetchedResultsController?.fetchedObjects?[indexPath.item] {
             
-            guard let task = instance._task else {
-                var userInfo: [String : Any] =
-                    ["Message" : "TodayCollectionViewController.collectionView found a TaskInstance with nil _task"]
-                if let taskThroughTargetSet = instance._targetSet?._task {
-                    userInfo = taskThroughTargetSet.mergeDebugDictionary(userInfo: userInfo)
-                } else {
-                    userInfo["TaskInstance"] = instance.debugDescription
-                }
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-                return cell
-            }
-            
-            cell.setTaskName(taskName: task._name ?? "")
+            cell.setTaskName(taskName: instance._task._name)
             cell.updateAppearance(instance: instance)
             cell.handleEditButtonPressed = {
                 do {
-                    let ethvc = try EditTaskHostingController(task: task,
+                    let ethvc = try EditTaskHostingController(task: instance._task,
                                                               dismiss: { [unowned self] in self.dismiss(animated: true, completion: nil) })
                     self.present(ethvc, animated: true, completion: nil)
                 } catch {
