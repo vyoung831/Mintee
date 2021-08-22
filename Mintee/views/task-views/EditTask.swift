@@ -177,6 +177,9 @@ struct EditTask: View {
                 })
                 .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
+            .onTapGesture {
+                UIUtil.resignFirstResponder()
+            }
             .navigationTitle("Edit Task")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(

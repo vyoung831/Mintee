@@ -126,6 +126,7 @@
 		C4C961C6250A432000C7EEEA /* DayBubbleLabels-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */; };
 		C4CFC59B259259F3000BA4DA /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = C429D08D25912C99008A46BC /* GoogleService-Info-Debug.plist */; };
 		C4CFC59C259259F3000BA4DA /* GoogleService-Info-Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = C429D08E25912C99008A46BC /* GoogleService-Info-Release.plist */; };
+		C4D2432126D1432D00482D71 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D2432026D1432D00482D71 /* UIUtil.swift */; };
 		C4D618F8252EA085009A9751 /* UserDefaultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D618F7252EA085009A9751 /* UserDefaultsListView.swift */; };
 		C4D8A34D249EB1D7008B3B9C /* Date-Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8A34C249EB1D7008B3B9C /* Date-Extensions-Tests.swift */; };
 		C4D9DB6425475771002F0B40 /* SetCountPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D9DB6325475771002F0B40 /* SetCountPopup.swift */; };
@@ -327,6 +328,7 @@
 		C4BDB83B26323CB200CC0391 /* EditAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnalysis.swift; sourceTree = "<group>"; };
 		C4C5FDE4250E7188004FAE47 /* TagPopupUtils-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagPopupUtils-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayBubbleLabels-Tests.swift"; sourceTree = "<group>"; };
+		C4D2432026D1432D00482D71 /* UIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 		C4D618F7252EA085009A9751 /* UserDefaultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsListView.swift; sourceTree = "<group>"; };
 		C4D8A34C249EB1D7008B3B9C /* Date-Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date-Extensions-Tests.swift"; sourceTree = "<group>"; };
 		C4D9DB6325475771002F0B40 /* SetCountPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCountPopup.swift; sourceTree = "<group>"; };
@@ -760,6 +762,7 @@
 			children = (
 				C43AE1C0256075D200F1D560 /* CollectionSizer.swift */,
 				C4FA83FE25323A3C0079BB81 /* ThemeManager.swift */,
+				C4D2432026D1432D00482D71 /* UIUtil.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -1411,6 +1414,7 @@
 				C48F02482448A5730088227F /* Tag.swift in Sources */,
 				C47389992482CCB400462134 /* DayPattern.swift in Sources */,
 				C442AE0D2546D71000A9EB72 /* ErrorManager.swift in Sources */,
+				C4D2432126D1432D00482D71 /* UIUtil.swift in Sources */,
 				C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */,
 				C492BDDC255B93EF0054CD2A /* FetchRequests.swift in Sources */,
 				C499FFF4247371FA00ABB64C /* TaskTargetSet.swift in Sources */,

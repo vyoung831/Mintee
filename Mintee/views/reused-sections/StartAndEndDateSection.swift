@@ -22,6 +22,9 @@ struct StartAndEndDateSection: View {
             HStack(alignment: .center, spacing: 8) {
                 Text("Start:")
                 DatePicker("", selection: self.$startDate, displayedComponents: [.date])
+                    .onTapGesture {
+                        UIUtil.resignFirstResponder()
+                    }
                     .labelsHidden()
                     .accessibility(identifier: "start-date-picker")
                 Spacer()
@@ -30,6 +33,9 @@ struct StartAndEndDateSection: View {
             HStack(alignment: .center, spacing: 16) {
                 Text("End:")
                 DatePicker("", selection: self.$endDate, displayedComponents: .date)
+                    .onTapGesture {
+                        UIUtil.resignFirstResponder()
+                    }
                     .labelsHidden()
                     .accessibility(identifier: "end-date-picker")
                 Spacer()

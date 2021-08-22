@@ -176,6 +176,9 @@ struct TaskTargetSetPopup: View {
                     
                 }
             })
+            .onTapGesture {
+                UIUtil.resignFirstResponder()
+            }
             .padding(15)
             .background(themeManager.panel)
             .foregroundColor(themeManager.panelContent)

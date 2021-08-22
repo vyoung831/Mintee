@@ -46,7 +46,6 @@ struct AddTagPopup: View {
                     Spacer()
                     
                     Button(action: {
-                        
                         if self.tagText.count == 0 {
                             self.isBeingPresented = false
                         } else if let addTagErrorMessage = self.addTag(self.tagText) {
@@ -54,7 +53,6 @@ struct AddTagPopup: View {
                         } else {
                             self.isBeingPresented = false
                         }
-                        
                     }, label: {
                         Text("Done")
                     })
@@ -74,11 +72,10 @@ struct AddTagPopup: View {
             List(tagsFetch.filter{
                 TagPopupUtils.tagShouldBeDisplayed($0, self.tagText)
             }, id: \.self) { tag in
-                if let tagName = tag._name {
-                    Button(tagName) {
-                        // Sets the TextField value to the tapped Tag
-                        self.tagText = tagName // TO-DO: Add foregroundColor modifier as panelContent when SwiftUI is updated with ability to change List background color
-                    }
+                Button(tag._name) {
+                    // Sets the TextField value to the tapped Tag
+                    self.tagText = tag._name // TO-DO: Add foregroundColor modifier as panelContent when SwiftUI is updated with ability to change List background color
+                    UIUtil.resignFirstResponder()
                 }
             }
             .foregroundColor(.primary) // TO-DO: Update foregroundColor to panelContent after SwiftUI is updated with ability to change List background color

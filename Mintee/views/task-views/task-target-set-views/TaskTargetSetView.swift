@@ -127,6 +127,7 @@ struct TaskTargetSetView: View , Identifiable {
             Group {
                 HStack(alignment: .center, spacing: buttonsSpacing) {
                     Button(action: {
+                        UIUtil.resignFirstResponder()
                         isPresentingEditTaskTargetSetPopup = true
                     }, label: {
                         Text("Edit")
@@ -135,6 +136,7 @@ struct TaskTargetSetView: View , Identifiable {
                     .accessibility(identifier: "task-target-set-view-edit-button")
                     
                     Button(action: {
+                        UIUtil.resignFirstResponder()
                         self.moveUp()
                     }, label: {
                         Image(systemName: "arrowtriangle.up.circle.fill")
@@ -143,6 +145,7 @@ struct TaskTargetSetView: View , Identifiable {
                     .accessibility(identifier: "task-target-set-view-up-button")
                     
                     Button(action: {
+                        UIUtil.resignFirstResponder()
                         self.moveDown()
                     }, label: {
                         Image(systemName: "arrowtriangle.down.circle.fill")
@@ -153,6 +156,7 @@ struct TaskTargetSetView: View , Identifiable {
                     Spacer()
                     
                     Button(action: {
+                        UIUtil.resignFirstResponder()
                         self.delete()
                     }, label: {
                         Image(systemName: "trash")
@@ -198,6 +202,9 @@ struct TaskTargetSetView: View , Identifiable {
                                                         maxTarget: self.maxTarget) )
             }
             
+        }
+        .onTapGesture {
+            UIUtil.resignFirstResponder()
         }
         .foregroundColor(themeManager.collectionItemContent)
         .padding(vStackPadding)

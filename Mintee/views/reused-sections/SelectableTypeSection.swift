@@ -44,6 +44,7 @@ struct SelectableTypeSection<Type: SelectableType>: View {
                 ForEach(0 ..< self.options.count, id: \.self) { idx in
                     Button(self.options[idx].stringValue, action: {
                         self.selection = self.options[idx]
+                        UIUtil.resignFirstResponder()
                     })
                     .frame(maxWidth: .infinity)
                     .padding(12)

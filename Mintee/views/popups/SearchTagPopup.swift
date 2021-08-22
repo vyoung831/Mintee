@@ -77,21 +77,21 @@ struct SearchTagPopup: View {
             
             // tagsFetch is filtered for Tag names containing the TextField's value
             List(tagsFetch.filter{ TagPopupUtils.tagShouldBeDisplayed($0, self.tagText) || selectedTag == $0 }, id: \.self) { tag in
-                if let tagName = tag._name {
-                    
-                    if self.selectedTag == tag {
-                        HStack {
-                            Text(tagName)
-                            Spacer()
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.primary) // TO-DO: Update foregroundColor to accentColor after SwiftUI is updated with ability to change List background color
-                        }
-                    } else {
-                        Button(tagName) {
-                            selectedTag = tag
-                        }
+                if self.selectedTag == tag {
+                    HStack {
+                        Text(tag._name)
+                        Spacer()
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.primary) // TO-DO: Update foregroundColor to accentColor after SwiftUI is updated with ability to change List background color
                     }
-                    
+                    .onTapGesture {
+                        UIUtil.resignFirstResponder()
+                    }
+                } else {
+                    Button(tag._name) {
+                        selectedTag = tag
+                        UIUtil.resignFirstResponder()
+                    }
                 }
             }
             .background(themeManager.panel)

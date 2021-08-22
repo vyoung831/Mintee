@@ -47,6 +47,7 @@ struct TagsSection: View {
                     .accessibility(identifier: "tags-section-label")
                 
                 Button(action: {
+                    UIUtil.resignFirstResponder()
                     if allowedToAddNewTags {
                         self.isPresentingAddTagPopup = true
                     } else {
@@ -83,6 +84,7 @@ struct TagsSection: View {
                             removable: true,
                             remove: {
                                 self.tags.remove(at: idx)
+                                UIUtil.resignFirstResponder()
                             })
                     
                     Spacer()

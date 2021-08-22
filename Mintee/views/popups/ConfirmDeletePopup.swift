@@ -56,7 +56,7 @@ struct ConfirmDeletePopup: View {
                         self.delete()
                     }, label: {
                         Text("Yes")
-                            .frame(width: min((geometry.size.width - self.hstackSpacing)/2,75))
+                            .frame(width: min((geometry.size.width - self.hstackSpacing)/2, 75))
                             .padding(.all, 10)
                             .background(Color.red)
                             .foregroundColor(.white)
