@@ -31,7 +31,7 @@ class TagValidator {
      TAG-2: A Tag is associated with at least one Task.
      */
     static var validateTagAssociation: (Tag) -> () = { tag in
-        XCTAssert(tag._tasks!.count >= 1)
+        XCTAssert(tag._tasks.count >= 1)
     }
     
 }

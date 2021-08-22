@@ -18,19 +18,19 @@ public class TaskTargetSet: NSManagedObject {
     @NSManaged private var maxOperator: Int16
     @NSManaged private var min: Float
     @NSManaged private var minOperator: Int16
-    @NSManaged private var pattern: DayPattern?
+    @NSManaged private var pattern: DayPattern
     @NSManaged private var priority: Int16
     @NSManaged private var instances: NSSet?
-    @NSManaged private var task: Task?
+    @NSManaged private var task: Task
     
     var _max: Float { get { return self.max } }
     var _maxOperator: Int16 { get { return self.maxOperator } }
     var _min: Float { get { return self.min } }
     var _minOperator: Int16 { get { return self.minOperator } }
-    var _pattern: DayPattern? { get { return self.pattern } }
+    var _pattern: DayPattern { get { return self.pattern } }
     var _priority: Int16 { get { return self.priority } }
     var _instances: NSSet? { get { return self.instances } }
-    var _task: Task? { get { return self.task } }
+    var _task: Task { get { return self.task } }
     
     convenience init(entity: NSEntityDescription,
                      insertInto context: NSManagedObjectContext?,
@@ -147,13 +147,6 @@ extension TaskTargetSet {
      */
     func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) throws -> Bool {
         
-        guard let pattern = self.pattern else {
-            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() found nil in pattern",
-                                            "TaskTargetSet" : self.debugDescription]
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
-        }
-        
         if daysInMonth < 28 {
             let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
                                             "day" : day,
@@ -161,7 +154,7 @@ extension TaskTargetSet {
                                             "daysInMonth" : daysInMonth,
                                             "TaskTargetSet" : self.debugDescription]
             throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
-                                              self._task?.mergeDebugDictionary(userInfo: userInfo) ?? userInfo)
+                                              self._task.mergeDebugDictionary(userInfo: userInfo))
         }
         
         switch pattern.type {

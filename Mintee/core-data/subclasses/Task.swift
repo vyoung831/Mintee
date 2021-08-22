@@ -15,23 +15,23 @@ import Firebase
 @objc(Task)
 public class Task: NSManagedObject {
     
+    @NSManaged private var name: String
+    @NSManaged private var taskType: Int16
     @NSManaged private var startDate: String?
     @NSManaged private var endDate: String?
-    @NSManaged private var taskType: Int16
-    @NSManaged private var name: String?
+    @NSManaged private var taskSummaryAnalysis: TaskSummaryAnalysis
     @NSManaged private var instances: NSSet?
     @NSManaged private var tags: NSSet?
     @NSManaged private var targetSets: NSSet?
-    @NSManaged private var taskSummaryAnalysis: TaskSummaryAnalysis?
     
+    var _name: String { get { return self.name } set { self.name = newValue } }
+    var _taskType: Int16 { get { return self.taskType } }
     var _startDate: String? { get { return self.startDate } }
     var _endDate: String? { get { return self.endDate } }
-    var _taskType: Int16 { get { return self.taskType } }
-    var _name: String? { get { return self.name } set { self.name = newValue } }
+    var _taskSummaryAnalysis: TaskSummaryAnalysis { get { return self.taskSummaryAnalysis } }
     var _instances: NSSet? { get { return self.instances } }
     var _tags: NSSet? { get { return self.tags } }
     var _targetSets: NSSet? { get { return self.targetSets } }
-    var _taskSummaryAnalysis: TaskSummaryAnalysis? { get { return self.taskSummaryAnalysis } }
     
     /**
      Convenience init for recurring-type Task
@@ -158,14 +158,11 @@ extension Task {
                 
                 // Add Dictionary entries for DayPatterns' sets and types
                 let patternIdentifier = "\(ttsIdentifier)._pattern"
-                if let pattern = ttsArray[idx]._pattern {
-                    debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
-                    debugDictionary["\(patternIdentifier).weeksOfMonth"] = pattern.weeksOfMonth
-                    debugDictionary["\(patternIdentifier).daysOfMonth"] = pattern.daysOfMonth
-                    debugDictionary["\(patternIdentifier).type"] = pattern.type
-                } else {
-                    debugDictionary["\(patternIdentifier)"] = nil
-                }
+                let pattern = ttsArray[idx]._pattern
+                debugDictionary["\(patternIdentifier).daysOfWeek"] = pattern.daysOfWeek
+                debugDictionary["\(patternIdentifier).weeksOfMonth"] = pattern.weeksOfMonth
+                debugDictionary["\(patternIdentifier).daysOfMonth"] = pattern.daysOfMonth
+                debugDictionary["\(patternIdentifier).type"] = pattern.type
                 
             }
         }
@@ -189,8 +186,7 @@ extension Task {
      */
     public func getTagNames() -> Set<String> {
         if let tags = self.tags as? Set<Tag> {
-            let tagNames = Set(tags.map({$0._name ?? ""}))
-            return tagNames
+            return Set(tags.map({$0._name}))
         }
         return Set<String>()
     }
@@ -219,7 +215,7 @@ extension Task {
                 
                 if !newTags.contains(tag) {
                     self.removeFromTags(tag)
-                    if tag._tasks?.count == 0 {
+                    if tag._tasks.count == 0 {
                         CDCoordinator.moc.delete(tag)
                     }
                 }
@@ -235,7 +231,7 @@ extension Task {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 self.removeFromTags(tag)
-                if tag._tasks?.count == 0 {
+                if tag._tasks.count == 0 {
                     CDCoordinator.moc.delete(tag)
                 }
             }
@@ -263,14 +259,7 @@ extension Task {
         var datesDelta: [String] = []
         let newDateStrings = dates.map{SaveFormatter.dateToStoredString($0)}
         for instance in instances {
-            
-            guard let existingDate = instance._date else {
-                let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesSpecific() found nil in a TaskInstance's _date"]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
-            }
-            
-            !newDateStrings.contains(existingDate) ? datesDelta.append(existingDate) : nil
-            
+            !newDateStrings.contains(instance._date) ? datesDelta.append(instance._date) : nil
         }
         
         return datesDelta.sorted{ $0 < $1 }
@@ -294,8 +283,7 @@ extension Task {
         
         // Filter existing TaskInstances for ones before the proposed start date or after the proposed end date
         for instance in instances {
-            guard let dateString = instance._date,
-                  let date = SaveFormatter.storedStringToDate(dateString) else {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                 let userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() found a TaskInstance with nil or invalid _date",
                                                 "TaskInstance" : instance.debugDescription]
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
@@ -405,19 +393,11 @@ extension Task {
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         for existingInstance in existingInstances {
-            
-            guard let existingDate = existingInstance._date else {
-                let userInfo: [String : Any] = ["Message" : "Task.updateSpecificInstances() found nil in a TaskInstance's _date",
-                                                "TaskInstance" : existingInstance.debugDescription]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
-            }
-            
-            if !newDatesStrings.contains(existingDate) {
+            if !newDatesStrings.contains(existingInstance._date) {
                 CDCoordinator.moc.delete(existingInstance)
             } else {
-                datesToBeAdded.remove(existingDate)
+                datesToBeAdded.remove(existingInstance._date)
             }
-            
         }
         
         // Generate TaskInstances for the remaining dates that don't already exist for this Task

@@ -116,8 +116,7 @@ struct ManageViewCard: View {
         
         var dates: [Date] = []
         for instance in instances {
-            guard let dateString = instance._date,
-                  let date = SaveFormatter.storedStringToDate(dateString) else {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                 ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
                                             ["Message" : "ManageViewCard.getSpecificDates() found nil in a TaskInstance's _date or could not convert it to a valid Date",
                                              "TaskInstance._date" : instance._date ])

@@ -8,7 +8,7 @@
 //      * A unique number greater than or equal to `0`
 //  (validated by MOC_Validator)
 //  ANL-6: An Analysis' name is unique. (validated by MOC_Validator)
-//  ANL-7: An Analysis' legend is non-nil. (validated as part of calling AnalysisLegendValidator)
+//  ANL-7: An Analysis' legend is non-nil. (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -69,7 +69,7 @@ class AnalysisValidator {
 extension AnalysisValidator {
     
     static var validateLegend: (Analysis) -> () = { analysis in
-        AnalysisLegendValidator.validateAnalysisLegend(analysis._legend!)
+        AnalysisLegendValidator.validateAnalysisLegend(analysis._legend)
     }
     
 }

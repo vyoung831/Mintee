@@ -30,16 +30,8 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             for idx in 0 ..< ttsArray.count {
                 
                 /*
-                 If the TaskTargetSet's DayPattern is nil or the TaskTargetSet's minOperator and/or maxOperator violate business logic, an error is reported with the Task, the TTS, and the Task's other TTSes
+                 If the TaskTargetSet's minOperator and/or maxOperator can't be instantiated as enums, an error is reported with the Task, the TTS, and the Task's other TTSes
                  */
-                guard let pattern = ttsArray[idx]._pattern else {
-                    let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found nil in a TaskTargetSet's _pattern",
-                                                    "TaskTargetSet" : ttsArray[idx]]
-                    let error = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                            task.mergeDebugDictionary(userInfo: userInfo))
-                    throw error
-                }
-                
                 guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
                       let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
                     let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
@@ -48,6 +40,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
                     throw error
                 }
                 
+                let pattern = ttsArray[idx]._pattern
                 guard let selectedDow = Set( pattern.daysOfWeek.map{ SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
                       let selectedWom = Set( pattern.weeksOfMonth.map{ SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
                       let selectedDom = Set( pattern.daysOfMonth.map{ SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
@@ -104,7 +97,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             let editTask = EditTask(isBeingPresented: .constant(true),
                                     dismiss: dismiss,
                                     task: task,
-                                    taskName: task._name ?? "",
+                                    taskName: task._name,
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
                                     startDate: startDate,
@@ -122,8 +115,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             }
             for case let instance as TaskInstance in instances {
                 
-                guard let dateString = instance._date,
-                      let date = SaveFormatter.storedStringToDate(dateString) else {
+                guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                     let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.init()? found a TaskInstance with a nil or invalid date belonging to a specific type task",
                                                     "TaskInstance" : instance]
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
@@ -135,7 +127,7 @@ class EditTaskHostingController: UIHostingController<EditTask> {
             let editTask = EditTask(isBeingPresented: .constant(true),
                                     dismiss: dismiss,
                                     task: task,
-                                    taskName: task._name ?? "",
+                                    taskName: task._name,
                                     taskType: taskType,
                                     tags: task.getTagNames().sorted{$0 < $1},
                                     dates: dates.sorted())

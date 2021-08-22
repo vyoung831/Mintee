@@ -53,15 +53,7 @@ struct SearchTagPopup: View {
                             return
                         }
                         
-                        guard let tagName = tag._name else {
-                            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                        ["Message" : "SearchTagPopup.Done() found a tag with nil _name",
-                                                         "Tag" : tag])
-                            self.errorMessage = ErrorManager.unexpectedErrorMessage
-                            return
-                        }
-                        
-                        if let addTagErrorMessage = self.addTag(tagName) {
+                        if let addTagErrorMessage = self.addTag(tag._name) {
                             self.errorMessage = addTagErrorMessage
                         } else {
                             self.isBeingPresented = false

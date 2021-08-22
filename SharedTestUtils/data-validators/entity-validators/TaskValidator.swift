@@ -4,6 +4,7 @@
 //
 //  Business rules NOT checked for by this validator:
 //  - TASK-5: A Task's name is unique. (validated by MOC_Validator)
+//  - TASK-7: A Task is associated with one and only one TaskSummaryAnalysis. (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 5/18/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -20,7 +21,6 @@ class TaskValidator {
         TaskValidator.validateRecurringTask,
         TaskValidator.validateSpecificTask,
         TaskValidator.validateUniqueTaskInstanceDates,
-        TaskValidator.validateTaskSummaryAnalysisAssociation,
         validateUniqueTTSPriorities
     ]
     
@@ -108,13 +108,6 @@ class TaskValidator {
     }
     
     /**
-     TASK-7: A Task is associated with one and only one TaskSummaryAnalysis.
-     */
-    static var validateTaskSummaryAnalysisAssociation: (Task) -> () = { task in
-        XCTAssert(task._taskSummaryAnalysis != nil)
-    }
-    
-    /**
      TTS-9: TaskTargetSets with the same associated Task must have each have a unique priority.
      */
     static var validateUniqueTTSPriorities: (Task) -> () = { task in
@@ -127,3 +120,4 @@ class TaskValidator {
     }
     
 }
+
