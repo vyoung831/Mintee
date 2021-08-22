@@ -69,7 +69,7 @@ If a control displays the keyboard, the keyboard must be dismissed when the foll
 - A button is tapped that presents a new modal or popover.
 - A button is tapped that dismisses the current modal or popover (handled automatically).
 
-Some Views dismiss the keyboard when a tap is registered outside of the control that activated the keyboard. The Views and tap locations that exhibit this behavior are determined case-by-case. Examples include:
+Some Views also dismiss the keyboard when a tap is registered outside of the control that activated the keyboard. The Views and tap locations that exhibit this behavior are determined case-by-case. Examples include:
 - A tap is registered in the ScrollView of `AddTask`.
 - A row is tapped in `AddTagPopup`.
 
