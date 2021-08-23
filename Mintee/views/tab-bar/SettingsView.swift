@@ -18,6 +18,7 @@ struct SettingsView: View {
     let rowSpacing: CGFloat = 20
     let idealItemWidth: CGFloat = 100
     let cardHeightMultiplier: CGFloat = 1.5
+    @State var showingAlert: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -33,11 +34,23 @@ struct SettingsView: View {
     var body: some View {
         
         NavigationView {
+            
             GeometryReader { gr in
                 
                 if gr.size.width > 0 {
                     
                     ScrollView(.vertical, showsIndicators: true) {
+                        
+                        Button("Link to Apple Calendar", action: { EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
+                            if !accessGranted {
+                                self.showingAlert = true
+                            }
+                        })})
+                        .alert(isPresented: self.$showingAlert) {
+                            Alert(title: Text("Access to Calendar is Restricted"),
+                                  message: Text("To re-enable, please go to Settings and turn on Calendar Settings"))
+                        }
+                        
                         LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid,
                                   alignment: .center,
                                   spacing: self.rowSpacing) {
@@ -48,11 +61,12 @@ struct SettingsView: View {
                                            alignment: .center)
                             }
                         }
-                        .padding(EdgeInsets(top: CollectionSizer.gridVerticalPadding,
-                                            leading: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset,
-                                            bottom: CollectionSizer.gridVerticalPadding,
-                                            trailing: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset))
+                        
                     }
+                    .padding(EdgeInsets(top: CollectionSizer.gridVerticalPadding,
+                                        leading: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset,
+                                        bottom: CollectionSizer.gridVerticalPadding,
+                                        trailing: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset))
                 }
             }
             .background(themeManager.panel)
