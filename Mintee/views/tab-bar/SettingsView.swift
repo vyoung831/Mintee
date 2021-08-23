@@ -10,64 +10,14 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    var cards = [SettingsViewCard<SettingsPresentationView>(targetView: SettingsPresentationView(),
-                                                            icon: Image(systemName: "paintbrush"),
-                                                            label: "Presentation")]
-    
-    // UI Constants
-    let rowSpacing: CGFloat = 20
-    let idealItemWidth: CGFloat = 100
-    let cardHeightMultiplier: CGFloat = 1.5
-    @State var showingAlert: Bool = false
-    
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
-    
-    /**
-     Calls CollectionSizer.getVGridLayout with this View's idealItemWidth constant.
-     - parameter totalWidth: Total width of View that can be used for sizing items, spacing, and left/right insets.
-     - returns: Tuple containing array of GridItem with fixed item widths and spacing, itemWidth, and horizontal insets for the mock collection view.
-     */
-    private func getMockCollectionLayout(widthAvailable: CGFloat) -> ( grid: [GridItem], itemWidth: CGFloat, leftRightInset: CGFloat) {
-        return CollectionSizer.getVGridLayout(widthAvailable: widthAvailable, idealItemWidth: self.idealItemWidth)
-    }
     
     var body: some View {
         
         NavigationView {
-            
-            GeometryReader { gr in
-                
-                if gr.size.width > 0 {
-                    
-                    ScrollView(.vertical, showsIndicators: true) {
-                        
-                        Button("Link to Apple Calendar", action: { EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
-                            if !accessGranted {
-                                self.showingAlert = true
-                            }
-                        })})
-                        .alert(isPresented: self.$showingAlert) {
-                            Alert(title: Text("Access to Calendar is Restricted"),
-                                  message: Text("To re-enable, please go to Settings and turn on Calendar Settings"))
-                        }
-                        
-                        LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid,
-                                  alignment: .center,
-                                  spacing: self.rowSpacing) {
-                            ForEach(0 ..< self.cards.count, id: \.self) { card in
-                                self.cards[card]
-                                    .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
-                                           height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
-                                           alignment: .center)
-                            }
-                        }
-                        
-                    }
-                    .padding(EdgeInsets(top: CollectionSizer.gridVerticalPadding,
-                                        leading: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset,
-                                        bottom: CollectionSizer.gridVerticalPadding,
-                                        trailing: getMockCollectionLayout(widthAvailable: gr.size.width).leftRightInset))
-                }
+            List {
+                NavigationLink(destination: SettingsPresentationView()) { Text("Presentation") }
+                NavigationLink(destination: SettingsLinkedAccountsView()) { Text("Linked accounts") }
             }
             .background(themeManager.panel)
             .navigationTitle(Text("Settings"))
