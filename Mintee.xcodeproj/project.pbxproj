@@ -41,7 +41,6 @@
 		C4130C1F24C6FB7A003EF047 /* LowGreaterThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C1E24C6FB7A003EF047 /* LowGreaterThanHighTests.swift */; };
 		C4130C2124C6FB85003EF047 /* LowLessThanHighTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */; };
 		C4130C2324C86E9A003EF047 /* SelectableTypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4130C2224C86E9A003EF047 /* SelectableTypeSection.swift */; };
-		C416E6BF251808000063309F /* SettingsPresentationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416E6BE251808000063309F /* SettingsPresentationView.swift */; };
 		C41A73E62451BFD2007007CB /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E52451BFD2007007CB /* EditTask.swift */; };
 		C41A73E82451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */; };
 		C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */; };
@@ -245,7 +244,6 @@
 		C4130C2024C6FB85003EF047 /* LowLessThanHighTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLessThanHighTests.swift; sourceTree = "<group>"; };
 		C4130C2224C86E9A003EF047 /* SelectableTypeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableTypeSection.swift; sourceTree = "<group>"; };
 		C41419F526544E5B00B96484 /* TaskValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskValidator.swift; sourceTree = "<group>"; };
-		C416E6BE251808000063309F /* SettingsPresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresentationView.swift; sourceTree = "<group>"; };
 		C41A73E52451BFD2007007CB /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		C41A73E72451CA8F007007CB /* TodayCollectionViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C41A73E92451CABC007007CB /* TodayCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewController.swift; sourceTree = "<group>"; };
@@ -560,7 +558,6 @@
 			isa = PBXGroup;
 			children = (
 				C4D618F7252EA085009A9751 /* UserDefaultsListView.swift */,
-				C416E6BE251808000063309F /* SettingsPresentationView.swift */,
 				C47805F326D4227900D07131 /* SettingsLinkedAccountsView.swift */,
 			);
 			path = "settings-views";
@@ -1442,7 +1439,6 @@
 				C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */,
 				C408449C25FFD473007C4105 /* Mintee.xcdatamodeld in Sources */,
 				C41A73EA2451CABC007007CB /* TodayCollectionViewController.swift in Sources */,
-				C416E6BF251808000063309F /* SettingsPresentationView.swift in Sources */,
 				C4FA83FF25323A3C0079BB81 /* ThemeManager.swift in Sources */,
 				C46DC96E243DEC480037C74C /* SettingsView.swift in Sources */,
 				C4697EE224561BEF00B028A2 /* CDCoordinator.swift in Sources */,
