@@ -92,7 +92,7 @@
 		C46FD050253CE81300CE489E /* UINavigationController-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46FD04F253CE81300CE489E /* UINavigationController-Extensions.swift */; };
 		C47389992482CCB400462134 /* DayPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47389982482CCB400462134 /* DayPattern.swift */; };
 		C47805F226D3E14600D07131 /* EventsCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47805F126D3E14600D07131 /* EventsCalendarManager.swift */; };
-		C47805F426D4227900D07131 /* SettingsLinkedAccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47805F326D4227900D07131 /* SettingsLinkedAccountsView.swift */; };
+		C47805F426D4227900D07131 /* SettingsLinkedCalendarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47805F326D4227900D07131 /* SettingsLinkedCalendarsView.swift */; };
 		C482233324BA57B000E6426E /* TaskTargetSetSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C482233224BA57B000E6426E /* TaskTargetSetSection.swift */; };
 		C48F02442448A5730088227F /* TaskSummaryAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02302448A5730088227F /* TaskSummaryAnalysis.swift */; };
 		C48F02482448A5730088227F /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02342448A5730088227F /* Tag.swift */; };
@@ -122,6 +122,7 @@
 		C4B5D8FC2694AF7D00E58FCD /* TaskInstanceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD950526924E1700020E35 /* TaskInstanceValidator.swift */; };
 		C4B5D8FD2694AF7D00E58FCD /* TaskSummaryAnalysisValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD950D26925E9D00020E35 /* TaskSummaryAnalysisValidator.swift */; };
 		C4B5D8FE2694AF7D00E58FCD /* TaskTargetSetValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD952A2692631000020E35 /* TaskTargetSetValidator.swift */; };
+		C4B764E926D5751C0062FF18 /* SettingsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B764E826D5751C0062FF18 /* SettingsCard.swift */; };
 		C4BDB83C26323CB200CC0391 /* EditAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BDB83B26323CB200CC0391 /* EditAnalysis.swift */; };
 		C4C5FDE5250E7189004FAE47 /* TagPopupUtils-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C5FDE4250E7188004FAE47 /* TagPopupUtils-Tests.swift */; };
 		C4C961C6250A432000C7EEEA /* DayBubbleLabels-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */; };
@@ -298,7 +299,7 @@
 		C472029E265ECF3C00BBD049 /* MOC-Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MOC-Validator.swift"; sourceTree = "<group>"; };
 		C47389982482CCB400462134 /* DayPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPattern.swift; sourceTree = "<group>"; };
 		C47805F126D3E14600D07131 /* EventsCalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCalendarManager.swift; sourceTree = "<group>"; };
-		C47805F326D4227900D07131 /* SettingsLinkedAccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLinkedAccountsView.swift; sourceTree = "<group>"; };
+		C47805F326D4227900D07131 /* SettingsLinkedCalendarsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLinkedCalendarsView.swift; sourceTree = "<group>"; };
 		C482233224BA57B000E6426E /* TaskTargetSetSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTargetSetSection.swift; sourceTree = "<group>"; };
 		C48F02302448A5730088227F /* TaskSummaryAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSummaryAnalysis.swift; sourceTree = "<group>"; };
 		C48F02342448A5730088227F /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
@@ -327,6 +328,7 @@
 		C4B2AC72249EEE8E00FC98F1 /* TaskTargetSetPopup-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSetPopup-Tests.swift"; sourceTree = "<group>"; };
 		C4B4357E2647718500FB87A0 /* TagPopupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPopupUtils.swift; sourceTree = "<group>"; };
 		C4B435A42648784300FB87A0 /* AnalysisListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisListUITests.swift; sourceTree = "<group>"; };
+		C4B764E826D5751C0062FF18 /* SettingsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCard.swift; sourceTree = "<group>"; };
 		C4BDB83B26323CB200CC0391 /* EditAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnalysis.swift; sourceTree = "<group>"; };
 		C4C5FDE4250E7188004FAE47 /* TagPopupUtils-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagPopupUtils-Tests.swift"; sourceTree = "<group>"; };
 		C4C961C5250A432000C7EEEA /* DayBubbleLabels-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayBubbleLabels-Tests.swift"; sourceTree = "<group>"; };
@@ -558,7 +560,8 @@
 			isa = PBXGroup;
 			children = (
 				C4D618F7252EA085009A9751 /* UserDefaultsListView.swift */,
-				C47805F326D4227900D07131 /* SettingsLinkedAccountsView.swift */,
+				C47805F326D4227900D07131 /* SettingsLinkedCalendarsView.swift */,
+				C4B764E826D5751C0062FF18 /* SettingsCard.swift */,
 			);
 			path = "settings-views";
 			sourceTree = "<group>";
@@ -1450,6 +1453,7 @@
 				C41F8733248F8FF2008AC18D /* Float-Extensions.swift in Sources */,
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
 				C4A657F325F28D9800A0756A /* UIColor-Extensions.swift in Sources */,
+				C4B764E926D5751C0062FF18 /* SettingsCard.swift in Sources */,
 				C43AE1C1256075D200F1D560 /* CollectionSizer.swift in Sources */,
 				C4922181261D058600B92453 /* AnalysisUtils.swift in Sources */,
 				C4130C2324C86E9A003EF047 /* SelectableTypeSection.swift in Sources */,
@@ -1468,7 +1472,7 @@
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
 				C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */,
 				C45AA22B261E32DB001F6A28 /* AnalysisList.swift in Sources */,
-				C47805F426D4227900D07131 /* SettingsLinkedAccountsView.swift in Sources */,
+				C47805F426D4227900D07131 /* SettingsLinkedCalendarsView.swift in Sources */,
 				C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,
