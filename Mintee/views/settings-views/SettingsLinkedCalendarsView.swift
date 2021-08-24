@@ -33,21 +33,22 @@ struct SettingsLinkedCalendarsView: View {
                     LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid,
                               alignment: .center,
                               spacing: self.rowSpacing) {
-                        SettingsCard(icon: Image(systemName: "applelogo"), label: "Apple Calendar")
-                            .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
-                                   height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
-                                   alignment: .center)
-                            .onTapGesture {
-                                EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
-                                    if !accessGranted {
-                                        self.showingAlert = true
-                                    }
-                                })
-                            }
-                            .alert(isPresented: self.$showingAlert) {
-                                Alert(title: Text("Access to Calendar is Restricted"),
-                                      message: Text("To re-enable, please go to Settings and turn on Calendar Settings"))
-                            }
+                        Button(action: {
+                            EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
+                                if !accessGranted {
+                                    self.showingAlert = true
+                                }
+                            })
+                        }, label: {
+                            SettingsCard(icon: Image(systemName: "applelogo"), label: "Apple Calendar")
+                                .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
+                                       height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
+                                       alignment: .center)
+                        })
+                        .alert(isPresented: self.$showingAlert) {
+                            Alert(title: Text("Access to Calendar is Restricted"),
+                                  message: Text("To re-enable, please go to Settings and turn on Calendar Settings"))
+                        }
                     }
                 }
                 .padding(EdgeInsets(top: CollectionSizer.gridVerticalPadding,
