@@ -10,6 +10,8 @@ import SwiftUI
 
 struct SettingsLinkedCalendarsView: View {
     
+    @State var alertTitle: String = ""
+    @State var alertMessage: String = "To re-enable access, please go to Settings and turn on Mintee's Calendar permissions"
     @State var showingAlert: Bool = false
     
     let rowSpacing: CGFloat = 20
@@ -30,15 +32,28 @@ struct SettingsLinkedCalendarsView: View {
         GeometryReader { gr in
             if gr.size.width > 0 {
                 ScrollView(.vertical, showsIndicators: true) {
-                    LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid,
-                              alignment: .center,
-                              spacing: self.rowSpacing) {
+                    LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid, alignment: .center, spacing: self.rowSpacing) {
                         Button(action: {
-                            EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
-                                if !accessGranted {
-                                    self.showingAlert = true
-                                }
-                            })
+                            switch EventsCalendarManager.shared.getAuthorizationStatus() {
+                            case .authorized:
+                                // Send events to Calendar
+                                break
+                            case .denied:
+                                self.alertTitle = "Access to Calendar was Denied"
+                                self.showingAlert = true; break
+                            case .restricted:
+                                self.alertTitle = "Access to Calendar is Restricted"
+                                self.showingAlert = true; break
+                            case .notDetermined:
+                                EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
+                                    if accessGranted {
+                                        // Send events to Calendar
+                                    }
+                                })
+                                break
+                            @unknown default:
+                                break
+                            }
                         }, label: {
                             SettingsCard(icon: Image(systemName: "applelogo"), label: "Apple Calendar")
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
@@ -46,8 +61,8 @@ struct SettingsLinkedCalendarsView: View {
                                        alignment: .center)
                         })
                         .alert(isPresented: self.$showingAlert) {
-                            Alert(title: Text("Access to Calendar is Restricted"),
-                                  message: Text("To re-enable, please go to Settings and turn on Calendar Settings"),
+                            Alert(title: Text(alertTitle),
+                                  message: Text(alertMessage),
                                   primaryButton: .default(Text("Settings"), action: {
                                     if let url = URL(string: UIApplication.openSettingsURLString) {
                                         UIApplication.shared.open(url)

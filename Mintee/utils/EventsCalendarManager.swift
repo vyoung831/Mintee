@@ -11,12 +11,14 @@ import UIKit
 import EventKit
 import EventKitUI
 
-class EventsCalendarManager: NSObject {
+// MARK: - Authorization handling
 
+class EventsCalendarManager: NSObject {
+    
     static var shared = EventsCalendarManager()
     
     var eventStore: EKEventStore
-
+    
     override init() {
         eventStore = EKEventStore()
     }
@@ -30,12 +32,37 @@ class EventsCalendarManager: NSObject {
             completion(accessGranted, error)
         }
     }
-
+    
     /**
      - returns: The EventKit authorization status for Calendar Events.
      */
     func getAuthorizationStatus() -> EKAuthorizationStatus {
         return EKEventStore.authorizationStatus(for: .event)
     }
+    
+}
 
+// MARK: - Calendar and event adding
+
+extension EventsCalendarManager {
+    
+    var calendar: EKCalendar? {
+        if let defaultSource = eventStore.sources.first(where: { $0.title == "Default" }) {
+            if let existingCalendar = defaultSource.calendars(for: .event).first(where: { $0.title == "Mintee" }) {
+                return existingCalendar
+            } else {
+                let calendar = EKCalendar(for: EKEntityType.event, eventStore: eventStore)
+                calendar.title = "Mintee"
+                calendar.source = defaultSource
+                do {
+                    try eventStore.saveCalendar(calendar, commit: true)
+                    return calendar
+                } catch {
+                    return nil
+                }
+            }
+        }
+        return nil
+    }
+    
 }
