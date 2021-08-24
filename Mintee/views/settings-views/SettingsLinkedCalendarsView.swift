@@ -47,7 +47,18 @@ struct SettingsLinkedCalendarsView: View {
                         })
                         .alert(isPresented: self.$showingAlert) {
                             Alert(title: Text("Access to Calendar is Restricted"),
-                                  message: Text("To re-enable, please go to Settings and turn on Calendar Settings"))
+                                  message: Text("To re-enable, please go to Settings and turn on Calendar Settings"),
+                                  primaryButton: .default(Text("Settings"), action: {
+                                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                                        UIApplication.shared.open(url)
+                                    } else {
+                                        let _ = ErrorManager.recordNonFatal(.urlCreationFailed,
+                                                                            ["Message" : "SettingsLinkedCalendarView could not create a URL from UIApplication.openSettingsURLString",
+                                                                             "UIApplication.openSettingsURLString" : UIApplication.openSettingsURLString])
+                                    }
+                                  }),
+                                  secondaryButton: .default(Text("Cancel"))
+                            )
                         }
                     }
                 }

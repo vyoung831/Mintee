@@ -45,6 +45,7 @@ struct ErrorManager {
         // Miscellaneous error codes
         case bundleIdentifierWasNil = 1
         case dateOperationFailed = 2
+        case urlCreationFailed = 3
         
         // UserDefault error codes
         case userDefaults_containedInvalidValue = 100
