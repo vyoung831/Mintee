@@ -10,6 +10,9 @@ import SwiftUI
 
 struct SettingsLinkedCalendarsView: View {
     
+    @FetchRequest(entity: Task.entity(), sortDescriptors: []) var tasksFetch: FetchedResults<Task>
+    
+    @State var errorMessage: String = ""
     @State var alertTitle: String = ""
     @State var alertMessage: String = "To re-enable access, please go to Settings and turn on Mintee's Calendar permissions"
     @State var showingAlert: Bool = false
@@ -27,16 +30,27 @@ struct SettingsLinkedCalendarsView: View {
         return CollectionSizer.getVGridLayout(widthAvailable: widthAvailable, idealItemWidth: self.idealItemWidth)
     }
     
+    private func addEvents() {
+        for task in tasksFetch {
+            do {
+                try EventsCalendarManager.shared.addEvents(task: task)
+            } catch {
+                self.errorMessage = ErrorManager.unexpectedErrorMessage
+            }
+        }
+    }
+    
     var body: some View {
         
         GeometryReader { gr in
             if gr.size.width > 0 {
                 ScrollView(.vertical, showsIndicators: true) {
+                    if errorMessage.count > 0 { Text(errorMessage) }
                     LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid, alignment: .center, spacing: self.rowSpacing) {
                         Button(action: {
                             switch EventsCalendarManager.shared.getAuthorizationStatus() {
                             case .authorized:
-                                // Send events to Calendar
+                                addEvents()
                                 break
                             case .denied:
                                 self.alertTitle = "Access to Calendar was Denied"
@@ -47,7 +61,7 @@ struct SettingsLinkedCalendarsView: View {
                             case .notDetermined:
                                 EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
                                     if accessGranted {
-                                        // Send events to Calendar
+                                        addEvents()
                                     }
                                 })
                                 break

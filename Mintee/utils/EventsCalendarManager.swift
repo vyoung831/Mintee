@@ -65,4 +65,43 @@ extension EventsCalendarManager {
         return nil
     }
     
+    /**
+     Adds EKEvents to the `Mintee` Calendar for a Task.
+     - parameter task: The Task for which to add Calendar events for.
+     */
+    func addEvents(task: Task) throws {
+        guard let taskType = SaveFormatter.storedToTaskType(task._taskType) else {
+            let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Task whose _taskType couldn't be converted to a valid value of type SaveFormatter.TaskType"]
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+        }
+        
+        switch taskType {
+        case .recurring:
+            // Save EKEvents for recurring-type Task
+            break
+        case .specific:
+            guard let instances = task._instances as? Set<TaskInstance> else {
+                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Specific-type Task with nil _instances"]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+            }
+            
+            for instance in instances {
+                guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                }
+                let event = EKEvent(eventStore: eventStore)
+                event.title = task._name
+                event.startDate = date; event.endDate = date
+                event.calendar = calendar
+                do {
+                    try eventStore.save(event, span: EKSpan.thisEvent)
+                } catch {
+                    throw error
+                }
+            }
+            break
+        }
+    }
+    
 }

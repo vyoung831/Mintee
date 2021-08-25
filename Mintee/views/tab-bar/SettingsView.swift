@@ -27,7 +27,7 @@ struct SettingsView: View {
                 }
                 Section(header: Text("Accounts")) {
                     NavigationLink("Linked calendars",
-                                   destination: SettingsLinkedCalendarsView())
+                                   destination: SettingsLinkedCalendarsView().environment(\.managedObjectContext, CDCoordinator.moc))
                 }
             }
             .background(themeManager.panel)
