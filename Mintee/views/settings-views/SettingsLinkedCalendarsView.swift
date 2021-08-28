@@ -30,16 +30,6 @@ struct SettingsLinkedCalendarsView: View {
         return CollectionSizer.getVGridLayout(widthAvailable: widthAvailable, idealItemWidth: self.idealItemWidth)
     }
     
-    private func addEvents() {
-        for task in tasksFetch {
-            do {
-                try EventsCalendarManager.shared.addEvents(task: task)
-            } catch {
-                self.errorMessage = ErrorManager.unexpectedErrorMessage
-            }
-        }
-    }
-    
     var body: some View {
         
         GeometryReader { gr in
@@ -47,10 +37,17 @@ struct SettingsLinkedCalendarsView: View {
                 ScrollView(.vertical, showsIndicators: true) {
                     if errorMessage.count > 0 { Text(errorMessage) }
                     LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid, alignment: .center, spacing: self.rowSpacing) {
+                        
                         Button(action: {
-                            switch EventsCalendarManager.shared.getAuthorizationStatus() {
+                            switch EventsCalendarManager.shared.eventAuthStatus() {
                             case .authorized:
-                                addEvents()
+                                for task in tasksFetch {
+                                    do {
+                                        try EventsCalendarManager.shared.addEvents(task: task)
+                                    } catch {
+                                        self.errorMessage = ErrorManager.unexpectedErrorMessage
+                                    }
+                                }
                                 break
                             case .denied:
                                 self.alertTitle = "Access to Calendar was Denied"
@@ -59,9 +56,15 @@ struct SettingsLinkedCalendarsView: View {
                                 self.alertTitle = "Access to Calendar is Restricted"
                                 self.showingAlert = true; break
                             case .notDetermined:
-                                EventsCalendarManager.shared.requestAccess(completion: { accessGranted, error in
+                                EventsCalendarManager.shared.requestEventAccess(completion: { accessGranted, error in
                                     if accessGranted {
-                                        addEvents()
+                                        for task in tasksFetch {
+                                            do {
+                                                try EventsCalendarManager.shared.addEvents(task: task)
+                                            } catch {
+                                                self.errorMessage = ErrorManager.unexpectedErrorMessage
+                                            }
+                                        }
                                     }
                                 })
                                 break
@@ -69,26 +72,67 @@ struct SettingsLinkedCalendarsView: View {
                                 break
                             }
                         }, label: {
-                            SettingsCard(icon: Image(systemName: "applelogo"), label: "Apple Calendar")
+                            SettingsCard(icon: Image(systemName: "calendar"), label: "Apple Calendar")
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)
                         })
-                        .alert(isPresented: self.$showingAlert) {
-                            Alert(title: Text(alertTitle),
-                                  message: Text(alertMessage),
-                                  primaryButton: .default(Text("Settings"), action: {
-                                    if let url = URL(string: UIApplication.openSettingsURLString) {
-                                        UIApplication.shared.open(url)
-                                    } else {
-                                        let _ = ErrorManager.recordNonFatal(.urlCreationFailed,
-                                                                            ["Message" : "SettingsLinkedCalendarView could not create a URL from UIApplication.openSettingsURLString",
-                                                                             "UIApplication.openSettingsURLString" : UIApplication.openSettingsURLString])
+                        
+                        Button(action: {
+                            switch EventsCalendarManager.shared.reminderAuthStatus() {
+                            case .authorized:
+                                for task in tasksFetch {
+                                    do {
+                                        try EventsCalendarManager.shared.addReminders(task: task)
+                                    } catch {
+                                        self.errorMessage = ErrorManager.unexpectedErrorMessage
                                     }
-                                  }),
-                                  secondaryButton: .default(Text("Cancel"))
-                            )
-                        }
+                                }
+                                break
+                            case .denied:
+                                self.alertTitle = "Access to Reminders was Denied"
+                                self.showingAlert = true; break
+                            case .restricted:
+                                self.alertTitle = "Access to Reminders is Restricted"
+                                self.showingAlert = true; break
+                            case .notDetermined:
+                                EventsCalendarManager.shared.requestReminderAccess(completion: { accessGranted, error in
+                                    if accessGranted {
+                                        for task in tasksFetch {
+                                            do {
+                                                try EventsCalendarManager.shared.addReminders(task: task)
+                                            } catch {
+                                                self.errorMessage = ErrorManager.unexpectedErrorMessage
+                                            }
+                                        }
+                                    }
+                                })
+                                break
+                            @unknown default:
+                                break
+                            }
+                        }, label: {
+                            SettingsCard(icon: Image(systemName: "list.bullet"), label: "Apple Reminders")
+                                .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
+                                       height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
+                                       alignment: .center)
+                        })
+                        
+                    }
+                    .alert(isPresented: self.$showingAlert) {
+                        Alert(title: Text(alertTitle),
+                              message: Text(alertMessage),
+                              primaryButton: .default(Text("Settings"), action: {
+                                if let url = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(url)
+                                } else {
+                                    let _ = ErrorManager.recordNonFatal(.urlCreationFailed,
+                                                                        ["Message" : "SettingsLinkedCalendarView could not create a URL from UIApplication.openSettingsURLString",
+                                                                         "UIApplication.openSettingsURLString" : UIApplication.openSettingsURLString])
+                                }
+                              }),
+                              secondaryButton: .default(Text("Cancel"))
+                        )
                     }
                 }
                 .padding(EdgeInsets(top: CollectionSizer.gridVerticalPadding,
