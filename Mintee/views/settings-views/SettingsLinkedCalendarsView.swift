@@ -39,11 +39,11 @@ struct SettingsLinkedCalendarsView: View {
                     LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid, alignment: .center, spacing: self.rowSpacing) {
                         
                         Button(action: {
-                            switch EventsCalendarManager.shared.eventAuthStatus() {
+                            switch EventsCalendarManager.shared.storeAuthStatus(.event) {
                             case .authorized:
                                 for task in tasksFetch {
                                     do {
-                                        try EventsCalendarManager.shared.addEvents(task: task)
+                                        try EventsCalendarManager.shared.addEvents(type: .event, task: task)
                                     } catch {
                                         self.errorMessage = ErrorManager.unexpectedErrorMessage
                                     }
@@ -56,11 +56,11 @@ struct SettingsLinkedCalendarsView: View {
                                 self.alertTitle = "Access to Calendar is Restricted"
                                 self.showingAlert = true; break
                             case .notDetermined:
-                                EventsCalendarManager.shared.requestEventAccess(completion: { accessGranted, error in
+                                EventsCalendarManager.shared.requestStoreAccess(type: .event, completion: { accessGranted, error in
                                     if accessGranted {
                                         for task in tasksFetch {
                                             do {
-                                                try EventsCalendarManager.shared.addEvents(task: task)
+                                                try EventsCalendarManager.shared.addEvents(type: .event, task: task)
                                             } catch {
                                                 self.errorMessage = ErrorManager.unexpectedErrorMessage
                                             }
@@ -79,11 +79,11 @@ struct SettingsLinkedCalendarsView: View {
                         })
                         
                         Button(action: {
-                            switch EventsCalendarManager.shared.reminderAuthStatus() {
+                            switch EventsCalendarManager.shared.storeAuthStatus(.reminder) {
                             case .authorized:
                                 for task in tasksFetch {
                                     do {
-                                        try EventsCalendarManager.shared.addReminders(task: task)
+                                        try EventsCalendarManager.shared.addEvents(type: .reminder, task: task)
                                     } catch {
                                         self.errorMessage = ErrorManager.unexpectedErrorMessage
                                     }
@@ -96,11 +96,11 @@ struct SettingsLinkedCalendarsView: View {
                                 self.alertTitle = "Access to Reminders is Restricted"
                                 self.showingAlert = true; break
                             case .notDetermined:
-                                EventsCalendarManager.shared.requestReminderAccess(completion: { accessGranted, error in
+                                EventsCalendarManager.shared.requestStoreAccess(type: .reminder, completion: { accessGranted, error in
                                     if accessGranted {
                                         for task in tasksFetch {
                                             do {
-                                                try EventsCalendarManager.shared.addReminders(task: task)
+                                                try EventsCalendarManager.shared.addEvents(type: .reminder, task: task)
                                             } catch {
                                                 self.errorMessage = ErrorManager.unexpectedErrorMessage
                                             }

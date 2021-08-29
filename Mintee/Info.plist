@@ -5,7 +5,7 @@
 	<key>NSRemindersUsageDescription</key>
 	<string>Mintee needs access to Reminders to import events and tasks.</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Mintee needs access to your calendar to import events and tasks.</string>
+	<string>Mintee needs access to your Calendar to import events and tasks.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

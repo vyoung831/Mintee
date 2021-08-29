@@ -23,145 +23,54 @@ class EventsCalendarManager: NSObject {
         eventStore = EKEventStore()
     }
     
-}
-
-// MARK: - EKReminder (Reminders) functionality
-
-extension EventsCalendarManager {
-    
     /**
-     Request EKEventStore access to Reminder calendars
-     - parameter completion: Escaping completion handler that takes (Bool, Error)
+     - parameter type: The type of EKEventStore to request access to.
+     - parameter completion: Escaping completion handler.
      */
-    func requestReminderAccess(completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
-        eventStore.requestAccess(to: .reminder) { (accessGranted, error) in
+    func requestStoreAccess(type: EKEntityType, completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
+        eventStore.requestAccess(to: type) { (accessGranted, error) in
             completion(accessGranted, error)
         }
     }
     
     /**
-     - returns: The EventKit authorization status for Reminders.
+     - parameter type: The EKEventStore type to check access for.
+     - returns: The EventKit authorization status for the Reminders or Calendar event EKStore.
      */
-    func reminderAuthStatus() -> EKAuthorizationStatus {
+    func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
         return EKEventStore.authorizationStatus(for: .event)
     }
     
-    var reminderCalendar: EKCalendar? {
+    /**
+     Returns the EKCalendar of the provided type named `Mintee` from the default EKEventSource.
+     - parameter type: The type of EKCalendar to retrieve.
+     */
+    private func getCalendar(_ type: EKEntityType) throws -> EKCalendar {
         if let defaultSource = eventStore.sources.first(where: { $0.title == "Default" }) {
             if let existingCalendar = defaultSource.calendars(for: .reminder).first(where: { $0.title == "Mintee" }) {
                 return existingCalendar
             } else {
-                let calendar = EKCalendar(for: EKEntityType.reminder, eventStore: eventStore)
+                let calendar = EKCalendar(for: type, eventStore: eventStore)
                 calendar.title = "Mintee"
                 calendar.source = defaultSource
                 do {
                     try eventStore.saveCalendar(calendar, commit: true)
                     return calendar
                 } catch {
-                    print(error)
-                    return nil
+                    throw error
                 }
             }
         }
-        return nil
+        throw ErrorManager.recordNonFatal(.ek_defaultSource_doesNotExist, [:])
     }
+
     
     /**
-     Adds EKEvents to the `Mintee` Calendar for a Task.
+     Adds Calendar events or Reminders to the `Mintee` Calendar.
+     - parameter type: The type of EKEntity (EKReminder or EKEvent) to add.
      - parameter task: The Task for which to add Calendar events for.
      */
-    func addReminders(task: Task) throws {
-
-        guard let taskType = SaveFormatter.storedToTaskType(task._taskType) else {
-            let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Task whose _taskType couldn't be converted to a valid value of type SaveFormatter.TaskType"]
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-        }
-
-        var instances: Set<TaskInstance> = Set()
-        switch taskType {
-        case .recurring:
-            if let unwrappedInstances = task._instances as? Set<TaskInstance> {
-                instances = unwrappedInstances
-            }
-            break
-        case .specific:
-            if let unwrappedInstances = task._instances as? Set<TaskInstance> {
-                instances = unwrappedInstances
-            } else {
-                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Specific-type Task with nil _instances"]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-            }
-            break
-        }
-
-        for instance in instances {
-            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-            }
-            let reminder = EKReminder(eventStore: eventStore)
-            reminder.title = task._name
-            reminder.isCompleted = false
-            reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-            reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-            reminder.calendar = reminderCalendar
-            do {
-                try eventStore.save(reminder, commit: true)
-            } catch {
-                throw error
-            }
-        }
-        
-    }
-    
-}
-
-
-// MARK: - EKEvent (Calendar) functionality
-
-extension EventsCalendarManager {
-    
-    /**
-     Request EKEventStore access to Calendar events
-     - parameter completion: Escaping completion handler that takes (Bool, Error)
-     */
-    func requestEventAccess(completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
-        eventStore.requestAccess(to: .event) { (accessGranted, error) in
-            completion(accessGranted, error)
-        }
-    }
-    
-    /**
-     - returns: The EventKit authorization status for Calendar Events.
-     */
-    func eventAuthStatus() -> EKAuthorizationStatus {
-        return EKEventStore.authorizationStatus(for: .event)
-    }
-    
-    var eventCalendar: EKCalendar? {
-        if let defaultSource = eventStore.sources.first(where: { $0.title == "Default" }) {
-            if let existingCalendar = defaultSource.calendars(for: .event).first(where: { $0.title == "Mintee" }) {
-                return existingCalendar
-            } else {
-                let calendar = EKCalendar(for: EKEntityType.event, eventStore: eventStore)
-                calendar.title = "Mintee"
-                calendar.source = defaultSource
-                do {
-                    try eventStore.saveCalendar(calendar, commit: true)
-                    return calendar
-                } catch {
-                    return nil
-                }
-            }
-        }
-        return nil
-    }
-    
-    /**
-     Adds EKEvents to the `Mintee` Calendar for a Task.
-     - parameter task: The Task for which to add Calendar events for.
-     */
-    func addEvents(task: Task) throws {
+    func addEvents(type: EKEntityType, task: Task) throws {
         guard let taskType = SaveFormatter.storedToTaskType(task._taskType) else {
             let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Task whose _taskType couldn't be converted to a valid value of type SaveFormatter.TaskType"]
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
@@ -184,21 +93,44 @@ extension EventsCalendarManager {
             break
         }
         
+        var calendar: EKCalendar?
+        switch type {
+        case .event:
+            calendar = try getCalendar(.event); break
+        case .reminder:
+            calendar = try getCalendar(.reminder); break
+        @unknown default:
+            break
+        }
+        
         for instance in instances {
             guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                 let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
             }
-            let event = EKEvent(eventStore: eventStore)
-            event.title = task._name
-            event.startDate = date; event.endDate = date
-            event.calendar = eventCalendar
-            do {
+            
+            switch type {
+            case .event:
+                let event = EKEvent(eventStore: eventStore)
+                event.startDate = date; event.endDate = date
+                event.title = task._name
+                event.calendar = calendar
                 try eventStore.save(event, span: EKSpan.thisEvent)
-            } catch {
-                throw error
+                break
+            case .reminder:
+                let reminder = EKReminder(eventStore: eventStore)
+                reminder.title = task._name
+                reminder.isCompleted = false
+                reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                reminder.calendar = calendar
+                try eventStore.save(reminder, commit: true)
+                break
+            @unknown default:
+                break
             }
         }
+        
     }
     
 }

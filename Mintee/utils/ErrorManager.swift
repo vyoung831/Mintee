@@ -63,6 +63,9 @@ struct ErrorManager {
         case modelFunction_receivedInvalidInput = 302
         case modelObjectInitializer_receivedInvalidInput = 303
         case persistentStore_saveFailed = 304
+        
+        // EventKit error codes
+        case ek_defaultSource_doesNotExist = 400
     }
     
 }
