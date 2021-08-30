@@ -7,9 +7,9 @@
 //
 
 import Foundation
+import CoreData
 import UIKit
 import EventKit
-import EventKitUI
 
 // MARK: - Authorization handling
 
@@ -70,68 +70,85 @@ class EventsCalendarManager: NSObject {
      - parameter type: The type of EKEntity (EKReminder or EKEvent) to add.
      - parameter tasks: An array of Tasks (with the same name) to add Calendar events for.
      */
-    func addEvents(type: EKEntityType, tasks: [Task]) throws {
+    func addEvents(type: EKEntityType) throws {
         
-        for task in tasks {
-            
-            guard let taskType = SaveFormatter.storedToTaskType(task._taskType) else {
-                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Task whose _taskType couldn't be converted to a valid value of type SaveFormatter.TaskType"]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-            }
-            
-            var instances: Set<TaskInstance> = Set()
-            switch taskType {
-            case .recurring:
-                if let unwrappedInstances = task._instances as? Set<TaskInstance> {
-                    instances = unwrappedInstances
-                }
-                break
-            case .specific:
-                if let unwrappedInstances = task._instances as? Set<TaskInstance> {
-                    instances = unwrappedInstances
-                } else {
-                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Specific-type Task with nil _instances"]
-                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                }
-                break
-            }
-            
-            var calendar: EKCalendar?
-            switch type {
-            case .event:
-                calendar = try getCalendar(.event); break
-            case .reminder:
-                calendar = try getCalendar(.reminder); break
-            @unknown default:
-                break
-            }
-            
-            for instance in instances {
-                guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
+        let request: NSFetchRequest<Task> = Task.fetchRequest()
+        var tasks: [Task] = []
+        do {
+            tasks = try CDCoordinator.moc.fetch(request)
+        } catch (let error) {
+            throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                              ["Message" : "EventsCalendarManager.addEvents() failed to execute NSFetchRequest",
+                                               "request" : request.debugDescription,
+                                               "error.localizedDescription" : error.localizedDescription])
+        }
+        
+        let groupedTasks = Dictionary(grouping: tasks, by: {
+            $0._name
+        })
+        
+        for (_, group) in groupedTasks {
+            for task in group {
+                guard let taskType = SaveFormatter.storedToTaskType(task._taskType) else {
+                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Task whose _taskType couldn't be converted to a valid value of type SaveFormatter.TaskType"]
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
                 }
                 
+                var instances: Set<TaskInstance> = Set()
+                switch taskType {
+                case .recurring:
+                    if let unwrappedInstances = task._instances as? Set<TaskInstance> {
+                        instances = unwrappedInstances
+                    }
+                    break
+                case .specific:
+                    if let unwrappedInstances = task._instances as? Set<TaskInstance> {
+                        instances = unwrappedInstances
+                    } else {
+                        let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Specific-type Task with nil _instances"]
+                        throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                    }
+                    break
+                }
+                
+                var calendar: EKCalendar?
                 switch type {
                 case .event:
-                    let event = EKEvent(eventStore: eventStore)
-                    event.startDate = date; event.endDate = date
-                    event.title = task._name
-                    event.calendar = calendar
-                    try eventStore.save(event, span: EKSpan.thisEvent)
-                    break
+                    calendar = try getCalendar(.event); break
                 case .reminder:
-                    let reminder = EKReminder(eventStore: eventStore)
-                    reminder.title = task._name
-                    reminder.isCompleted = false
-                    reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                    reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                    reminder.calendar = calendar
-                    try eventStore.save(reminder, commit: true)
-                    break
+                    calendar = try getCalendar(.reminder); break
                 @unknown default:
                     break
                 }
+                
+                for instance in instances {
+                    guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                        let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
+                        throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                    }
+                    
+                    switch type {
+                    case .event:
+                        let event = EKEvent(eventStore: eventStore)
+                        event.startDate = date; event.endDate = date
+                        event.title = task._name
+                        event.calendar = calendar
+                        try eventStore.save(event, span: EKSpan.thisEvent)
+                        break
+                    case .reminder:
+                        let reminder = EKReminder(eventStore: eventStore)
+                        reminder.title = task._name
+                        reminder.isCompleted = false
+                        reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                        reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                        reminder.calendar = calendar
+                        try eventStore.save(reminder, commit: true)
+                        break
+                    @unknown default:
+                        break
+                    }
+                }
+                
             }
             
         }

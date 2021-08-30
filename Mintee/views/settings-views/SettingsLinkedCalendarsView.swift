@@ -11,8 +11,6 @@ import EventKit
 
 struct SettingsLinkedCalendarsView: View {
     
-    @FetchRequest(entity: Task.entity(), sortDescriptors: []) var tasksFetch: FetchedResults<Task>
-    
     @State var errorMessage: String = ""
     @State var alertTitle: String = ""
     @State var alertMessage: String = "To re-enable access, please go to Settings and turn on Mintee's Calendar permissions"
@@ -36,16 +34,10 @@ struct SettingsLinkedCalendarsView: View {
      - parameter type: The type (calendar event or reminder) of event to add to the user's Calendar.
      */
     private func addEKEvents(_ type: EKEntityType) {
-        let groupedTasks = Dictionary(grouping: tasksFetch, by: {
-            $0._name
-        })
-        
-        for name in groupedTasks.keys {
-            do {
-                try EventsCalendarManager.shared.addEvents(type: type, tasks: groupedTasks[name] ?? [])
-            } catch {
-                self.errorMessage = ErrorManager.unexpectedErrorMessage
-            }
+        do {
+            try EventsCalendarManager.shared.addEvents(type: type)
+        } catch {
+            self.errorMessage = ErrorManager.unexpectedErrorMessage
         }
     }
     
