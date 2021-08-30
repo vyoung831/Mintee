@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import EventKit
 
 struct SettingsLinkedCalendarsView: View {
     
@@ -30,6 +31,24 @@ struct SettingsLinkedCalendarsView: View {
         return CollectionSizer.getVGridLayout(widthAvailable: widthAvailable, idealItemWidth: self.idealItemWidth)
     }
     
+    /**
+     Groups fetched Tasks by `name` and adds events for them to the user's Calendar or Reminders.
+     - parameter type: The type (calendar event or reminder) of event to add to the user's Calendar.
+     */
+    private func addEKEvents(_ type: EKEntityType) {
+        let groupedTasks = Dictionary(grouping: tasksFetch, by: {
+            $0._name
+        })
+        
+        for name in groupedTasks.keys {
+            do {
+                try EventsCalendarManager.shared.addEvents(type: type, tasks: groupedTasks[name] ?? [])
+            } catch {
+                self.errorMessage = ErrorManager.unexpectedErrorMessage
+            }
+        }
+    }
+    
     var body: some View {
         
         GeometryReader { gr in
@@ -41,13 +60,7 @@ struct SettingsLinkedCalendarsView: View {
                         Button(action: {
                             switch EventsCalendarManager.shared.storeAuthStatus(.event) {
                             case .authorized:
-                                for task in tasksFetch {
-                                    do {
-                                        try EventsCalendarManager.shared.addEvents(type: .event, task: task)
-                                    } catch {
-                                        self.errorMessage = ErrorManager.unexpectedErrorMessage
-                                    }
-                                }
+                                addEKEvents(.event)
                                 break
                             case .denied:
                                 self.alertTitle = "Access to Calendar was Denied"
@@ -58,13 +71,7 @@ struct SettingsLinkedCalendarsView: View {
                             case .notDetermined:
                                 EventsCalendarManager.shared.requestStoreAccess(type: .event, completion: { accessGranted, error in
                                     if accessGranted {
-                                        for task in tasksFetch {
-                                            do {
-                                                try EventsCalendarManager.shared.addEvents(type: .event, task: task)
-                                            } catch {
-                                                self.errorMessage = ErrorManager.unexpectedErrorMessage
-                                            }
-                                        }
+                                        addEKEvents(.event)
                                     }
                                 })
                                 break
@@ -72,7 +79,8 @@ struct SettingsLinkedCalendarsView: View {
                                 break
                             }
                         }, label: {
-                            SettingsCard(icon: Image(systemName: "calendar"), label: "Apple Calendar")
+                            SettingsCard(icon: Image(systemName: "calendar"),
+                                         label: "Apple Calendar")
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)
@@ -81,13 +89,7 @@ struct SettingsLinkedCalendarsView: View {
                         Button(action: {
                             switch EventsCalendarManager.shared.storeAuthStatus(.reminder) {
                             case .authorized:
-                                for task in tasksFetch {
-                                    do {
-                                        try EventsCalendarManager.shared.addEvents(type: .reminder, task: task)
-                                    } catch {
-                                        self.errorMessage = ErrorManager.unexpectedErrorMessage
-                                    }
-                                }
+                                addEKEvents(.reminder)
                                 break
                             case .denied:
                                 self.alertTitle = "Access to Reminders was Denied"
@@ -98,13 +100,7 @@ struct SettingsLinkedCalendarsView: View {
                             case .notDetermined:
                                 EventsCalendarManager.shared.requestStoreAccess(type: .reminder, completion: { accessGranted, error in
                                     if accessGranted {
-                                        for task in tasksFetch {
-                                            do {
-                                                try EventsCalendarManager.shared.addEvents(type: .reminder, task: task)
-                                            } catch {
-                                                self.errorMessage = ErrorManager.unexpectedErrorMessage
-                                            }
-                                        }
+                                        addEKEvents(.reminder)
                                     }
                                 })
                                 break
