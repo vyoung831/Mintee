@@ -1,14 +1,14 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Technical debt
+about: Report overdue technical work
 title: ''
-labels: 'enhancement'
+labels: 'technical debt'
 assignees: ''
 
 ---
 
-**Feature description**
-A clear and concise description of the proposed feature.
+**Issue description**
+A clear and concise description of the technical debt.
 
 **Notes**
 
