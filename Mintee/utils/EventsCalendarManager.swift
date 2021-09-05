@@ -133,7 +133,8 @@ class EventsCalendarManager: NSObject {
                         event.startDate = date; event.endDate = date
                         event.title = task._name
                         event.calendar = calendar
-                        try eventStore.save(event, span: EKSpan.thisEvent)
+                        try eventStore.save(event, span: EKSpan.thisEvent, commit: false)
+                        instance.updateEKEvent(event.eventIdentifier)
                         break
                     case .reminder:
                         let reminder = EKReminder(eventStore: eventStore)
@@ -147,6 +148,13 @@ class EventsCalendarManager: NSObject {
                     @unknown default:
                         break
                     }
+                }
+                
+                do {
+                    try CDCoordinator.moc.save()
+                    try eventStore.commit()
+                } catch {
+                    CDCoordinator.moc.rollback()
                 }
                 
             }
