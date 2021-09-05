@@ -17,13 +17,15 @@ public class TaskInstance: NSManagedObject {
     @NSManaged private var completion: Float
     @NSManaged private var task: Task
     @NSManaged private var targetSet: TaskTargetSet?
-    @NSManaged private var ekevent: String?
+    @NSManaged public var ekEvent: String?
+    @NSManaged public var ekReminder: String?
     
     var _date: String { get { return self.date } }
     var _completion: Float { get { return self.completion } set { self.completion = newValue } }
     var _task: Task { get { return self.task } }
     var _targetSet: TaskTargetSet? { get { return self.targetSet } }
-    var _ekevent: String? { get { return self.ekevent } }
+    var _ekEvent: String? { get { return self.ekEvent } }
+    var _ekReminder: String? { get { return self.ekReminder } }
     
     convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?, date: String) {
         self.init(entity: entity, insertInto: context)
@@ -35,7 +37,11 @@ public class TaskInstance: NSManagedObject {
 extension TaskInstance {
     
     func updateEKEvent(_ identifier: String) {
-        self.ekevent = identifier
+        self.ekEvent = identifier
+    }
+    
+    func updateEKReminder(_ identifier: String) {
+        self.ekReminder = identifier
     }
     
     func updateTargetSet(_ tts: TaskTargetSet) {

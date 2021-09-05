@@ -28,7 +28,8 @@
     <entity name="TaskInstance" representedClassName="TaskInstance" syncable="YES">
         <attribute name="completion" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="String"/>
-        <attribute name="ekevent" optional="YES" attributeType="String"/>
+        <attribute name="ekEvent" optional="YES" attributeType="String"/>
+        <attribute name="ekReminder" optional="YES" attributeType="String"/>
         <relationship name="targetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="instances" inverseEntity="TaskTargetSet"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="instances" inverseEntity="Task"/>
     </entity>
@@ -54,7 +55,7 @@
         <element name="Analysis" positionX="-9381.968017578125" positionY="1956.215362548828" width="128" height="149"/>
         <element name="Tag" positionX="-9576.1591796875" positionY="2091.435958862305" width="128" height="74"/>
         <element name="Task" positionX="-9748.8037109375" positionY="2124.302429199219" width="128" height="149"/>
-        <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="103"/>
+        <element name="TaskInstance" positionX="-9925.339111328125" positionY="2068.322021484375" width="128" height="119"/>
         <element name="TaskSummaryAnalysis" positionX="-9507.880310058594" positionY="2247.859283447266" width="128" height="119"/>
         <element name="TaskTargetSet" positionX="-10111.32775878906" positionY="2207.26025390625" width="128" height="149"/>
     </elements>

@@ -143,7 +143,8 @@ class EventsCalendarManager: NSObject {
                         reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
                         reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
                         reminder.calendar = calendar
-                        try eventStore.save(reminder, commit: true)
+                        try eventStore.save(reminder, commit: false)
+                        instance.updateEKReminder(reminder.calendarItemIdentifier)
                         break
                     @unknown default:
                         break
