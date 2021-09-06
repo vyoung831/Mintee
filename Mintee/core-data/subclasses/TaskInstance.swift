@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import EventKit
 
 @objc(TaskInstance)
 public class TaskInstance: NSManagedObject {
@@ -19,7 +20,7 @@ public class TaskInstance: NSManagedObject {
     @NSManaged private var targetSet: TaskTargetSet?
     @NSManaged private var ekEvent: String?
     @NSManaged private var ekReminder: String?
-    @NSManaged private var lastModify: Date?
+    @NSManaged private var lastModify: Date
     
     var _date: String { get { return self.date } }
     var _completion: Float { get { return self.completion } }
@@ -27,7 +28,7 @@ public class TaskInstance: NSManagedObject {
     var _targetSet: TaskTargetSet? { get { return self.targetSet } }
     var _ekEvent: String? { get { return self.ekEvent } }
     var _ekReminder: String? { get { return self.ekReminder } }
-    var _lastModify: Date? { get { return self.lastModify } }
+    var _lastModify: Date { get { return self.lastModify } }
     
     convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?, date: String) {
         self.init(entity: entity, insertInto: context)
@@ -53,6 +54,35 @@ extension TaskInstance {
     
     func updateTargetSet(_ tts: TaskTargetSet) {
         self.targetSet = tts
+    }
+    
+}
+
+extension TaskInstance {
+    
+    /**
+     Syncs this TaskInstance's completion data with that of an EKReminder.
+     If the completion data is different, the last-modified dates of this and the provided EKReminder are compared.
+     The completion value from the later-modified object is copied into the other object.
+     - parameter reminder: The EKReminder for which to sync this TaskInstance's data with.
+     */
+    func syncWithReminder(_ reminder: EKReminder) {
+        // Only compare last-modified dates if completion data is not in-sync
+        if (self._completion <= 0 && reminder.isCompleted) || (self._completion > 0 && !reminder.isCompleted) {
+            
+            guard let reminderLastModify = reminder.lastModifiedDate else {
+                // Reminder was never modified. Copy this TaskInstance's completion data to Reminder.
+                reminder.isCompleted = self.completion > 0
+                return
+            }
+            
+            if self._lastModify.lessThanDate(reminderLastModify) {
+                self.updateCompletion(reminder.isCompleted ? 1 : 0)
+            } else {
+                reminder.isCompleted = self._completion > 0
+            }
+            
+        }
     }
     
 }

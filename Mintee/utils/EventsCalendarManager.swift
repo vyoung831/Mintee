@@ -63,7 +63,64 @@ class EventsCalendarManager: NSObject {
         }
         throw ErrorManager.recordNonFatal(.ek_defaultSource_doesNotExist, [:])
     }
-
+    
+    /**
+     Fetches all TaskInstances from the MOC and syncs data with Reminders.
+     For TaskInstances that already have a pointer to an existing EKReminder, the TaskInstance and EKReminder have their completion data compared and synced.
+     For Tasklnstances that don't already have EKReminder pointers, or whose EKReminders cannot be fetched, new EKReminders are created and pointers set for them.
+     */
+    static func syncWithReminders() throws {
+        let request: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
+        var instances: Set<TaskInstance> = Set<TaskInstance>()
+        do {
+            instances = Set<TaskInstance>(try CDCoordinator.moc.fetch(request))
+        } catch {
+            let _ = ErrorManager.recordNonFatal(.fetchRequest_failed, ["Message" : "EventsCalendarManager.syncWithReminders() failed to execute NSFetchRequest",
+                                                                       "request" : request.debugDescription,
+                                                                       "error.localizedDescription" : error.localizedDescription])
+        }
+        
+        // Fetch all EKReminders in the appropriate Mintee calendar and compare/sync completion data between fetched EKReminders and TaskInstances that point to them.
+        let calendar = try EventsCalendarManager.shared.getCalendar(.reminder)
+        let reminderPredicate = EventsCalendarManager.shared.eventStore.predicateForReminders(in: [calendar])
+        EventsCalendarManager.shared.eventStore.fetchReminders(matching: reminderPredicate, completion: { fetchedReminders in
+            if let reminders = fetchedReminders {
+                for instance in instances {
+                    // If the pointed-to EKReminder was fetched, compare/sync values and last-modified Dates and remove the TaskInstance from the fetch results.
+                    if let matchedReminder = reminders.first(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
+                        instance.syncWithReminder(matchedReminder)
+                        instances.remove(instance)
+                    }
+                }
+            }
+        })
+        
+        // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
+        for instance in instances {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.syncWithReminders() found a TaskInstance with nil or invalid _date",
+                                                "TaskInstance" : instance.debugDescription]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
+            }
+            let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
+            reminder.title = instance._task._name
+            reminder.isCompleted = instance._completion > 0
+            reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+            reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+            reminder.calendar = calendar
+            try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
+            instance.updateEKReminder(reminder.calendarItemIdentifier)
+        }
+        
+        do {
+            try EventsCalendarManager.shared.eventStore.commit()
+            try CDCoordinator.moc.save()
+        } catch {
+            CDCoordinator.moc.rollback()
+            throw error
+        }
+        
+    }
     
     /**
      Adds Calendar events or Reminders to the `Mintee` Calendar for an array of Tasks with the same name.
