@@ -21,6 +21,13 @@ class EventsCalendarManager: NSObject {
     
     override init() {
         eventStore = EKEventStore()
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(storeChanged), name: .EKEventStoreChanged, object: eventStore)
+    }
+    
+    @objc func storeChanged() {
+        // Any errors will have already have been reported to Crashlytics, and Notifications posted.
+        try? self.syncWithReminders()
     }
     
     /**
@@ -64,12 +71,19 @@ class EventsCalendarManager: NSObject {
         throw ErrorManager.recordNonFatal(.ek_defaultSource_doesNotExist, [:])
     }
     
+    func failReminderSync_and_resetChanges () {
+        NotificationCenter.default.post(name: .reminderSyncFailed, object: nil)
+        eventStore.reset()
+        CDCoordinator.moc.rollback()
+    }
+    
     /**
      Fetches all TaskInstances from the MOC and syncs data with Reminders.
      For TaskInstances that already have a pointer to an existing EKReminder, the TaskInstance and EKReminder have their completion data compared and synced.
      For Tasklnstances that don't already have EKReminder pointers, or whose EKReminders cannot be fetched, new EKReminders are created and pointers set for them.
      */
-    static func syncWithReminders() throws {
+    func syncWithReminders() throws {
+        
         let request: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances: Set<TaskInstance> = Set<TaskInstance>()
         do {
@@ -83,42 +97,66 @@ class EventsCalendarManager: NSObject {
         // Fetch all EKReminders in the appropriate Mintee calendar and compare/sync completion data between fetched EKReminders and TaskInstances that point to them.
         let calendar = try EventsCalendarManager.shared.getCalendar(.reminder)
         let reminderPredicate = EventsCalendarManager.shared.eventStore.predicateForReminders(in: [calendar])
+        
         EventsCalendarManager.shared.eventStore.fetchReminders(matching: reminderPredicate, completion: { fetchedReminders in
             if let reminders = fetchedReminders {
                 for instance in instances {
                     // If the pointed-to EKReminder was fetched, compare/sync values and last-modified Dates and remove the TaskInstance from the fetch results.
                     if let matchedReminder = reminders.first(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
-                        instance.syncWithReminder(matchedReminder)
+                        if instance.syncWithReminder(matchedReminder) {
+                            do {
+                                try EventsCalendarManager.shared.eventStore.save(matchedReminder, commit: false)
+                            } catch {
+                                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                                    ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving an existing reminder to the shared EKEventStore",
+                                                                     "error.localizedDescription" : error.localizedDescription])
+                                self.failReminderSync_and_resetChanges()
+                                return
+                            }
+                        }
                         instances.remove(instance)
                     }
                 }
+                
+                // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
+                for instance in instances {
+                    guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                        let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.syncWithReminders() found a TaskInstance with a _date that couldn't be converted to a valid Date",
+                                                        "TaskInstance" : instance.debugDescription]
+                        let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
+                        self.failReminderSync_and_resetChanges()
+                        return
+                    }
+                    let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
+                    reminder.title = instance._task._name
+                    reminder.isCompleted = instance._completion > 0
+                    reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                    reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                    reminder.calendar = calendar
+                    do {
+                        try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
+                    } catch {
+                        let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                            ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving a new reminder to the shared EKEventStore",
+                                                             "error.localizedDescription" : error.localizedDescription])
+                        self.failReminderSync_and_resetChanges()
+                        return
+                    }
+                    instance.updateEKReminder(reminder.calendarItemIdentifier)
+                }
+                
+                do {
+                    try EventsCalendarManager.shared.eventStore.commit()
+                    try CDCoordinator.moc.save()
+                } catch {
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                        ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncWithReminders()",
+                                                         "error.localizedDescription" : error.localizedDescription])
+                    self.failReminderSync_and_resetChanges()
+                    return
+                }
             }
         })
-        
-        // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
-        for instance in instances {
-            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.syncWithReminders() found a TaskInstance with nil or invalid _date",
-                                                "TaskInstance" : instance.debugDescription]
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
-            }
-            let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
-            reminder.title = instance._task._name
-            reminder.isCompleted = instance._completion > 0
-            reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-            reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-            reminder.calendar = calendar
-            try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
-            instance.updateEKReminder(reminder.calendarItemIdentifier)
-        }
-        
-        do {
-            try EventsCalendarManager.shared.eventStore.commit()
-            try CDCoordinator.moc.save()
-        } catch {
-            CDCoordinator.moc.rollback()
-            throw error
-        }
         
     }
     
