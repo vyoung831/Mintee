@@ -23,7 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         AnalysisLegendTransformer.register()
         
         // Get the managed object context from the shared persistent container.
-        let context = CDCoordinator.moc
+        let _ = CDCoordinator.moc
+        let _ = EventsCalendarManager.shared
         
         CKContainer.default().accountStatus(completionHandler: { status, error in
             switch status {

@@ -23,10 +23,14 @@ class EventsCalendarManager: NSObject {
         eventStore = EKEventStore()
         super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(storeChanged), name: .EKEventStoreChanged, object: eventStore)
+        NotificationCenter.default.addObserver(self, selector: #selector(mocChanged), name: .NSManagedObjectContextDidSave, object: CDCoordinator.moc)
+    }
+    
+    @objc func mocChanged() {
+        try? self.syncWithReminders()
     }
     
     @objc func storeChanged() {
-        // Any errors will have already have been reported to Crashlytics, and Notifications posted.
         try? self.syncWithReminders()
     }
     
@@ -149,6 +153,10 @@ class EventsCalendarManager: NSObject {
                 instance.updateEKReminder(reminder.calendarItemIdentifier)
             }
             
+            /*
+             At this point, MOC and EKEventStore data should all be synced.
+             If changes were made, committing the event store and saving the MOC will post Notifications and trigger the shared EventsCalendarManager to call syncWithReminders() once or twice again, but changes should not be detected those times.
+             */
             do {
                 changesMade ? try EventsCalendarManager.shared.eventStore.commit() : nil
                 changesMade ? try CDCoordinator.moc.save() : nil
