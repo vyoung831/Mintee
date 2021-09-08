@@ -99,63 +99,67 @@ class EventsCalendarManager: NSObject {
         let reminderPredicate = EventsCalendarManager.shared.eventStore.predicateForReminders(in: [calendar])
         
         EventsCalendarManager.shared.eventStore.fetchReminders(matching: reminderPredicate, completion: { fetchedReminders in
-            if let reminders = fetchedReminders {
-                for instance in instances {
-                    // If the pointed-to EKReminder was fetched, compare/sync values and last-modified Dates and remove the TaskInstance from the fetch results.
-                    if let matchedReminder = reminders.first(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
-                        if instance.syncWithReminder(matchedReminder) {
-                            do {
-                                try EventsCalendarManager.shared.eventStore.save(matchedReminder, commit: false)
-                            } catch {
-                                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                                    ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving an existing reminder to the shared EKEventStore",
-                                                                     "error.localizedDescription" : error.localizedDescription])
-                                self.failReminderSync_and_resetChanges()
-                                return
-                            }
+            
+            var changesMade: Bool = false
+            let reminders = fetchedReminders ?? []
+            for instance in instances {
+                // If the pointed-to EKReminder was fetched, compare/sync values and last-modified Dates and remove the TaskInstance from the fetch results.
+                if let matchedReminder = reminders.first(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
+                    if instance.syncWithReminder(matchedReminder) {
+                        changesMade = true
+                        do {
+                            try EventsCalendarManager.shared.eventStore.save(matchedReminder, commit: false)
+                        } catch {
+                            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                                ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving an existing reminder to the shared EKEventStore",
+                                                                 "error.localizedDescription" : error.localizedDescription])
+                            self.failReminderSync_and_resetChanges()
+                            return
                         }
-                        instances.remove(instance)
                     }
+                    instances.remove(instance)
                 }
-                
-                // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
-                for instance in instances {
-                    guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                        let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.syncWithReminders() found a TaskInstance with a _date that couldn't be converted to a valid Date",
-                                                        "TaskInstance" : instance.debugDescription]
-                        let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
-                        self.failReminderSync_and_resetChanges()
-                        return
-                    }
-                    let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
-                    reminder.title = instance._task._name
-                    reminder.isCompleted = instance._completion > 0
-                    reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                    reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                    reminder.calendar = calendar
-                    do {
-                        try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
-                    } catch {
-                        let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                            ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving a new reminder to the shared EKEventStore",
-                                                             "error.localizedDescription" : error.localizedDescription])
-                        self.failReminderSync_and_resetChanges()
-                        return
-                    }
-                    instance.updateEKReminder(reminder.calendarItemIdentifier)
+            }
+            
+            // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
+            for instance in instances {
+                changesMade = true
+                guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.syncWithReminders() found a TaskInstance with a _date that couldn't be converted to a valid Date",
+                                                    "TaskInstance" : instance.debugDescription]
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
+                    self.failReminderSync_and_resetChanges()
+                    return
                 }
-                
+                let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
+                reminder.title = instance._task._name
+                reminder.isCompleted = instance._completion > 0
+                reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+                reminder.calendar = calendar
                 do {
-                    try EventsCalendarManager.shared.eventStore.commit()
-                    try CDCoordinator.moc.save()
+                    try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
                 } catch {
                     let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                        ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncWithReminders()",
+                                                        ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving a new reminder to the shared EKEventStore",
                                                          "error.localizedDescription" : error.localizedDescription])
                     self.failReminderSync_and_resetChanges()
                     return
                 }
+                instance.updateEKReminder(reminder.calendarItemIdentifier)
             }
+            
+            do {
+                changesMade ? try EventsCalendarManager.shared.eventStore.commit() : nil
+                changesMade ? try CDCoordinator.moc.save() : nil
+            } catch {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                    ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncWithReminders()",
+                                                     "error.localizedDescription" : error.localizedDescription])
+                self.failReminderSync_and_resetChanges()
+                return
+            }
+            
         })
         
     }
