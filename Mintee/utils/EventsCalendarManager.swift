@@ -83,9 +83,39 @@ extension EventsCalendarManager {
     
 }
 
-// MARK: - Syncing
+// MARK: - Reminder creation and syncing
 
 extension EventsCalendarManager {
+    
+    /**
+     Given a Set of TaskInstances, creates EKReminders and updates the TaskInstances' pointers to point to the newly created reminders.
+     This function does NOT commit the changes to the shared EKEventStore nor save the shared MOC.
+     - parameter instances: The set of TaskInstances to create EKReminders for.
+     - parameter calendar: The EKCalendar to add the EKReminders to.
+     */
+    func createReminders(_ instances: Set<TaskInstance>, _ calendar: EKCalendar) throws {
+        for instance in instances {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.createReminders() found a TaskInstance with a _date that couldn't be converted to a valid Date",
+                                                "TaskInstance" : instance.debugDescription]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
+            }
+            let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
+            reminder.title = instance._task._name
+            reminder.isCompleted = instance._completion > 0
+            reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+            reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
+            reminder.calendar = calendar
+            do {
+                try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
+            } catch {
+                throw ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                    ["Message" : "An error occurred in EventsCalendarManager.createReminders() when saving a new EKReminder to the shared EKEventStore",
+                                                     "error.localizedDescription" : error.localizedDescription])
+            }
+            instance.updateEKReminder(reminder.calendarItemIdentifier)
+        }
+    }
     
     func failReminderSync_and_resetChanges () {
         NotificationCenter.default.post(name: .reminderSyncFailed, object: nil)
@@ -111,6 +141,7 @@ extension EventsCalendarManager {
         }
         
         // Fetch all EKReminders in the appropriate Mintee calendar and compare/sync completion data between fetched EKReminders and TaskInstances that point to them.
+        EventsCalendarManager.shared.eventStore.refreshSourcesIfNecessary()
         let calendar = try EventsCalendarManager.shared.getCalendar(.reminder)
         let reminderPredicate = EventsCalendarManager.shared.eventStore.predicateForReminders(in: [calendar])
         
@@ -138,31 +169,13 @@ extension EventsCalendarManager {
             }
             
             // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
-            for instance in instances {
+            if instances.count > 0 {
                 changesMade = true
-                guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.syncWithReminders() found a TaskInstance with a _date that couldn't be converted to a valid Date",
-                                                    "TaskInstance" : instance.debugDescription]
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
-                    self.failReminderSync_and_resetChanges()
-                    return
-                }
-                let reminder = EKReminder(eventStore: EventsCalendarManager.shared.eventStore)
-                reminder.title = instance._task._name
-                reminder.isCompleted = instance._completion > 0
-                reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                reminder.calendar = calendar
                 do {
-                    try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
+                    try self.createReminders(instances, calendar)
                 } catch {
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                        ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving a new reminder to the shared EKEventStore",
-                                                         "error.localizedDescription" : error.localizedDescription])
                     self.failReminderSync_and_resetChanges()
-                    return
                 }
-                instance.updateEKReminder(reminder.calendarItemIdentifier)
             }
             
             /*
@@ -193,7 +206,6 @@ extension EventsCalendarManager {
     /**
      Adds Calendar events or Reminders to the `Mintee` Calendar for an array of Tasks with the same name.
      - parameter type: The type of EKEntity (EKReminder or EKEvent) to add.
-     - parameter tasks: An array of Tasks (with the same name) to add Calendar events for.
      */
     func addEvents(type: EKEntityType) throws {
         
@@ -280,7 +292,7 @@ extension EventsCalendarManager {
                     try CDCoordinator.moc.save()
                     try eventStore.commit()
                 } catch {
-                    CDCoordinator.moc.rollback()
+                    failReminderSync_and_resetChanges()
                 }
                 
             }
