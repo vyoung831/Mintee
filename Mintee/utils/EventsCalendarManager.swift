@@ -11,7 +11,7 @@ import CoreData
 import UIKit
 import EventKit
 
-// MARK: - Authorization handling
+// MARK: - Initializers + utility functions
 
 class EventsCalendarManager: NSObject {
     
@@ -32,24 +32,6 @@ class EventsCalendarManager: NSObject {
     
     @objc func storeChanged() {
         try? self.syncWithReminders()
-    }
-    
-    /**
-     - parameter type: The type of EKEventStore to request access to.
-     - parameter completion: Escaping completion handler.
-     */
-    func requestStoreAccess(type: EKEntityType, completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
-        eventStore.requestAccess(to: type) { (accessGranted, error) in
-            completion(accessGranted, error)
-        }
-    }
-    
-    /**
-     - parameter type: The EKEventStore type to check access for.
-     - returns: The EventKit authorization status for the Reminders or Calendar event EKStore.
-     */
-    func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
-        return EKEventStore.authorizationStatus(for: .event)
     }
     
     /**
@@ -74,6 +56,36 @@ class EventsCalendarManager: NSObject {
         }
         throw ErrorManager.recordNonFatal(.ek_defaultSource_doesNotExist, [:])
     }
+    
+}
+
+// MARK: - Auth and access
+
+extension EventsCalendarManager {
+    
+    /**
+     - parameter type: The type of EKEventStore to request access to.
+     - parameter completion: Escaping completion handler.
+     */
+    func requestStoreAccess(type: EKEntityType, completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
+        eventStore.requestAccess(to: type) { (accessGranted, error) in
+            completion(accessGranted, error)
+        }
+    }
+    
+    /**
+     - parameter type: The EKEventStore type to check access for.
+     - returns: The EventKit authorization status for the Reminders or Calendar event EKStore.
+     */
+    func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
+        return EKEventStore.authorizationStatus(for: .event)
+    }
+    
+}
+
+// MARK: - Syncing
+
+extension EventsCalendarManager {
     
     func failReminderSync_and_resetChanges () {
         NotificationCenter.default.post(name: .reminderSyncFailed, object: nil)
@@ -171,6 +183,12 @@ class EventsCalendarManager: NSObject {
         })
         
     }
+    
+}
+
+// MARK: - Event/Reminder Adding
+
+extension EventsCalendarManager {
     
     /**
      Adds Calendar events or Reminders to the `Mintee` Calendar for an array of Tasks with the same name.
