@@ -27,11 +27,21 @@ class EventsCalendarManager: NSObject {
     }
     
     @objc func mocChanged() {
-        try? self.syncWithReminders()
+        try? self.syncReminders()
     }
     
     @objc func storeChanged() {
-        try? self.syncWithReminders()
+        try? self.syncReminders()
+    }
+    
+    func resetChanges() {
+        eventStore.reset()
+        CDCoordinator.moc.rollback()
+    }
+    
+    func postNotification_and_resetChanges(_ notification: Notification.Name) {
+        self.resetChanges()
+        NotificationCenter.default.post(name: notification, object: nil)
     }
     
     /**
@@ -40,7 +50,7 @@ class EventsCalendarManager: NSObject {
      */
     private func getCalendar(_ type: EKEntityType) throws -> EKCalendar {
         if let defaultSource = eventStore.sources.first(where: { $0.title == "Default" }) {
-            if let existingCalendar = defaultSource.calendars(for: .reminder).first(where: { $0.title == "Mintee" }) {
+            if let existingCalendar = defaultSource.calendars(for: type).first(where: { $0.title == "Mintee" }) {
                 return existingCalendar
             } else {
                 let calendar = EKCalendar(for: type, eventStore: eventStore)
@@ -93,7 +103,7 @@ extension EventsCalendarManager {
      - parameter instances: The set of TaskInstances to create EKReminders for.
      - parameter calendar: The EKCalendar to add the EKReminders to.
      */
-    func createReminders(_ instances: Set<TaskInstance>, _ calendar: EKCalendar) throws {
+    private func createReminders(_ instances: Set<TaskInstance>, _ calendar: EKCalendar) throws {
         for instance in instances {
             guard let date = SaveFormatter.storedStringToDate(instance._date) else {
                 let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.createReminders() found a TaskInstance with a _date that couldn't be converted to a valid Date",
@@ -117,25 +127,19 @@ extension EventsCalendarManager {
         }
     }
     
-    func failReminderSync_and_resetChanges () {
-        NotificationCenter.default.post(name: .reminderSyncFailed, object: nil)
-        eventStore.reset()
-        CDCoordinator.moc.rollback()
-    }
-    
     /**
      Fetches all TaskInstances from the MOC and syncs data with Reminders.
      For TaskInstances that already have a pointer to an existing EKReminder, the TaskInstance and EKReminder have their completion data compared and synced.
      For Tasklnstances that don't already have EKReminder pointers, or whose EKReminders cannot be fetched, new EKReminders are created and pointers set for them.
      */
-    func syncWithReminders() throws {
+    func syncReminders() throws {
         
         let request: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances: Set<TaskInstance> = Set<TaskInstance>()
         do {
             instances = Set<TaskInstance>(try CDCoordinator.moc.fetch(request))
         } catch {
-            let _ = ErrorManager.recordNonFatal(.fetchRequest_failed, ["Message" : "EventsCalendarManager.syncWithReminders() failed to execute NSFetchRequest",
+            let _ = ErrorManager.recordNonFatal(.fetchRequest_failed, ["Message" : "EventsCalendarManager.syncReminders() failed to execute NSFetchRequest",
                                                                        "request" : request.debugDescription,
                                                                        "error.localizedDescription" : error.localizedDescription])
         }
@@ -158,9 +162,9 @@ extension EventsCalendarManager {
                             try EventsCalendarManager.shared.eventStore.save(matchedReminder, commit: false)
                         } catch {
                             let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                                ["Message" : "An error occurred in EventsCalendarManager.syncWithReminders() when saving an existing reminder to the shared EKEventStore",
+                                                                ["Message" : "An error occurred in EventsCalendarManager.syncReminders() when saving an existing reminder to the shared EKEventStore",
                                                                  "error.localizedDescription" : error.localizedDescription])
-                            self.failReminderSync_and_resetChanges()
+                            self.postNotification_and_resetChanges(.reminderSyncFailed)
                             return
                         }
                     }
@@ -174,7 +178,7 @@ extension EventsCalendarManager {
                 do {
                     try self.createReminders(instances, calendar)
                 } catch {
-                    self.failReminderSync_and_resetChanges()
+                    self.postNotification_and_resetChanges(.reminderSyncFailed)
                 }
             }
             
@@ -187,9 +191,9 @@ extension EventsCalendarManager {
                 changesMade ? try CDCoordinator.moc.save() : nil
             } catch {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                    ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncWithReminders()",
+                                                    ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncReminders()",
                                                      "error.localizedDescription" : error.localizedDescription])
-                self.failReminderSync_and_resetChanges()
+                self.postNotification_and_resetChanges(.reminderSyncFailed)
                 return
             }
             
@@ -199,104 +203,63 @@ extension EventsCalendarManager {
     
 }
 
-// MARK: - Event/Reminder Adding
+// MARK: - EKEvent Adding
 
 extension EventsCalendarManager {
     
     /**
-     Adds Calendar events or Reminders to the `Mintee` Calendar for an array of Tasks with the same name.
-     - parameter type: The type of EKEntity (EKReminder or EKEvent) to add.
+     Given a Set of TaskInstances, creates EKEvents and updates the TaskInstances' pointers to point to the newly created events.
+     This function does NOT commit the changes to the shared EKEventStore nor save the shared MOC.
+     - parameter instances: The set of TaskInstances to create EKEvents for.
+     - parameter calendar: The EKCalendar to add the EKEvents to.
      */
-    func addEvents(type: EKEntityType) throws {
+    private func createEvents(_ instances: Set<TaskInstance>, _ calendar: EKCalendar) throws {
+        for instance in instances {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.createEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, instance._task.mergeDebugDictionary(userInfo: userInfo))
+            }
+            let event = EKEvent(eventStore: eventStore)
+            event.startDate = date; event.endDate = date
+            event.title = instance._task._name
+            event.calendar = calendar
+            try eventStore.save(event, span: EKSpan.thisEvent, commit: false)
+            instance.updateEKEvent(event.eventIdentifier)
+        }
+    }
+    
+    /**
+     Fetches all TaskInstances from the MOC and creates EKEvents for those that don't point to a valid EKEvent.
+     */
+    func syncEvents() throws {
         
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
-        var tasks: [Task] = []
+        let request: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
+        var instances: Set<TaskInstance> = Set<TaskInstance>()
         do {
-            tasks = try CDCoordinator.moc.fetch(request)
+            instances = Set<TaskInstance>(try CDCoordinator.moc.fetch(request))
         } catch (let error) {
             throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                              ["Message" : "EventsCalendarManager.addEvents() failed to execute NSFetchRequest",
+                                              ["Message" : "EventsCalendarManager.syncEvents() failed to execute NSFetchRequest",
                                                "request" : request.debugDescription,
                                                "error.localizedDescription" : error.localizedDescription])
         }
         
-        let groupedTasks = Dictionary(grouping: tasks, by: {
-            $0._name
-        })
-        
-        for (_, group) in groupedTasks {
-            for task in group {
-                guard let taskType = SaveFormatter.storedToTaskType(task._taskType) else {
-                    let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Task whose _taskType couldn't be converted to a valid value of type SaveFormatter.TaskType"]
-                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                }
-                
-                var instances: Set<TaskInstance> = Set()
-                switch taskType {
-                case .recurring:
-                    if let unwrappedInstances = task._instances as? Set<TaskInstance> {
-                        instances = unwrappedInstances
-                    }
-                    break
-                case .specific:
-                    if let unwrappedInstances = task._instances as? Set<TaskInstance> {
-                        instances = unwrappedInstances
-                    } else {
-                        let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a Specific-type Task with nil _instances"]
-                        throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                    }
-                    break
-                }
-                
-                var calendar: EKCalendar?
-                switch type {
-                case .event:
-                    calendar = try getCalendar(.event); break
-                case .reminder:
-                    calendar = try getCalendar(.reminder); break
-                @unknown default:
-                    break
-                }
-                
-                for instance in instances {
-                    guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                        let userInfo: [String : Any] = ["Message" : "EventsCalendarManager.addEvents() found a TaskInstance whose _date couldn't be converted to a valid Date"]
-                        throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                    }
-                    
-                    switch type {
-                    case .event:
-                        let event = EKEvent(eventStore: eventStore)
-                        event.startDate = date; event.endDate = date
-                        event.title = task._name
-                        event.calendar = calendar
-                        try eventStore.save(event, span: EKSpan.thisEvent, commit: false)
-                        instance.updateEKEvent(event.eventIdentifier)
-                        break
-                    case .reminder:
-                        let reminder = EKReminder(eventStore: eventStore)
-                        reminder.title = task._name
-                        reminder.isCompleted = false
-                        reminder.startDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                        reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: date)
-                        reminder.calendar = calendar
-                        try eventStore.save(reminder, commit: false)
-                        instance.updateEKReminder(reminder.calendarItemIdentifier)
-                        break
-                    @unknown default:
-                        break
-                    }
-                }
-                
-                do {
-                    try CDCoordinator.moc.save()
-                    try eventStore.commit()
-                } catch {
-                    failReminderSync_and_resetChanges()
-                }
-                
+        // Filter out the events that have pointers to valid EKEvents
+        let calendar = try getCalendar(.event)
+        let unmatchedInstances = instances.filter({
+            if let eventPointer = $0._ekEvent {
+                return eventStore.event(withIdentifier: eventPointer) == nil
             }
-            
+            return true
+        })
+
+        // Create EKEvents for the TaskInstances without valid EKEvent pointers and save changes
+        do {
+            try createEvents(unmatchedInstances, calendar)
+            try CDCoordinator.moc.save()
+            try eventStore.commit()
+        } catch {
+            resetChanges()
         }
         
     }

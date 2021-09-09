@@ -35,7 +35,14 @@ struct SettingsLinkedCalendarsView: View {
      */
     private func addEKEvents(_ type: EKEntityType) {
         do {
-            try EventsCalendarManager.shared.addEvents(type: type)
+            switch type {
+            case .event:
+                try EventsCalendarManager.shared.syncEvents(); break
+            case .reminder:
+                try EventsCalendarManager.shared.syncReminders(); break
+            @unknown default:
+                break
+            }
         } catch {
             self.errorMessage = ErrorManager.unexpectedErrorMessage
         }
