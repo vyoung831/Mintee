@@ -35,6 +35,7 @@ class ThemeManager: NSObject, ObservableObject {
         case disabledTextFieldText = "disabledTextFieldText"
         case collectionItem = "collectionItem"
         case collectionItemContent = "collectionItemContent"
+        case navIndicator = "navIndicator"
         
         // Placeholder colors (not actually defined in asset catalogs)
         case button = "button"
@@ -64,6 +65,8 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var collectionItem: Color
     @Published var collectionItemContent: Color
     
+    @Published var navIndicator: Color
+    
     // MARK: - Placeholder colors (not actually defined in asset catalogs)
     
     @Published var collectionItemBorder: Color
@@ -90,6 +93,7 @@ class ThemeManager: NSObject, ObservableObject {
         self.collectionItem = ThemeManager.getElementColor(.collectionItem, savedTheme)
         self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, savedTheme)
         self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, savedTheme)
+        self.navIndicator = ThemeManager.getElementColor(.navIndicator, savedTheme)
         super.init()
     }
     
@@ -138,6 +142,7 @@ class ThemeManager: NSObject, ObservableObject {
             self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
             self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
             self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
+            self.navIndicator = ThemeManager.getElementColor(.navIndicator, newTheme)
             NotificationCenter.default.post(name: .themeChanged, object: nil)
             
         }
@@ -177,7 +182,7 @@ class ThemeManager: NSObject, ObservableObject {
                 return .accentColor
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
-            case .disabledTextField, .disabledButton:
+            case .disabledTextField, .disabledButton, .navIndicator:
                 return Color("theme-system-\(assetKey)")
             default:
                 return .primary

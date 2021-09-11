@@ -28,6 +28,7 @@ struct SyncIndicator: View {
                 }
             }
         }
+        .foregroundColor(themeManager.navIndicator)
         
     }
 }
