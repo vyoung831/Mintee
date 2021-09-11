@@ -13,15 +13,15 @@ import EventKit
 
 // MARK: - Initializers + utility functions
 
-class EventsCalendarManager: NSObject {
+class EventsCalendarManager: ObservableObject {
     
     static var shared = EventsCalendarManager()
     
+    @Published var isSyncing: Bool = false
     var eventStore: EKEventStore
     
-    override init() {
+    init() {
         eventStore = EKEventStore()
-        super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(storeChanged), name: .EKEventStoreChanged, object: eventStore)
         NotificationCenter.default.addObserver(self, selector: #selector(mocChanged), name: .NSManagedObjectContextDidSave, object: CDCoordinator.moc)
     }
@@ -37,6 +37,7 @@ class EventsCalendarManager: NSObject {
     func resetChanges() {
         eventStore.reset()
         CDCoordinator.moc.rollback()
+        DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = false }
     }
     
     func postNotification_and_resetChanges(_ notification: Notification.Name) {
@@ -88,7 +89,7 @@ extension EventsCalendarManager {
      - returns: The EventKit authorization status for the Reminders or Calendar event EKStore.
      */
     func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
-        return EKEventStore.authorizationStatus(for: .event)
+        return EKEventStore.authorizationStatus(for: type)
     }
     
 }
@@ -120,8 +121,8 @@ extension EventsCalendarManager {
                 try EventsCalendarManager.shared.eventStore.save(reminder, commit: false)
             } catch {
                 throw ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                    ["Message" : "An error occurred in EventsCalendarManager.createReminders() when saving a new EKReminder to the shared EKEventStore",
-                                                     "error.localizedDescription" : error.localizedDescription])
+                                                  ["Message" : "An error occurred in EventsCalendarManager.createReminders() when saving a new EKReminder to the shared EKEventStore",
+                                                   "error.localizedDescription" : error.localizedDescription])
             }
             instance.updateEKReminder(reminder.calendarItemIdentifier)
         }
@@ -139,9 +140,9 @@ extension EventsCalendarManager {
         do {
             instances = Set<TaskInstance>(try CDCoordinator.moc.fetch(request))
         } catch {
-            let _ = ErrorManager.recordNonFatal(.fetchRequest_failed, ["Message" : "EventsCalendarManager.syncReminders() failed to execute NSFetchRequest",
-                                                                       "request" : request.debugDescription,
-                                                                       "error.localizedDescription" : error.localizedDescription])
+            throw ErrorManager.recordNonFatal(.fetchRequest_failed, ["Message" : "EventsCalendarManager.syncReminders() failed to execute NSFetchRequest",
+                                                                     "request" : request.debugDescription,
+                                                                     "error.localizedDescription" : error.localizedDescription])
         }
         
         // Fetch all EKReminders in the appropriate Mintee calendar and compare/sync completion data between fetched EKReminders and TaskInstances that point to them.
@@ -149,6 +150,9 @@ extension EventsCalendarManager {
         let calendar = try EventsCalendarManager.shared.getCalendar(.reminder)
         let reminderPredicate = EventsCalendarManager.shared.eventStore.predicateForReminders(in: [calendar])
         
+        /*
+         This block will be called by a background thread
+         */
         EventsCalendarManager.shared.eventStore.fetchReminders(matching: reminderPredicate, completion: { fetchedReminders in
             
             var changesMade: Bool = false
@@ -158,6 +162,7 @@ extension EventsCalendarManager {
                 if let matchedReminder = reminders.first(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
                     if instance.syncWithReminder(matchedReminder) {
                         changesMade = true
+                        DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
                         do {
                             try EventsCalendarManager.shared.eventStore.save(matchedReminder, commit: false)
                         } catch {
@@ -175,6 +180,7 @@ extension EventsCalendarManager {
             // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
             if instances.count > 0 {
                 changesMade = true
+                DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
                 do {
                     try self.createReminders(instances, calendar)
                 } catch {
@@ -189,6 +195,8 @@ extension EventsCalendarManager {
             do {
                 changesMade ? try EventsCalendarManager.shared.eventStore.commit() : nil
                 changesMade ? try CDCoordinator.moc.save() : nil
+                DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = false }
+                return
             } catch {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
                                                     ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncReminders()",
@@ -252,14 +260,16 @@ extension EventsCalendarManager {
             }
             return true
         })
-
+        
         // Create EKEvents for the TaskInstances without valid EKEvent pointers and save changes
-        do {
-            try createEvents(unmatchedInstances, calendar)
-            try CDCoordinator.moc.save()
-            try eventStore.commit()
-        } catch {
-            resetChanges()
+        if unmatchedInstances.count > 0 {
+            do {
+                try createEvents(unmatchedInstances, calendar)
+                try CDCoordinator.moc.save()
+                try eventStore.commit()
+            } catch {
+                resetChanges()
+            }
         }
         
     }
