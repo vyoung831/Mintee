@@ -32,6 +32,7 @@ struct SettingsView: View {
             }
             .background(themeManager.panel)
             .navigationTitle(Text("Settings"))
+            .navigationBarItems(leading: SyncIndicator())
         }
         .accentColor(themeManager.accent)
         

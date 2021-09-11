@@ -25,7 +25,7 @@ struct ActivityIndicator: View {
                 .stroke(style: self.style)
                 .rotation(Angle(degrees: animate ? 360 : 0))
                 .animation(Animation.linear(duration: spinTime).repeatForever(autoreverses: false))
-                .foregroundColor(themeManager.panelContent)
+                .foregroundColor(themeManager.navIndicator)
             Text(self.text)
         }
         .onAppear(){

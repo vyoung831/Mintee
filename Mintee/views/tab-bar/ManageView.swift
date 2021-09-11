@@ -38,19 +38,22 @@ struct ManageView: View {
             .padding(CollectionSizer.gridVerticalPadding)
             .background(themeManager.panel)
             .navigationTitle("Manage")
-            .navigationBarItems(trailing:
-                                    Button(action: {
-                                        self.isPresentingAddTaskPopup = true
-                                    }, label: {
-                                        Image(systemName: "plus.circle")
-                                            .frame(width: 30, height: 30, alignment: .center)
-                                            .accessibility(identifier: "add-task-button")
-                                    })
-                                    .scaleEffect(1.5)
-                                    .foregroundColor(themeManager.panelContent)
-                                    .sheet(isPresented: self.$isPresentingAddTaskPopup, content:  {
-                                        AddTask(isBeingPresented: self.$isPresentingAddTaskPopup)
-                                    })
+            .navigationBarItems(
+                leading:
+                    SyncIndicator(),
+                trailing:
+                    Button(action: {
+                        self.isPresentingAddTaskPopup = true
+                    }, label: {
+                        Image(systemName: "plus.circle")
+                            .frame(width: 30, height: 30, alignment: .center)
+                            .accessibility(identifier: "add-task-button")
+                    })
+                    .scaleEffect(1.5)
+                    .foregroundColor(themeManager.panelContent)
+                    .sheet(isPresented: self.$isPresentingAddTaskPopup, content:  {
+                        AddTask(isBeingPresented: self.$isPresentingAddTaskPopup)
+                    })
             )
             
         }.accentColor(themeManager.accent)

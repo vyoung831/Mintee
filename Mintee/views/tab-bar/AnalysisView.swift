@@ -35,39 +35,41 @@ struct AnalysisView: View {
             }
             .background(themeManager.panel)
             .navigationBarTitle("Analysis")
-            .navigationBarItems(trailing: HStack {
-                
-                Button(action: {
-                    self.isPresentingAddAnalysis = true
-                }, label: {
-                    Image(systemName: "plus.circle")
-                        .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(themeManager.panelContent)
-                        .accessibility(identifier: "add-analysis-button")
-                })
-                .scaleEffect(1.5)
-                .sheet(isPresented: self.$isPresentingAddAnalysis, content: {
-                    AddAnalysis(isBeingPresented: self.$isPresentingAddAnalysis)
-                })
-                
-                Button(action: {
-                    self.isPresentingAnalysisList = true
-                }, label: {
-                    Image(systemName: "list.bullet")
-                        .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(themeManager.panelContent)
-                        .accessibility(identifier: "analysis-list-button")
-                })
-                .scaleEffect(1.5)
-                .sheet(isPresented: self.$isPresentingAnalysisList, content: {
-                    AnalysisList(isBeingPresented: self.$isPresentingAnalysisList)
-                        .environment(\.managedObjectContext, CDCoordinator.moc)
-                })
-                
-            })
-            
+            .navigationBarItems(
+                leading:
+                    SyncIndicator(),
+                trailing:
+                    HStack {
+                        Button(action: {
+                            self.isPresentingAddAnalysis = true
+                        }, label: {
+                            Image(systemName: "plus.circle")
+                                .frame(width: 30, height: 30, alignment: .center)
+                                .foregroundColor(themeManager.panelContent)
+                                .accessibility(identifier: "add-analysis-button")
+                        })
+                        .scaleEffect(1.5)
+                        .sheet(isPresented: self.$isPresentingAddAnalysis, content: {
+                            AddAnalysis(isBeingPresented: self.$isPresentingAddAnalysis)
+                        })
+                        
+                        Button(action: {
+                            self.isPresentingAnalysisList = true
+                        }, label: {
+                            Image(systemName: "list.bullet")
+                                .frame(width: 30, height: 30, alignment: .center)
+                                .foregroundColor(themeManager.panelContent)
+                                .accessibility(identifier: "analysis-list-button")
+                        })
+                        .scaleEffect(1.5)
+                        .sheet(isPresented: self.$isPresentingAnalysisList, content: {
+                            AnalysisList(isBeingPresented: self.$isPresentingAnalysisList)
+                                .environment(\.managedObjectContext, CDCoordinator.moc)
+                        })
+                        
+                    }
+            )
         }
-        
     }
 }
 
