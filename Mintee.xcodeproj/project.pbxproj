@@ -55,6 +55,7 @@
 		C43AE1C1256075D200F1D560 /* CollectionSizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43AE1C0256075D200F1D560 /* CollectionSizer.swift */; };
 		C43AE1D42560C12700F1D560 /* CollectionSizer-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */; };
 		C43BD951244472A4003E68DC /* AddTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BD950244472A4003E68DC /* AddTask.swift */; };
+		C43D306126EC24FA00425F41 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D306026EC24FA00425F41 /* ActivityIndicator.swift */; };
 		C442AE0D2546D71000A9EB72 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C442AE0C2546D71000A9EB72 /* ErrorManager.swift */; };
 		C4478CCC2634CE4A00632352 /* LegendUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4478CCB2634CE4A00632352 /* LegendUtils.swift */; };
 		C44940C92498D713009FE818 /* SaveFormatter-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */; };
@@ -263,6 +264,7 @@
 		C43AE1C0256075D200F1D560 /* CollectionSizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSizer.swift; sourceTree = "<group>"; };
 		C43AE1D32560C12700F1D560 /* CollectionSizer-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionSizer-Tests.swift"; sourceTree = "<group>"; };
 		C43BD950244472A4003E68DC /* AddTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTask.swift; sourceTree = "<group>"; };
+		C43D306026EC24FA00425F41 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		C442AE0C2546D71000A9EB72 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C4478CCB2634CE4A00632352 /* LegendUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendUtils.swift; sourceTree = "<group>"; };
 		C44940C82498D713009FE818 /* SaveFormatter-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SaveFormatter-Tests.swift"; sourceTree = "<group>"; };
@@ -999,6 +1001,7 @@
 				C4130C2224C86E9A003EF047 /* SelectableTypeSection.swift */,
 				C4578D2424B4076D008BD3D4 /* StartAndEndDateSection.swift */,
 				C4ACD3CA250D715100D56277 /* TagsSection.swift */,
+				C43D306026EC24FA00425F41 /* ActivityIndicator.swift */,
 			);
 			path = "reused-sections";
 			sourceTree = "<group>";
@@ -1439,6 +1442,7 @@
 				C433E88725D9FA240053A47A /* AnalysisLegend.swift in Sources */,
 				C4478CCC2634CE4A00632352 /* LegendUtils.swift in Sources */,
 				C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */,
+				C43D306126EC24FA00425F41 /* ActivityIndicator.swift in Sources */,
 				C4F4BBC22471C30900065E4B /* TaskTargetSetView.swift in Sources */,
 				C4A10C7D24E9BD9A00F015A4 /* SelectDatesSection.swift in Sources */,
 				C409257C248664A600E463DA /* TaskTargetSetPopup.swift in Sources */,

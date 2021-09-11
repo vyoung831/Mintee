@@ -15,7 +15,7 @@ extension Notification.Name {
     }
     
     static var reminderSyncFailed: Notification.Name {
-        return .init(rawValue: "ThemeManager.reminderSyncFailed")
+        return .init(rawValue: "EventsCalendarManager.reminderSyncFailed")
     }
     
 }
