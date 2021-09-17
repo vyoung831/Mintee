@@ -65,7 +65,7 @@ struct ErrorManager {
         case persistentStore_saveFailed = 304
         
         // EventKit error codes
-        case ek_defaultSource_doesNotExist = 400
+        case ek_couldNotFind_localOriCloud_source = 400
     }
     
 }

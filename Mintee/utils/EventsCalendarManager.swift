@@ -45,29 +45,6 @@ class EventsCalendarManager: ObservableObject {
         NotificationCenter.default.post(name: notification, object: nil)
     }
     
-    /**
-     Returns the EKCalendar of the provided type named `Mintee` from the default EKEventSource.
-     - parameter type: The type of EKCalendar to retrieve.
-     */
-    private func getCalendar(_ type: EKEntityType) throws -> EKCalendar {
-        if let defaultSource = eventStore.sources.first(where: { $0.title == "Default" }) {
-            if let existingCalendar = defaultSource.calendars(for: type).first(where: { $0.title == "Mintee" }) {
-                return existingCalendar
-            } else {
-                let calendar = EKCalendar(for: type, eventStore: eventStore)
-                calendar.title = "Mintee"
-                calendar.source = defaultSource
-                do {
-                    try eventStore.saveCalendar(calendar, commit: true)
-                    return calendar
-                } catch {
-                    throw error
-                }
-            }
-        }
-        throw ErrorManager.recordNonFatal(.ek_defaultSource_doesNotExist, [:])
-    }
-    
 }
 
 // MARK: - Auth and access
@@ -90,6 +67,65 @@ extension EventsCalendarManager {
      */
     func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
         return EKEventStore.authorizationStatus(for: type)
+    }
+    
+}
+
+// MARK: - EKSource and EKCalendar utility functions
+
+extension EventsCalendarManager {
+    
+    /**
+     Creates or obtains, and returns an EKCalendar named "Mintee" in the provided EKSource.
+     If a new EKCalendar is created, it is saved to the source, but the change is not committed to the event store.
+     - parameter source: The EKSource in which to find or create the "Mintee" calendar
+     - parameter type: The EKCalendar's supported EKEntityType
+     - returns: An EKCalendar (existing or new) named "Mintee" supporting the provided EKEntityType and in the provided EKSource.
+     */
+    private func getOrCreateCalendar(_ source: EKSource, _ type: EKEntityType) throws -> EKCalendar {
+        if let existingCalendar = source.calendars(for: type).first(where: { $0.title == "Mintee" }) {
+            return existingCalendar
+        } else {
+            let calendar = EKCalendar(for: type, eventStore: eventStore)
+            calendar.title = "Mintee"
+            calendar.source = source
+            try eventStore.saveCalendar(calendar, commit: false)
+            return calendar
+        }
+    }
+    
+    /**
+     - parameter type: The EKEntityType for which to find the appropriate EKSource to store Mintee data in.
+     - returns: (Optional) The EKSource in which to store Mintee data, given the provided EKEntityType. If no appropriate source was found, nil is returned.
+     */
+    private func getEKSource(_ type: EKEntityType) -> EKSource? {
+        if let localSource = eventStore.sources.first(where: { $0.sourceType == .local }),
+           localSource.calendars(for: type).count > 0 {
+            return localSource
+        }
+        
+        // Iterate through all EKSources name 'iCloud'
+        let cloudSources = eventStore.sources.filter({ $0.title == "iCloud" })
+        if let cloudSource = cloudSources.first(where: { $0.calendars(for: type).count > 0 }) {
+            return cloudSource
+        }
+        return nil
+    }
+    
+    /**
+     - parameter type: The type of entity that will be added to the calendar.
+     - returns: An EKCalendar named 'Mintee' for adding EKEvents/EKReminders to.
+     */
+    private func getCalendar(_ type: EKEntityType) throws -> EKCalendar {
+        eventStore.refreshSourcesIfNecessary()
+        guard let source = getEKSource(type) else {
+            var userInfo: [String : Any] = [:]
+            for idx in 0 ..< eventStore.sources.count {
+                userInfo[String(idx)] = eventStore.sources[idx]
+            }
+            throw ErrorManager.recordNonFatal(.ek_couldNotFind_localOriCloud_source, userInfo)
+        }
+        return try getOrCreateCalendar(source, type)
     }
     
 }
@@ -194,7 +230,7 @@ extension EventsCalendarManager {
              */
             do {
                 changesMade ? try EventsCalendarManager.shared.eventStore.commit() : nil
-                changesMade ? try CDCoordinator.moc.save() : nil
+                changesMade ? CDCoordinator.shared.saveContext() : nil
                 DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = false }
                 return
             } catch {
