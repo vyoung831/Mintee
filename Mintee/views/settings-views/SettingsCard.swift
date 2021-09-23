@@ -11,13 +11,10 @@ import SwiftUI
 struct SettingsCard: View {
     
     let maxIconWidth: CGFloat = 50
-    let cardPadding: CGFloat = 5
-    let textPadding: CGFloat = 5
     
     let icon: Image
     let label: String
     let subtextIcon: Image?
-    let subtext: String?
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -44,30 +41,25 @@ struct SettingsCard: View {
              - Layout priority is set to 1 so that the Text can use as much height as it needs
              */
             Text(label)
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .bold()
+                .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                 .lineLimit(1)
                 .minimumScaleFactor(0.1)
                 .scaledToFit()
                 .layoutPriority(1)
             
             Spacer()
-            if let st = subtext {
+            if let subIcon = subtextIcon {
                 HStack {
-                    if let subIcon = subtextIcon {
-                        subIcon
-                            .foregroundColor(.white)
-                    }
-                    Text(st)
-                        .bold()
-                        .lineLimit(1)
-                        .scaledToFill()
-                        .layoutPriority(2)
+                    subIcon
+                        .foregroundColor(themeManager.collectionItem)
                 }
+                .frame(maxWidth: .infinity, minHeight: 0)
+                .padding(EdgeInsets(top: 5, leading: 0, bottom: 5 + CollectionSizer.borderThickness, trailing: 0))
+                .background(themeManager.collectionItemContent)
             }
-            Spacer()
             
         }
-        .padding(cardPadding)
         .border(themeManager.collectionItemBorder, width: CollectionSizer.borderThickness)
         .foregroundColor(themeManager.collectionItemContent)
         .background(themeManager.collectionItem)

@@ -80,8 +80,7 @@ struct SettingsLinkedCalendarsView: View {
                         }, label: {
                             SettingsCard(icon: Image(systemName: "calendar"),
                                          label: "Apple Calendar",
-                                         subtextIcon: Image(systemName: "checkmark"),
-                                         subtext: EventsCalendarManager.shared.storeAuthStatus(.event) == .authorized ? "Linked" : nil )
+                                         subtextIcon: EventsCalendarManager.shared.storeAuthStatus(.event) == .authorized ? Image(systemName: "checkmark") : nil)
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)
@@ -111,8 +110,7 @@ struct SettingsLinkedCalendarsView: View {
                         }, label: {
                             SettingsCard(icon: Image(systemName: "list.bullet"),
                                          label: "Apple Reminders",
-                                         subtextIcon: Image(systemName: "checkmark"),
-                                         subtext: EventsCalendarManager.shared.storeAuthStatus(.reminder) == .authorized ? "Linked" : nil )
+                                         subtextIcon: EventsCalendarManager.shared.storeAuthStatus(.reminder) == .authorized ? Image(systemName: "checkmark") : nil)
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)
