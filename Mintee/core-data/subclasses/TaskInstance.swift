@@ -33,6 +33,7 @@ public class TaskInstance: NSManagedObject {
     convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?, date: String) {
         self.init(entity: entity, insertInto: context)
         self.date = date
+        self.lastModify = Date()
     }
     
 }
