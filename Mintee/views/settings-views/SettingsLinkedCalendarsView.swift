@@ -79,7 +79,9 @@ struct SettingsLinkedCalendarsView: View {
                             }
                         }, label: {
                             SettingsCard(icon: Image(systemName: "calendar"),
-                                         label: "Apple Calendar")
+                                         label: "Apple Calendar",
+                                         subtextIcon: Image(systemName: "checkmark"),
+                                         subtext: EventsCalendarManager.shared.storeAuthStatus(.event) == .authorized ? "Linked" : nil )
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)
@@ -107,7 +109,10 @@ struct SettingsLinkedCalendarsView: View {
                                 break
                             }
                         }, label: {
-                            SettingsCard(icon: Image(systemName: "list.bullet"), label: "Apple Reminders")
+                            SettingsCard(icon: Image(systemName: "list.bullet"),
+                                         label: "Apple Reminders",
+                                         subtextIcon: Image(systemName: "checkmark"),
+                                         subtext: EventsCalendarManager.shared.storeAuthStatus(.reminder) == .authorized ? "Linked" : nil )
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)

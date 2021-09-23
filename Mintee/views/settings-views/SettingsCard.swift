@@ -16,6 +16,8 @@ struct SettingsCard: View {
     
     let icon: Image
     let label: String
+    let subtextIcon: Image?
+    let subtext: String?
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
@@ -42,12 +44,27 @@ struct SettingsCard: View {
              - Layout priority is set to 1 so that the Text can use as much height as it needs
              */
             Text(label)
-                .bold()
-                .padding(EdgeInsets(top: 0, leading: textPadding, bottom: textPadding, trailing: textPadding))
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 .lineLimit(1)
                 .minimumScaleFactor(0.1)
                 .scaledToFit()
                 .layoutPriority(1)
+            
+            Spacer()
+            if let st = subtext {
+                HStack {
+                    if let subIcon = subtextIcon {
+                        subIcon
+                            .foregroundColor(.white)
+                    }
+                    Text(st)
+                        .bold()
+                        .lineLimit(1)
+                        .scaledToFill()
+                        .layoutPriority(2)
+                }
+            }
+            Spacer()
             
         }
         .padding(cardPadding)
