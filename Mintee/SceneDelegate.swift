@@ -22,8 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         DayPatternTransformer.register()
         AnalysisLegendTransformer.register()
         
-        // Get the managed object context from the shared persistent container.
-        let _ = CDCoordinator.moc
+        // Initialize singleton managers
+        let _ = CDCoordinator.shared
         let _ = EventsCalendarManager.shared
         
         CKContainer.default().accountStatus(completionHandler: { status, error in

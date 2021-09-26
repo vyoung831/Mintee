@@ -76,40 +76,75 @@ extension EventsCalendarManager {
 extension EventsCalendarManager {
     
     /**
-     Creates or obtains, and returns an EKCalendar named "Mintee" in the provided EKSource.
-     If a new EKCalendar is created, it is saved to the source, but the change is not committed to the event store.
-     - parameter source: The EKSource in which to find or create the "Mintee" calendar
-     - parameter type: The EKCalendar's supported EKEntityType
-     - returns: An EKCalendar (existing or new) named "Mintee" supporting the provided EKEntityType and in the provided EKSource.
-     */
-    private func getOrCreateCalendar(_ source: EKSource, _ type: EKEntityType) throws -> EKCalendar {
-        if let existingCalendar = source.calendars(for: type).first(where: { $0.title == "Mintee" }) {
-            return existingCalendar
-        } else {
-            let calendar = EKCalendar(for: type, eventStore: eventStore)
-            calendar.title = "Mintee"
-            calendar.source = source
-            try eventStore.saveCalendar(calendar, commit: false)
-            return calendar
-        }
-    }
-    
-    /**
+     Finds an EKSource that allows EKCalendarItems of the provided type to be saved to.
+     Usable iCloud sources take priority over usable local sources.
+     This function checks for, in order:
+     1. Sources that already contain EKCalendars of the provided EKEntityType.
+     2. Sources that allow EKCalendars of the provided EKEntityType.
+     3. Source of default calendars (depending on the provided EKEntityType).
      - parameter type: The EKEntityType for which to find the appropriate EKSource to store Mintee data in.
      - returns: (Optional) The EKSource in which to store Mintee data, given the provided EKEntityType. If no appropriate source was found, nil is returned.
      */
     private func getEKSource(_ type: EKEntityType) -> EKSource? {
-        if let localSource = eventStore.sources.first(where: { $0.sourceType == .local }),
-           localSource.calendars(for: type).count > 0 {
-            return localSource
+        
+        eventStore.refreshSourcesIfNecessary()
+        
+        // Iterate through all iCloud and local EKSources and attempt to find one that already contains EKCalendars of the provided type.
+        let cloudSources = eventStore.sources.filter({ $0.title == "iCloud" })
+        let localSources = eventStore.sources.filter({ $0.sourceType == .local })
+        if let populatedCloudSource = cloudSources.first(where: { $0.calendars(for: type).count > 0 }) { return populatedCloudSource }
+        if let populatedLocalSource = localSources.first(where: { $0.calendars(for: type).count > 0 }) { return populatedLocalSource }
+        
+        // Iterate through each iCloud and local source (iCloud first) and attempt to save an EKCalendar of the provided type (without committing). If the save succeeds, backout changes and return the EKSource.
+        let combinedSources: [EKSource] = cloudSources + localSources
+        for source in combinedSources {
+            let calendar = EKCalendar(for: type, eventStore: eventStore); calendar.source = source
+            do {
+                try eventStore.saveCalendar(calendar, commit: false)
+                eventStore.reset()
+                return source
+            } catch {
+                eventStore.reset()
+            }
         }
         
-        // Iterate through all EKSources name 'iCloud'
-        let cloudSources = eventStore.sources.filter({ $0.title == "iCloud" })
-        if let cloudSource = cloudSources.first(where: { $0.calendars(for: type).count > 0 }) {
-            return cloudSource
+        // Attempt to use default calendars' sources.
+        switch type {
+        case .reminder:
+            if let defaultCalendar = eventStore.defaultCalendarForNewReminders() {
+                return defaultCalendar.source
+            }
+            break
+        case .event:
+            if let defaultCalendar = eventStore.defaultCalendarForNewEvents {
+                return defaultCalendar.source
+            }
+        @unknown default:
+            break
         }
+        
         return nil
+    }
+    
+    /**
+     Creates and returns an EKCalendar named "Mintee" in the appropriate EKSource.
+     The new EKCalendar is created, and saved and committed to the EKEventStore.
+     - parameter type: The EKEntityType to be supported.
+     - returns: A new EKCalendar named "Mintee" supporting the provided EKEntityType, saved and committed to the EKEventStore.
+     */
+    private func createMinteeCalendar(_ type: EKEntityType) throws -> EKCalendar {
+        guard let source = getEKSource(type) else {
+            var userInfo: [String : Any] = [:]
+            for idx in 0 ..< eventStore.sources.count {
+                userInfo[String(idx)] = eventStore.sources[idx]
+            }
+            throw ErrorManager.recordNonFatal(.ek_couldNotFind_usable_ekSource, userInfo)
+        }
+        let calendar = EKCalendar(for: type, eventStore: eventStore)
+        calendar.title = "Mintee"
+        calendar.source = source
+        try eventStore.saveCalendar(calendar, commit: true)
+        return calendar
     }
     
     /**
@@ -118,14 +153,10 @@ extension EventsCalendarManager {
      */
     private func getCalendar(_ type: EKEntityType) throws -> EKCalendar {
         eventStore.refreshSourcesIfNecessary()
-        guard let source = getEKSource(type) else {
-            var userInfo: [String : Any] = [:]
-            for idx in 0 ..< eventStore.sources.count {
-                userInfo[String(idx)] = eventStore.sources[idx]
-            }
-            throw ErrorManager.recordNonFatal(.ek_couldNotFind_localOriCloud_source, userInfo)
+        if let existingCalendar = eventStore.calendars(for: type).first(where: {$0.title == "Mintee"}) {
+            return existingCalendar
         }
-        return try getOrCreateCalendar(source, type)
+        return try createMinteeCalendar(type)
     }
     
 }
