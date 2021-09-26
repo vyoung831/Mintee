@@ -11,9 +11,14 @@ import EventKit
 
 struct SettingsLinkedCalendarsView: View {
     
+    let enableCalendar_message: String = "To re-enable access, please go to Settings and turn on Mintee's Calendar permissions"
+    let enableReminders_message: String = "To re-enable access, please go to Settings and turn on Mintee's Reminders permissions"
+    let unlinkCalendar_message: String = "To unlink Mintee from Calendar, you must turn off access in Settings, then manually delete the \"Mintee\" Calendar."
+    let unlinkReminders_message: String = "To unlink Mintee from Reminders, you must turn off access in Settings, then manually delete the \"Mintee\" Reminder list."
+    
     @State var errorMessage: String = ""
     @State var alertTitle: String = ""
-    @State var alertMessage: String = "To re-enable access, please go to Settings and turn on Mintee's Calendar permissions"
+    @State var alertMessage: String = ""
     @State var showingAlert: Bool = false
     
     let rowSpacing: CGFloat = 20
@@ -30,10 +35,9 @@ struct SettingsLinkedCalendarsView: View {
     }
     
     /**
-     Groups fetched Tasks by `name` and adds events for them to the user's Calendar or Reminders.
-     - parameter type: The type (calendar event or reminder) of event to add to the user's Calendar.
+     - parameter type: The type of EKCalendarItem to sync to the user's EKEventStore.
      */
-    private func addEKEvents(_ type: EKEntityType) {
+    private func syncItems(_ type: EKEntityType) {
         do {
             switch type {
             case .event:
@@ -59,18 +63,21 @@ struct SettingsLinkedCalendarsView: View {
                         Button(action: {
                             switch EventsCalendarManager.shared.storeAuthStatus(.event) {
                             case .authorized:
-                                addEKEvents(.event)
-                                break
+                                self.alertTitle = "Unlink Mintee"
+                                self.alertMessage = unlinkCalendar_message
+                                self.showingAlert = true; break
                             case .denied:
                                 self.alertTitle = "Access to Calendar was Denied"
+                                self.alertMessage = self.enableCalendar_message
                                 self.showingAlert = true; break
                             case .restricted:
                                 self.alertTitle = "Access to Calendar is Restricted"
+                                self.alertMessage = self.enableCalendar_message
                                 self.showingAlert = true; break
                             case .notDetermined:
                                 EventsCalendarManager.shared.requestStoreAccess(type: .event, completion: { accessGranted, error in
                                     if accessGranted {
-                                        addEKEvents(.event)
+                                        syncItems(.event)
                                     }
                                 })
                                 break
@@ -89,18 +96,21 @@ struct SettingsLinkedCalendarsView: View {
                         Button(action: {
                             switch EventsCalendarManager.shared.storeAuthStatus(.reminder) {
                             case .authorized:
-                                addEKEvents(.reminder)
-                                break
+                                self.alertTitle = "Unlink Mintee"
+                                self.alertMessage = unlinkReminders_message
+                                self.showingAlert = true; break
                             case .denied:
                                 self.alertTitle = "Access to Reminders was Denied"
+                                self.alertMessage = enableReminders_message
                                 self.showingAlert = true; break
                             case .restricted:
                                 self.alertTitle = "Access to Reminders is Restricted"
+                                self.alertMessage = enableReminders_message
                                 self.showingAlert = true; break
                             case .notDetermined:
                                 EventsCalendarManager.shared.requestStoreAccess(type: .reminder, completion: { accessGranted, error in
                                     if accessGranted {
-                                        addEKEvents(.reminder)
+                                        syncItems(.reminder)
                                     }
                                 })
                                 break
