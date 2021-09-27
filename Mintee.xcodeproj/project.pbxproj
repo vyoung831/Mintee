@@ -137,7 +137,6 @@
 		C4D9DB692547614B002F0B40 /* SetCountPopupHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D9DB682547614B002F0B40 /* SetCountPopupHostingController.swift */; };
 		C4DACF8D25D8BB02001F3468 /* AddAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DACF8C25D8BB02001F3468 /* AddAnalysis.swift */; };
 		C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */; };
-		C4DB49E126D680FF00A5A19B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB49E026D680FF00A5A19B /* CloudKit.framework */; };
 		C4DCDFBA24B12A3B008F727F /* XCUIElement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DCDFB924B12A3B008F727F /* XCUIElement+Extensions.swift */; };
 		C4E5D5EE250426A000557373 /* Task-TagHandling-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */; };
 		C4E5D5F225042F6C00557373 /* Task-InstanceDelta-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5F125042F6C00557373 /* Task-InstanceDelta-Tests.swift */; };
@@ -344,8 +343,6 @@
 		C4D9DB682547614B002F0B40 /* SetCountPopupHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCountPopupHostingController.swift; sourceTree = "<group>"; };
 		C4DACF8C25D8BB02001F3468 /* AddAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnalysis.swift; sourceTree = "<group>"; };
 		C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopup.swift; sourceTree = "<group>"; };
-		C4DB49DF26D680FC00A5A19B /* Mintee.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mintee.entitlements; sourceTree = "<group>"; };
-		C4DB49E026D680FF00A5A19B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C4DCDFB924B12A3B008F727F /* XCUIElement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extensions.swift"; sourceTree = "<group>"; };
 		C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests.swift"; sourceTree = "<group>"; };
 		C4E5D5F125042F6C00557373 /* Task-InstanceDelta-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests.swift"; sourceTree = "<group>"; };
@@ -369,7 +366,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				90C17391E3385ECEB9C8DA12 /* libPods-Mintee.a in Frameworks */,
-				C4DB49E126D680FF00A5A19B /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,7 +427,6 @@
 		8AD43B30ED9F77EA07670B70 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C4DB49E026D680FF00A5A19B /* CloudKit.framework */,
 				C465819325A27D7300E4418D /* XCTest.framework */,
 				CA2C3861A510FA5952549039 /* libPods-Mintee.a */,
 				D62705A9362952076D014C52 /* libPods-Mintee_AUT_Function.a */,
@@ -471,7 +466,6 @@
 		C4037A9624342E1F00150D47 /* Mintee */ = {
 			isa = PBXGroup;
 			children = (
-				C4DB49DF26D680FC00A5A19B /* Mintee.entitlements */,
 				C4037AA824342E2300150D47 /* Info.plist */,
 				C4037A9724342E1F00150D47 /* AppDelegate.swift */,
 				C44C7F8A243DCD3D00072AD8 /* SceneDelegate.swift */,
@@ -1741,7 +1735,6 @@
 			baseConfigurationReference = D8EE49E6CBD38F2E973E07D3 /* Pods-Mintee.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Mintee/Mintee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
@@ -1769,7 +1762,6 @@
 			baseConfigurationReference = 240C8922F685AA2390B054AB /* Pods-Mintee.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Mintee/Mintee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 3X6BZVFX73;
