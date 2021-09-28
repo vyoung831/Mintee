@@ -25,6 +25,8 @@ struct SettingsLinkedCalendarsView: View {
     let idealItemWidth: CGFloat = 100
     let cardHeightMultiplier: CGFloat = 1.5
     
+    @ObservedObject var eventManager: EventsCalendarManager = EventsCalendarManager.shared
+    
     /**
      Calls CollectionSizer.getVGridLayout with this View's idealItemWidth constant.
      - parameter totalWidth: Total width of View that can be used for sizing items, spacing, and left/right insets.
@@ -61,7 +63,7 @@ struct SettingsLinkedCalendarsView: View {
                     LazyVGrid(columns: getMockCollectionLayout(widthAvailable: gr.size.width).grid, alignment: .center, spacing: self.rowSpacing) {
                         
                         Button(action: {
-                            switch EventsCalendarManager.shared.storeAuthStatus(.event) {
+                            switch EventsCalendarManager.storeAuthStatus(.event) {
                             case .authorized:
                                 self.alertTitle = "Unlink Mintee"
                                 self.alertMessage = unlinkCalendar_message
@@ -87,14 +89,14 @@ struct SettingsLinkedCalendarsView: View {
                         }, label: {
                             SettingsCard(icon: Image(systemName: "calendar"),
                                          label: "Apple Calendar",
-                                         subtextIcon: EventsCalendarManager.shared.storeAuthStatus(.event) == .authorized ? Image(systemName: "checkmark") : nil)
+                                         subtextIcon: eventManager.calendarLinked ? Image(systemName: "checkmark") : nil)
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)
                         })
                         
                         Button(action: {
-                            switch EventsCalendarManager.shared.storeAuthStatus(.reminder) {
+                            switch EventsCalendarManager.storeAuthStatus(.reminder) {
                             case .authorized:
                                 self.alertTitle = "Unlink Mintee"
                                 self.alertMessage = unlinkReminders_message
@@ -120,7 +122,7 @@ struct SettingsLinkedCalendarsView: View {
                         }, label: {
                             SettingsCard(icon: Image(systemName: "list.bullet"),
                                          label: "Apple Reminders",
-                                         subtextIcon: EventsCalendarManager.shared.storeAuthStatus(.reminder) == .authorized ? Image(systemName: "checkmark") : nil)
+                                         subtextIcon: eventManager.remindersLinked ? Image(systemName: "checkmark") : nil)
                                 .frame(width: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth,
                                        height: getMockCollectionLayout(widthAvailable: gr.size.width).itemWidth * self.cardHeightMultiplier,
                                        alignment: .center)

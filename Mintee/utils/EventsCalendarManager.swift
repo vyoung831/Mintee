@@ -18,10 +18,14 @@ class EventsCalendarManager: ObservableObject {
     static var shared = EventsCalendarManager()
     
     @Published var isSyncing: Bool = false
+    @Published var calendarLinked: Bool
+    @Published var remindersLinked: Bool
     var eventStore: EKEventStore
     
     init() {
         eventStore = EKEventStore()
+        self.calendarLinked = (EventsCalendarManager.storeAuthStatus(.event) == .authorized)
+        self.remindersLinked = (EventsCalendarManager.storeAuthStatus(.reminder) == .authorized)
         NotificationCenter.default.addObserver(self, selector: #selector(storeChanged), name: .EKEventStoreChanged, object: eventStore)
         NotificationCenter.default.addObserver(self, selector: #selector(mocChanged), name: .NSManagedObjectContextDidSave, object: CDCoordinator.moc)
     }
@@ -31,6 +35,8 @@ class EventsCalendarManager: ObservableObject {
     }
     
     @objc func storeChanged() {
+        self.calendarLinked = (EventsCalendarManager.storeAuthStatus(.event) == .authorized)
+        self.remindersLinked = (EventsCalendarManager.storeAuthStatus(.reminder) == .authorized)
         try? self.syncReminders()
     }
     
@@ -57,6 +63,16 @@ extension EventsCalendarManager {
      */
     func requestStoreAccess(type: EKEntityType, completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
         eventStore.requestAccess(to: type) { (accessGranted, error) in
+            switch type {
+            case .event:
+                DispatchQueue.main.async { EventsCalendarManager.shared.calendarLinked = accessGranted }
+                break
+            case .reminder:
+                DispatchQueue.main.async { EventsCalendarManager.shared.remindersLinked = accessGranted }
+                break
+            default:
+                break
+            }
             completion(accessGranted, error)
         }
     }
@@ -65,7 +81,7 @@ extension EventsCalendarManager {
      - parameter type: The EKEventStore type to check access for.
      - returns: The EventKit authorization status for the Reminders or Calendar event EKStore.
      */
-    func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
+    static func storeAuthStatus(_ type: EKEntityType) -> EKAuthorizationStatus {
         return EKEventStore.authorizationStatus(for: type)
     }
     

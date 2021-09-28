@@ -16,11 +16,11 @@ struct SyncIndicator: View {
     var body: some View {
         
         HStack {
-            if eventManager.storeAuthStatus(.event) == .authorized {
+            if EventsCalendarManager.storeAuthStatus(.event) == .authorized {
                 Image(systemName: "calendar")
             }
             
-            if EventsCalendarManager.shared.storeAuthStatus(.reminder) == .authorized {
+            if EventsCalendarManager.storeAuthStatus(.reminder) == .authorized {
                 if eventManager.isSyncing {
                     ActivityIndicator()
                 } else {
