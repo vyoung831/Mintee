@@ -66,6 +66,7 @@ struct ErrorManager {
         
         // EventKit error codes
         case ek_couldNotFind_usable_ekSource = 400
+        case ek_removeFailed = 401
     }
     
 }

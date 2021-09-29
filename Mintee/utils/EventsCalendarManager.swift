@@ -238,16 +238,16 @@ extension EventsCalendarManager {
          */
         EventsCalendarManager.shared.eventStore.fetchReminders(matching: reminderPredicate, completion: { fetchedReminders in
             
+            DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
             var changesMade: Bool = false
-            let reminders = fetchedReminders ?? []
+            var reminders = fetchedReminders ?? []
             for instance in instances {
                 // If the pointed-to EKReminder was fetched, compare/sync values and last-modified Dates and remove the TaskInstance from the fetch results.
-                if let matchedReminder = reminders.first(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
-                    if instance.syncWithReminder(matchedReminder) {
+                if let matchIndex = reminders.firstIndex(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
+                    if instance.syncWithReminder(reminders[matchIndex]) {
                         changesMade = true
-                        DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
                         do {
-                            try EventsCalendarManager.shared.eventStore.save(matchedReminder, commit: false)
+                            try EventsCalendarManager.shared.eventStore.save(reminders[matchIndex], commit: false)
                         } catch {
                             let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
                                                                 ["Message" : "An error occurred in EventsCalendarManager.syncReminders() when saving an existing reminder to the shared EKEventStore",
@@ -257,16 +257,30 @@ extension EventsCalendarManager {
                         }
                     }
                     instances.remove(instance)
+                    reminders.remove(at: matchIndex)
                 }
             }
             
             // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
             if instances.count > 0 {
                 changesMade = true
-                DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
                 do {
                     try self.createReminders(instances, calendar)
                 } catch {
+                    self.postNotification_and_resetChanges(.reminderSyncFailed)
+                }
+            }
+            
+            // Remaining EKReminders in reminders are ones that no TaskInstance points to. Delete them
+            if reminders.count > 0 {
+                changesMade = true
+                do {
+                    for reminder in reminders {
+                        try self.eventStore.remove(reminder, commit: false)
+                    }
+                } catch {
+                    let _ = ErrorManager.recordNonFatal(.ek_removeFailed, ["Message" : "An error occurred in EventsCalendarManager.syncReminders() when removing an EKReminder from the shared EKEventStore",
+                                                                           "error.localizedDescription" : error.localizedDescription])
                     self.postNotification_and_resetChanges(.reminderSyncFailed)
                 }
             }
