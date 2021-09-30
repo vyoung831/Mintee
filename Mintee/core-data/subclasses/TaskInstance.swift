@@ -69,25 +69,32 @@ extension TaskInstance {
      - returns: True if there was a change made to the EKReminder or this TaskInstance.
      */
     func syncWithReminder(_ reminder: EKReminder) -> Bool {
+        
+        var different: Bool = false
+        
         // Only compare last-modified dates if completion data is not in-sync
         if (self._completion <= 0 && reminder.isCompleted) || (self._completion > 0 && !reminder.isCompleted) {
-            
-            guard let reminderLastModify = reminder.lastModifiedDate else {
+            if let reminderLastModify = reminder.lastModifiedDate {
+                if self._lastModify.lessThan(reminderLastModify) {
+                    self.updateCompletion(reminder.isCompleted ? 1 : 0)
+                    different = true
+                } else {
+                    reminder.isCompleted = self._completion > 0
+                    different = true
+                }
+            } else {
                 // Reminder was never modified. Copy this TaskInstance's completion data to Reminder.
                 reminder.isCompleted = self.completion > 0
-                return true
+                different = true
             }
-            
-            if self._lastModify.lessThan(reminderLastModify) {
-                self.updateCompletion(reminder.isCompleted ? 1 : 0)
-                return true
-            } else {
-                reminder.isCompleted = self._completion > 0
-                return true
-            }
-            
         }
-        return false
+        
+        if (self.task._name != reminder.title) {
+            reminder.title = self.task._name
+            different = true
+        }
+        
+        return different
     }
     
 }
