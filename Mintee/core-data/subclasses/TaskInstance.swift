@@ -68,7 +68,7 @@ extension TaskInstance {
      - parameter reminder: The EKReminder for which to sync this TaskInstance's data with.
      - returns: True if there was a change made to the EKReminder or this TaskInstance.
      */
-    func syncWithReminder(_ reminder: EKReminder) -> Bool {
+    func syncWithReminder(_ reminder: EKReminder) throws -> Bool {
         
         var different: Bool = false
         
@@ -89,8 +89,31 @@ extension TaskInstance {
             }
         }
         
+        // Sync EKReminder/TaskInstance name
         if (self.task._name != reminder.title) {
             reminder.title = self.task._name
+            different = true
+        }
+        
+        /*
+         Sync EKReminder/TaskInstance date
+         */
+        guard let instanceDate = SaveFormatter.storedStringToDate(self.date) else {
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                              ["Message" : "TaskInstance.syncWithReminder() could not convert the TaskInstance's date to a valid Date",
+                                               "date" : self.date ])
+        }
+        
+        if let reminderDueDateComponents = reminder.dueDateComponents,
+           let reminderDueDate = Calendar.current.date(from: reminderDueDateComponents) {
+            // If the EKReminder's due date is different from this TaskInstance's date,
+            if SaveFormatter.dateToStoredString(reminderDueDate) != self.date {
+                reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: instanceDate)
+                different = true
+            }
+        } else {
+            // The EKReminder's due date components were nil or invalid. Overwrite it with the TaskInstance's data
+            reminder.dueDateComponents = Calendar.current.dateComponents(Set<Calendar.Component>(arrayLiteral: .day, .month, .year), from: instanceDate)
             different = true
         }
         

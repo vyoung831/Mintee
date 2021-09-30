@@ -233,29 +233,32 @@ extension EventsCalendarManager {
         let calendar = try EventsCalendarManager.shared.getCalendar(.reminder)
         let reminderPredicate = EventsCalendarManager.shared.eventStore.predicateForReminders(in: [calendar])
         
-        /*
-         This block will be called by a background thread
-         */
+        // This block will be called by a background thread
         EventsCalendarManager.shared.eventStore.fetchReminders(matching: reminderPredicate, completion: { fetchedReminders in
             
-            DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
             var changesMade: Bool = false
+            var sync_partiallyFailed: Bool = false
             var reminders = fetchedReminders ?? []
             for instance in instances {
                 // If the pointed-to EKReminder was fetched, compare/sync values and last-modified Dates and remove the TaskInstance from the fetch results.
                 if let matchIndex = reminders.firstIndex(where: { $0.calendarItemIdentifier == instance._ekReminder }) {
-                    if instance.syncWithReminder(reminders[matchIndex]) {
-                        changesMade = true
-                        do {
-                            try EventsCalendarManager.shared.eventStore.save(reminders[matchIndex], commit: false)
-                        } catch {
-                            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                                ["Message" : "An error occurred in EventsCalendarManager.syncReminders() when saving an existing reminder to the shared EKEventStore",
-                                                                 "error.localizedDescription" : error.localizedDescription])
-                            self.postNotification_and_resetChanges(.reminderSyncFailed)
-                            return
+                    do {
+                        if try instance.syncWithReminder(reminders[matchIndex]) {
+                            DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
+                            changesMade = true
+                            do {
+                                try EventsCalendarManager.shared.eventStore.save(reminders[matchIndex], commit: false)
+                            } catch {
+                                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                                    ["Message" : "An error occurred in EventsCalendarManager.syncReminders() when saving an existing reminder to the shared EKEventStore",
+                                                                     "error.localizedDescription" : error.localizedDescription])
+                                sync_partiallyFailed = true
+                            }
                         }
+                    } catch {
+                        sync_partiallyFailed = true
                     }
+                    // Remove from TaskInstances and EKReminders that, respectively, need EKReminders created or need deletion.
                     instances.remove(instance)
                     reminders.remove(at: matchIndex)
                 }
@@ -263,16 +266,18 @@ extension EventsCalendarManager {
             
             // Create EKReminders for remaining TaskInstances that had nil EKReminder pointers or pointed to EKReminders that don't exist.
             if instances.count > 0 {
+                DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
                 changesMade = true
                 do {
                     try self.createReminders(instances, calendar)
                 } catch {
-                    self.postNotification_and_resetChanges(.reminderSyncFailed)
+                    sync_partiallyFailed = true
                 }
             }
             
             // Remaining EKReminders in reminders are ones that no TaskInstance points to. Delete them
             if reminders.count > 0 {
+                DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = true }
                 changesMade = true
                 do {
                     for reminder in reminders {
@@ -281,25 +286,26 @@ extension EventsCalendarManager {
                 } catch {
                     let _ = ErrorManager.recordNonFatal(.ek_removeFailed, ["Message" : "An error occurred in EventsCalendarManager.syncReminders() when removing an EKReminder from the shared EKEventStore",
                                                                            "error.localizedDescription" : error.localizedDescription])
-                    self.postNotification_and_resetChanges(.reminderSyncFailed)
+                    sync_partiallyFailed = true
                 }
             }
             
             /*
-             At this point, MOC and EKEventStore data should all be synced.
-             If changes were made, committing the event store and saving the MOC will post Notifications and trigger the shared EventsCalendarManager to call syncWithReminders() once or twice again, but changes should not be detected those times.
+             If changes were made, committing the event store and saving the MOC will post Notifications and trigger the shared EventsCalendarManager to call syncWithReminders() twice again, but changes should not be detected those times.
              */
             do {
                 changesMade ? try EventsCalendarManager.shared.eventStore.commit() : nil
                 changesMade ? CDCoordinator.shared.saveContext() : nil
                 DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = false }
-                return
+                
+                // Only post the sync partial failure Notification if nothing else failed. Otherwise, rely on the sync save failure Notification to notify the user that a failure occured.
+                sync_partiallyFailed ? NotificationCenter.default.post(name: .reminderSync_partiallyFailed, object: nil) : nil
             } catch {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
                                                     ["Message" : "An error occurred when committing the EKEventStore or saving the MOC in EventsCalendarManager.syncReminders()",
                                                      "error.localizedDescription" : error.localizedDescription])
-                self.postNotification_and_resetChanges(.reminderSyncFailed)
-                return
+                self.postNotification_and_resetChanges(.reminderSync_saveFailed)
+                DispatchQueue.main.async{ EventsCalendarManager.shared.isSyncing = false }
             }
             
         })
