@@ -42,7 +42,7 @@ struct TodayView: View {
     
     var body: some View {
         NavigationView {
-            TodayCollectionViewControllerRepresentable(date: self.$date)
+            Text("This page unintentionally left blank")
                 .accentColor(themeManager.accent)
                 .navigationBarTitle(self.getLabel())
                 .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
