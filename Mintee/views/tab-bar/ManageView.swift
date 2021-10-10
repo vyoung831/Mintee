@@ -80,7 +80,7 @@ struct ManageViewCard: View {
         
         var ttsvArray: [TaskTargetSetView]
         do {
-            ttsvArray = try EditTaskHostingController.extractTTSVArray(task: self.task)
+            ttsvArray = try EditTask.extractTTSVArray(task: self.task)
         } catch {
             // No non-fatal is reported because call to extractTTSVArray() would have already reported an error.
             return nil
@@ -176,7 +176,6 @@ struct ManageViewCard: View {
                         
                         if let recurringProperties = self.getRecurringProperties() {
                             EditTask(isBeingPresented: self.$isPresentingEditTask,
-                                     dismiss: {},
                                      task: self.task,
                                      taskName: taskName,
                                      taskType: taskType,
@@ -192,7 +191,6 @@ struct ManageViewCard: View {
                         
                         if let dates = self.getSpecificDates() {
                             EditTask(isBeingPresented: self.$isPresentingEditTask,
-                                     dismiss: {},
                                      task: self.task,
                                      taskName: taskName,
                                      taskType: taskType,
