@@ -7,22 +7,24 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct EditAnalysis: View {
     
     let deleteMessage: String = "Are you sure you want to delete this Analysis?"
     
     @State var errorMessage: String = ""
-    @Binding var isBeingPresented: Bool
+    var isBeingPresented: Binding<Bool>
     
-    // Vars that must be supplied by the parent View
-    var analysis: Analysis
-    @State var analysisName: String
-    @State var tags: [String] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
-    @State var analysisType: SaveFormatter.analysisType
-    @State var rangeType: AnalysisUtils.dateRangeType
-    @State var legendType: AnalysisLegend.EntryType
-    @State var legendPreviews: [CategorizedLegendEntryPreview]
+    var analysis: Analysis?
+    
+    // Assign default values in case View initialization fails.
+    @State var analysisName: String = ""
+    @State var tags: [String] = [] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
+    @State var analysisType: SaveFormatter.analysisType = .box
+    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
+    @State var legendType: AnalysisLegend.EntryType = .categorized
+    @State var legendPreviews: [CategorizedLegendEntryPreview] = CategorizedLegendEntryPreview.getDefaults()
     
     // Vars that may not exist depending on rangeType's value. Initial values are assigned in case user toggles rangeType.
     @State var startDate: Date = Date()
@@ -34,78 +36,142 @@ struct EditAnalysis: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    private func saveAnalysis() -> Bool {
+    init(analysis: Analysis, presented: Binding<Bool>) {
         
-        if tags.count < 1 {
-            self.errorMessage = "Add at least one Tag for the Analysis to use"
-            return false
+        self.isBeingPresented = presented
+        
+        guard let type = SaveFormatter.storedToAnalysisType(analysis._analysisType) else {
+            var userInfo: [String : Any] = ["Message" : "EditAnalysis.init() found an Analysis with an _analysisType that could not be converted to valid in-memory form."]
+            analysis.mergeDebugDictionary(userInfo: &userInfo)
+            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil)
+            return
         }
         
-        switch self.rangeType {
-        case .dateRange:
-            guard let range = Int16(dateRangeString) else {
-                self.errorMessage = "Remove invalid input from date range"
-                CDCoordinator.moc.rollback()
-                return false
-            }
-            self.analysis.updateDateRange(range)
-            break
-        case .startEnd:
-            self.analysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
-            break
+        guard let previews = EditAnalysis.extractCategorizedPreviews(analysis) else {
+            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil)
+            return
         }
         
-        var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-        do {
-            
-            for preview in legendPreviews {
-                categorizedLegendEntries.insert(
-                    try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
-                )
-            }
-            
-            var tagsToAssociate: Set<Tag> = Set()
-            for tagName in self.tags {
-                if let tag = try Tag.getTag(tagName: tagName) {
-                    tagsToAssociate.insert(tag)
+        if let startDateString = analysis._startDate,
+           let endDateString = analysis._endDate,
+           let start = SaveFormatter.storedStringToDate(startDateString),
+           let end = SaveFormatter.storedStringToDate(endDateString) {
+            self._startDate = State(initialValue: start)
+            self._endDate = State(initialValue: end)
+            self._rangeType = State(initialValue: .startEnd)
+        } else {
+            self._dateRangeString = State(initialValue: String(analysis._dateRange))
+            self._rangeType = State(initialValue: .dateRange)
+        }
+        
+        self._analysisName = State(initialValue: analysis._name)
+        self._analysisType = State(initialValue: type)
+        self._legendPreviews = State(initialValue: previews)
+        self._tags = State(initialValue: Array(analysis.getTagNames()))
+        self.analysis = analysis
+        
+    }
+    
+    private func saveAnalysis(range: Int16 = 0) {
+        
+        guard let existingAnalysis = self.analysis else { return }
+        
+        let childContext = CDCoordinator.getChildContext()
+        if let childAnalysis = childContext.object(with: existingAnalysis.objectID) as? Analysis {
+            childContext.perform {
+                switch self.rangeType {
+                case .startEnd:
+                    childAnalysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
+                    break
+                case .dateRange:
+                    childAnalysis.updateDateRange(range)
+                    break
+                }
+                
+                var categorizedLegendEntries = Set<CategorizedLegendEntry>()
+                do {
+                    let entries = try legendPreviews.map({ try CategorizedLegendEntry(category: $0.category, color: UIColor($0.color)) })
+                    categorizedLegendEntries = categorizedLegendEntries.union(Set(entries))
+                } catch {
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                        ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to instantiate an array of CategorizedLegendEntry to save",
+                                                         "error.localizedDescription" : error.localizedDescription])
+                    NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                    return
+                }
+                
+                do {
+                    var tagsToAssociate: Set<Tag> = Set()
+                    for tagName in self.tags {
+                        if let tag = try Tag.getTag(tagName: tagName, childContext) {
+                            tagsToAssociate.insert(tag)
+                        } else {
+                            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                                ["Message" : "EditAnalysis.saveAnalysis() could not find an existing or create a new Tag to associate with an Analysis"])
+                            NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                            return
+                        }
+                    }
+                    try childAnalysis.associateTags(tagsToAssociate)
+                } catch {
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                        ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to update an Analysis' tags",
+                                                         "error.localizedDescription": error.localizedDescription])
+                    NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                    return
+                }
+                
+                // Update Analysis' values in MOC
+                childAnalysis.updateLegend(categorizedEntries: categorizedLegendEntries)
+                childAnalysis._name = analysisName
+                childAnalysis.updateAnalysisType(self.analysisType)
+                do {
+                    try childContext.save()
+                    try CDCoordinator.mainContext.save()
+                    return
+                } catch {
+                    CDCoordinator.mainContext.rollback()
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "EditAnalysis.saveAnalysis() failed to save changes"])
+                    NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                    return
                 }
             }
-            try self.analysis.associateTags(tagsToAssociate)
-            
-        } catch {
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
-        }
-        
-        /*
-         Update analysis' values in MOC
-         */
-        analysis.updateLegend(categorizedEntries: categorizedLegendEntries)
-        self.analysis._name = analysisName
-        self.analysis.updateAnalysisType(self.analysisType)
-        do {
-            try CDCoordinator.moc.save()
-            return true
-        } catch {
-            self.errorMessage = "Save failed. Please check if another Analysis with this name already exists"
-            CDCoordinator.moc.rollback()
-            return false
+        } else {
+            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "EditAnalysis.saveAnalysis() failed to retrieve an Analysis from a child MOC"])
+            NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+            return
         }
         
     }
     
+    /**
+     Deletes the Analysis associated from this View.
+     Because this View presents this function as a closure for a confirmation popup to call, dismissal is also done in this function.
+     */
     private func deleteAnalysis() {
+        let childContext = CDCoordinator.getChildContext()
+        guard let existingAnalysis = self.analysis,
+              let childAnalysis = childContext.object(with: existingAnalysis.objectID) as? Analysis else {
+                  NotificationCenter.default.post(name: .analysisDeleteFailed, object: nil)
+                  let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                      ["Message" : "EditAnalysis.deleteAnalysis() failed to retrieve an Analysis from a child MOC"])
+                  return
+              }
         
-        do {
-            self.analysis.deleteSelf()
-            try CDCoordinator.moc.save()
-            self.isBeingPresented = false
-        } catch {
-            CDCoordinator.moc.rollback()
-            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
+        childContext.perform {
+            do {
+                childAnalysis.deleteSelf(childContext)
+                try childContext.save()
+                try CDCoordinator.mainContext.save()
+                self.isBeingPresented.wrappedValue = false
+            } catch {
+                CDCoordinator.mainContext.rollback()
+                NotificationCenter.default.post(name: .analysisDeleteFailed, object: nil)
+                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "EditAnalysis.deleteAnalysis() failed to save changes",
+                                                                                  "error.localizedDescription" : error.localizedDescription ])
+            }
         }
-        
     }
     
     var body: some View {
@@ -170,7 +236,7 @@ struct EditAnalysis: View {
                                 .background(Color.red)
                                 .foregroundColor(.white)
                                 .cornerRadius(3)
-                        })
+                        }).disabled(self.analysis == nil)
                         
                         if (deleteErrorMessage.count > 0) {
                             Text(deleteErrorMessage)
@@ -186,35 +252,70 @@ struct EditAnalysis: View {
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
-            .navigationTitle("Edit Analysis")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                
-                leading: Button(action: {
-                    if saveAnalysis() {
-                        self.isBeingPresented = false
-                    }
-                }, label: {
-                    Text("Save")
-                })
-                .foregroundColor(.accentColor)
-                .accessibility(identifier: "edit-analysis-save-button")
-                .disabled(self.analysisName.count < 1),
-                
-                trailing: Button(action: {
-                    self.isBeingPresented = false
-                }, label: {
-                    Text("Cancel")
-                })
-                .foregroundColor(.accentColor)
-                
-            )
-            .background(themeManager.panel)
-            .foregroundColor(themeManager.panelContent)
+                .navigationTitle("Edit Analysis")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(
+                    leading: Button(action: {
+                        
+                        if tags.count < 1 {
+                            self.errorMessage = "Add at least one Tag for the Analysis to use"
+                            return
+                        }
+                        
+                        switch self.rangeType {
+                        case .startEnd:
+                            self.saveAnalysis(); break
+                        case .dateRange:
+                            guard let rangeCast = Int16(dateRangeString) else { self.errorMessage = "Enter a valid date range"; return }
+                            self.saveAnalysis(range: rangeCast); break
+                        }
+                        self.isBeingPresented.wrappedValue = false
+                        
+                    }, label: {
+                        Text("Save")
+                    })
+                        .foregroundColor(.accentColor)
+                        .accessibility(identifier: "edit-analysis-save-button")
+                        .disabled(self.analysisName.count < 1 || self.analysis == nil),
+                    
+                    trailing: Button(action: {
+                        self.isBeingPresented.wrappedValue = false
+                    }, label: {
+                        Text("Cancel")
+                    })
+                        .foregroundColor(.accentColor)
+                    
+                )
+                .background(themeManager.panel)
+                .foregroundColor(themeManager.panelContent)
             
         }
         .accentColor(themeManager.accent)
         
+    }
+    
+}
+
+// MARK: - Helper functions
+
+extension EditAnalysis {
+    
+    /**
+     Extracts an Analysis' AnalysisLegend to an array of CategorizedLegendEntryPreview.
+     - returns: (Optional) Array of CategorizedLegendEntryPreview representing the Analysis' legend.
+     */
+    private static func extractCategorizedPreviews(_ analysis: Analysis) -> [CategorizedLegendEntryPreview]? {
+        var previews: [CategorizedLegendEntryPreview] = []
+        for categorizedEntry in analysis._legend.categorizedEntries {
+            guard let color = UIColor(hex: categorizedEntry.color) else {
+                var userInfo: [String : Any] = ["Message" : "EditAnalysis.extractCategorizedPreviews() found a CategorizedLegendEntry with `color` that could not be converted to a UIColor"]
+                analysis.mergeDebugDictionary(userInfo: &userInfo)
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                return nil
+            }
+            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry.category))
+        }
+        return previews
     }
     
 }

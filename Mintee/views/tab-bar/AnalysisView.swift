@@ -61,7 +61,7 @@ struct AnalysisView: View {
                 .scaleEffect(1.5)
                 .sheet(isPresented: self.$isPresentingAnalysisList, content: {
                     AnalysisList(isBeingPresented: self.$isPresentingAnalysisList)
-                        .environment(\.managedObjectContext, CDCoordinator.moc)
+                        .environment(\.managedObjectContext, CDCoordinator.mainContext)
                 })
                 
             })

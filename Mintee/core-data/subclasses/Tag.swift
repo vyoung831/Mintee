@@ -24,20 +24,22 @@ public class Tag: NSManagedObject {
     
     /**
      Creates a Tag instance and inserts it into the shared MOC. This initializer should only be used if there is no existing Tag with tagName=$tagName in the MOC.
-     - parameter tagName: String to set new Tag's name to
+     - parameter tagName: String to set new Tag's name to.
+     - parameter moc: The MOC in which to perform updates.
      */
-    private convenience init( tagName : String ) {
-        self.init(context: CDCoordinator.moc)
+    private convenience init(tagName: String,_ moc: NSManagedObjectContext) {
+        self.init(context: moc)
         self.name = tagName
     }
     
     /**
      Given a tagName, either returns the existing Tag object with that tagName or creates a new one.
-     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate
-     - parameter tagName: Case and diacritic insensitive name of the Tag to attempt to find
-     - returns: Tag NSManagedObject with its tagName set to the input parm tagName
+     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate.
+     - parameter tagName: Case and diacritic insensitive name of the Tag to attempt to find.
+     - parameter moc: The MOC in which to perform updates or search for objects.
+     - returns: Tag with name equal to the provided tagName.
      */
-    static func getOrCreateTag(tagName: String) throws -> Tag {
+    static func getOrCreateTag(tagName: String,_ moc: NSManagedObjectContext) throws -> Tag {
         
         if tagName.count < 1 {
             let userInfo: [String : Any] = ["Message" : "Tag.getOrCreateTag() received tagName with count < 1"]
@@ -48,7 +50,7 @@ public class Tag: NSManagedObject {
         let request = NSFetchRequest<Tag>(entityName: "Tag")
         request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
         do {
-            let results = try CDCoordinator.moc.fetch(request)
+            let results = try moc.fetch(request)
             if let first = results.first {
                 // Return existing tag
                 return first
@@ -61,23 +63,24 @@ public class Tag: NSManagedObject {
         }
         
         // No tag already exists in MOC. Return Tag from initiaizlier
-        return Tag( tagName: tagName )
+        return Tag(tagName: tagName, moc)
     }
     
     /**
      Given a tagName, returns the existing Tag object with that tagName if such a Tag exists. Otherwise, returns nil.
      This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate.
-     - parameter tagName: Case and diacritic insensitive name of the Tag to find
-     - returns: (Optional) Tag with name = `tagName`
+     - parameter tagName: Case and diacritic insensitive name of the Tag to find.
+     - parameter moc: The MOC in which to search for objects.
+     - returns: (Optional) Tag with name = `tagName`.
      */
-    static func getTag(tagName: String) throws -> Tag? {
+    static func getTag(tagName: String,_ moc: NSManagedObjectContext) throws -> Tag? {
         
         // TO-DO: Update FetchRequest with more robust way to obtain name of `Tag` entity.
         // Set up case and diacritic insensitive predicate
         let request = NSFetchRequest<Tag>(entityName: "Tag")
         request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
         do {
-            let results = try CDCoordinator.moc.fetch(request)
+            let results = try moc.fetch(request)
             if let first = results.first {
                 return first
             }

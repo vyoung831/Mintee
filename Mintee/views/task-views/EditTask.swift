@@ -8,147 +8,168 @@
 
 import SwiftUI
 import Firebase
+import CoreData
 
 struct EditTask: View {
     
     let saveTaskDeleteMessage: String = "Because you changed your dates, task type, and/or target sets, you will lose data from the following dates. Are you sure you want to continue?"
     let deleteTaskDeleteMessage: String = "Are you sure you want to delete this Task? You will lose all data that you have previously entered for it."
     
-    @Binding var isBeingPresented: Bool
+    var isBeingPresented: Binding<Bool>
     
-    var task: Task
+    var task: Task?
     @State var datesToDelete: [String] = []
     @State var isPresentingAddTaskTargetSetPopup: Bool = false
     @State var isPresentingEditTaskTargetSetPopup: Bool = false
     @State var isPresentingConfirmDeletePopupForSaveTask: Bool = false
     @State var isPresentingConfirmDeletePopupForDeleteTask: Bool = false
-    @State var taskName: String
-    @State var taskType: SaveFormatter.taskType
+    
     @State var saveErrorMessage: String = ""
-    @State var tags: [String]
     @State var deleteErrorMessage: String = ""
     
-    // For recurring Tasks
+    // Default values in case View initialization fails
+    @State var taskName: String = ""
+    @State var taskType: SaveFormatter.taskType = .recurring
+    @State var tags: [String] = []
+    
+    // Vars for recurring Tasks
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var taskTargetSetViews: [TaskTargetSetView] = []
     
-    // For specific Tasks
+    // Vars for specific Tasks
     @State var dates: [Date] = []
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    private func saveTask() {
+    init(task: Task, presented: Binding<Bool>) {
         
-        task._name = self.taskName
-        var tagObjects: Set<Tag> = Set()
+        self.isBeingPresented = presented
         
-        do {
-            
-            for idx in 0 ..< self.tags.count {
-                let tag = try Tag.getOrCreateTag(tagName: self.tags[idx])
-                tagObjects.insert(tag)
-            }
-            task.updateTags(newTags: tagObjects)
-            
-            // Update the Task's taskType, dates, targetSets and instances.
-            switch self.taskType {
-            case .recurring:
-                var taskTargetSets: [TaskTargetSet] = []
-                if self.taskType == .recurring {
-                    for i in 0 ..< taskTargetSetViews.count {
-                        let ttsv = taskTargetSetViews[i]
-                        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
-                                                    insertInto: CDCoordinator.moc,
-                                                    min: ttsv.minTarget,
-                                                    max: ttsv.maxTarget,
-                                                    minOperator: ttsv.minOperator,
-                                                    maxOperator: ttsv.maxOperator,
-                                                    priority: Int16(i),
-                                                    pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
-                                                                        wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
-                                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []))))
-                        taskTargetSets.append(tts)
-                    }
-                }
-                
-                try task.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets))
-                
-                break
-            case .specific:
-                try task.updateSpecificInstances(dates: self.dates)
-                break
-            }
-        } catch {
-            self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
+        guard let type = SaveFormatter.storedToTaskType(task._taskType) else {
+            let userInfo: [String : Any] = ["Message" : "EditTask.init() found a Task with an _taskType that could not be converted to valid in-memory form."]
+            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+            NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
             return
         }
         
-        do {
-            try CDCoordinator.moc.save()
-            self.isBeingPresented = false
-        } catch {
-            CDCoordinator.moc.rollback()
-            self.saveErrorMessage = "Save failed. Please check that another task with this name doesn't already exist."
+        switch type {
+        case .recurring:
+            if let recurringProperties = EditTask.getRecurringProperties(task) {
+                self._startDate = State(initialValue: recurringProperties.startDate)
+                self._endDate = State(initialValue: recurringProperties.endDate)
+                self._taskTargetSetViews = State(initialValue: recurringProperties.ttsvArray)
+            } else {
+                NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
+                return
+            }
+            break
+        case .specific:
+            if let specificDates = EditTask.getSpecificDates(task) {
+                self._dates = State(initialValue: specificDates)
+            } else {
+                NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
+                return
+            }
+            break
         }
+        
+        self._taskName = State(initialValue: task._name)
+        self._tags = State(initialValue: Array(task.getTagNames()))
+        self._taskType = State(initialValue: type)
+        self.task = task
+        
+    }
+    
+    /**
+     Update the Task's relationships and saves it.
+     Since this function may be called as part of a completion handler, View dismissal is performed in this function.
+     */
+    private func saveTask() {
+        
+        guard let unwrappedTask = self.task else { return }
+        
+        var tagObjects: Set<Tag> = Set()
+        let childContext = CDCoordinator.getChildContext()
+        if let childTask = childContext.object(with: unwrappedTask.objectID) as? Task {
+            childContext.perform {
+                do {
+                    for idx in 0 ..< self.tags.count {
+                        let tag = try Tag.getOrCreateTag(tagName: self.tags[idx], childContext)
+                        tagObjects.insert(tag)
+                    }
+                    childTask.updateTags(newTags: tagObjects, childContext)
+                    
+                    // Update the Task's taskType, dates, targetSets and instances.
+                    switch self.taskType {
+                    case .recurring:
+                        var taskTargetSets: [TaskTargetSet] = []
+                        if self.taskType == .recurring {
+                            for i in 0 ..< taskTargetSetViews.count {
+                                let ttsv = taskTargetSetViews[i]
+                                let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: childContext,
+                                                            min: ttsv.minTarget, max: ttsv.maxTarget,
+                                                            minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
+                                                            priority: Int16(i),
+                                                            pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                                wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                                dom: Set((ttsv.selectedDaysOfMonth ?? []))))
+                                taskTargetSets.append(tts)
+                            }
+                        }
+                        try childTask.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets), childContext)
+                        break
+                    case .specific:
+                        try childTask.updateSpecificInstances(dates: self.dates, childContext)
+                        break
+                    }
+                } catch {
+                    NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
+                }
+                
+                do {
+                    try childContext.save()
+                    try CDCoordinator.mainContext.save()
+                    return
+                } catch {
+                    CDCoordinator.mainContext.rollback()
+                    NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                        ["Message" : "EditTask.saveTask() failed to save changes",
+                                                         "error.localizedDescription" : error.localizedDescription])
+                    return
+                }
+            }
+        } else {
+            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                ["Message" : "EditTask.saveTask() failed to retrieve a Task in a child MOC"])
+            NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
+            return
+        }
+        
+        // Dismiss this `EditTask` View
+        self.isBeingPresented.wrappedValue = false
         
     }
     
     private func deleteTask() {
-        do {
-            try task.deleteSelf()
-            try CDCoordinator.moc.save()
-            self.isBeingPresented = false
-        } catch {
-            CDCoordinator.moc.rollback()
-            self.deleteErrorMessage = ErrorManager.unexpectedErrorMessage
-        }
-    }
-    
-    /**
-     Extracts the TaskTargetSets associated with a Task and converts them into an array of TaskTargetSetViews, sorted by priority.
-     - parameter task: The task whose TaskTargetSets to extract.
-     - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task. Returns nil if invalid data is found in the TaskTargetSets.
-     */
-    static func extractTTSVArray(task: Task) throws -> [TaskTargetSetView] {
-        var ttsvArray: [TaskTargetSetView] = []
-        // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
-        if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
-            for idx in 0 ..< ttsArray.count {
-                
-                /*
-                 If the TaskTargetSet's minOperator and/or maxOperator can't be instantiated as enums, an error is reported with the Task, the TTS, and the Task's other TTSes
-                 */
-                guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
-                      let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
-                          let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
-                                                          "TaskTargetSet" : ttsArray[idx]]
-                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                      }
-                
-                let pattern = ttsArray[idx]._pattern
-                guard let selectedDow = Set( pattern.daysOfWeek.map{ SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
-                      let selectedWom = Set( pattern.weeksOfMonth.map{ SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
-                      let selectedDom = Set( pattern.daysOfMonth.map{ SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
-                          let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
-                                                          "TaskTargetSet" : ttsArray[idx]]
-                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
-                      }
-                
-                let ttsv = TaskTargetSetView(type: pattern.type,
-                                             minTarget: ttsArray[idx]._min,
-                                             minOperator: minOperator,
-                                             maxTarget: ttsArray[idx]._max,
-                                             maxOperator: maxOperator,
-                                             selectedDaysOfWeek: selectedDow,
-                                             selectedWeeksOfMonth: selectedWom,
-                                             selectedDaysOfMonth: selectedDom)
-                ttsvArray.append(ttsv)
-                
+        let childContext = CDCoordinator.getChildContext()
+        if let unwrappedTask = self.task,
+           let childTask = childContext.object(with: unwrappedTask.objectID) as? Task {
+            childContext.perform {
+                do {
+                    try childTask.deleteSelf(childContext)
+                    try childContext.save()
+                    try CDCoordinator.mainContext.save()
+                } catch {
+                    childContext.rollback()
+                    NotificationCenter.default.post(name: .taskDeleteFailed, object: nil)
+                }
             }
+        } else {
+            NotificationCenter.default.post(name: .taskDeleteFailed, object: nil)
         }
-        return ttsvArray
+        self.isBeingPresented.wrappedValue = false
     }
     
     var body: some View {
@@ -210,7 +231,7 @@ struct EditTask: View {
                                 .background(Color.red)
                                 .foregroundColor(.white)
                                 .cornerRadius(3)
-                        })
+                        }).disabled(self.task == nil)
                         
                         if (deleteErrorMessage.count > 0) {
                             Text(deleteErrorMessage)
@@ -229,15 +250,19 @@ struct EditTask: View {
                 .navigationBarItems(
                     leading: Button(action: {
                         
+                        guard let unwrappedTask = self.task else { return }
+                        
                         switch self.taskType {
                         case .recurring:
                             if taskTargetSetViews.count < 1 {
                                 self.saveErrorMessage = "Please add one or more target sets"; return
                             }
+                            break
                         case .specific:
                             if self.dates.count < 1 {
                                 self.saveErrorMessage = "Please add one or more dates"; return
                             }
+                            break
                         }
                         
                         /*
@@ -263,11 +288,11 @@ struct EditTask: View {
                                 }
                                 
                                 // Attempt to get the TaskInstances that would be deleted given the new start date, end date, and target sets.
-                                self.datesToDelete = try self.task.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
+                                self.datesToDelete = try unwrappedTask.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
                                 break
                                 
                             case .specific:
-                                self.datesToDelete = try self.task.getDeltaInstancesSpecific(dates: Set(self.dates))
+                                self.datesToDelete = try unwrappedTask.getDeltaInstancesSpecific(dates: Set(self.dates))
                                 break
                             }
                             
@@ -286,7 +311,7 @@ struct EditTask: View {
                     })
                         .foregroundColor(.accentColor)
                         .accessibility(identifier: "edit-task-save-button")
-                        .disabled(self.taskName.count < 1)
+                        .disabled(self.taskName.count < 1 || self.task == nil)
                         .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ?
                                self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
                                    if self.isPresentingConfirmDeletePopupForSaveTask {
@@ -302,8 +327,7 @@ struct EditTask: View {
                                    }
                                }),
                     trailing: Button(action: {
-                        CDCoordinator.moc.rollback()
-                        self.isBeingPresented = false
+                        self.isBeingPresented.wrappedValue = false
                     }, label: {
                         Text("Cancel")
                     })
@@ -315,4 +339,112 @@ struct EditTask: View {
         }
         .accentColor(themeManager.accent)
     }
+}
+
+// MARK: - Helper functions
+
+extension EditTask {
+    
+    /**
+     Unwraps and returns a Task's startDate, endDate, and targetSets (represented as an array of TaskTargetSetView).
+     If any of those properties are nil or can't be converted to valid in-memory form, nil is returned.
+     - returns: (Optional) Named tuple containing representations of the provided Task's startDate, endDate, and targetSets.
+     */
+    static func getRecurringProperties(_ task: Task) -> (startDate: Date, endDate: Date, ttsvArray: [TaskTargetSetView])? {
+        
+        var ttsvArray: [TaskTargetSetView]
+        do {
+            ttsvArray = try EditTask.extractTTSVArray(task)
+        } catch {
+            return nil
+        }
+        
+        guard let startDateString = task._startDate,
+              let endDateString = task._endDate,
+              let startDate = SaveFormatter.storedStringToDate(startDateString),
+              let endDate = SaveFormatter.storedStringToDate(endDateString) else {
+                  let userInfo: [String : Any] = ["Message" : "EditTask.getRecurringProperties() found nil startDate and/or endDate for a recurring-type task, or could not convert them to Dates."]
+                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                  return nil
+              }
+        
+        return (startDate, endDate, ttsvArray)
+        
+    }
+    
+    /**
+     Unwraps and returns the dates of TaskInstances associated with the provided Task (assumes task is specific-type).
+     If instances are nil, an instance's date is nil, or an instance's date cannot be converted to a Date object, nil is returned.
+     - returns: (Optional) Array of Dates representing the dates of TaskInstances associated with the provided Task.
+     */
+    static func getSpecificDates(_ task: Task) -> [Date]? {
+        
+        // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
+        guard let instances = task._instances?.sortedArray(using: [NSSortDescriptor(key: "date", ascending: true)]) as? [TaskInstance] else {
+            let userInfo: [String : Any] = ["Message" : "EditTask.getSpecificDates() could not convert a specific-type Task's _instances to an array of TaskInstance",
+                                            "Task._instances" : task._instances]
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+            return nil
+        }
+        
+        var dates: [Date] = []
+        for instance in instances {
+            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
+                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                            ["Message" : "ManageViewCard.getSpecificDates() found nil in a TaskInstance's _date or could not convert it to a valid Date",
+                                             "TaskInstance._date" : instance._date])
+                return nil
+            }
+            dates.append(date)
+        }
+        
+        return dates
+        
+    }
+    
+    /**
+     Extracts the TaskTargetSets associated with a Task and converts them into an array of TaskTargetSetViews, sorted by priority.
+     - parameter task: The task whose TaskTargetSets to extract.
+     - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task. Returns nil if invalid data is found in the TaskTargetSets.
+     */
+    static func extractTTSVArray(_ task: Task) throws -> [TaskTargetSetView] {
+        var ttsvArray: [TaskTargetSetView] = []
+        // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
+        if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
+            for idx in 0 ..< ttsArray.count {
+                
+                /*
+                 If the TaskTargetSet's minOperator and/or maxOperator can't be instantiated as enums, an error is reported with the Task, the TTS, and the Task's other TTSes
+                 */
+                guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
+                      let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
+                          let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
+                                                          "TaskTargetSet" : ttsArray[idx]]
+                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                      }
+                
+                let pattern = ttsArray[idx]._pattern
+                guard let selectedDow = Set( pattern.daysOfWeek.map{ SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
+                      let selectedWom = Set( pattern.weeksOfMonth.map{ SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
+                      let selectedDom = Set( pattern.daysOfMonth.map{ SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
+                          let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
+                                                          "TaskTargetSet" : ttsArray[idx]]
+                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                      }
+                
+                let ttsv = TaskTargetSetView(type: pattern.type,
+                                             minTarget: ttsArray[idx]._min,
+                                             minOperator: minOperator,
+                                             maxTarget: ttsArray[idx]._max,
+                                             maxOperator: maxOperator,
+                                             selectedDaysOfWeek: selectedDow,
+                                             selectedWeeksOfMonth: selectedWom,
+                                             selectedDaysOfMonth: selectedDom)
+                ttsvArray.append(ttsv)
+                
+            }
+        }
+        return ttsvArray
+    }
+    
 }

@@ -252,9 +252,10 @@ extension Analysis {
     
     /**
      Deletes this Analysis.
+     - parameter moc: The MOC in which to perform updates.
      */
-    func deleteSelf() {
-        CDCoordinator.moc.delete(self)
+    func deleteSelf(_ moc: NSManagedObjectContext) {
+        moc.delete(self)
     }
     
 }

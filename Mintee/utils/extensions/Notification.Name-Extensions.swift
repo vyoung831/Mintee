@@ -14,4 +14,40 @@ extension Notification.Name {
         return .init(rawValue: "ThemeManager.themeChanged")
     }
     
+    static var taskSaveFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.taskSaveFailed")
+    }
+    
+    static var taskUpdateFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.taskUpdateFailed")
+    }
+    
+    static var taskDeleteFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.taskDeleteFailed")
+    }
+    
+    static var analysisSaveFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.analysisSaveFailed")
+    }
+    
+    static var analysisUpdateFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.analysisUpdateFailed")
+    }
+    
+    static var analysisDeleteFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.analysisDeleteFailed")
+    }
+    
+    static var analysisReorderFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.analysisReorderFailed")
+    }
+    
+    static var editAnalysis_initFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.editAnalysis_initFailed")
+    }
+    
+    static var editTask_initFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.editTask_initFailed")
+    }
+    
 }

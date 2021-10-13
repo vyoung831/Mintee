@@ -28,33 +28,40 @@ struct AnalysisList: View {
     
     /**
      Re-assigns `order` to Analyses in the MOC by iterating over the model's previews.
-     - returns: True if update and MOC save were successful.
      */
-    func saveAnalysisOrdering() -> Bool {
+    func saveAnalysisOrdering() {
         
-        for preview in model.sortedPreviews {
-            if preview.order >= 0 {
-                preview.id.setOrder(Int16(preview.order))
-            } else {
-                preview.id.setUnincluded()
-            }
-        }
-        
-        do {
-            try CDCoordinator.moc.save()
-            return true
-        } catch {
-            var userInfo: [String : Any] = ["Message" : "AnalysisList.saveAnalysisOrdering() failed"]
-            for idx in 0 ..< model.sortedPreviews.count {
-                userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
-                userInfo["preview[\(idx)].id"] = model.sortedPreviews[idx].id.debugDescription
-                model.sortedPreviews[idx].id.mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
-            }
-            ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
+        // Re-assign Analysis orders and save changes in the child MOC.
+        let childContext = CDCoordinator.getChildContext()
+        childContext.perform {
             
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
+            for preview in model.sortedPreviews {
+                guard let childAnalysis = childContext.object(with: preview.id.objectID) as? Analysis else {
+                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "AnalysisList.saveAnalysisOrdering() could not obtain a Analysis from a child MOC"])
+                    NotificationCenter.default.post(name: .analysisReorderFailed, object: nil)
+                    return
+                }
+                if preview.order >= 0 {
+                    childAnalysis.setOrder(Int16(preview.order))
+                } else {
+                    childAnalysis.setUnincluded()
+                }
+            }
+            
+            do {
+                try childContext.save()
+                try CDCoordinator.mainContext.save()
+            } catch {
+                var userInfo: [String : Any] = ["Message" : "AnalysisList.saveAnalysisOrdering() failed"]
+                for idx in 0 ..< model.sortedPreviews.count {
+                    userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
+                    userInfo["preview[\(idx)].id"] = model.sortedPreviews[idx].id.debugDescription
+                    model.sortedPreviews[idx].id.mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
+                }
+                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
+                NotificationCenter.default.post(name: .analysisReorderFailed, object: nil)
+                CDCoordinator.mainContext.rollback()
+            }
         }
         
     }
@@ -112,9 +119,8 @@ struct AnalysisList: View {
                                     }),
                                 trailing:
                                     Button(action: {
-                                        if self.saveAnalysisOrdering() {
-                                            self.isBeingPresented = false
-                                        }
+                                        self.saveAnalysisOrdering()
+                                        self.isBeingPresented = false
                                     }, label: {
                                         Text("Save")
                                     })
@@ -139,26 +145,6 @@ struct AnalysisListCard: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    /**
-     Using the `Analysis` assigned to this View, converts its AnalysisLegend to an array of CategorizedLegendEntryPreview.
-     - returns: (Optional) Array of CategorizedLegendEntryPreview representing the Analysis' legend.
-     */
-    private func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
-        
-        var previews: [CategorizedLegendEntryPreview] = []
-        for categorizedEntry in analysis._legend.categorizedEntries {
-            guard let color = UIColor(hex: categorizedEntry.color) else {
-                var userInfo: [String : Any] = ["Message" : "AnalysisListCard.extractCategorizedPreviews() found a CategorizedLegendEntry with `color` that could not be converted to value of type UIColor"]
-                self.analysis.mergeDebugDictionary(userInfo: &userInfo)
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-                return nil
-            }
-            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry.category))
-        }
-        return previews
-        
-    }
-    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
@@ -174,35 +160,7 @@ struct AnalysisListCard: View {
                     })
                     .foregroundColor(.primary)
                     .sheet(isPresented: self.$isPresentingEditAnalysis, content: {
-                        if let legendPreviews = extractCategorizedPreviews() {
-                            if let startString = analysis._startDate,
-                               let endString = analysis._endDate,
-                               let start = SaveFormatter.storedStringToDate(startString),
-                               let end = SaveFormatter.storedStringToDate(endString) {
-                                EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
-                                             analysis: analysis,
-                                             analysisName: analysisName,
-                                             tags: analysis.getTagNames().sorted(),
-                                             analysisType: analysisType,
-                                             rangeType: .startEnd,
-                                             legendType: .categorized,
-                                             legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
-                                             startDate: start,
-                                             endDate: end)
-                            } else {
-                                EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
-                                             analysis: analysis,
-                                             analysisName: analysisName,
-                                             tags: analysis.getTagNames().sorted(),
-                                             analysisType: analysisType,
-                                             rangeType: .dateRange,
-                                             legendType: .categorized,
-                                             legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
-                                             dateRangeString: String(analysis._dateRange))
-                            }
-                        } else {
-                            ErrorView()
-                        }
+                        EditAnalysis(analysis: analysis, presented: self.$isPresentingEditAnalysis)
                     })
                 }
                 
@@ -379,7 +337,7 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
         let fetchRequest: NSFetchRequest<Analysis> = Analysis.fetchRequest()
         fetchRequest.sortDescriptors = []
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.moc, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.mainContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         
         do {

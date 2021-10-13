@@ -37,7 +37,7 @@ public class Task: NSManagedObject {
      Convenience init for recurring-type Task
      */
     convenience init(entity: NSEntityDescription,
-                     insertInto context: NSManagedObjectContext?,
+                     insertInto context: NSManagedObjectContext,
                      name: String,
                      tags: Set<Tag>,
                      startDate: Date,
@@ -45,41 +45,42 @@ public class Task: NSManagedObject {
                      targetSets: Set<TaskTargetSet>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.updateTags(newTags: tags)
-        try self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets)
+        self.updateTags(newTags: tags, context)
+        try self.updateRecurringInstances(startDate: startDate, endDate: endDate, targetSets: targetSets, context)
     }
     
     /**
      Convenience init for specific-type Task
      */
     convenience init(entity: NSEntityDescription,
-                     insertInto context: NSManagedObjectContext?,
+                     insertInto context: NSManagedObjectContext,
                      name: String,
                      tags: Set<Tag>,
                      dates: [Date]) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.updateTags(newTags: tags)
-        try self.updateSpecificInstances(dates: dates)
+        self.updateTags(newTags: tags, context)
+        try self.updateSpecificInstances(dates: dates, context)
     }
     
     /**
      Disassociates all Tags from this Task, checks each Tag for deletion, and deletes this task from the shared MOC.
      Also deletes all TaskInstances and TaskTargetSets associated with this Task.
+     - parameter moc: The MOC perform Task deletion and relationship cleanup in.
      */
-    public func deleteSelf() throws {
-        self.removeAllTags()
+    public func deleteSelf(_ moc: NSManagedObjectContext) throws {
+        self.removeAllTags(moc)
         
         if let targetSets = self.targetSets,
            let instances = self.instances {
-            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
-            for case let ti as TaskInstance in instances { CDCoordinator.moc.delete(ti) }
+            for case let tts as TaskTargetSet in targetSets { moc.delete(tts) }
+            for case let ti as TaskInstance in instances { moc.delete(ti) }
         } else {
             let userInfo: [String : Any] = ["Message" : "Task.deleteSelf() found instances and/or targetSets to be nil"]
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary(userInfo: userInfo))
         }
         
-        CDCoordinator.moc.delete(self)
+        moc.delete(self)
     }
     
 }
@@ -194,12 +195,13 @@ extension Task {
     /**
      Updates this Task's tags relationship to contain only the Tags passed in.
      Tags that were already associated with this Task but that don't exist in the new tags passed in are un-associated and checked for possible deletion.
-     - parameter newTags: Set of Tags to set as this Task's tags relationship
+     - parameter newTags: Set of Tags to set as this Task's tags relationship.
+     - parameter moc: The MOC to update this Task's Tags in.
      */
-    public func updateTags(newTags: Set<Tag>) {
+    public func updateTags(newTags: Set<Tag>,_ moc: NSManagedObjectContext) {
         
         // Remove unrelated tags and check for deletion
-        self.removeUnrelatedTags(newTags: newTags)
+        self.removeUnrelatedTags(newTags: newTags, moc)
         self.addToTags( NSSet(set: newTags) )
         
     }
@@ -207,16 +209,17 @@ extension Task {
     /**
      Removes Tags that are no longer to be associated with this Task.
      Tags that were already associated with this Task but that don't exist in the new tags passed in are un-associated and checked for possible deletion.
-     - parameter newTags: Set of Tags to be set as this Task's tags relationship
+     - parameter newTags: Set of Tags to be set as this Task's tags relationship.
+     - parameter moc: The MOC in which to unassociate Tags from this Task.
      */
-    private func removeUnrelatedTags(newTags: Set<Tag>) {
+    private func removeUnrelatedTags(newTags: Set<Tag>,_ moc: NSManagedObjectContext) {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 
                 if !newTags.contains(tag) {
                     self.removeFromTags(tag)
                     if tag._tasks.count == 0 {
-                        CDCoordinator.moc.delete(tag)
+                        moc.delete(tag)
                     }
                 }
                 
@@ -225,14 +228,15 @@ extension Task {
     }
     
     /**
-     Removes all Tags from this Task's tags relationship and checks each one of them for deletion
+     Removes all Tags from this Task's tags relationship and checks each one of them for deletion.
+     - parameter moc: The MOC in which to disassociate Tags from this Task.
      */
-    private func removeAllTags() {
+    private func removeAllTags(_ moc: NSManagedObjectContext) {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 self.removeFromTags(tag)
                 if tag._tasks.count == 0 {
-                    CDCoordinator.moc.delete(tag)
+                    moc.delete(tag)
                 }
             }
         }
@@ -365,14 +369,15 @@ extension Task {
 extension Task {
     
     /**
-     For a specific-type Task, updates taskType, instances, and targetSets. This function
-     - Updates this Task's taskType to .specific
-     - Sets this Task's startDate and endDate to nil
-     - Deletes all existing TaskTargetSets that are associated with this Task
-     - Deletes existing TaskInstances that don't intersect with the caller-provided dates, and generates new TaskInstances and assigns them to this Task
-     - parameter dates: Array of Dates to be assigned to this Task's instances
+     For a specific-type Task, updates taskType, instances, and targetSets. This function does the following:
+     - Updates this Task's taskType to `.specific`.
+     - Sets this Task's startDate and endDate to nil.
+     - Deletes all existing TaskTargetSets that are associated with this Task.
+     - Deletes existing TaskInstances that don't intersect with the caller-provided dates, and generates new TaskInstances and assigns them to this Task.
+     - parameter dates: Array of Dates to be assigned to this Task's instances.
+     - parameter moc: The MOC in which to perform updates.
      */
-    func updateSpecificInstances(dates: [Date]) throws {
+    func updateSpecificInstances(dates: [Date],_ moc: NSManagedObjectContext) throws {
         
         // Set task type, set start and end dates, and delete associated TaskTargetSets
         self.taskType = SaveFormatter.taskTypeToStored(.specific)
@@ -380,7 +385,7 @@ extension Task {
         self.endDate = nil
         if let targetSets = self.targetSets {
             // Delete TaskTargetSets (if any exist)
-            for case let tts as TaskTargetSet in targetSets { CDCoordinator.moc.delete(tts) }
+            for case let tts as TaskTargetSet in targetSets { moc.delete(tts) }
         }
         
         /*
@@ -394,7 +399,7 @@ extension Task {
         }
         for existingInstance in existingInstances {
             if !newDatesStrings.contains(existingInstance._date) {
-                CDCoordinator.moc.delete(existingInstance)
+                moc.delete(existingInstance)
             } else {
                 datesToBeAdded.remove(existingInstance._date)
             }
@@ -402,7 +407,7 @@ extension Task {
         
         // Generate TaskInstances for the remaining dates that don't already exist for this Task
         for date in datesToBeAdded {
-            self.addToInstances(TaskInstance(entity: TaskInstance.entity(), insertInto: CDCoordinator.moc, date: date))
+            self.addToInstances(TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: date))
         }
         
     }
@@ -414,8 +419,9 @@ extension Task {
      - Generates new TaskInstances where needed, and deletes existing TaskInstances that don't intersect with the caller-provided TaskTargetSets
      - parameter startDate: startDate to assign to this Task
      - parameter endDate: endDate to assign to this Task
+     - parameter moc: The MOC in which to perform updates.
      */
-    func updateRecurringInstances(startDate: Date, endDate: Date) throws {
+    func updateRecurringInstances(startDate: Date, endDate: Date,_ moc: NSManagedObjectContext) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
         self.taskType = SaveFormatter.taskTypeToStored(.recurring)
@@ -423,7 +429,7 @@ extension Task {
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         
         do {
-            try generateAndPruneInstances()
+            try generateAndPruneInstances(moc)
         } catch (let error) {
             throw error
         }
@@ -439,8 +445,9 @@ extension Task {
      - parameter startDate: startDate to assign to this Task
      - parameter endDate: endDate to assign to this Task
      - parameter targetSets: Set of new TaskTargetSets to associate with this Task
+     - parameter moc: The MOC in which to perform updates.
      */
-    func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>) throws {
+    func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>,_ moc: NSManagedObjectContext) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
         self.taskType = SaveFormatter.taskTypeToStored(.recurring)
@@ -449,7 +456,7 @@ extension Task {
         if let existingTargetSets = self.targetSets {
             for case let tts as TaskTargetSet in existingTargetSets {
                 if !targetSets.contains(tts) {
-                    CDCoordinator.moc.delete(tts)
+                    moc.delete(tts)
                 }
             }
         } else {
@@ -461,7 +468,7 @@ extension Task {
         self.targetSets = NSSet(set: targetSets)
         
         do {
-            try generateAndPruneInstances()
+            try generateAndPruneInstances(moc)
         } catch (let error) {
             throw error
         }
@@ -470,8 +477,9 @@ extension Task {
     
     /**
      Uses this Task's targetSets to generate new or attach existing TaskInstances. Existing TaskInstances that are no longer needed are deleted.
+     - parameter moc: The MOC in which to perform updates.
      */
-    private func generateAndPruneInstances() throws {
+    private func generateAndPruneInstances(_ moc: NSManagedObjectContext) throws {
         
         guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0._priority < $1._priority} ) else {
             let userInfo: [String : Any] = ["Message" : "Task.generateAndPruneInstances() could not read from or sort targetSets"]
@@ -496,7 +504,7 @@ extension Task {
                                                       daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from this Task's instances or a new one in the MOC
-                    let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter))
+                    let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter), moc)
                     
                     newInstances.insert(ti)
                     ti.updateTargetSet(sortedTargetSets[idx])
@@ -523,7 +531,7 @@ extension Task {
          */
         if let instances = self.instances {
             for case let oldInstance as TaskInstance in instances {
-                CDCoordinator.moc.delete(oldInstance)
+                moc.delete(oldInstance)
             }
         }
         
@@ -536,8 +544,9 @@ extension Task {
      If one already exists and belongs to this Task, it is removed from instances; otherwise, a new one is created in the MOC
      - parameter date: The date that the returned TaskInstance should have
      - returns: TaskInstance with specified Date - either newly created or an existing one that's been disassociated with this Task
+     - parameter moc: The MOC in which to perform updates.
      */
-    private func extractInstance(date: String) -> TaskInstance {
+    private func extractInstance(date: String,_ moc: NSManagedObjectContext) -> TaskInstance {
         if let instances = self.instances {
             for case let instance as TaskInstance in instances {
                 if instance._date == date {
@@ -546,9 +555,7 @@ extension Task {
                 }
             }
         }
-        let instance = TaskInstance(entity: TaskInstance.entity(),
-                                    insertInto: CDCoordinator.moc,
-                                    date: date)
+        let instance = TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: date)
         return instance
     }
     

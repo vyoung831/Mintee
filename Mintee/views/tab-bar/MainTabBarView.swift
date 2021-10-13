@@ -26,7 +26,7 @@ struct MainTabBarView: View {
                     Image(systemName: "book")
                     Text("Manage")
                 }
-            }.environment(\.managedObjectContext, CDCoordinator.moc)
+            }.environment(\.managedObjectContext, CDCoordinator.mainContext)
             
             TodayView().tabItem {
                 VStack {

@@ -61,14 +61,15 @@ struct TagsSection: View {
                 })
                 .foregroundColor(themeManager.panelContent)
                 .sheet(isPresented: allowedToAddNewTags ? self.$isPresentingAddTagPopup : self.$isPresentingSearchTagPopup, content: {
+                    // Main MOC is provided to popups, as `AddTagPopup` and `SearchTagPopup` only search and read Tags (no updates)
                     if allowedToAddNewTags {
                         AddTagPopup(isBeingPresented: self.$isPresentingAddTagPopup, addTag: { newTagName in
                             return addTag(newTagName)
-                        }).environment(\.managedObjectContext, CDCoordinator.moc)
+                        }).environment(\.managedObjectContext, CDCoordinator.mainContext)
                     } else {
                         SearchTagPopup(isBeingPresented: self.$isPresentingSearchTagPopup, addTag: { newTagName in
                             return addTag(newTagName)
-                        }).environment(\.managedObjectContext, CDCoordinator.moc)
+                        }).environment(\.managedObjectContext, CDCoordinator.mainContext)
                     }
                 })
                 

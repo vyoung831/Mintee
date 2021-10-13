@@ -9,20 +9,17 @@
 import Foundation
 import CoreData
 
-class CDCoordinator {
-    
-    static var shared = CDCoordinator()
-    static var moc = shared.persistentContainer.viewContext
-    
-    // MARK: - Core Data stack
+// MARK: - Core Data stack
 
+class CDCoordinator {
+
+    
+    /*
+     The persistent container for the application. This implementation
+     creates and returns a container, having loaded the store for the
+     application to it.
+    */
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
         let container = NSPersistentCloudKitContainer(name: "Mintee")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -43,8 +40,6 @@ class CDCoordinator {
         return container
     }()
 
-    // MARK: - Core Data Saving support
-
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -57,6 +52,24 @@ class CDCoordinator {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+    
+}
+
+// MARK: - Concurrency support
+
+extension CDCoordinator {
+    
+    static var shared = CDCoordinator()
+    
+    static var mainContext: NSManagedObjectContext {
+        return shared.persistentContainer.viewContext
+    }
+    
+    static func getChildContext() -> NSManagedObjectContext {
+        let childMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        childMOC.parent = CDCoordinator.shared.persistentContainer.viewContext
+        return childMOC
     }
     
 }

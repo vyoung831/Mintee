@@ -28,63 +28,65 @@ struct AddTask: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    private func saveTask() -> Bool {
+    private func saveTask() {
         
-        var tagObjects: Set<Tag> = Set()
         var taskTargetSets: [TaskTargetSet] = []
         
-        do {
+        let childContext = CDCoordinator.getChildContext()
+        childContext.perform {
             
-            for idx in 0 ..< self.tags.count {
-                let tag = try Tag.getOrCreateTag(tagName: self.tags[idx])
-                tagObjects.insert(tag)
-            }
-            
-            switch self.taskType {
-            case .recurring:
-                for i in 0 ..< self.taskTargetSetViews.count {
-                    let ttsv = self.taskTargetSetViews[i]
-                    let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: CDCoordinator.moc,
-                                                min: ttsv.minTarget, max: ttsv.maxTarget,
-                                                minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
-                                                priority: Int16(i),
-                                                pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
-                                                                    wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
-                                                                    dom: Set((ttsv.selectedDaysOfMonth ?? []))))
-                    taskTargetSets.append(tts)
+            do {
+                let tagObjects = try self.tags.map{ try Tag.getOrCreateTag(tagName: $0, childContext) }
+                switch self.taskType {
+                case .recurring:
+                    for i in 0 ..< self.taskTargetSetViews.count {
+                        let ttsv = self.taskTargetSetViews[i]
+                        let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: childContext,
+                                                    min: ttsv.minTarget, max: ttsv.maxTarget,
+                                                    minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
+                                                    priority: Int16(i),
+                                                    pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                        wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                        dom: Set((ttsv.selectedDaysOfMonth ?? []))))
+                        taskTargetSets.append(tts)
+                    }
+                    let _ =  try Task(entity: Task.entity(),
+                                      insertInto: childContext,
+                                      name: self.taskName,
+                                      tags: Set(tagObjects),
+                                      startDate: self.startDate,
+                                      endDate: self.endDate,
+                                      targetSets: Set(taskTargetSets))
+                    break
+                case .specific:
+                    let _ = try Task(entity: Task.entity(),
+                                     insertInto: childContext,
+                                     name: self.taskName,
+                                     tags: Set(tagObjects),
+                                     dates: self.dates)
+                    break
                 }
-                
-                let _ =  try Task(entity: Task.entity(),
-                                  insertInto: CDCoordinator.moc,
-                                  name: self.taskName,
-                                  tags: tagObjects,
-                                  startDate: self.startDate,
-                                  endDate: self.endDate,
-                                  targetSets: Set(taskTargetSets))
-                break
-            case .specific:
-                let _ = try Task(entity: Task.entity(),
-                                 insertInto: CDCoordinator.moc,
-                                 name: self.taskName,
-                                 tags: tagObjects,
-                                 dates: self.dates)
-                break
+            } catch {
+                childContext.rollback()
+                NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
+                return
             }
             
-        } catch {
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
+            do {
+                try childContext.save()
+                try CDCoordinator.mainContext.save()
+                return
+            } catch {
+                CDCoordinator.mainContext.rollback()
+                NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
+                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                    ["Message" : "AddTask.saveTask() failed to save changes",
+                                                     "error.localizedDescription" : error.localizedDescription])
+                return
+            }
+            
         }
         
-        do {
-            try CDCoordinator.moc.save()
-            return true
-        } catch {
-            self.errorMessage = "Save failed. Please check if another Task with this name already exists"
-            CDCoordinator.moc.rollback()
-            return false
-        }
     }
     
     var body: some View {
@@ -157,9 +159,8 @@ struct AddTask: View {
                         }
                     }
                     
-                    if self.saveTask() {
-                        self.isBeingPresented = false
-                    }
+                    self.saveTask()
+                    self.isBeingPresented = false
                     
                 }, label: {
                     Text("Save")
