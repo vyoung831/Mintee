@@ -43,6 +43,7 @@ struct MainTabBarView: View {
             }
             
         }
+        .modifier(MinteeAlertPresenter())
         
     }
     
