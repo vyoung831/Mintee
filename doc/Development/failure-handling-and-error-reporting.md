@@ -11,13 +11,15 @@ The following definitions are used as such throughout the document:
 1. [Build versioning](#build-versioning)
 
 # Failure handling and error reporting
-All failures are [reported to Crashlytics](#error-reporting) using the `ErrorManager` utility. After finding and reporting an error, failable functions notify callers of failures by either return optionals or throwing errors. Generally, failable functions adhere to the following:  
-- Report and throw error if there are multiple possible reasons for failure.
-- Report error and return optional if there is only one possible reason for failure.
+All failures are [reported to Crashlytics](#error-reporting) using the `ErrorManager` utility. After finding and reporting an error, failable functions notify callers of failures by returning optionals or throwing errors.  
+Depending on how the failures are detected, error reporting responsibilities adhere to the following:  
+1. A function reports an error to Crashlytics if it calls a non-Mintee function that returns a failure. ex: Catching an error when saving an NSManagedObjectContext.
+1. A function reports an error to Crashlytics if it is directly manipulating/accessing/converting data. ex: Accessing persistent store data can't be converted to a valid enum value.
+1. A function does __NOT__ report an error if it calls a failable Mintee function. It's assumed that an error was already detected and reported further down in the call chain.
   
 __Note__  
 View components are __NEVER__ responsible for actually reporting errors to Crashlytics. When accessing optional data or calling failable functions, View components should use helper functions that report the error.  
-View components (and their completion handlers) are only responsible for presenting error alerts to the user after being notified of failure by helper functions.
+View components (and their completion handlers) are only responsible for presenting error alerts to the user after being notified of failure by helper functions.  
 
 ## Base debug objects
 When a failure occurs in a model component, error reporting, in addition to relevant debug data, uses APIs provided by certain model components (base objects) to report an additional set of standard debug data.  

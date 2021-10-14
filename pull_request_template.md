@@ -20,10 +20,8 @@
 # [Failure handling checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)
 | Area | N/A | Checks |
 |-|-|-|
-|__Failure handling__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] All failures are handled gracefully by view components via error messages/graphics on UI.<li/>- [ ] New Swift code avoids `if let` blocks and handles errors via `guard let else` blocks.</ul>|
-|__Failure detection and propagation - Failable functions in non-model components__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Return optionals if there is one (and only one) possible reason of failure.<li/>- [ ] Throw if there are multiple possible reasons for failure.<li/>- [ ] Re-throw if there are calls to other throwing functions.</ul>|
-|__Failure detection and propagation - Failable functions in model components__ |<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Failable functions in model components are defined as throwing functions.</ul>|
-|__Failure reporting - Failure reporting responsibilities__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] If a failure is first detected in a throwing function, that function reports the failure.<li>- [ ] If a failure is first detected by a view component receiving a nil return value, that view component reports the failure.<li/>- [ ] All failures are reported to Crashlytics via `ErrorManager`.</ul>|
+|__Failure handling__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] All failures are handled gracefully by view components by presenting alerts to the user.<li/>- [ ] New Swift code avoids `if let` blocks and handles errors via `guard let else` blocks.</ul>|
+|__Failure reporting responsibilities__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] A function reports an error to Crashlytics if it calls a non-Mintee function that returns a failure.<li>- [ ] A function reports an error to Crashlytics if it is directly manipulating/accessing/converting data.<li/>- [ ] A function does __NOT__ report an error if it calls a failable Mintee function.</ul>|
 
 # [Testing checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 | Area | N/A | Checks |
