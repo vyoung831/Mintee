@@ -11,9 +11,6 @@ import Firebase
 
 struct ErrorManager {
     
-    // Error message to present if an unexpected interal error was found.
-    static let unexpectedErrorMessage = "Oops! Something went wrong. The cows are hard at work fixing it!"
-    
     /**
      Records a non-fatal error to report to Crashlytics
      - parameter errorCode: Value of type enum ErrorManager.muError to report as NSError code
