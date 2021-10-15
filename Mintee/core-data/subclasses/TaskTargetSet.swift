@@ -49,13 +49,14 @@ public class TaskTargetSet: NSManagedObject {
             self.priority = priority
             self.pattern = pattern
         } else {
-            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() failed to validate operators",
+            var userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() failed to validate operators",
                                             "min" : min,
                                             "max" : max,
                                             "minOperator" : minOperator,
                                             "maxOperator" : maxOperator,
                                             "priority" : priority]
-            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, pattern.mergeDebugDictionary(userInfo: userInfo))
+            pattern.mergeDebugDictionary(userInfo: &userInfo)
+            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, userInfo)
         }
     }
     
@@ -148,13 +149,13 @@ extension TaskTargetSet {
     func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) throws -> Bool {
         
         if daysInMonth < 28 {
-            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
+            var userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
                                             "day" : day,
                                             "weekday" : weekday,
                                             "daysInMonth" : daysInMonth,
                                             "TaskTargetSet" : self.debugDescription]
-            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
-                                              self._task.mergeDebugDictionary(userInfo: userInfo))
+            self._task.mergeDebugDictionary(userInfo: &userInfo)
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
         }
         
         switch pattern.type {

@@ -47,8 +47,8 @@ struct EditTask: View {
         self.isBeingPresented = presented
         
         guard let type = SaveFormatter.storedToTaskType(task._taskType) else {
-            let userInfo: [String : Any] = ["Message" : "EditTask.init() found a Task with an _taskType that could not be converted to valid in-memory form."]
-            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                task.mergeDebugDictionary("EditTask.init() found a Task with an _taskType that could not be converted to valid in-memory form."))
             NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
             return
         }
@@ -363,8 +363,8 @@ extension EditTask {
               let endDateString = task._endDate,
               let startDate = SaveFormatter.storedStringToDate(startDateString),
               let endDate = SaveFormatter.storedStringToDate(endDateString) else {
-                  let userInfo: [String : Any] = ["Message" : "EditTask.getRecurringProperties() found nil startDate and/or endDate for a recurring-type task, or could not convert them to Dates."]
-                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                              task.mergeDebugDictionary("EditTask.getRecurringProperties() found nil startDate and/or endDate for a recurring-type task, or could not convert them to Dates."))
                   return nil
               }
         
@@ -381,9 +381,10 @@ extension EditTask {
         
         // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
         guard let instances = task._instances?.sortedArray(using: [NSSortDescriptor(key: "date", ascending: true)]) as? [TaskInstance] else {
-            let userInfo: [String : Any] = ["Message" : "EditTask.getSpecificDates() could not convert a specific-type Task's _instances to an array of TaskInstance",
+            var userInfo: [String : Any] = ["Message" : "EditTask.getSpecificDates() could not convert a specific-type Task's _instances to an array of TaskInstance",
                                             "Task._instances" : task._instances]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+            task.mergeDebugDictionary(userInfo: &userInfo)
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
         }
         
@@ -418,18 +419,20 @@ extension EditTask {
                  */
                 guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
                       let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
-                          let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
+                          var userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
                                                           "TaskTargetSet" : ttsArray[idx]]
-                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                          task.mergeDebugDictionary(userInfo: &userInfo)
+                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
                       }
                 
                 let pattern = ttsArray[idx]._pattern
                 guard let selectedDow = Set( pattern.daysOfWeek.map{ SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
                       let selectedWom = Set( pattern.weeksOfMonth.map{ SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
                       let selectedDom = Set( pattern.daysOfMonth.map{ SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
-                          let userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
+                          var userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
                                                           "TaskTargetSet" : ttsArray[idx]]
-                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, task.mergeDebugDictionary(userInfo: userInfo))
+                          task.mergeDebugDictionary(userInfo: &userInfo)
+                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
                       }
                 
                 let ttsv = TaskTargetSetView(type: pattern.type,

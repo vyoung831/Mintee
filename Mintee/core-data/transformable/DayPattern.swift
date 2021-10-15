@@ -97,22 +97,15 @@ extension DayPattern {
     
     /**
      Gathers debug descriptions of this DayPattern and its properties.
-     - parameter userInfo: [String : Any] Dictionary containing existing debug info
+     - parameter userInfo: [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
      - returns: Dictionary containing existing debug info + debug descriptions of DayPattern
      */
-    func mergeDebugDictionary(userInfo: [String : Any]) -> [String : Any] {
-        
-        var debugDictionary: [String : Any] = [:]
-        
-        debugDictionary["DayPattern.daysOfWeek"] = self.daysOfWeek
-        debugDictionary["DayPattern.weeksOfMonth"] = self.weeksOfMonth
-        debugDictionary["DayPattern.daysOfMonth"] = self.daysOfMonth
-        debugDictionary["DayPattern.type"] = self.type
-        
-        debugDictionary.merge(userInfo, uniquingKeysWith: {
-            return "(Keys clashed).\nValue 1 = \($0)\nValue 2 = \($1)"
-        })
-        return debugDictionary
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        userInfo["\(prefix)daysOfWeek"] = self.daysOfWeek
+        userInfo["\(prefix)weeksOfMonth"] = self.weeksOfMonth
+        userInfo["\(prefix)daysOfMonth"] = self.daysOfMonth
+        userInfo["\(prefix)type"] = self.type
     }
     
 }
