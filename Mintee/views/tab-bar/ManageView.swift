@@ -74,7 +74,7 @@ struct ManageViewCard: View {
         VStack(alignment: .center, spacing: 10) {
             
             if let taskName = task._name,
-               let taskType = SaveFormatter.storedToTaskType(task._taskType) {
+               let taskType = task._taskType {
                 
                 Group {
                     HStack {

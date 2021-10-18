@@ -25,13 +25,42 @@ public class Task: NSManagedObject {
     @NSManaged private var targetSets: NSSet?
     
     var _name: String { get { return self.name } set { self.name = newValue } }
-    var _taskType: Int16 { get { return self.taskType } }
-    var _startDate: String? { get { return self.startDate } }
-    var _endDate: String? { get { return self.endDate } }
     var _taskSummaryAnalysis: TaskSummaryAnalysis { get { return self.taskSummaryAnalysis } }
     var _instances: NSSet? { get { return self.instances } }
     var _tags: NSSet? { get { return self.tags } }
     var _targetSets: NSSet? { get { return self.targetSets } }
+    
+    var _taskType: SaveFormatter.taskType? {
+        get {
+            guard let formatted_type = SaveFormatter.taskType.init(rawValue: self.taskType) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A Task's taskType couldn't be converted to a valid taskType"))
+                return nil
+            }
+            return formatted_type
+        }
+    }
+    
+    var _startDate: Date? {
+        get {
+            guard let startDateString = self.startDate else { return nil }
+            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A Task's startDate couldn't be converted to a valid Date"))
+                return nil
+            }
+            return formattedDate
+        }
+    }
+    
+    var _endDate: Date? {
+        get {
+            guard let endDateString = self.endDate else { return nil }
+            guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A Task's endDate couldn't be converted to a valid Date"))
+                return nil
+            }
+            return formattedDate
+        }
+    }
     
     /**
      Convenience init for recurring-type Task
@@ -396,7 +425,7 @@ extension Task {
     func updateSpecificInstances(dates: [Date],_ moc: NSManagedObjectContext) throws {
         
         // Set task type, set start and end dates, and delete associated TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(.specific)
+        self.taskType = SaveFormatter.taskType.specific.rawValue
         self.startDate = nil
         self.endDate = nil
         if let targetSets = self.targetSets {
@@ -440,7 +469,7 @@ extension Task {
     func updateRecurringInstances(startDate: Date, endDate: Date,_ moc: NSManagedObjectContext) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(.recurring)
+        self.taskType = SaveFormatter.taskType.recurring.rawValue
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         
@@ -466,7 +495,7 @@ extension Task {
     func updateRecurringInstances(startDate: Date, endDate: Date, targetSets: Set<TaskTargetSet>,_ moc: NSManagedObjectContext) throws {
         
         // Set task type, set start and end dates, and delete TaskTargetSets
-        self.taskType = SaveFormatter.taskTypeToStored(.recurring)
+        self.taskType = SaveFormatter.taskType.recurring.rawValue
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         if let existingTargetSets = self.targetSets {

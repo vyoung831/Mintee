@@ -182,24 +182,6 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.taskType (to be stored in Task).
-     - parameter type: SaveFormatter.taskType being used in-memory.
-     - returns: Int16 to store to Task's taskType.
-     */
-    static func taskTypeToStored(_ type: taskType) -> Int16 {
-        return type.rawValue
-    }
-    
-    /**
-     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.taskType
-     - parameter storedType: Int16 stored in Task's taskType
-     - returns: (Optional) Value of type SaveFormatter.taskType to be used by Views or Model components.
-     */
-    static func storedToTaskType(_ storedType: Int16) -> taskType? {
-        return taskType.init(rawValue: storedType)
-    }
-    
 }
 
 // MARK: - Analysis types

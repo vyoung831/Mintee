@@ -46,7 +46,7 @@ struct EditTask: View {
         
         self.isBeingPresented = presented
         
-        guard let type = SaveFormatter.storedToTaskType(task._taskType) else {
+        guard let type = task._taskType else {
             let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
                                                 task.mergeDebugDictionary("EditTask.init() found a Task with an _taskType that could not be converted to valid in-memory form."))
             NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
@@ -359,14 +359,9 @@ extension EditTask {
             return nil
         }
         
-        guard let startDateString = task._startDate,
-              let endDateString = task._endDate,
-              let startDate = SaveFormatter.storedStringToDate(startDateString),
-              let endDate = SaveFormatter.storedStringToDate(endDateString) else {
-                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              task.mergeDebugDictionary("EditTask.getRecurringProperties() found nil startDate and/or endDate for a recurring-type task, or could not convert them to Dates."))
-                  return nil
-              }
+        guard let startDate = task._startDate, let endDate = task._endDate else {
+            return nil
+        }
         
         return (startDate, endDate, ttsvArray)
         
