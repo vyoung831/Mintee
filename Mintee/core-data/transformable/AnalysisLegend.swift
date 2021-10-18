@@ -197,8 +197,8 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         coder.encode(self.color as NSString, forKey: CompletionLegendEntry.Keys.color.rawValue)
         coder.encode(NSNumber(value: self.min), forKey: CompletionLegendEntry.Keys.min.rawValue)
         coder.encode(NSNumber(value: self.max), forKey: CompletionLegendEntry.Keys.max.rawValue)
-        coder.encode(NSNumber(value: SaveFormatter.equalityOperatorToStored(self.minOperator)), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
-        coder.encode(NSNumber(value: SaveFormatter.equalityOperatorToStored(self.maxOperator)), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
+        coder.encode(NSNumber(value: self.minOperator.rawValue), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
+        coder.encode(NSNumber(value: self.maxOperator.rawValue), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
     }
     
     required init?(coder: NSCoder) {
@@ -220,8 +220,8 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
             
         }
         
-        guard let minOperatorEnum = SaveFormatter.storedToEqualityOperator(minOp),
-              let maxOperatorEnum = SaveFormatter.storedToEqualityOperator(maxOp) else {
+        guard let minOperatorEnum = SaveFormatter.equalityOperator.init(rawValue: minOp),
+              let maxOperatorEnum = SaveFormatter.equalityOperator.init(rawValue: maxOp) else {
             let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not convert the decoded minOperator and/or maxOperator to values of type SaveFormatter.equalityOperator",
                                             "minOp" : minOp,
                                             "maxOp" : maxOp]

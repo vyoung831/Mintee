@@ -34,24 +34,6 @@ extension SaveFormatter {
         }
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.equalityOperator (to be stored in TaskTargetSet).
-     - parameter op: SaveFormatter.equalityOperator being used in-memory.
-     - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator.
-     */
-    static func equalityOperatorToStored(_ op: equalityOperator) -> Int16 {
-        return op.rawValue
-    }
-    
-    /**
-     Converts a persistent store value to the equivalent value of type SaveFormatter.equalityOperator
-     - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
-     - returns: (Optional) Value of type SaveFormatter.equalityOperator to be used by Views or Model objects.
-     */
-    static func storedToEqualityOperator(_ op: Int16) -> equalityOperator? {
-        return equalityOperator.init(rawValue: op)
-    }
-    
 }
 
 // MARK: - DayPattern day enums

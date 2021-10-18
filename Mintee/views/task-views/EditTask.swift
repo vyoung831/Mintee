@@ -417,8 +417,8 @@ extension EditTask {
                 /*
                  If the TaskTargetSet's minOperator and/or maxOperator can't be instantiated as enums, an error is reported with the Task, the TTS, and the Task's other TTSes
                  */
-                guard let minOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._minOperator),
-                      let maxOperator = SaveFormatter.storedToEqualityOperator(ttsArray[idx]._maxOperator) else {
+                guard let minOperator = ttsArray[idx]._minOperator,
+                      let maxOperator = ttsArray[idx]._maxOperator else {
                           var userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
                                                           "TaskTargetSet" : ttsArray[idx]]
                           task.mergeDebugDictionary(userInfo: &userInfo)

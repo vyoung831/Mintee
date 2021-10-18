@@ -15,12 +15,36 @@ struct ErrorManager {
     static let unexpectedErrorMessage = "Oops! Something went wrong. The cows are hard at work fixing it!"
     
     /**
-     Records a non-fatal error to report to Crashlytics
-     - parameter errorCode: Value of type enum ErrorManager.muError to report as NSError code
-     - parameter userInfo: [String:Any] pairs to be reported with error record
+     Records a non-fatal error to report to Crashlytics.
+     - parameter errorCode: Non-fatal error code to report.
+     - parameter message: Message to report with error record.
+     */
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,_ message: String) -> NSError {
+        
+        var domain: String
+        if let bundleID = Bundle.main.bundleIdentifier {
+            domain = bundleID
+        } else {
+            domain = "Leko.Mintee"
+            Crashlytics.crashlytics().record(error: NSError(domain: domain,
+                                                            code: NonFatal.bundleIdentifierWasNil.rawValue,
+                                                            userInfo: [:]))
+        }
+        
+        let userInfo: [String: Any] = ["Message": message]
+        let actualError = NSError(domain: domain, code: errorCode.rawValue, userInfo: userInfo)
+        Crashlytics.crashlytics().record(error: actualError)
+        return actualError
+        
+    }
+    
+    /**
+     Records a non-fatal error to report to Crashlytics.
+     - parameter errorCode: Non-fatal error code to report.
+     - parameter userInfo: [String:Any] pairs to be reported with error record.
      */
     static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,
-                               _ userInfo: [String:Any]) -> NSError {
+                               _ userInfo: [String: Any]) -> NSError {
         
         var domain: String
         if let bundleID = Bundle.main.bundleIdentifier {

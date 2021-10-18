@@ -24,26 +24,44 @@ public class TaskTargetSet: NSManagedObject {
     @NSManaged private var task: Task
     
     var _max: Float { get { return self.max } }
-    var _maxOperator: Int16 { get { return self.maxOperator } }
     var _min: Float { get { return self.min } }
-    var _minOperator: Int16 { get { return self.minOperator } }
     var _pattern: DayPattern { get { return self.pattern } }
     var _priority: Int16 { get { return self.priority } }
     var _instances: NSSet? { get { return self.instances } }
     var _task: Task { get { return self.task } }
     
+    var _minOperator: SaveFormatter.equalityOperator? {
+        get {
+            guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    self.task.mergeDebugDictionary("A TaskTargetSet's minOperator could not be converted to a value of type equalityOperator"))
+                return nil
+            }
+            return minOp
+        }
+    }
+    
+    var _maxOperator: SaveFormatter.equalityOperator? {
+        get {
+            guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    self.task.mergeDebugDictionary("A TaskTargetSet's maxOperator could not be converted to a value of type equalityOperator"))
+                return nil
+            }
+            return maxOp
+        }
+    }
+    
     convenience init(entity: NSEntityDescription,
                      insertInto context: NSManagedObjectContext?,
-                     min: Float,
-                     max: Float,
-                     minOperator: SaveFormatter.equalityOperator,
-                     maxOperator: SaveFormatter.equalityOperator,
+                     min: Float, max: Float,
+                     minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator,
                      priority: Int16,
                      pattern: DayPattern) throws {
         if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
             self.init(entity: entity, insertInto: context)
-            self.minOperator = SaveFormatter.equalityOperatorToStored(validatedValues.minOp)
-            self.maxOperator = SaveFormatter.equalityOperatorToStored(validatedValues.maxOp)
+            self.minOperator = validatedValues.minOp.rawValue
+            self.maxOperator = validatedValues.maxOp.rawValue
             self.min = validatedValues.min
             self.max = validatedValues.max
             self.priority = priority
@@ -79,6 +97,14 @@ extension TaskTargetSet {
     @NSManaged private func removeFromInstances(_ values: NSSet)
     
 }
+
+// MARK: - Debug descriptions for error reporting
+
+extension TaskTargetSet {
+    
+}
+
+// MARK: - Validation helper functions
 
 extension TaskTargetSet {
     
