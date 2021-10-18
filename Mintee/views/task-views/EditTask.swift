@@ -426,23 +426,14 @@ extension EditTask {
                       }
                 
                 let pattern = ttsArray[idx]._pattern
-                guard let selectedDow = Set( pattern.daysOfWeek.map{ SaveFormatter.storedToDayOfWeek($0) }) as? Set<SaveFormatter.dayOfWeek>,
-                      let selectedWom = Set( pattern.weeksOfMonth.map{ SaveFormatter.storedToWeekOfMonth($0) }) as? Set<SaveFormatter.weekOfMonth>,
-                      let selectedDom = Set( pattern.daysOfMonth.map{ SaveFormatter.storedToDayOfMonth($0) }) as? Set<SaveFormatter.dayOfMonth> else {
-                          var userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() could not convert a TaskTargetSet's dow, wom, and/or dom to Sets of corresponding values that conform to SaveFormatter.Day",
-                                                          "TaskTargetSet" : ttsArray[idx]]
-                          task.mergeDebugDictionary(userInfo: &userInfo)
-                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-                      }
-                
                 let ttsv = TaskTargetSetView(type: pattern.type,
                                              minTarget: ttsArray[idx]._min,
                                              minOperator: minOperator,
                                              maxTarget: ttsArray[idx]._max,
                                              maxOperator: maxOperator,
-                                             selectedDaysOfWeek: selectedDow,
-                                             selectedWeeksOfMonth: selectedWom,
-                                             selectedDaysOfMonth: selectedDom)
+                                             selectedDaysOfWeek: pattern.daysOfWeek,
+                                             selectedWeeksOfMonth: pattern.weeksOfMonth,
+                                             selectedDaysOfMonth: pattern.daysOfMonth)
                 ttsvArray.append(ttsv)
                 
             }

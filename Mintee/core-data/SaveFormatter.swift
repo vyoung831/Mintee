@@ -79,24 +79,6 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.dayOfWeek (to be stored in DayPattern).
-     - parameter dow: Value of type SaveFormatter.dayOfWeek to obtain the Int16 persistent store value of.
-     - returns: Int16 representing provided SaveFormatter.dayOfWeek.
-     */
-    static func dayOfWeekToStored(_ dow: SaveFormatter.dayOfWeek) -> Int16 {
-        return dow.rawValue
-    }
-    
-    /**
-     Converts a value from persistent store to the equivalent value of type SaveFormatter.dayOfWeek
-     - parameter dow: Int16 used by DayPattern's dow; 1 = Sunday
-     - returns: (Optional) Value of type SaveFormatter.dayOfWeek to be used by Views or Model objects.
-     */
-    static func storedToDayOfWeek(_ dow: Int16) -> dayOfWeek? {
-        return SaveFormatter.dayOfWeek.init(rawValue: dow)
-    }
-    
     enum weekOfMonth: Int16, Day, CaseIterable {
         
         case first = 1, second = 2, third = 3, fourth = 4, last = 5
@@ -127,24 +109,6 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.weekOfMonth (to be stored in DayPattern).
-     - parameter wom: Value of type SaveFormatter.weekOfMonth to obtain the Int16 persistent store value of.
-     - returns: Int16 representing provided SaveFormatter.weekOfMonth.
-     */
-    static func weekOfMonthToStored(_ wom: SaveFormatter.weekOfMonth) -> Int16 {
-        return wom.rawValue
-    }
-    
-    /**
-     Converts a value from persistent store to the equivalent value of type SaveFormatter.weekOfMonth
-     - parameter wom: Int16 in DayPattern's wom; 5 = last week of month
-     - returns: (Optional) Value of type SaveFormatter.weekOfMonth to be used by Views or Model objects.
-     */
-    static func storedToWeekOfMonth(_ wom: Int16) -> SaveFormatter.weekOfMonth? {
-        return SaveFormatter.weekOfMonth.init(rawValue: wom)
-    }
-    
     enum dayOfMonth: Int16, Day, CaseIterable {
         
         case one = 1, two = 2, three = 3, four = 4, five = 5
@@ -163,24 +127,6 @@ extension SaveFormatter {
             return self == .last ? "Last" : String(self.rawValue)
         }
         
-    }
-    
-    /**
-     Returns persistent store format of a value of type SaveFormatter.dayOfMonth (to be stored in DayPattern).
-     - parameter dom: Value of type SaveFormatter.dayOfMonth to obtain the Int16 persistent store value of.
-     - returns: Int16 representing provided SaveFormatter.dayOfMonth.
-     */
-    static func dayOfMonthToStored(_ dom: SaveFormatter.dayOfMonth) -> Int16 {
-        return dom.rawValue
-    }
-    
-    /**
-     Converts a value from persistent store to the equivalent value of type SaveFormatter.dayOfMonth
-     - parameter dom: Int16 in DayPattern's dom; 0 = last day of month
-     - returns: (Optional) Value of type SaveFormatter.dayOfMonth to be used by Views or Model objects.
-     */
-    static func storedToDayOfMonth(_ dom: Int16) -> SaveFormatter.dayOfMonth? {
-        return SaveFormatter.dayOfMonth.init(rawValue: dom)
     }
     
 }

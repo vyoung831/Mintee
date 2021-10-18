@@ -170,37 +170,38 @@ extension TaskTargetSet {
      Checks this object's DayPattern to determine if it intersects with the provided day/weekday combo
      - parameter day: day of month to check
      - parameter weekday: weekday to check; should have been obtained from a Calendar's weekday component
+     - parameter daysInMonth: the number of days in the month of the date provided.
      - returns: True if parameters matched with this TaskTargetSet's pattern
      */
     func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) throws -> Bool {
         
-        if daysInMonth < 28 {
-            var userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
-                                            "day" : day,
-                                            "weekday" : weekday,
-                                            "daysInMonth" : daysInMonth,
-                                            "TaskTargetSet" : self.debugDescription]
+        guard let dom = SaveFormatter.dayOfMonth.init(rawValue: day),
+              let dow = SaveFormatter.dayOfWeek.init(rawValue: weekday),
+              let lastWom = SaveFormatter.weekOfMonth.init(rawValue: Int16(ceil(Float(day)/7))) else {
+            var userInfo: [String : Any] = ["Message": "TaskTargetSet.checkDay() received parms that couldn't be converted to valid values of dayOfWeek, weekOfMonth, and/or dayOfMonth.",
+                                            "day": day, "weekday": weekday, "daysInMonth": daysInMonth,
+                                            "TaskTargetSet": self.debugDescription]
             self._task.mergeDebugDictionary(userInfo: &userInfo)
             throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
         }
         
         switch pattern.type {
         case .dow:
-            return pattern.daysOfWeek.contains(weekday)
+            return pattern.daysOfWeek.contains(dow)
         case .wom:
-            if pattern.weeksOfMonth.contains(SaveFormatter.weekOfMonthToStored(.last)) {
-                return pattern.daysOfWeek.contains(weekday) &&
-                    (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ) || day + 7 > daysInMonth)
+            if pattern.weeksOfMonth.contains(.last) {
+                return pattern.daysOfWeek.contains(dow) &&
+                    (pattern.weeksOfMonth.contains(lastWom) || day + 7 > daysInMonth)
             }
-            return pattern.daysOfWeek.contains(weekday) &&
-                (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ))
+            return pattern.daysOfWeek.contains(dow) &&
+                (pattern.weeksOfMonth.contains(lastWom))
         case .dom:
             /*
-             Last day of month is represented as 0, so the following conditions are checked
+             The following conditions are checked:
              - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
-             - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
+             - The DayPattern's selected days of month contains `.last` and dateCounter is the last day of the month
              */
-            return pattern.daysOfMonth.contains(day) || ( pattern.daysOfMonth.contains(0) && day == daysInMonth)
+            return pattern.daysOfMonth.contains(dom) || ( pattern.daysOfMonth.contains(.last) && day == daysInMonth)
         }
         
     }

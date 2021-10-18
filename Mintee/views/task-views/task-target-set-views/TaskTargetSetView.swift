@@ -75,7 +75,7 @@ struct TaskTargetSetView: View , Identifiable {
                 return "Weekdays of month"
             }
             
-            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.weekOfMonthToStored($0) < SaveFormatter.weekOfMonthToStored($1) }).map{ $0.shortValue }
+            let orderedWeeks = selectedWom.sorted(by: { $0.rawValue < $1.rawValue }).map{ $0.shortValue }
             var label: String = ""
             for idx in 0 ..< orderedWeeks.count {
                 label.append(contentsOf: orderedWeeks[idx])
