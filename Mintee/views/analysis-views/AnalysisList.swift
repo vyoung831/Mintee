@@ -150,7 +150,7 @@ struct AnalysisListCard: View {
         VStack(alignment: .leading, spacing: 10) {
             
             if let analysisName = analysis._name,
-               let analysisType = SaveFormatter.storedToAnalysisType(analysis._analysisType) {
+               let analysisType = analysis._analysisType {
                 
                 HStack {
                     Text(analysisName)
@@ -166,10 +166,8 @@ struct AnalysisListCard: View {
                 
                 Text("Type: \(analysisType.stringValue)")
                 
-                if let startString = analysis._startDate,
-                   let endString = analysis._endDate,
-                   let start = SaveFormatter.storedStringToDate(startString),
-                   let end = SaveFormatter.storedStringToDate(endString) {
+                if let start = analysis._startDate,
+                   let end = analysis._endDate {
                     
                     // Start/end date analysis
                     Text("\(Date.toMDYPresent(start)) to \(Date.toMDYPresent(end))")

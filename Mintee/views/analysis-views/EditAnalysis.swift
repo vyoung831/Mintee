@@ -40,10 +40,7 @@ struct EditAnalysis: View {
         
         self.isBeingPresented = presented
         
-        guard let type = SaveFormatter.storedToAnalysisType(analysis._analysisType) else {
-            var userInfo: [String : Any] = ["Message" : "EditAnalysis.init() found an Analysis with an _analysisType that could not be converted to valid in-memory form."]
-            analysis.mergeDebugDictionary(userInfo: &userInfo)
-            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+        guard let type = analysis._analysisType else {
             NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil)
             return
         }
@@ -53,10 +50,8 @@ struct EditAnalysis: View {
             return
         }
         
-        if let startDateString = analysis._startDate,
-           let endDateString = analysis._endDate,
-           let start = SaveFormatter.storedStringToDate(startDateString),
-           let end = SaveFormatter.storedStringToDate(endDateString) {
+        if let start = analysis._startDate,
+           let end = analysis._endDate {
             self._startDate = State(initialValue: start)
             self._endDate = State(initialValue: end)
             self._rangeType = State(initialValue: .startEnd)

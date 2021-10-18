@@ -202,22 +202,4 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.analysisType
-     - parameter stored: Int16 saved to an Analysis' analysisType
-     - returns: (Optional) Value of type SaveFormatter.analysisType to be used by Views or Model components.
-     */
-    static func storedToAnalysisType(_ stored: Int16) -> SaveFormatter.analysisType? {
-        return analysisType.init(rawValue: stored)
-    }
-    
-    /**
-     Returns persistent store format of a value of type SaveFormatter.analysisType.
-     - parameter type: SaveFormatter.analysisType being used in-memory.
-     - returns: Int16 to store to an Analysis' analysisType.
-     */
-    static func analysisTypeToStored(_ type: SaveFormatter.analysisType) -> Int16 {
-        return type.rawValue
-    }
-    
 }

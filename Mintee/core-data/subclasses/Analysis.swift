@@ -23,13 +23,41 @@ public class Analysis: NSManagedObject {
     @NSManaged private var legend: AnalysisLegend
     
     var _name: String { get { return self.name } set { self.name = newValue } }
-    var _analysisType: Int16 { get { return self.analysisType } }
     var _tags: NSSet? { get { return self.tags } }
-    var _startDate: String? { get { return self.startDate } }
-    var _endDate: String? { get { return self.endDate } }
     var _dateRange: Int16 { get { return self.dateRange } }
     var _order: Int16 { get { return self.order }}
     var _legend: AnalysisLegend { get { return self.legend } }
+    
+    var _analysisType: SaveFormatter.analysisType? {
+        get {
+            guard let type = SaveFormatter.analysisType.init(rawValue: self.analysisType) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Analysis' analysisType couldn't be converted to a valid analysisType"))
+                return nil
+            }
+            return type
+        }
+    }
+    
+    var _startDate: Date? {
+        get {
+            guard let startDateString = self.startDate else { return nil }
+            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Analysis' startDate couldn't be converted to a valid Date"))
+                return nil
+            }
+            return formattedDate
+        }
+    }
+    var _endDate: Date? {
+        get {
+            guard let endDateString = self.endDate else { return nil }
+            guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Analysis' endDate couldn't be converted to a valid Date"))
+                return nil
+            }
+            return formattedDate
+        }
+    }
     
 }
 
@@ -65,7 +93,7 @@ extension Analysis {
                      tags: Set<Tag>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.analysisType = type.rawValue
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         self.legend = legend
@@ -82,7 +110,7 @@ extension Analysis {
                      tags: Set<Tag>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.analysisType = type.rawValue
         self.dateRange = dateRange
         self.legend = legend
         self.order = order
@@ -113,6 +141,30 @@ extension Analysis {
         
         // Add AnalysisLegend debug info
         self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
+        
+    }
+    
+    /**
+     Gathers debug descriptions of this Analysis' into a dictionary.
+     - parameter message: Value to set to key "Message".
+     - returns: Dictionary containing debug descriptions of this Analysis and its legend.
+     */
+    func mergeDebugDictionary(_ message: String) -> [String: Any] {
+        
+        var userInfo: [String: Any] = [:]
+        
+        // Add associated tag names
+        if let tagsArray = self.tags?.sortedArray(using: []) as? [Tag] {
+            var tagsIndex = 0
+            for unwrappedTag in tagsArray {
+                userInfo["tags[\(tagsIndex)]"] = unwrappedTag._name
+                tagsIndex += 1
+            }
+        }
+        
+        // Add AnalysisLegend debug info
+        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "legend.")
+        return userInfo
         
     }
     
@@ -241,7 +293,7 @@ extension Analysis {
      - parameter analysistype: Value of type `SaveFormatter.analysisType` to assign to this Analysis
      */
     func updateAnalysisType(_ type: SaveFormatter.analysisType) {
-        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.analysisType = type.rawValue
     }
     
 }
