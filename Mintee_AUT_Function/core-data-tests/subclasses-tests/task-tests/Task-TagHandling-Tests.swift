@@ -30,7 +30,8 @@ class Task_TagHandling_Tests: XCTestCase {
      */
     func test_updateTags_addNewTags() throws {
         var tags: [Tag] = []
-        let task = Task(context: CDCoordinator.mainContext)
+        let task = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+                             name: "Task", tags: Set(), dates: [])
         task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
                         CDCoordinator.mainContext)
@@ -47,7 +48,8 @@ class Task_TagHandling_Tests: XCTestCase {
      */
     func test_updateTags_existingTagReuse() throws {
         var tags: [Tag] = []
-        let task = Task(context: CDCoordinator.mainContext)
+        let task = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+                             name: "Task", tags: Set(), dates: [])
         task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
                         CDCoordinator.mainContext)
@@ -68,7 +70,8 @@ class Task_TagHandling_Tests: XCTestCase {
      */
     func test_updateTags_deadTagDeletion() throws {
         var tags: [Tag] = []
-        let task = Task(context: CDCoordinator.mainContext)
+        let task = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+                             name: "Task", tags: Set(), dates: [])
         task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext),
                                            try Tag.getOrCreateTag(tagName: "Tag3", CDCoordinator.mainContext)]),

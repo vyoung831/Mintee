@@ -27,8 +27,10 @@ class Task_Tests: XCTestCase {
      Test that two Tasks with the same name can't be saved to the MOC
      */
     func test_restraint_taskNameUnique() {
-        let task1 = Task(context: CDCoordinator.mainContext); task1._name = "Task"
-        let task2 = Task(context: CDCoordinator.mainContext); task2._name = "Task"
+        let task1 = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+                             name: "Task", tags: Set(), dates: [])
+        let task2 = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+                             name: "Task", tags: Set(), dates: [])
         do { try CDCoordinator.mainContext.save() } catch {
             return
         }
