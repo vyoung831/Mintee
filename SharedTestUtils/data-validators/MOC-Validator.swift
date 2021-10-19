@@ -15,31 +15,31 @@ class MOC_Validator {
     
     static func validate() {
         
-        let tasksFetch = try! CDCoordinator.moc.fetch(Task.fetchRequest())
+        let tasksFetch = try! CDCoordinator.mainContext.fetch(Task.fetchRequest())
         let tasks = Set<Task>(tasksFetch as! [Task])
         TaskValidator.validateTasks(tasks)
         MOC_Validator.validateUniqueTaskNames(tasks) // TASK-5
         
-        let tagsFetch = try! CDCoordinator.moc.fetch(Tag.fetchRequest())
+        let tagsFetch = try! CDCoordinator.mainContext.fetch(Tag.fetchRequest())
         let tags = Set<Tag>(tagsFetch as! [Tag])
         TagValidator.validateTags(tags)
         MOC_Validator.validateUniqueTagNames(tags) // TAG-1
         
-        let analysesFetch = try! CDCoordinator.moc.fetch(Analysis.fetchRequest())
+        let analysesFetch = try! CDCoordinator.mainContext.fetch(Analysis.fetchRequest())
         let analyses = Set<Analysis>(analysesFetch as! [Analysis])
         AnalysisValidator.validateAnalyses(analyses)
         MOC_Validator.validateAnalysesOrdering(analyses) // ANL-5
         MOC_Validator.validateUniqueAnalysisNames(analyses) // ANL-6
         
-        let taskInstancesFetch = try! CDCoordinator.moc.fetch(TaskInstance.fetchRequest())
+        let taskInstancesFetch = try! CDCoordinator.mainContext.fetch(TaskInstance.fetchRequest())
         let taskInstances = Set<TaskInstance>(taskInstancesFetch as! [TaskInstance])
         TaskInstanceValidator.validateInstances(taskInstances)
         
-        let taskSummaryAnalysesFetch = try! CDCoordinator.moc.fetch(TaskSummaryAnalysis.fetchRequest())
+        let taskSummaryAnalysesFetch = try! CDCoordinator.mainContext.fetch(TaskSummaryAnalysis.fetchRequest())
         let taskSummaryAnalyses = Set<TaskSummaryAnalysis>(taskSummaryAnalysesFetch as! [TaskSummaryAnalysis])
         TaskSummaryAnalysisValidator.validateAnalyses(taskSummaryAnalyses)
         
-        let ttsFetch = try! CDCoordinator.moc.fetch(TaskTargetSet.fetchRequest())
+        let ttsFetch = try! CDCoordinator.mainContext.fetch(TaskTargetSet.fetchRequest())
         let ttses = Set<TaskTargetSet>(ttsFetch as! [TaskTargetSet])
         TaskTargetSetValidator.validateTaskTargetSets(ttses)
         

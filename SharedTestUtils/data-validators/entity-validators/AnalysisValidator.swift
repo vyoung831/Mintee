@@ -40,7 +40,7 @@ class AnalysisValidator {
      - `Line`
      */
     static var validateAnalysisType: (Analysis) -> () = { analysis in
-        XCTAssert(analysis._analysisType == 0 || analysis._analysisType == 1)
+        XCTAssert(analysis._analysisType == .box || analysis._analysisType == .line)
     }
     
     /**
@@ -56,7 +56,7 @@ class AnalysisValidator {
             XCTAssert(analysis._dateRange > 0) // ANL-4
         } else if analysis._startDate != nil && analysis._endDate != nil {
             XCTAssert(analysis._dateRange == 0) // ANL-3
-            XCTAssert(SaveFormatter.storedStringToDate(analysis._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(analysis._endDate!)!)) // ANL-8
+            XCTAssert(analysis._startDate!.lessThanOrEqualToDate(analysis._endDate!)) // ANL-8
         } else {
             XCTFail() // ANL-2
         }

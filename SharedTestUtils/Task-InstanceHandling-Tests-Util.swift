@@ -14,12 +14,12 @@ public class Task_InstanceHandling_Tests_Util {
     
     public static func setUp() throws -> Task {
         return try Task(entity: Task.entity(),
-                        insertInto: CDCoordinator.moc,
+                        insertInto: CDCoordinator.mainContext,
                         name: "Task", tags: [],
                         startDate: startDate, endDate: endDate,
-                        targetSets: [getDowTargetSet(CDCoordinator.moc),
-                                     getWomTargetSet(CDCoordinator.moc),
-                                     getDomTargetSet(CDCoordinator.moc)])
+                        targetSets: [getDowTargetSet(CDCoordinator.mainContext),
+                                     getWomTargetSet(CDCoordinator.mainContext),
+                                     getDomTargetSet(CDCoordinator.mainContext)])
     }
     
 }

@@ -38,7 +38,7 @@ class TaskValidator {
      - `Specific`
      */
     static var validateTaskType: (Task) -> () = { task in
-        XCTAssert(task._taskType == 0 || task._taskType == 1)
+        XCTAssert(task._taskType == .recurring || task._taskType == .specific)
     }
     
     /**
@@ -47,9 +47,9 @@ class TaskValidator {
      TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with a TaskTargetSet.
      */
     static var validateRecurringTask: (Task) -> () = { task in
-        if task._taskType == 0 {
+        if task._taskType == .recurring {
             // TASK-6
-            XCTAssert(SaveFormatter.storedStringToDate(task._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(task._endDate!)!))
+            XCTAssert(task._startDate!.lessThanOrEqualToDate(task._endDate!))
             
             // TASK-3
             XCTAssert(task._targetSets!.count > 0)
@@ -72,7 +72,7 @@ class TaskValidator {
      */
     static var validateSpecificTask: (Task) -> () = { task in
         
-        if task._taskType == 1 {
+        if task._taskType == .specific {
             
             // TASK-4
             XCTAssert(task._instances!.count > 0)

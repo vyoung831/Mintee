@@ -30,13 +30,13 @@ class Task_TagHandling_Tests_Performance: XCTestCase {
     func testPerformance_updateTags_add1000() throws {
         
         var task: Task, tags: Set<Tag> = Set()
-        task = Task(context: CDCoordinator.moc)
+        task = Task(context: CDCoordinator.mainContext)
         for i in 1 ... 1000 {
-            tags.insert( try Tag.getOrCreateTag(tagName: String(i)) )
+            tags.insert( try Tag.getOrCreateTag(tagName: String(i), CDCoordinator.mainContext) )
         }
         
         self.measure {
-            task.updateTags(newTags: tags)
+            task.updateTags(newTags: tags, CDCoordinator.mainContext)
         }
         
     }
@@ -47,14 +47,14 @@ class Task_TagHandling_Tests_Performance: XCTestCase {
     func testPerformance_updateTags_delete1000() throws {
         
         var task: Task, tags: Set<Tag> = Set()
-        task = Task(context: CDCoordinator.moc)
+        task = Task(context: CDCoordinator.mainContext)
         for i in 1 ... 1000 {
-            tags.insert( try Tag.getOrCreateTag(tagName: String(i)) )
+            tags.insert( try Tag.getOrCreateTag(tagName: String(i), CDCoordinator.mainContext) )
         }
-        task.updateTags(newTags: tags)
+        task.updateTags(newTags: tags, CDCoordinator.mainContext)
         
         self.measure {
-            task.updateTags(newTags: Set())
+            task.updateTags(newTags: Set(), CDCoordinator.mainContext)
         }
         
     }

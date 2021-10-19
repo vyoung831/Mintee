@@ -27,9 +27,9 @@ class Task_Tests: XCTestCase {
      Test that two Tasks with the same name can't be saved to the MOC
      */
     func test_restraint_taskNameUnique() {
-        let task1 = Task(context: CDCoordinator.moc); task1._name = "Task"
-        let task2 = Task(context: CDCoordinator.moc); task2._name = "Task"
-        do { try CDCoordinator.moc.save() } catch {
+        let task1 = Task(context: CDCoordinator.mainContext); task1._name = "Task"
+        let task2 = Task(context: CDCoordinator.mainContext); task2._name = "Task"
+        do { try CDCoordinator.mainContext.save() } catch {
             return
         }
         XCTFail()
@@ -44,24 +44,24 @@ class Task_Tests: XCTestCase {
         let startDate = Calendar.current.date(from: DateComponents(year: 2019, month: 1, day: 1))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2019, month: 3, day: 1))!
         let tts = try TaskTargetSet(entity: TaskTargetSet.entity(),
-                                    insertInto: CDCoordinator.moc, min: 0, max: 3, minOperator: .lt, maxOperator: .lt, priority: 0,
+                                    insertInto: CDCoordinator.mainContext, min: 0, max: 3, minOperator: .lt, maxOperator: .lt, priority: 0,
                                     pattern: DayPattern(dow: Set<SaveFormatter.dayOfWeek>([.sunday, .tuesday, . monday, .wednesday, .thursday, .friday]),
                                                         wom: Set<SaveFormatter.weekOfMonth>([]),
                                                         dom: Set<SaveFormatter.dayOfMonth>([])))
         
         let task = try Task(entity: Task.entity(),
-                            insertInto: CDCoordinator.moc,
+                            insertInto: CDCoordinator.mainContext,
                             name: "Task",
-                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
-                                            try Tag.getOrCreateTag(tagName: "Tag2")]),
+                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
+                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
                             startDate: startDate, endDate: endDate,
                             targetSets: [tts])
         
-        try task.deleteSelf()
-        let tasks = try CDCoordinator.moc.fetch(Task.fetchRequest()) as [Task]
-        let tags = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
-        let targetSets = try CDCoordinator.moc.fetch(TaskTargetSet.fetchRequest()) as [TaskTargetSet]
-        let instances = try CDCoordinator.moc.fetch(TaskInstance.fetchRequest()) as [TaskInstance]
+        try task.deleteSelf(CDCoordinator.mainContext)
+        let tasks = try CDCoordinator.mainContext.fetch(Task.fetchRequest()) as [Task]
+        let tags = try CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
+        let targetSets = try CDCoordinator.mainContext.fetch(TaskTargetSet.fetchRequest()) as [TaskTargetSet]
+        let instances = try CDCoordinator.mainContext.fetch(TaskInstance.fetchRequest()) as [TaskInstance]
         XCTAssert(tasks.count == 0)
         XCTAssert(tags.count == 0)
         XCTAssert(targetSets.count == 0)
@@ -73,16 +73,16 @@ class Task_Tests: XCTestCase {
      */
     func test_deleteSelf_specificTypeTask() throws {
         let task = try Task(entity: Task.entity(),
-                            insertInto: CDCoordinator.moc,
+                            insertInto: CDCoordinator.mainContext,
                             name: "Task",
-                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1"),
-                                            try Tag.getOrCreateTag(tagName: "Tag2")]),
+                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
+                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
                             dates: [Date()])
         
-        try task.deleteSelf()
-        let tasks = try CDCoordinator.moc.fetch(Task.fetchRequest()) as [Task]
-        let tags = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
-        let instances = try CDCoordinator.moc.fetch(TaskInstance.fetchRequest()) as [TaskInstance]
+        try task.deleteSelf(CDCoordinator.mainContext)
+        let tasks = try CDCoordinator.mainContext.fetch(Task.fetchRequest()) as [Task]
+        let tags = try CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
+        let instances = try CDCoordinator.mainContext.fetch(TaskInstance.fetchRequest()) as [TaskInstance]
         XCTAssert(tasks.count == 0)
         XCTAssert(tags.count == 0)
         XCTAssert(instances.count == 0)

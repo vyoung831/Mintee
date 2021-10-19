@@ -48,29 +48,29 @@ class TaskTargetSetValidator {
      */
     static var validateOperatorsAndValues: (TaskTargetSet) -> () = { tts in
         
-        XCTAssert( tts._minOperator == 1 || tts._minOperator == 2 || tts._minOperator == 3 || tts._minOperator == 0 ) // TTS-1
-        XCTAssert( tts._maxOperator == 1 || tts._maxOperator == 2 || tts._maxOperator == 0 ) // TTS-2
+        XCTAssert( tts._minOperator == .lt || tts._minOperator == .lte || tts._minOperator == .eq || tts._minOperator == .na ) // TTS-1
+        XCTAssert( tts._maxOperator == .lt || tts._maxOperator == .lte || tts._maxOperator == .na ) // TTS-2
         
         // TTS-3
-        if (tts._maxOperator == 0) {
+        if (tts._maxOperator == .na) {
             XCTAssert(tts._max == 0)
         }
         
         // TTS-4
-        if (tts._minOperator == 0) {
+        if (tts._minOperator == .na) {
             XCTAssert(tts._min == 0)
         }
         
         // TTS-5
-        XCTAssertFalse( tts._minOperator == 0 && tts._maxOperator == 0 )
+        XCTAssertFalse( tts._minOperator == .na && tts._maxOperator == .na )
         
         // TTS-6
-        if (tts._minOperator == 3 ) {
-            XCTAssert( tts._maxOperator == 0 )
+        if (tts._minOperator == .eq ) {
+            XCTAssert( tts._maxOperator == .na )
         }
         
         // TTS-7
-        if (tts._minOperator != 0 && tts._maxOperator != 0 ) {
+        if (tts._minOperator != .na && tts._maxOperator != .na ) {
             XCTAssert(tts._min < tts._max)
         }
         

@@ -23,27 +23,27 @@ class TagPopupUtils_Tests: XCTestCase {
     }
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag" )
+        tag = try Tag.getOrCreateTag( tagName: "tag", CDCoordinator.mainContext )
         XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "tag"))
     }
     
     func test_tagShouldBeDisplayed_sameContent_differentCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag" )
+        tag = try Tag.getOrCreateTag( tagName: "tag", CDCoordinator.mainContext )
         XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "TAG"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_contained() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag1" )
+        tag = try Tag.getOrCreateTag( tagName: "tag1", CDCoordinator.mainContext )
         XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "tag"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_sameCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag2" )
+        tag = try Tag.getOrCreateTag( tagName: "tag2", CDCoordinator.mainContext )
         XCTAssertFalse(TagPopupUtils.tagShouldBeDisplayed(tag, "tag1"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_differentCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag2" )
+        tag = try Tag.getOrCreateTag( tagName: "tag2", CDCoordinator.mainContext )
         XCTAssertFalse(TagPopupUtils.tagShouldBeDisplayed(tag, "TAG1"))
     }
     
