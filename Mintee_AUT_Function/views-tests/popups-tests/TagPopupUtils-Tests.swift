@@ -12,10 +12,14 @@ import XCTest
 
 class TagPopupUtils_Tests: XCTestCase {
     
-    var tag: Tag!
+    var task: Task!
     
     override class func setUp() {
         TestContainer.setUpTestContainer()
+    }
+    
+    override func setUpWithError() throws {
+        task = try Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext, name: "Task", tags: Set(), dates: [Date()])
     }
     
     override func tearDownWithError() throws {
@@ -23,27 +27,32 @@ class TagPopupUtils_Tests: XCTestCase {
     }
     
     func test_tagShouldBeDisplayed_sameContent_sameCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag", CDCoordinator.mainContext )
+        try task.updateTags(newTagNames: Set(["tag"]), CDCoordinator.mainContext)
+        let tag = try CDCoordinator.mainContext.fetch(Tag.fetchRequest())[0]
         XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "tag"))
     }
     
     func test_tagShouldBeDisplayed_sameContent_differentCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag", CDCoordinator.mainContext )
+        try task.updateTags(newTagNames: Set(["tag"]), CDCoordinator.mainContext)
+        let tag = try CDCoordinator.mainContext.fetch(Tag.fetchRequest())[0]
         XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "TAG"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_contained() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag1", CDCoordinator.mainContext )
+        try task.updateTags(newTagNames: Set(["tag1"]), CDCoordinator.mainContext)
+        let tag = try CDCoordinator.mainContext.fetch(Tag.fetchRequest())[0]
         XCTAssert(TagPopupUtils.tagShouldBeDisplayed(tag, "tag"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_sameCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag2", CDCoordinator.mainContext )
+        try task.updateTags(newTagNames: Set(["tag2"]), CDCoordinator.mainContext)
+        let tag = try CDCoordinator.mainContext.fetch(Tag.fetchRequest())[0]
         XCTAssertFalse(TagPopupUtils.tagShouldBeDisplayed(tag, "tag1"))
     }
     
     func test_tagShouldBeDisplayed_differentContent_differentCase() throws {
-        tag = try Tag.getOrCreateTag( tagName: "tag2", CDCoordinator.mainContext )
+        try task.updateTags(newTagNames: Set(["tag2"]), CDCoordinator.mainContext)
+        let tag = try CDCoordinator.mainContext.fetch(Tag.fetchRequest())[0]
         XCTAssertFalse(TagPopupUtils.tagShouldBeDisplayed(tag, "TAG1"))
     }
     

@@ -27,9 +27,9 @@ class Task_Tests: XCTestCase {
      Test that two Tasks with the same name can't be saved to the MOC
      */
     func test_restraint_taskNameUnique() {
-        let task1 = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+        let _ = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
                              name: "Task", tags: Set(), dates: [])
-        let task2 = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
+        let _ = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
                              name: "Task", tags: Set(), dates: [])
         do { try CDCoordinator.mainContext.save() } catch {
             return
@@ -54,8 +54,7 @@ class Task_Tests: XCTestCase {
         let task = try Task(entity: Task.entity(),
                             insertInto: CDCoordinator.mainContext,
                             name: "Task",
-                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
+                            tags: Set(["Tag1", "Tag2"]),
                             startDate: startDate, endDate: endDate,
                             targetSets: [tts])
         
@@ -77,8 +76,7 @@ class Task_Tests: XCTestCase {
         let task = try Task(entity: Task.entity(),
                             insertInto: CDCoordinator.mainContext,
                             name: "Task",
-                            tags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                            try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
+                            tags: Set(["Tag1", "Tag2"]),
                             dates: [Date()])
         
         try task.deleteSelf(CDCoordinator.mainContext)

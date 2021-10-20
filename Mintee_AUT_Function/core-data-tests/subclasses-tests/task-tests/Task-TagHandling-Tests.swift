@@ -32,14 +32,8 @@ class Task_TagHandling_Tests: XCTestCase {
         var tags: [Tag] = []
         let task = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
                              name: "Task", tags: Set(), dates: [])
-        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
-                        CDCoordinator.mainContext)
-        do {
-            try tags = CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
-        } catch {
-            XCTFail()
-        }
+        try task.updateTags(newTagNames: Set(["Tag1", "Tag2"]), CDCoordinator.mainContext)
+        try tags = CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tags.count == 2)
     }
     
@@ -50,18 +44,9 @@ class Task_TagHandling_Tests: XCTestCase {
         var tags: [Tag] = []
         let task = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
                              name: "Task", tags: Set(), dates: [])
-        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
-                        CDCoordinator.mainContext)
-        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag3", CDCoordinator.mainContext)]),
-                        CDCoordinator.mainContext)
-        do {
-            try tags = CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
-        } catch {
-            XCTFail()
-        }
+        try task.updateTags(newTagNames: Set(["Tag1", "Tag2"]), CDCoordinator.mainContext)
+        try task.updateTags(newTagNames: Set(["Tag1", "Tag2", "Tag3"]), CDCoordinator.mainContext)
+        try tags = CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tags.count == 3)
     }
     
@@ -72,18 +57,9 @@ class Task_TagHandling_Tests: XCTestCase {
         var tags: [Tag] = []
         let task = try! Task(entity: Task.entity(), insertInto: CDCoordinator.mainContext,
                              name: "Task", tags: Set(), dates: [])
-        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag3", CDCoordinator.mainContext)]),
-                        CDCoordinator.mainContext)
-        task.updateTags(newTags: Set<Tag>([try Tag.getOrCreateTag(tagName: "Tag1", CDCoordinator.mainContext),
-                                           try Tag.getOrCreateTag(tagName: "Tag2", CDCoordinator.mainContext)]),
-                        CDCoordinator.mainContext)
-        do {
-            try tags = CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
-        } catch {
-            XCTFail()
-        }
+        try task.updateTags(newTagNames: Set(["Tag1", "Tag2", "Tag3"]), CDCoordinator.mainContext)
+        try task.updateTags(newTagNames: Set(["Tag1", "Tag2"]), CDCoordinator.mainContext)
+        try tags = CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tags.count == 2)
     }
     
