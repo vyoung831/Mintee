@@ -97,18 +97,7 @@ struct EditAnalysis: View {
                 }
                 
                 do {
-                    var tagsToAssociate: Set<Tag> = Set()
-                    for tagName in self.tags {
-                        if let tag = try Tag.getTag(tagName: tagName, childContext) {
-                            tagsToAssociate.insert(tag)
-                        } else {
-                            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                                ["Message" : "EditAnalysis.saveAnalysis() could not find an existing or create a new Tag to associate with an Analysis"])
-                            NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                            return
-                        }
-                    }
-                    try childAnalysis.associateTags(tagsToAssociate)
+                    try childAnalysis.updateTags(Set(self.tags), childContext)
                 } catch {
                     let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
                                                         ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to update an Analysis' tags",

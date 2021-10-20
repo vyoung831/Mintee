@@ -33,65 +33,58 @@ public class Tag: NSManagedObject {
     }
     
     /**
-     Given a tagName, either returns the existing Tag object with that tagName or creates a new one.
-     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate.
-     - parameter tagName: Case and diacritic insensitive name of the Tag to attempt to find.
-     - parameter moc: The MOC in which to perform updates or search for objects.
-     - returns: Tag with name equal to the provided tagName.
+     Creates new or finds existing Tags with the names specified and associates with the provided Task.
+     - parameter tagNames: Name of tags to find/create and associate with the Task.
+     - parameter task: The Task to associate Tags with.
+     - parameter moc: The MOC in which to search for Tags and perform updates.
      */
-    static func getOrCreateTag(tagName: String,_ moc: NSManagedObjectContext) throws -> Tag {
-        
-        if tagName.count < 1 {
-            let userInfo: [String : Any] = ["Message" : "Tag.getOrCreateTag() received tagName with count < 1"]
-            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
-        }
-        
-        // Set up case and diacritic insensitive predicate
-        let request = NSFetchRequest<Tag>(entityName: "Tag")
-        request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
-        do {
-            let results = try moc.fetch(request)
-            if let first = results.first {
-                // Return existing tag
-                return first
+    static func associateTags(tagNames: Set<String>,_ task: Task,_ moc: NSManagedObjectContext) throws {
+        for tagName in tagNames {
+            let request = NSFetchRequest<Tag>(entityName: "Tag")
+            request.predicate = NSPredicate(format: "name == [cd] %@", tagName) // Case and diacritic insensitive predicate
+            do {
+                let results = try moc.fetch(request)
+                if let first = results.first {
+                    first.addToTasks(task)
+                } else {
+                    Tag(tagName: tagName, moc).addToTasks(task)
+                }
+            } catch {
+                moc.rollback()
+                throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                                  ["Message" : "Tag.associateTags() failed to execute NSFetchRequest",
+                                                   "request" : request.debugDescription,
+                                                   "error.localizedDescription" : error.localizedDescription])
             }
-        } catch (let error) {
-            throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                              ["Message" : "Tag.getOrCreateTag() failed to execute NSFetchRequest",
-                                               "request" : request.debugDescription,
-                                               "error.localizedDescription" : error.localizedDescription])
         }
-        
-        // No tag already exists in MOC. Return Tag from initiaizlier
-        return Tag(tagName: tagName, moc)
     }
     
     /**
-     Given a tagName, returns the existing Tag object with that tagName if such a Tag exists. Otherwise, returns nil.
-     This function attempts to fetch an existing Tag by tagName using a CASE and DIACRITIC insensitive predicate.
-     - parameter tagName: Case and diacritic insensitive name of the Tag to find.
-     - parameter moc: The MOC in which to search for objects.
-     - returns: (Optional) Tag with name = `tagName`.
+     Finds existing Tags with the names specified and associates with the provided Analysis.
+     - parameter tagNames: Name of tags to find and associate with the Analysis.
+     - parameter task: The Analysis to associate Tags with.
+     - parameter moc: The MOC in which to search for Tags and perform updates.
      */
-    static func getTag(tagName: String,_ moc: NSManagedObjectContext) throws -> Tag? {
-        
-        // TO-DO: Update FetchRequest with more robust way to obtain name of `Tag` entity.
-        // Set up case and diacritic insensitive predicate
-        let request = NSFetchRequest<Tag>(entityName: "Tag")
-        request.predicate = NSPredicate(format: "name == [cd] %@", tagName)
-        do {
-            let results = try moc.fetch(request)
-            if let first = results.first {
-                return first
+    static func associateTags(tagNames: Set<String>,_ analysis: Analysis,_ moc: NSManagedObjectContext) throws {
+        for tagName in tagNames {
+            let request = NSFetchRequest<Tag>(entityName: "Tag") // TO-DO: Update FetchRequest with more robust way to obtain name of `Tag` entity.
+            request.predicate = NSPredicate(format: "name == [cd] %@", tagName) // Case and diacritic insensitive predicate
+            do {
+                let results = try moc.fetch(request)
+                if let first = results.first {
+                    first.addToAnalyses(analysis)
+                } else {
+                    throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                                      ["Message" : "Tag.associateTags() could not find an existing Tag to associate with an Analysis"])
+                }
+            } catch {
+                moc.rollback()
+                throw ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                                  ["Message" : "Tag.associateTags() failed to execute NSFetchRequest",
+                                                   "request" : request.debugDescription,
+                                                   "error.localizedDescription" : error.localizedDescription])
             }
-        } catch (let error) {
-            throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                              ["Message" : "Tag.getTag() failed to execute NSFetchRequest",
-                                               "request" : request.debugDescription,
-                                               "error.localizedDescription" : error.localizedDescription])
         }
-        return nil
-        
     }
     
 }

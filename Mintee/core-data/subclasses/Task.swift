@@ -239,10 +239,7 @@ extension Task {
     public func updateTags(newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
         // Remove unrelated tags and check for deletion
         self.removeUnrelatedTags(newTagNames: newTagNames, moc)
-        let tagObjects = try newTagNames.map({
-            try Tag.getOrCreateTag(tagName: $0, moc)
-        })
-        self.addToTags(NSSet(set: Set(tagObjects)))
+        try Tag.associateTags(tagNames: newTagNames, self, moc)
     }
     
     /**

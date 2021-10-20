@@ -39,19 +39,11 @@ struct AddAnalysis: View {
         childContext.perform {
             
             do {
-                
                 for preview in legendPreviews {
                     categorizedLegendEntries.insert(
                         try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
                     )
                 }
-                
-                for tagName in self.tags {
-                    if let tag = try Tag.getTag(tagName: tagName, childContext) {
-                        tagsToAssociate.insert(tag)
-                    }
-                }
-                
             } catch {
                 NotificationCenter.default.post(name: .analysisSaveFailed, object: nil)
                 return
@@ -69,7 +61,7 @@ struct AddAnalysis: View {
                                          endDate: self.endDate,
                                          legend: legend,
                                          order: -1,
-                                         tags: tagsToAssociate)
+                                         tags: Set(self.tags))
                 case .dateRange:
                     let _ = try Analysis(entity: Analysis.entity(),
                                          insertInto: childContext,
@@ -78,7 +70,7 @@ struct AddAnalysis: View {
                                          dateRange: range,
                                          legend: legend,
                                          order: -1,
-                                         tags: tagsToAssociate)
+                                         tags: Set(self.tags))
                 }
             } catch {
                 NotificationCenter.default.post(name: .analysisSaveFailed, object: nil)

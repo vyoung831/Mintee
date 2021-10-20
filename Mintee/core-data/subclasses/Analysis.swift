@@ -83,14 +83,14 @@ extension Analysis {
 
 extension Analysis {
     
-    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?,
+    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext,
                      name: String,
                      type: SaveFormatter.analysisType,
                      startDate: Date,
                      endDate: Date,
                      legend: AnalysisLegend,
                      order: Int16,
-                     tags: Set<Tag>) throws {
+                     tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.analysisType = type.rawValue
@@ -98,23 +98,23 @@ extension Analysis {
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         self.legend = legend
         self.order = order
-        try self.associateTags(tags)
+        try self.updateTags(tags, context)
     }
     
-    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?,
+    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext,
                      name: String,
                      type: SaveFormatter.analysisType,
                      dateRange: Int16,
                      legend: AnalysisLegend,
                      order: Int16,
-                     tags: Set<Tag>) throws {
+                     tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
         self.analysisType = type.rawValue
         self.dateRange = dateRange
         self.legend = legend
         self.order = order
-        try self.associateTags(tags)
+        try self.updateTags(tags, context)
     }
     
 }
@@ -186,26 +186,23 @@ extension Analysis {
     
     /**
      Updates this Analysis' tags relationship to contain only the Tags passed in.
-     - parameter tags: Set of Tags to be set as this Analysis' tags relationship
+     - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
+     - parameter moc: The MOC to update this perform updates in.
      */
-    func associateTags(_ tags: Set<Tag>) throws {
-        self.removeUnrelatedTags(newTags: tags)
-        for tag in tags {
-            self.addToTags(tag) // NSSet ignores dupliates
-        }
+    func updateTags(_ newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
+        self.removeUnrelatedTags(newTagNames: newTagNames)
+        try Tag.associateTags(tagNames: newTagNames, self, moc)
     }
     
     /**
      Removes Tags that are no longer to be associated with this Analysis.
      Tags that were already but no longer to be associated with this Analysis are removed.
-     - parameter newTags: Set of Tags to be set as this Analysis' tags relationship
+     - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
      */
-    private func removeUnrelatedTags(newTags: Set<Tag>) {
-        if let tags = self.tags {
-            for case let tag as Tag in tags {
-                if !newTags.contains(tag) {
-                    self.removeFromTags(tag)
-                }
+    private func removeUnrelatedTags(newTagNames: Set<String>) {
+        if let tags = self.tags as? Set<Tag> {
+            for tag in tags {
+                !newTagNames.contains(tag._name) ? self.removeFromTags(tag) : nil
             }
         }
     }
