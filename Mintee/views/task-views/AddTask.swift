@@ -36,7 +36,6 @@ struct AddTask: View {
         childContext.perform {
             
             do {
-                let tagObjects = try self.tags.map{ try Tag.getOrCreateTag(tagName: $0, childContext) }
                 switch self.taskType {
                 case .recurring:
                     for i in 0 ..< self.taskTargetSetViews.count {
@@ -53,7 +52,7 @@ struct AddTask: View {
                     let _ =  try Task(entity: Task.entity(),
                                       insertInto: childContext,
                                       name: self.taskName,
-                                      tags: Set(tagObjects),
+                                      tags: Set(self.tags),
                                       startDate: self.startDate,
                                       endDate: self.endDate,
                                       targetSets: Set(taskTargetSets))
@@ -62,7 +61,7 @@ struct AddTask: View {
                     let _ = try Task(entity: Task.entity(),
                                      insertInto: childContext,
                                      name: self.taskName,
-                                     tags: Set(tagObjects),
+                                     tags: Set(self.tags),
                                      dates: self.dates)
                     break
                 }

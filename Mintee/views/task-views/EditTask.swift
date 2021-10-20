@@ -94,11 +94,7 @@ struct EditTask: View {
         if let childTask = childContext.object(with: unwrappedTask.objectID) as? Task {
             childContext.perform {
                 do {
-                    for idx in 0 ..< self.tags.count {
-                        let tag = try Tag.getOrCreateTag(tagName: self.tags[idx], childContext)
-                        tagObjects.insert(tag)
-                    }
-                    childTask.updateTags(newTags: tagObjects, childContext)
+                    try childTask.updateTags(newTagNames: Set(self.tags), childContext)
                     
                     // Update the Task's taskType, dates, targetSets and instances.
                     switch self.taskType {
