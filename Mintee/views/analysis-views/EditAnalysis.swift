@@ -69,57 +69,54 @@ struct EditAnalysis: View {
     }
     
     private func saveAnalysis(range: Int16 = 0) {
-        
         guard let existingAnalysis = self.analysis else { return }
         
         let childContext = CDCoordinator.getChildContext()
-        if let childAnalysis = childContext.object(with: existingAnalysis.objectID) as? Analysis {
-            childContext.perform {
-                switch self.rangeType {
-                case .startEnd:
-                    childAnalysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
-                    break
-                case .dateRange:
-                    childAnalysis.updateDateRange(range)
-                    break
-                }
-                
-                var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-                do {
-                    let entries = try legendPreviews.map({ try CategorizedLegendEntry(category: $0.category, color: UIColor($0.color)) })
-                    categorizedLegendEntries = categorizedLegendEntries.union(Set(entries))
-                } catch {
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                        ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to instantiate an array of CategorizedLegendEntry to save",
-                                                         "error.localizedDescription" : error.localizedDescription])
-                    NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                    return
-                }
-                
-                do {
-                    try childAnalysis.updateTags(Set(self.tags), childContext)
-                } catch {
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                        ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to update an Analysis' tags",
-                                                         "error.localizedDescription": error.localizedDescription])
-                    NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                    return
-                }
-                
-                // Update Analysis' values in MOC
-                childAnalysis.updateLegend(categorizedEntries: categorizedLegendEntries)
-                childAnalysis._name = analysisName
-                childAnalysis.updateAnalysisType(self.analysisType)
-                do {
-                    try CDCoordinator.saveAndMergeChanges(childContext)
-                } catch {
-                    NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                }
+        guard let childAnalysis = childContext.childAnalysis(existingAnalysis.objectID) else {
+            NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil); return
+        }
+        
+        childContext.perform {
+            switch self.rangeType {
+            case .startEnd:
+                childAnalysis.updateStartAndEndDates(start: self.startDate, end: self.endDate)
+                break
+            case .dateRange:
+                childAnalysis.updateDateRange(range)
+                break
             }
-        } else {
-            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "EditAnalysis.saveAnalysis() failed to retrieve an Analysis from a child MOC"])
-            NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-            return
+            
+            var categorizedLegendEntries = Set<CategorizedLegendEntry>()
+            do {
+                let entries = try legendPreviews.map({ try CategorizedLegendEntry(category: $0.category, color: UIColor($0.color)) })
+                categorizedLegendEntries = categorizedLegendEntries.union(Set(entries))
+            } catch {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                    ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to instantiate an array of CategorizedLegendEntry to save",
+                                                     "error.localizedDescription" : error.localizedDescription])
+                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                return
+            }
+            
+            do {
+                try childAnalysis.updateTags(Set(self.tags), childContext)
+            } catch {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
+                                                    ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to update an Analysis' tags",
+                                                     "error.localizedDescription": error.localizedDescription])
+                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                return
+            }
+            
+            // Update Analysis' values in MOC
+            childAnalysis.updateLegend(categorizedEntries: categorizedLegendEntries)
+            childAnalysis._name = analysisName
+            childAnalysis.updateAnalysisType(self.analysisType)
+            do {
+                try CDCoordinator.saveAndMergeChanges(childContext)
+            } catch {
+                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+            }
         }
         
     }
@@ -129,14 +126,12 @@ struct EditAnalysis: View {
      Because this View presents this function as a closure for a confirmation popup to call, dismissal is also done in this function.
      */
     private func deleteAnalysis() {
+        guard let existingAnalysis = self.analysis else { return }
+        
         let childContext = CDCoordinator.getChildContext()
-        guard let existingAnalysis = self.analysis,
-              let childAnalysis = childContext.object(with: existingAnalysis.objectID) as? Analysis else {
-                  NotificationCenter.default.post(name: .analysisDeleteFailed, object: nil)
-                  let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                      ["Message" : "EditAnalysis.deleteAnalysis() failed to retrieve an Analysis from a child MOC"])
-                  return
-              }
+        guard let childAnalysis = childContext.childAnalysis(existingAnalysis.objectID) else {
+            NotificationCenter.default.post(name: .analysisDeleteFailed, object: nil); return
+        }
         
         childContext.perform {
             childAnalysis.deleteSelf(childContext)

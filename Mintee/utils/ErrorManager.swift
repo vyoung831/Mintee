@@ -87,6 +87,7 @@ struct ErrorManager {
         case modelFunction_receivedInvalidInput = 302
         case modelObjectInitializer_receivedInvalidInput = 303
         case persistentStore_saveFailed = 304
+        case childContextObject_fetchFailed = 305
     }
     
 }

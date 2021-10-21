@@ -87,54 +87,50 @@ struct EditTask: View {
      */
     private func saveTask() {
         
-        guard let unwrappedTask = self.task else { return }
+        guard let existingTask = self.task else { return }
         
-        var tagObjects: Set<Tag> = Set()
         let childContext = CDCoordinator.getChildContext()
-        if let childTask = childContext.object(with: unwrappedTask.objectID) as? Task {
-            childContext.perform {
-                do {
-                    try childTask.updateTags(newTagNames: Set(self.tags), childContext)
-                    
-                    // Update the Task's taskType, dates, targetSets and instances.
-                    switch self.taskType {
-                    case .recurring:
-                        var taskTargetSets: [TaskTargetSet] = []
-                        if self.taskType == .recurring {
-                            for i in 0 ..< taskTargetSetViews.count {
-                                let ttsv = taskTargetSetViews[i]
-                                let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: childContext,
-                                                            min: ttsv.minTarget, max: ttsv.maxTarget,
-                                                            minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
-                                                            priority: Int16(i),
-                                                            pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
-                                                                                wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
-                                                                                dom: Set((ttsv.selectedDaysOfMonth ?? []))))
-                                taskTargetSets.append(tts)
-                            }
+        guard let childTask = childContext.childTask(existingTask.objectID) else {
+            NotificationCenter.default.post(name: .taskUpdateFailed, object: nil); return
+        }
+        
+        childContext.perform {
+            do {
+                try childTask.updateTags(newTagNames: Set(self.tags), childContext)
+                
+                // Update the Task's taskType, dates, targetSets and instances.
+                switch self.taskType {
+                case .recurring:
+                    var taskTargetSets: [TaskTargetSet] = []
+                    if self.taskType == .recurring {
+                        for i in 0 ..< taskTargetSetViews.count {
+                            let ttsv = taskTargetSetViews[i]
+                            let tts = try TaskTargetSet(entity: TaskTargetSet.entity(), insertInto: childContext,
+                                                        min: ttsv.minTarget, max: ttsv.maxTarget,
+                                                        minOperator: ttsv.minOperator, maxOperator: ttsv.maxOperator,
+                                                        priority: Int16(i),
+                                                        pattern: DayPattern(dow: Set((ttsv.selectedDaysOfWeek ?? [])),
+                                                                            wom: Set((ttsv.selectedWeeksOfMonth ?? [])),
+                                                                            dom: Set((ttsv.selectedDaysOfMonth ?? []))))
+                            taskTargetSets.append(tts)
                         }
-                        try childTask.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets), childContext)
-                        break
-                    case .specific:
-                        try childTask.updateSpecificInstances(dates: self.dates, childContext)
-                        break
                     }
-                } catch {
-                    NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
+                    try childTask.updateRecurringInstances(startDate: self.startDate, endDate: self.endDate, targetSets: Set(taskTargetSets), childContext)
+                    break
+                case .specific:
+                    try childTask.updateSpecificInstances(dates: self.dates, childContext)
+                    break
                 }
-                
-                do {
-                    try CDCoordinator.saveAndMergeChanges(childContext)
-                } catch {
-                    NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
-                }
-                
+            } catch {
+                NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
             }
-        } else {
-            let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                ["Message" : "EditTask.saveTask() failed to retrieve a Task in a child MOC"])
-            NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
-            return
+            
+            do {
+                try CDCoordinator.saveAndMergeChanges(childContext)
+            } catch {
+                NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
+            }
+            
         }
         
         // Dismiss this `EditTask` View
@@ -143,19 +139,20 @@ struct EditTask: View {
     }
     
     private func deleteTask() {
+        guard let existingTask = self.task else { return }
+        
         let childContext = CDCoordinator.getChildContext()
-        if let unwrappedTask = self.task,
-           let childTask = childContext.object(with: unwrappedTask.objectID) as? Task {
-            childContext.perform {
-                do {
-                    try childTask.deleteSelf(childContext)
-                    try CDCoordinator.saveAndMergeChanges(childContext)
-                } catch {
-                    NotificationCenter.default.post(name: .taskDeleteFailed, object: nil)
-                }
+        guard let childTask = childContext.childTask(existingTask.objectID) else {
+            NotificationCenter.default.post(name: .taskDeleteFailed, object: nil); return
+        }
+        
+        childContext.perform {
+            do {
+                try childTask.deleteSelf(childContext)
+                try CDCoordinator.saveAndMergeChanges(childContext)
+            } catch {
+                NotificationCenter.default.post(name: .taskDeleteFailed, object: nil)
             }
-        } else {
-            NotificationCenter.default.post(name: .taskDeleteFailed, object: nil)
         }
         self.isBeingPresented.wrappedValue = false
     }
