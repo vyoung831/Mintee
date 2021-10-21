@@ -111,14 +111,9 @@ struct EditAnalysis: View {
                 childAnalysis._name = analysisName
                 childAnalysis.updateAnalysisType(self.analysisType)
                 do {
-                    try childContext.save()
-                    try CDCoordinator.mainContext.save()
-                    return
+                    try CDCoordinator.saveAndMergeChanges(childContext)
                 } catch {
-                    CDCoordinator.mainContext.rollback()
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "EditAnalysis.saveAnalysis() failed to save changes"])
                     NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                    return
                 }
             }
         } else {
@@ -144,16 +139,12 @@ struct EditAnalysis: View {
               }
         
         childContext.perform {
+            childAnalysis.deleteSelf(childContext)
             do {
-                childAnalysis.deleteSelf(childContext)
-                try childContext.save()
-                try CDCoordinator.mainContext.save()
+                try CDCoordinator.saveAndMergeChanges(childContext)
                 self.isBeingPresented.wrappedValue = false
             } catch {
-                CDCoordinator.mainContext.rollback()
                 NotificationCenter.default.post(name: .analysisDeleteFailed, object: nil)
-                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "EditAnalysis.deleteAnalysis() failed to save changes",
-                                                                                  "error.localizedDescription" : error.localizedDescription ])
             }
         }
     }

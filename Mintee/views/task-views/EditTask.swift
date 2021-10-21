@@ -124,17 +124,11 @@ struct EditTask: View {
                 }
                 
                 do {
-                    try childContext.save()
-                    try CDCoordinator.mainContext.save()
-                    return
+                    try CDCoordinator.saveAndMergeChanges(childContext)
                 } catch {
-                    CDCoordinator.mainContext.rollback()
-                    NotificationCenter.default.post(name: .taskUpdateFailed, object: nil)
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                        ["Message" : "EditTask.saveTask() failed to save changes",
-                                                         "error.localizedDescription" : error.localizedDescription])
-                    return
+                    NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
                 }
+                
             }
         } else {
             let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
@@ -155,10 +149,8 @@ struct EditTask: View {
             childContext.perform {
                 do {
                     try childTask.deleteSelf(childContext)
-                    try childContext.save()
-                    try CDCoordinator.mainContext.save()
+                    try CDCoordinator.saveAndMergeChanges(childContext)
                 } catch {
-                    childContext.rollback()
                     NotificationCenter.default.post(name: .taskDeleteFailed, object: nil)
                 }
             }

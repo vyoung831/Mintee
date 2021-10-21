@@ -33,7 +33,6 @@ struct AddAnalysis: View {
     private func saveAnalysis(range: Int16 = 0) {
         
         var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-        var tagsToAssociate = Set<Tag>()
         
         let childContext = CDCoordinator.getChildContext()
         childContext.perform {
@@ -78,13 +77,9 @@ struct AddAnalysis: View {
             }
             
             do {
-                try childContext.save()
-                try CDCoordinator.mainContext.save()
-                return
+                try CDCoordinator.saveAndMergeChanges(childContext)
             } catch {
                 NotificationCenter.default.post(name: .analysisSaveFailed, object: nil)
-                CDCoordinator.mainContext.rollback()
-                return
             }
             
         }
@@ -146,47 +141,47 @@ struct AddAnalysis: View {
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
-            .navigationTitle("Add Analysis")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                
-                leading: Button(action: {
+                .navigationTitle("Add Analysis")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(
                     
-                    if tags.count < 1 {
-                        self.errorMessage = "Add at least one Tag for the Analysis to use"
-                        return
-                    }
+                    leading: Button(action: {
+                        
+                        if tags.count < 1 {
+                            self.errorMessage = "Add at least one Tag for the Analysis to use"
+                            return
+                        }
+                        
+                        // Check Date range
+                        switch rangeType {
+                        case .startEnd:
+                            self.saveAnalysis()
+                            break
+                        case .dateRange:
+                            guard let castRange = Int16(dateRangeString) else { self.errorMessage = "Enter a valid date range"; return }
+                            self.saveAnalysis(range: castRange)
+                            break
+                        }
+                        
+                        self.isBeingPresented = false
+                        
+                    }, label: {
+                        Text("Save")
+                    })
+                        .foregroundColor(.accentColor)
+                        .accessibility(identifier: "add-analysis-save-button")
+                        .disabled(self.analysisName.count < 1),
                     
-                    // Check Date range
-                    switch rangeType {
-                    case .startEnd:
-                        self.saveAnalysis()
-                        break
-                    case .dateRange:
-                        guard let castRange = Int16(dateRangeString) else { self.errorMessage = "Enter a valid date range"; return }
-                        self.saveAnalysis(range: castRange)
-                        break
-                    }
+                    trailing: Button(action: {
+                        self.isBeingPresented = false
+                    }, label: {
+                        Text("Cancel")
+                    })
+                        .foregroundColor(.accentColor)
                     
-                    self.isBeingPresented = false
-                    
-                }, label: {
-                    Text("Save")
-                })
-                .foregroundColor(.accentColor)
-                .accessibility(identifier: "add-analysis-save-button")
-                .disabled(self.analysisName.count < 1),
-                
-                trailing: Button(action: {
-                    self.isBeingPresented = false
-                }, label: {
-                    Text("Cancel")
-                })
-                .foregroundColor(.accentColor)
-                
-            )
-            .background(themeManager.panel)
-            .foregroundColor(themeManager.panelContent)
+                )
+                .background(themeManager.panel)
+                .foregroundColor(themeManager.panelContent)
             
         }
         .accentColor(themeManager.accent)

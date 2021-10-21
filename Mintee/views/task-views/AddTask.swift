@@ -72,16 +72,9 @@ struct AddTask: View {
             }
             
             do {
-                try childContext.save()
-                try CDCoordinator.mainContext.save()
-                return
+                try CDCoordinator.saveAndMergeChanges(childContext)
             } catch {
-                CDCoordinator.mainContext.rollback()
                 NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
-                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                    ["Message" : "AddTask.saveTask() failed to save changes",
-                                                     "error.localizedDescription" : error.localizedDescription])
-                return
             }
             
         }

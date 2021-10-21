@@ -49,18 +49,9 @@ struct AnalysisList: View {
             }
             
             do {
-                try childContext.save()
-                try CDCoordinator.mainContext.save()
+                try CDCoordinator.saveAndMergeChanges(childContext)
             } catch {
-                var userInfo: [String : Any] = ["Message" : "AnalysisList.saveAnalysisOrdering() failed"]
-                for idx in 0 ..< model.sortedPreviews.count {
-                    userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
-                    userInfo["preview[\(idx)].id"] = model.sortedPreviews[idx].id.debugDescription
-                    model.sortedPreviews[idx].id.mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
-                }
-                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
                 NotificationCenter.default.post(name: .analysisReorderFailed, object: nil)
-                CDCoordinator.mainContext.rollback()
             }
         }
         
