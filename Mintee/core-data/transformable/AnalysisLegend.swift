@@ -61,8 +61,8 @@ class AnalysisLegend: NSObject, NSSecureCoding {
         
         var idx = 0;
         for entry in self.categorizedEntries {
-            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].type"] = entry.category.rawValue
+            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].color"] = entry._color.debugDescription
+            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].type"] = entry._category.rawValue
             idx += 1
         }
         
@@ -105,8 +105,21 @@ final class AnalysisLegendTransformer: NSSecureUnarchiveFromDataTransformer {
 class CategorizedLegendEntry: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
-    var color: String
-    var category: Category
+    private var color: String
+    private var category: Category
+    
+    var _color: UIColor? {
+        get {
+            guard let castColor = UIColor(hex: self.color) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    "A CategorizedLegendEntry's color that could not be converted to a UIColor")
+                return nil
+            }
+            return castColor
+        }
+    }
+    
+    var _category: Category { get { return self.category } }
     
     enum Category: Int16 {
         case reachedTarget = 1
@@ -122,7 +135,7 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     init(category: Category, color: UIColor) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
-                                              ["Message" : "CategorizedLegendEntry.init() received color that could not converted to a hex String",
+                                              ["Message" : "A Color that could not converted to a hex String",
                                                "color" : color.debugDescription])
         }
         self.category = category

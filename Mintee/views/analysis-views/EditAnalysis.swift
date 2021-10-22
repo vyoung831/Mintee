@@ -40,15 +40,10 @@ struct EditAnalysis: View {
         
         self.isBeingPresented = presented
         
-        guard let type = analysis._analysisType else {
-            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil)
-            return
-        }
-        
-        guard let previews = EditAnalysis.extractCategorizedPreviews(analysis) else {
-            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil)
-            return
-        }
+        guard let type = analysis._analysisType,
+              let previews = EditAnalysis.extractCategorizedPreviews(analysis) else {
+                  NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
+              }
         
         if let start = analysis._startDate,
            let end = analysis._endDate {
@@ -90,33 +85,17 @@ struct EditAnalysis: View {
             do {
                 let entries = try legendPreviews.map({ try CategorizedLegendEntry(category: $0.category, color: UIColor($0.color)) })
                 categorizedLegendEntries = categorizedLegendEntries.union(Set(entries))
-            } catch {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                    ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to instantiate an array of CategorizedLegendEntry to save",
-                                                     "error.localizedDescription" : error.localizedDescription])
-                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                return
-            }
-            
-            do {
                 try childAnalysis.updateTags(Set(self.tags), childContext)
-            } catch {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                                    ["Message" : "EditAnalysis.saveAnalysis() encountered an error when attempting to update an Analysis' tags",
-                                                     "error.localizedDescription": error.localizedDescription])
-                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
-                return
-            }
-            
-            // Update Analysis' values in MOC
-            childAnalysis.updateLegend(categorizedEntries: categorizedLegendEntries)
-            childAnalysis._name = analysisName
-            childAnalysis.updateAnalysisType(self.analysisType)
-            do {
+                
+                // Update Analysis' values in MOC
+                childAnalysis.updateLegend(categorizedEntries: categorizedLegendEntries)
+                childAnalysis._name = analysisName
+                childAnalysis.updateAnalysisType(self.analysisType)
                 try CDCoordinator.saveAndMergeChanges(childContext)
             } catch {
-                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil)
+                NotificationCenter.default.post(name: .analysisUpdateFailed, object: nil); return
             }
+            
         }
         
     }
@@ -277,13 +256,8 @@ extension EditAnalysis {
     private static func extractCategorizedPreviews(_ analysis: Analysis) -> [CategorizedLegendEntryPreview]? {
         var previews: [CategorizedLegendEntryPreview] = []
         for categorizedEntry in analysis._legend.categorizedEntries {
-            guard let color = UIColor(hex: categorizedEntry.color) else {
-                var userInfo: [String : Any] = ["Message" : "EditAnalysis.extractCategorizedPreviews() found a CategorizedLegendEntry with `color` that could not be converted to a UIColor"]
-                analysis.mergeDebugDictionary(userInfo: &userInfo)
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-                return nil
-            }
-            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry.category))
+            guard let color = categorizedEntry._color else { return nil }
+            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry._category))
         }
         return previews
     }

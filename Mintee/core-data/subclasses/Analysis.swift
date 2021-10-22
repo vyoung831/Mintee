@@ -209,7 +209,6 @@ extension Analysis {
     
 }
 
-
 // MARK: - Ordering utility functions
 
 extension Analysis {
