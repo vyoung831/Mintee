@@ -69,16 +69,23 @@ struct ManageViewCard: View {
     @ObservedObject var task: Task
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    func taskType() -> SaveFormatter.taskType? {
+        do {
+            return try self.task._taskType
+        } catch {
+            return nil
+        }
+    }
+    
     var body: some View {
         
         VStack(alignment: .center, spacing: 10) {
             
-            if let taskName = task._name,
-               let taskType = task._taskType {
+            if let taskType = taskType() {
                 
                 Group {
                     HStack {
-                        Text(taskName)
+                        Text(task._name)
                         Spacer()
                         Button("Edit", action: {
                             self.isPresentingEditTask = true

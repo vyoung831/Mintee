@@ -26,15 +26,11 @@ public class Task: NSManagedObject {
     
     var _name: String { get { return self.name } set { self.name = newValue } }
     var _taskSummaryAnalysis: TaskSummaryAnalysis { get { return self.taskSummaryAnalysis } }
-    var _instances: NSSet? { get { return self.instances } }
-    var _tags: NSSet? { get { return self.tags } }
-    var _targetSets: NSSet? { get { return self.targetSets } }
     
-    var _taskType: SaveFormatter.taskType? {
-        get {
+    var _taskType: SaveFormatter.taskType {
+        get throws {
             guard let formatted_type = SaveFormatter.taskType.init(rawValue: self.taskType) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Int16 couldn't be converted to a valid taskType"))
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Int16 couldn't be converted to a valid taskType"))
             }
             return formatted_type
         }
@@ -57,6 +53,39 @@ public class Task: NSManagedObject {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A String couldn't be converted to a valid Date"))
             }
             return formattedDate
+        }
+    }
+    
+    var _instances: Set<TaskInstance>? {
+        get throws {
+            guard let unwrappedSet = self.instances else { return nil }
+            guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  self.mergeDebugDictionary("A Task's instances was non-nil but couldn't be cast to a Set of TaskInstance"))
+            }
+            return castedSet
+        }
+    }
+    
+    var _tags: Set<Tag>? {
+        get throws {
+            guard let unwrappedSet = self.tags else { return nil }
+            guard let castedSet = unwrappedSet as? Set<Tag> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  self.mergeDebugDictionary("A Task's tags was non-nil but couldn't be cast to a Set of Tag"))
+            }
+            return castedSet
+        }
+    }
+    
+    var _targetSets: Set<TaskTargetSet>? {
+        get throws {
+            guard let unwrappedSet = self.targetSets else { return nil }
+            guard let castedSet = unwrappedSet as? Set<TaskTargetSet> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  self.mergeDebugDictionary("A Task's targetSets was non-nil but couldn't be cast to a Set of TaskTargetSets"))
+            }
+            return castedSet
         }
     }
     

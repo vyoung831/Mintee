@@ -46,7 +46,10 @@ struct EditTask: View {
         
         self.isBeingPresented = presented
         
-        guard let type = task._taskType else {
+        var type: SaveFormatter.taskType
+        do {
+            type = try task._taskType
+        } catch {
             NotificationCenter.default.post(name: .editTask_initFailed, object: nil); return
         }
         
@@ -62,9 +65,9 @@ struct EditTask: View {
             }
             break
         case .specific:
-            do {
-                self._dates = State(initialValue: try EditTask.getSpecificDates(task))
-            } catch {
+            if let instances = EditTask.getSpecificDates(task) {
+                self._dates = State(initialValue: instances)
+            } else {
                 NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
                 return
             }
@@ -335,10 +338,11 @@ extension EditTask {
     static func getRecurringProperties(_ task: Task) -> (startDate: Date, endDate: Date, ttsvArray: [TaskTargetSetView])? {
         do {
             guard let startDate = try task._startDate,
-                  let endDate = try task._endDate else {
+                  let endDate = try task._endDate,
+                  let ttsvs = try EditTask.extractTTSVArray(task) else {
                       return nil
                   }
-            return (startDate, endDate, try EditTask.extractTTSVArray(task))
+            return (startDate, endDate, ttsvs)
         } catch {
             return nil
         }
@@ -349,45 +353,39 @@ extension EditTask {
      If instances are nil, an instance's date is nil, or an instance's date cannot be converted to a Date object, nil is returned.
      - returns: (Optional) Array of Dates representing the dates of TaskInstances associated with the provided Task.
      */
-    static func getSpecificDates(_ task: Task) throws -> [Date] {
-        
-        // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
-        guard let instances = task._instances?.sortedArray(using: [NSSortDescriptor(key: "date", ascending: true)]) as? [TaskInstance] else {
-            var userInfo: [String : Any] = ["Message" : "A Task's _instances couldn't be converted to an array of TaskInstance",
-                                            "Task._instances" : task._instances]
-            task.mergeDebugDictionary(userInfo: &userInfo)
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+    static func getSpecificDates(_ task: Task) -> [Date]? {
+        do {
+            if let instances = try task._instances?.sorted(by: {try $0._date.lessThanDate(try $1._date)}) {
+                return try instances.map{
+                    try $0._date
+                }
+            } else {
+                return nil
+            }
+        } catch {
+            return nil
         }
-        
-        return try instances.map{
-            try $0._date
-        }
-        
     }
     
     /**
      Extracts the TaskTargetSets associated with a Task and converts them into an array of TaskTargetSetViews, sorted by priority.
      - parameter task: The task whose TaskTargetSets to extract.
-     - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task. Returns nil if invalid data is found in the TaskTargetSets.
+     - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task.
      */
-    static func extractTTSVArray(_ task: Task) throws -> [TaskTargetSetView] {
-        var ttsvArray: [TaskTargetSetView] = []
-        // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
-        if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
-            for idx in 0 ..< ttsArray.count {
-                let pattern = ttsArray[idx]._pattern
-                let ttsv = TaskTargetSetView(type: pattern.type,
-                                             minTarget: ttsArray[idx]._min,
-                                             minOperator: try ttsArray[idx]._minOperator,
-                                             maxTarget: ttsArray[idx]._max,
-                                             maxOperator: try ttsArray[idx]._maxOperator,
-                                             selectedDaysOfWeek: pattern.daysOfWeek,
-                                             selectedWeeksOfMonth: pattern.weeksOfMonth,
-                                             selectedDaysOfMonth: pattern.daysOfMonth)
-                ttsvArray.append(ttsv)
-            }
+    static func extractTTSVArray(_ task: Task) throws -> [TaskTargetSetView]? {
+        if let sets = try task._targetSets?.sorted(by: {$0._priority < $1._priority}) {
+            return try sets.map({
+                TaskTargetSetView(type: $0._pattern.type,
+                                  minTarget: $0._min,
+                                  minOperator: try $0._minOperator,
+                                  maxTarget: $0._max,
+                                  maxOperator: try $0._maxOperator,
+                                  selectedDaysOfWeek: $0._pattern.daysOfWeek,
+                                  selectedWeeksOfMonth: $0._pattern.weeksOfMonth,
+                                  selectedDaysOfMonth: $0._pattern.daysOfMonth)
+            })
         }
-        return ttsvArray
+        return nil
     }
     
 }
