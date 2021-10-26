@@ -18,10 +18,18 @@ public class TaskInstance: NSManagedObject {
     @NSManaged private var task: Task
     @NSManaged private var targetSet: TaskTargetSet?
     
-    var _date: String { get { return self.date } }
     var _completion: Float { get { return self.completion } set { self.completion = newValue } }
     var _task: Task { get { return self.task } }
     var _targetSet: TaskTargetSet? { get { return self.targetSet } }
+    
+    var _date: Date {
+        get throws {
+            guard let formattedDate = SaveFormatter.storedStringToDate(self.date) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, "A String couldn't be converted to a valid Date")
+            }
+            return formattedDate
+        }
+    }
     
     convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?, date: String) {
         self.init(entity: entity, insertInto: context)

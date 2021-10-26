@@ -47,10 +47,7 @@ struct EditTask: View {
         self.isBeingPresented = presented
         
         guard let type = task._taskType else {
-            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                task.mergeDebugDictionary("EditTask.init() found a Task with an _taskType that could not be converted to valid in-memory form."))
-            NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
-            return
+            NotificationCenter.default.post(name: .editTask_initFailed, object: nil); return
         }
         
         switch type {
@@ -65,9 +62,9 @@ struct EditTask: View {
             }
             break
         case .specific:
-            if let specificDates = EditTask.getSpecificDates(task) {
-                self._dates = State(initialValue: specificDates)
-            } else {
+            do {
+                self._dates = State(initialValue: try EditTask.getSpecificDates(task))
+            } catch {
                 NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
                 return
             }
@@ -336,20 +333,15 @@ extension EditTask {
      - returns: (Optional) Named tuple containing representations of the provided Task's startDate, endDate, and targetSets.
      */
     static func getRecurringProperties(_ task: Task) -> (startDate: Date, endDate: Date, ttsvArray: [TaskTargetSetView])? {
-        
-        var ttsvArray: [TaskTargetSetView]
         do {
-            ttsvArray = try EditTask.extractTTSVArray(task)
+            guard let startDate = try task._startDate,
+                  let endDate = try task._endDate else {
+                      return nil
+                  }
+            return (startDate, endDate, try EditTask.extractTTSVArray(task))
         } catch {
             return nil
         }
-        
-        guard let startDate = task._startDate, let endDate = task._endDate else {
-            return nil
-        }
-        
-        return (startDate, endDate, ttsvArray)
-        
     }
     
     /**
@@ -357,29 +349,19 @@ extension EditTask {
      If instances are nil, an instance's date is nil, or an instance's date cannot be converted to a Date object, nil is returned.
      - returns: (Optional) Array of Dates representing the dates of TaskInstances associated with the provided Task.
      */
-    static func getSpecificDates(_ task: Task) -> [Date]? {
+    static func getSpecificDates(_ task: Task) throws -> [Date] {
         
         // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
         guard let instances = task._instances?.sortedArray(using: [NSSortDescriptor(key: "date", ascending: true)]) as? [TaskInstance] else {
-            var userInfo: [String : Any] = ["Message" : "EditTask.getSpecificDates() could not convert a specific-type Task's _instances to an array of TaskInstance",
+            var userInfo: [String : Any] = ["Message" : "A Task's _instances couldn't be converted to an array of TaskInstance",
                                             "Task._instances" : task._instances]
             task.mergeDebugDictionary(userInfo: &userInfo)
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
         }
         
-        var dates: [Date] = []
-        for instance in instances {
-            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                            ["Message" : "ManageViewCard.getSpecificDates() found nil in a TaskInstance's _date or could not convert it to a valid Date",
-                                             "TaskInstance._date" : instance._date])
-                return nil
-            }
-            dates.append(date)
+        return try instances.map{
+            try $0._date
         }
-        
-        return dates
         
     }
     
@@ -393,29 +375,16 @@ extension EditTask {
         // TO-DO: Implement something more robust to replace TaskTargetSet sorting using hard-coded key
         if let ttsArray = task._targetSets?.sortedArray(using: [NSSortDescriptor(key: "priority", ascending: true)]) as? [TaskTargetSet] {
             for idx in 0 ..< ttsArray.count {
-                
-                /*
-                 If the TaskTargetSet's minOperator and/or maxOperator can't be instantiated as enums, an error is reported with the Task, the TTS, and the Task's other TTSes
-                 */
-                guard let minOperator = ttsArray[idx]._minOperator,
-                      let maxOperator = ttsArray[idx]._maxOperator else {
-                          var userInfo: [String : Any] = ["Message" : "EditTaskHostingController.extractTTSVArray() found invalid _minOperator or _maxOperator in a TaskTargetSet",
-                                                          "TaskTargetSet" : ttsArray[idx]]
-                          task.mergeDebugDictionary(userInfo: &userInfo)
-                          throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-                      }
-                
                 let pattern = ttsArray[idx]._pattern
                 let ttsv = TaskTargetSetView(type: pattern.type,
                                              minTarget: ttsArray[idx]._min,
-                                             minOperator: minOperator,
+                                             minOperator: try ttsArray[idx]._minOperator,
                                              maxTarget: ttsArray[idx]._max,
-                                             maxOperator: maxOperator,
+                                             maxOperator: try ttsArray[idx]._maxOperator,
                                              selectedDaysOfWeek: pattern.daysOfWeek,
                                              selectedWeeksOfMonth: pattern.weeksOfMonth,
                                              selectedDaysOfMonth: pattern.daysOfMonth)
                 ttsvArray.append(ttsv)
-                
             }
         }
         return ttsvArray

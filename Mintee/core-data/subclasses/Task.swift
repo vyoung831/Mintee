@@ -33,7 +33,7 @@ public class Task: NSManagedObject {
     var _taskType: SaveFormatter.taskType? {
         get {
             guard let formatted_type = SaveFormatter.taskType.init(rawValue: self.taskType) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A Task's taskType couldn't be converted to a valid taskType"))
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Int16 couldn't be converted to a valid taskType"))
                 return nil
             }
             return formatted_type
@@ -41,22 +41,20 @@ public class Task: NSManagedObject {
     }
     
     var _startDate: Date? {
-        get {
+        get throws {
             guard let startDateString = self.startDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A Task's startDate couldn't be converted to a valid Date"))
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A String couldn't be converted to a valid Date"))
             }
             return formattedDate
         }
     }
     
     var _endDate: Date? {
-        get {
+        get throws {
             guard let endDateString = self.endDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A Task's endDate couldn't be converted to a valid Date"))
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A String couldn't be converted to a valid Date"))
             }
             return formattedDate
         }
@@ -295,9 +293,9 @@ extension Task {
         }
         
         var datesDelta: [String] = []
-        let newDateStrings = dates.map{SaveFormatter.dateToStoredString($0)}
         for instance in instances {
-            !newDateStrings.contains(instance._date) ? datesDelta.append(instance._date) : nil
+            let date = try instance._date
+            dates.contains(date) ? datesDelta.append(Date.toMDYPresent(date)) : nil
         }
         
         return datesDelta.sorted{ $0 < $1 }
@@ -321,13 +319,7 @@ extension Task {
         
         // Filter existing TaskInstances for ones before the proposed start date or after the proposed end date
         for instance in instances {
-            guard let date = SaveFormatter.storedStringToDate(instance._date) else {
-                var userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() found a TaskInstance with nil or invalid _date",
-                                                "TaskInstance" : instance.debugDescription]
-                self.mergeDebugDictionary(userInfo: &userInfo)
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            }
-            
+            let date = try instance._date
             if date.lessThanDate(startDate) || endDate.lessThanDate(date) {
                 datesDelta.append(date)
             }
@@ -382,7 +374,7 @@ extension Task {
             }
             
             // If none of the proposed DayPatterns matched with the date and a TaskInstance already exists for that date, add it to datesDelta since it would be deleted
-            if !matched && instances.contains(where: { $0._date == SaveFormatter.dateToStoredString(dateCounter)}) {
+            if try instances.contains(where: {try $0._date.equalToDate(dateCounter)}) && !matched {
                 datesDelta.append(dateCounter)
             }
             
@@ -429,26 +421,23 @@ extension Task {
             for case let tts as TaskTargetSet in targetSets { moc.delete(tts) }
         }
         
-        /*
-         * Go through this Task's existing TaskInstances. Delete ones that don't intersect with new Dates, and make note of the ones that do so that those instances aren't re-generated
-         */
-        let newDatesStrings = Set(dates.map{ SaveFormatter.dateToStoredString($0) })
-        var datesToBeAdded: Set<String> = newDatesStrings
+        // This Task's existing TaskInstances are iterated through. Ones that don't intersect with new Dates are deleted and save others so they aren't regenerated
+        var newDates = Set(dates)
         guard let existingInstances = self.instances as? Set<TaskInstance> else {
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
                                               self.mergeDebugDictionary("Task.updateSpecificInstances() could not retrieve instances as Set of TaskInstance"))
         }
         for existingInstance in existingInstances {
-            if !newDatesStrings.contains(existingInstance._date) {
+            if !dates.contains(try existingInstance._date) {
                 moc.delete(existingInstance)
             } else {
-                datesToBeAdded.remove(existingInstance._date)
+                newDates.remove(try existingInstance._date)
             }
         }
         
         // Generate TaskInstances for the remaining dates that don't already exist for this Task
-        for date in datesToBeAdded {
-            self.addToInstances(TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: date))
+        for date in newDates {
+            self.addToInstances(TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: SaveFormatter.dateToStoredString(date)))
         }
         
     }
@@ -545,7 +534,7 @@ extension Task {
                                                       daysInMonth: Int16( Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count ?? 0)) {
                     
                     // extractInstance will return a TaskInstance with the specified date - either an existing one that's been disassociated from this Task's instances or a new one in the MOC
-                    let ti = extractInstance(date: SaveFormatter.dateToStoredString(dateCounter), moc)
+                    let ti = try extractInstance(date: dateCounter, moc)
                     
                     newInstances.insert(ti)
                     ti.updateTargetSet(sortedTargetSets[idx])
@@ -588,17 +577,16 @@ extension Task {
      - returns: TaskInstance with specified Date - either newly created or an existing one that's been disassociated with this Task
      - parameter moc: The MOC in which to perform updates.
      */
-    private func extractInstance(date: String,_ moc: NSManagedObjectContext) -> TaskInstance {
+    private func extractInstance(date: Date,_ moc: NSManagedObjectContext) throws -> TaskInstance {
         if let instances = self.instances {
             for case let instance as TaskInstance in instances {
-                if instance._date == date {
+                if try instance._date.equalToDate(date) {
                     removeFromInstances(instance)
                     return instance
                 }
             }
         }
-        let instance = TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: date)
-        return instance
+        return TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: SaveFormatter.dateToStoredString(date))
     }
     
 }

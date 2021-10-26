@@ -30,23 +30,21 @@ public class TaskTargetSet: NSManagedObject {
     var _instances: NSSet? { get { return self.instances } }
     var _task: Task { get { return self.task } }
     
-    var _minOperator: SaveFormatter.equalityOperator? {
-        get {
+    var _minOperator: SaveFormatter.equalityOperator {
+        get throws {
             guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    self.task.mergeDebugDictionary("An Int16 could not be converted to a value of type equalityOperator"))
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  self.task.mergeDebugDictionary("An Int16 could not be converted to a value of type equalityOperator"))
             }
             return minOp
         }
     }
     
-    var _maxOperator: SaveFormatter.equalityOperator? {
-        get {
+    var _maxOperator: SaveFormatter.equalityOperator {
+        get throws {
             guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    self.task.mergeDebugDictionary("An Int16 could not be converted to a value of type equalityOperator"))
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  self.task.mergeDebugDictionary("An Int16 could not be converted to a value of type equalityOperator"))
             }
             return maxOp
         }

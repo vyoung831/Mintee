@@ -65,6 +65,17 @@ extension Date {
     }
     
     /**
+     Using the current calendar, compares and returns if this Date's day, month, and year are equal to that of another Date's.
+     - parameter compareDate: Date to compare against.
+     - returns: True if this Date's day, month, and year are equal to the provided Date.
+     */
+    func equalToDate(_ compareDate: Date) -> Bool {
+        return Calendar.current.component(.year, from: self) == Calendar.current.component(.year, from: compareDate) &&
+        Calendar.current.component(.month, from: self) == Calendar.current.component(.month, from: compareDate) &&
+        Calendar.current.component(.day, from: self) <= Calendar.current.component(.day, from: compareDate)
+    }
+    
+    /**
      Using the current calendar, compares and returns if this Date's is on or before the provided end Date.
      This function only compares day, month, and year
      - parameter endDate: End date to compare against
