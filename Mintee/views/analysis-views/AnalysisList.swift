@@ -36,10 +36,8 @@ struct AnalysisList: View {
         childContext.perform {
             
             for preview in model.sortedPreviews {
-                guard let childAnalysis = childContext.object(with: preview.id.objectID) as? Analysis else {
-                    let _ = ErrorManager.recordNonFatal(.persistentStore_saveFailed, ["Message" : "AnalysisList.saveAnalysisOrdering() could not obtain a Analysis from a child MOC"])
-                    NotificationCenter.default.post(name: .analysisReorderFailed, object: nil)
-                    return
+                guard let childAnalysis = childContext.childAnalysis(preview.id.objectID) else {
+                    NotificationCenter.default.post(name: .analysisReorderFailed, object: nil); return
                 }
                 if preview.order >= 0 {
                     childAnalysis.setOrder(Int16(preview.order))
