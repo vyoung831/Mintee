@@ -59,20 +59,15 @@ class AnalysisLegend: NSObject, NSSecureCoding {
      */
     func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
         
-        var idx = 0;
+        var idx = 0
         for entry in self.categorizedEntries {
-            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].color"] = entry._color.debugDescription
-            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].type"] = entry._category.rawValue
+            entry.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)CategorizedLegendEntry[\(idx)].")
             idx += 1
         }
         
         idx = 0
         for entry in self.completionEntries {
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].min"] = entry.min
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].max"] = entry.max
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].minOperator"] = entry.minOperator.rawValue
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].maxOperator"] = entry.maxOperator.rawValue
+            entry.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)CompletionLegendEntry[\(idx)].")
             idx += 1
         }
         
@@ -108,6 +103,7 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     private var color: String
     private var category: Category
     
+    var _category: Category { get { return self.category } }
     var _color: UIColor? {
         get {
             guard let castColor = UIColor(hex: self.color) else {
@@ -118,8 +114,6 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
             return castColor
         }
     }
-    
-    var _category: Category { get { return self.category } }
     
     enum Category: Int16 {
         case reachedTarget = 1
@@ -155,21 +149,31 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
             let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() could not decode its properties",
                                             CategorizedLegendEntry.Keys.category.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
                                             CategorizedLegendEntry.Keys.color.rawValue : coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
             
         }
         
         guard let cat = Category.init(rawValue: category) else {
-            let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() found an Int16 under `category` that could not be converted to a valid value of type Category",
+            let userInfo: [String : Any] = ["Message" : "An Int16 could not be converted to a valid value of type CategorizedLegendEntry.Category",
                                             "category" : category]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
         }
         
         self.category = cat
         self.color = color
         
+    }
+    
+    /**
+     Add debug descriptions of this CategorizedLegendEntry and adds them to an inout dictionary
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that are added  to `userInfo`.
+     */
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        userInfo["\(prefix)color"] = self.color
+        userInfo["\(prefix)category"] = self.category
     }
     
 }
@@ -179,11 +183,47 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
 class CompletionLegendEntry: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool = true
-    var color: String
-    var min: Float
-    var max: Float
-    var minOperator: SaveFormatter.equalityOperator
-    var maxOperator: SaveFormatter.equalityOperator
+    private var color: String
+    private var min: Float
+    private var max: Float
+    private var minOperator: Int16
+    private var maxOperator: Int16
+    
+    var _min: Float { get { return self.min } }
+    var _max: Float { get { return self.max } }
+    
+    var _color: UIColor? {
+        get {
+            guard let castColor = UIColor(hex: self.color) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    "A String could not be converted to a UIColor")
+                return nil
+            }
+            return castColor
+        }
+    }
+    
+    var _minOperator: SaveFormatter.equalityOperator? {
+        get {
+            guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    "An Int16 could not be converted to a value of type equalityOperator")
+                return nil
+            }
+            return minOp
+        }
+    }
+    
+    var _maxOperator: SaveFormatter.equalityOperator? {
+        get {
+            guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    "An Int16 could not be converted to a value of type equalityOperator")
+                return nil
+            }
+            return maxOp
+        }
+    }
     
     enum Keys: String {
         case color = "color"
@@ -196,22 +236,22 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
     init(color: UIColor, min: Float, max: Float, minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
-                                              ["Message" : "CompletionLegendEntry.init() received UIColor that could not converted to a hex String",
+                                              ["Message" : "A UIColor could not converted to a hex String",
                                                "color" : color.debugDescription])
         }
         self.color = hexStringColor
         self.min = min
         self.max = max
-        self.minOperator = minOperator
-        self.maxOperator = maxOperator
+        self.minOperator = minOperator.rawValue
+        self.maxOperator = maxOperator.rawValue
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(self.color as NSString, forKey: CompletionLegendEntry.Keys.color.rawValue)
         coder.encode(NSNumber(value: self.min), forKey: CompletionLegendEntry.Keys.min.rawValue)
         coder.encode(NSNumber(value: self.max), forKey: CompletionLegendEntry.Keys.max.rawValue)
-        coder.encode(NSNumber(value: self.minOperator.rawValue), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
-        coder.encode(NSNumber(value: self.maxOperator.rawValue), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
+        coder.encode(NSNumber(value: self.minOperator), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
+        coder.encode(NSNumber(value: self.maxOperator), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
     }
     
     required init?(coder: NSCoder) {
@@ -221,7 +261,6 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
               let max = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.max.rawValue) as? Float,
               let minOp = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue) as? Int16,
               let maxOp = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue) as? Int16 else {
-            
             let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not decode its properties",
                                             CompletionLegendEntry.Keys.color.rawValue : coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue).debugDescription,
                                             CompletionLegendEntry.Keys.min.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.min.rawValue).debugDescription,
@@ -230,24 +269,27 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
                                             CompletionLegendEntry.Keys.maxOperator.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue).debugDescription]
             ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
             return nil
-            
-        }
-        
-        guard let minOperatorEnum = SaveFormatter.equalityOperator.init(rawValue: minOp),
-              let maxOperatorEnum = SaveFormatter.equalityOperator.init(rawValue: maxOp) else {
-            let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not convert the decoded minOperator and/or maxOperator to values of type SaveFormatter.equalityOperator",
-                                            "minOp" : minOp,
-                                            "maxOp" : maxOp]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
         }
         
         self.color = color
         self.min = min
         self.max = max
-        self.minOperator = minOperatorEnum
-        self.maxOperator = maxOperatorEnum
+        self.minOperator = minOp
+        self.maxOperator = maxOp
         
+    }
+    
+    /**
+     Add debug descriptions of this CompletionLegendEntry and adds them to an inout dictionary
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that are added  to `userInfo`.
+     */
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        userInfo["\(prefix)color"] = self.color
+        userInfo["\(prefix)min"] = self.min
+        userInfo["\(prefix)max"] = self.max
+        userInfo["\(prefix)minOperator"] = self.minOperator
+        userInfo["\(prefix)maxOperator"] = self.maxOperator
     }
     
 }
