@@ -356,7 +356,7 @@ extension Task {
             for pattern in dayPatterns {
                 switch pattern.type {
                 case .dow:
-                    matched = pattern.check_dayOfWeek(dateCounter)
+                    matched = try pattern.check_dayOfWeek(dateCounter)
                     break
                 case .wom:
                     let day = Int16(Calendar.current.component(.day, from: dateCounter))
@@ -367,8 +367,8 @@ extension Task {
                         throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
                     }
                     
-                    if pattern.check_dayOfWeek(dateCounter) {
-                        if pattern.check_weekOfMonth(dateCounter, Int16(ceil(Float(day)/7))) {
+                    if try pattern.check_dayOfWeek(dateCounter) {
+                        if try pattern.check_weekOfMonth(dateCounter, Int16(ceil(Float(day)/7))) {
                             matched = true
                         } else if pattern.weeksOfMonth.contains(.last) {
                             if day + 7 > daysInMonth.count { matched = true }
@@ -381,7 +381,7 @@ extension Task {
                      - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
                      - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
                      */
-                    if pattern.check_dayOfMonth(dateCounter) {
+                    if try pattern.check_dayOfMonth(dateCounter) {
                         matched = true
                     } else if pattern.daysOfMonth.contains(.last) && Calendar.current.component(.day, from: dateCounter) == Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count {
                         matched = true

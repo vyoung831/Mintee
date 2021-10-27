@@ -16,7 +16,7 @@ extension NSManagedObjectContext {
             return task
         } else {
             let _ = ErrorManager.recordNonFatal(.childContextObject_fetchFailed,
-                                              "Failed to fetch object in child MOC of type Task")
+                                                ["fetched object": self.object(with: id).debugDescription])
             return nil
         }
     }
@@ -26,7 +26,7 @@ extension NSManagedObjectContext {
             return analysis
         } else {
             let _ = ErrorManager.recordNonFatal(.childContextObject_fetchFailed,
-                                              "Failed to fetch object in child MOC of type Analysis")
+                                                ["fetched object": self.object(with: id).debugDescription])
             return nil
         }
     }

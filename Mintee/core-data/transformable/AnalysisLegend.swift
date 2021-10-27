@@ -108,7 +108,7 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
         get {
             guard let castColor = UIColor(hex: self.color) else {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    "A CategorizedLegendEntry's color that could not be converted to a UIColor")
+                                                    ["color": self.color])
                 return nil
             }
             return castColor
@@ -196,7 +196,7 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         get {
             guard let castColor = UIColor(hex: self.color) else {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    "A String could not be converted to a UIColor")
+                                                    ["color": self.color])
                 return nil
             }
             return castColor
@@ -207,7 +207,7 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         get {
             guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    "An Int16 could not be converted to a value of type equalityOperator")
+                                                    ["minOperator": self.minOperator])
                 return nil
             }
             return minOp
@@ -218,7 +218,7 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         get {
             guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
                 let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    "An Int16 could not be converted to a value of type equalityOperator")
+                                                    ["maxOperator": self.maxOperator])
                 return nil
             }
             return maxOp

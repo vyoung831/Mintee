@@ -17,26 +17,9 @@ struct ErrorManager {
     /**
      Records a non-fatal error to report to Crashlytics.
      - parameter errorCode: Non-fatal error code to report.
-     - parameter message: Message to report with error record.
      */
-    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,_ message: String,_ debugPairs: [String: Any] = [:]) -> NSError {
-        
-        var domain: String
-        if let bundleID = Bundle.main.bundleIdentifier {
-            domain = bundleID
-        } else {
-            domain = "Leko.Mintee"
-            Crashlytics.crashlytics().record(error: NSError(domain: domain,
-                                                            code: NonFatal.bundleIdentifierWasNil.rawValue,
-                                                            userInfo: [:]))
-        }
-        
-        var userInfo = debugPairs
-        userInfo["Message"] = message
-        let actualError = NSError(domain: domain, code: errorCode.rawValue, userInfo: userInfo)
-        Crashlytics.crashlytics().record(error: actualError)
-        return actualError
-        
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal) -> NSError {
+        return recordNonFatal(errorCode, [:])
     }
     
     /**

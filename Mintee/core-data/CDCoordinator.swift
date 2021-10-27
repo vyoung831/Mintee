@@ -87,7 +87,6 @@ extension CDCoordinator {
         } catch {
             CDCoordinator.mainContext.rollback()
             throw ErrorManager.recordNonFatal(.persistentStore_saveFailed,
-                                              "An error occured when saving and merging a child MOC into the main MOC.",
                                               ["error.localizedDescription": error.localizedDescription])
         }
     }

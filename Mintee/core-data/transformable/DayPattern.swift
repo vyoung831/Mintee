@@ -57,15 +57,15 @@ class DayPattern: NSObject, NSSecureCoding {
               let wom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue) as? Set<Int16>,
               let dom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue) as? Set<Int16>,
               let typeValue = decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue) as? Int8 else {
-            let userInfo: [String : Any] =
-                ["Message" : "DayPattern.init() could not decode its properties",
-                 DayPattern.Keys.daysOfWeek.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue).debugDescription,
-                 DayPattern.Keys.weeksOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue).debugDescription,
-                 DayPattern.Keys.daysOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue).debugDescription,
-                 DayPattern.Keys.type.rawValue : decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue).debugDescription]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
-        }
+                  let userInfo: [String : Any] =
+                  ["Message" : "DayPattern.init() could not decode its properties",
+                   DayPattern.Keys.daysOfWeek.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue).debugDescription,
+                   DayPattern.Keys.weeksOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue).debugDescription,
+                   DayPattern.Keys.daysOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue).debugDescription,
+                   DayPattern.Keys.type.rawValue : decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue).debugDescription]
+                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                  return nil
+              }
         
         // Exit if the decoded type cannot be converted back into an enum value of type DayPattern.patternType
         guard let type = patternType(rawValue: typeValue) else {
@@ -114,31 +114,31 @@ class DayPattern: NSObject, NSSecureCoding {
 
 extension DayPattern {
     
-    func check_dayOfWeek(_ date: Date) -> Bool {
+    func check_dayOfWeek(_ date: Date) throws -> Bool {
         let dowComponent = Int16(Calendar.current.component(.weekday, from: date))
-        if let dow = SaveFormatter.dayOfWeek.init(rawValue: dowComponent) {
-            return self.daysOfWeek.contains(dow)
+        guard let dow = SaveFormatter.dayOfWeek.init(rawValue: dowComponent) else {
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+                                              ["dowComponent": dowComponent])
         }
-        let _ = ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,"DayPattern.check_dayOfWeek could not convert a Date's `.weekday` component to a value of type dayOfWeek")
-        return false
+        return self.daysOfWeek.contains(dow)
     }
     
-    func check_weekOfMonth(_ date: Date,_ weekOfMonth: Int16? = nil) -> Bool {
+    func check_weekOfMonth(_ date: Date,_ weekOfMonth: Int16? = nil) throws -> Bool {
         let womComponent = weekOfMonth ?? Int16(Calendar.current.component(.weekOfMonth, from: date))
-        if let wom = SaveFormatter.weekOfMonth.init(rawValue: womComponent) {
-            return self.weeksOfMonth.contains(wom)
+        guard let wom = SaveFormatter.weekOfMonth.init(rawValue: womComponent) else {
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+                                              ["womComponent": womComponent])
         }
-        let _ = ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,"DayPattern.check_weekOfMonth could not convert an Int16 or a Date's `.weekOfMonth` component to a value of type weekOfMonth")
-        return false
+        return self.weeksOfMonth.contains(wom)
     }
-
-    func check_dayOfMonth(_ date: Date) -> Bool {
+    
+    func check_dayOfMonth(_ date: Date) throws -> Bool {
         let domComponent = Int16(Calendar.current.component(.day, from: date))
-        if let dom = SaveFormatter.dayOfMonth.init(rawValue: domComponent) {
-            return self.daysOfMonth.contains(dom)
+        guard let dom = SaveFormatter.dayOfMonth.init(rawValue: domComponent) else {
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+                                              ["domComponent": domComponent])
         }
-        let _ = ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,"DayPattern.check_dayOfMonth could not convert a Date's `.day` component to a value of type dayOfMonth")
-        return false
+        return self.daysOfMonth.contains(dom)
     }
     
 }

@@ -25,7 +25,8 @@ public class TaskInstance: NSManagedObject {
     var _date: Date {
         get throws {
             guard let formattedDate = SaveFormatter.storedStringToDate(self.date) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, "A String couldn't be converted to a valid Date")
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["date": self.date])
             }
             return formattedDate
         }

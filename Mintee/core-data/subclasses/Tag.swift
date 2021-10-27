@@ -24,8 +24,7 @@ public class Tag: NSManagedObject {
     var _tasks: Set<Task> {
         get throws {
             guard let castSet = self.tasks as? Set<Task> else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                  "A Tag's tasks couldn't be cast to a Set of Tasks")
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData)
             }
             return castSet
         }
@@ -61,8 +60,7 @@ public class Tag: NSManagedObject {
             } catch {
                 moc.rollback()
                 throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                                  ["Message" : "Tag.associateTags() failed to execute NSFetchRequest",
-                                                   "request" : request.debugDescription,
+                                                  ["request" : request.debugDescription,
                                                    "error.localizedDescription" : error.localizedDescription])
             }
         }
