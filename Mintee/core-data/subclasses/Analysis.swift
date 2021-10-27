@@ -15,15 +15,15 @@ public class Analysis: NSManagedObject {
     
     @NSManaged private var name: String
     @NSManaged private var analysisType: Int16
-    @NSManaged private var tags: NSSet?
     @NSManaged private var startDate: String?
     @NSManaged private var endDate: String?
     @NSManaged private var dateRange: Int16
     @NSManaged private var order: Int16
     @NSManaged private var legend: AnalysisLegend
     
+    @NSManaged private var tags: NSSet?
+    
     var _name: String { get { return self.name } set { self.name = newValue } }
-    var _tags: NSSet? { get { return self.tags } }
     var _dateRange: Int16 { get { return self.dateRange } }
     var _order: Int16 { get { return self.order }}
     var _legend: AnalysisLegend { get { return self.legend } }
@@ -48,6 +48,7 @@ public class Analysis: NSManagedObject {
             return formattedDate
         }
     }
+    
     var _endDate: Date? {
         get {
             guard let endDateString = self.endDate else { return nil }
@@ -56,6 +57,16 @@ public class Analysis: NSManagedObject {
                 return nil
             }
             return formattedDate
+        }
+    }
+    
+    var _tags: Set<Tag>? {
+        get throws {
+            guard let unwrappedSet = self.tags else { return nil }
+            guard let castedSet = unwrappedSet as? Set<Tag> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return castedSet
         }
     }
     
