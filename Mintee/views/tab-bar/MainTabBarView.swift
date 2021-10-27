@@ -19,7 +19,7 @@ struct MainTabBarView: View {
                     Image(systemName: "chart.bar.xaxis")
                     Text("Analysis")
                 }
-            }
+            }.environment(\.managedObjectContext, CDCoordinator.moc)
             
             ManageView().tabItem {
                 VStack {
