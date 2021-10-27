@@ -20,7 +20,16 @@ public class Tag: NSManagedObject {
     
     var _name: String { get { return self.name } }
     var _analyses: NSSet? { get { return self.analyses } }
-    var _tasks: NSSet { get { return self.tasks } }
+    
+    var _tasks: Set<Task> {
+        get throws {
+            guard let castSet = self.tasks as? Set<Task> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  "A Tag's tasks couldn't be cast to a Set of Tasks")
+            }
+            return castSet
+        }
+    }
     
     /**
      Creates a Tag instance and inserts it into the shared MOC. This initializer should only be used if there is no existing Tag with tagName=$tagName in the MOC.

@@ -125,7 +125,7 @@ public class Task: NSManagedObject {
      - parameter moc: The MOC perform Task deletion and relationship cleanup in.
      */
     public func deleteSelf(_ moc: NSManagedObjectContext) throws {
-        self.removeAllTags(moc)
+        try self.removeAllTags(moc)
         
         if let targetSets = self.targetSets,
            let instances = self.instances {
@@ -265,7 +265,7 @@ extension Task {
      */
     public func updateTags(newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
         // Remove unrelated tags and check for deletion
-        self.removeUnrelatedTags(newTagNames: newTagNames, moc)
+        try self.removeUnrelatedTags(newTagNames: newTagNames, moc)
         try Tag.associateTags(tagNames: newTagNames, self, moc)
     }
     
@@ -275,12 +275,12 @@ extension Task {
      - parameter newTagNames: Set of names of Tags to set as this Task's tags.
      - parameter moc: The MOC in which to unassociate Tags from this Task.
      */
-    private func removeUnrelatedTags(newTagNames: Set<String>,_ moc: NSManagedObjectContext) {
+    private func removeUnrelatedTags(newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
         if let existingTags = self.tags as? Set<Tag> {
             for tag in existingTags {
                 if !newTagNames.contains(tag._name) {
                     self.removeFromTags(tag)
-                    if tag._tasks.count == 0 {
+                    if try tag._tasks.count == 0 {
                         moc.delete(tag)
                     }
                 }
@@ -292,11 +292,11 @@ extension Task {
      Removes all Tags from this Task's tags relationship and checks each one of them for deletion.
      - parameter moc: The MOC in which to disassociate Tags from this Task.
      */
-    private func removeAllTags(_ moc: NSManagedObjectContext) {
+    private func removeAllTags(_ moc: NSManagedObjectContext) throws {
         if let tags = self.tags {
             for case let tag as Tag in tags {
                 self.removeFromTags(tag)
-                if tag._tasks.count == 0 {
+                if try tag._tasks.count == 0 {
                     moc.delete(tag)
                 }
             }
