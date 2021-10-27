@@ -282,7 +282,7 @@ struct EditTask: View {
                             }
                             
                         } catch {
-                            self.saveErrorMessage = ErrorManager.unexpectedErrorMessage
+                            NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
                             return
                         }
                         
