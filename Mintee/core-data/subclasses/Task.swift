@@ -67,9 +67,9 @@ public class Task: NSManagedObject {
         }
     }
     
-    var _tags: Set<Tag>? {
+    var _tags: Set<Tag> {
         get throws {
-            guard let unwrappedSet = self.tags else { return nil }
+            guard let unwrappedSet = self.tags else { return Set() }
             guard let castedSet = unwrappedSet as? Set<Tag> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
                                                   self.mergeDebugDictionary("A Task's tags was non-nil but couldn't be cast to a Set of Tag"))
@@ -246,16 +246,6 @@ extension Task {
 // MARK: - Tag handling
 
 extension Task {
-    
-    /**
-     - returns: An array of strings representing the tagNames of this Task's tags
-     */
-    public func getTagNames() -> Set<String> {
-        if let tags = self.tags as? Set<Tag> {
-            return Set(tags.map({$0._name}))
-        }
-        return Set<String>()
-    }
     
     /**
      Updates this Task's tags relationship to contain only the Tags passed in.

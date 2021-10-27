@@ -49,6 +49,7 @@ struct EditTask: View {
         var type: SaveFormatter.taskType
         do {
             type = try task._taskType
+            self._tags = State(initialValue: (try task._tags).map{ $0._name })
         } catch {
             NotificationCenter.default.post(name: .editTask_initFailed, object: nil); return
         }
@@ -75,7 +76,6 @@ struct EditTask: View {
         }
         
         self._taskName = State(initialValue: task._name)
-        self._tags = State(initialValue: Array(task.getTagNames()))
         self._taskType = State(initialValue: type)
         self.task = task
         

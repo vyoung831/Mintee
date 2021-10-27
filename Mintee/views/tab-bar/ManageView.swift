@@ -69,9 +69,9 @@ struct ManageViewCard: View {
     @ObservedObject var task: Task
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    func taskType() -> SaveFormatter.taskType? {
+    func taskProperties() -> (type: SaveFormatter.taskType, tags: Set<Tag>)? {
         do {
-            return try self.task._taskType
+            return (try self.task._taskType, try self.task._tags)
         } catch {
             return nil
         }
@@ -81,7 +81,7 @@ struct ManageViewCard: View {
         
         VStack(alignment: .center, spacing: 10) {
             
-            if let taskType = taskType() {
+            if let props = taskProperties() {
                 
                 Group {
                     HStack {
@@ -93,7 +93,7 @@ struct ManageViewCard: View {
                     }
                     
                     HStack {
-                        if taskType == .recurring {
+                        if props.type == .recurring {
                             if let recurringProperties = EditTask.getRecurringProperties(self.task) {
                                 Text("\(Date.toMDYPresent(recurringProperties.startDate)) to \(Date.toMDYPresent(recurringProperties.endDate))")
                             } else {
@@ -105,11 +105,11 @@ struct ManageViewCard: View {
                         Spacer()
                     }
                     
-                    if task.getTagNames().count > 0 {
+                    if props.tags.count > 0 {
                         ScrollView(.horizontal, showsIndicators: false, content: {
                             
                             HStack {
-                                ForEach(task.getTagNames().sorted(), id: \.self) { tagName in
+                                ForEach(props.tags.map{$0._name}, id: \.self) { tagName in
                                     TagView(name: tagName, removable: false, remove: {})
                                 }
                             }
