@@ -58,8 +58,7 @@ class DayPattern: NSObject, NSSecureCoding {
               let dom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue) as? Set<Int16>,
               let typeValue = decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue) as? Int8 else {
                   let userInfo: [String : Any] =
-                  ["Message" : "DayPattern.init() could not decode its properties",
-                   DayPattern.Keys.daysOfWeek.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue).debugDescription,
+                  [DayPattern.Keys.daysOfWeek.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue).debugDescription,
                    DayPattern.Keys.weeksOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue).debugDescription,
                    DayPattern.Keys.daysOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue).debugDescription,
                    DayPattern.Keys.type.rawValue : decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue).debugDescription]
@@ -69,9 +68,7 @@ class DayPattern: NSObject, NSSecureCoding {
         
         // Exit if the decoded type cannot be converted back into an enum value of type DayPattern.patternType
         guard let type = patternType(rawValue: typeValue) else {
-            let userInfo: [String : Any] = ["Message" : "DayPattern.init() could not initialize a value of type DayPattern.patternType from the saved Int8",
-                                            "decoded value" : typeValue]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, ["decoded value" : typeValue])
             return nil
         }
         

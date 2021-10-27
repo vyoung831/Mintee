@@ -336,8 +336,7 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
             }
         } catch {
             ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                        ["Message" : "AnalysisListModel.setUpFetchedResults() failed to call performFetch on fetchedResultsController",
-                                         "fetchRequest" : fetchRequest.debugDescription,
+                                        ["fetchRequest" : fetchRequest.debugDescription,
                                          "error.localizedDescription" : error.localizedDescription])
             return
         }

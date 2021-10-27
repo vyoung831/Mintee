@@ -33,8 +33,7 @@ public class TaskTargetSet: NSManagedObject {
     var _minOperator: SaveFormatter.equalityOperator {
         get throws {
             guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                  self.task.mergeDebugDictionary("An Int16 could not be converted to a value of type equalityOperator"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.task.mergeDebugDictionary())
             }
             return minOp
         }
@@ -43,8 +42,7 @@ public class TaskTargetSet: NSManagedObject {
     var _maxOperator: SaveFormatter.equalityOperator {
         get throws {
             guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                  self.task.mergeDebugDictionary("An Int16 could not be converted to a value of type equalityOperator"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.task.mergeDebugDictionary())
             }
             return maxOp
         }
@@ -65,8 +63,7 @@ public class TaskTargetSet: NSManagedObject {
             self.priority = priority
             self.pattern = pattern
         } else {
-            var userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() failed to validate operators",
-                                            "min" : min,
+            var userInfo: [String : Any] = ["min" : min,
                                             "max" : max,
                                             "minOperator" : minOperator,
                                             "maxOperator" : maxOperator,
@@ -176,8 +173,7 @@ extension TaskTargetSet {
         guard let dom = SaveFormatter.dayOfMonth.init(rawValue: day),
               let dow = SaveFormatter.dayOfWeek.init(rawValue: weekday),
               let lastWom = SaveFormatter.weekOfMonth.init(rawValue: Int16(ceil(Float(day)/7))) else {
-            var userInfo: [String : Any] = ["Message": "TaskTargetSet.checkDay() received parms that couldn't be converted to valid values of dayOfWeek, weekOfMonth, and/or dayOfMonth.",
-                                            "day": day, "weekday": weekday, "daysInMonth": daysInMonth,
+            var userInfo: [String : Any] = ["day": day, "weekday": weekday, "daysInMonth": daysInMonth,
                                             "TaskTargetSet": self.debugDescription]
             self._task.mergeDebugDictionary(userInfo: &userInfo)
             throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)

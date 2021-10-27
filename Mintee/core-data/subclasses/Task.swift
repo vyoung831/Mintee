@@ -30,7 +30,7 @@ public class Task: NSManagedObject {
     var _taskType: SaveFormatter.taskType {
         get throws {
             guard let formatted_type = SaveFormatter.taskType.init(rawValue: self.taskType) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Int16 couldn't be converted to a valid taskType"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formatted_type
         }
@@ -40,7 +40,7 @@ public class Task: NSManagedObject {
         get throws {
             guard let startDateString = self.startDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A String couldn't be converted to a valid Date"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formattedDate
         }
@@ -50,7 +50,7 @@ public class Task: NSManagedObject {
         get throws {
             guard let endDateString = self.endDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("A String couldn't be converted to a valid Date"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formattedDate
         }
@@ -60,8 +60,7 @@ public class Task: NSManagedObject {
         get throws {
             guard let unwrappedSet = self.instances else { return nil }
             guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                  self.mergeDebugDictionary("A Task's instances was non-nil but couldn't be cast to a Set of TaskInstance"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return castedSet
         }
@@ -71,8 +70,7 @@ public class Task: NSManagedObject {
         get throws {
             guard let unwrappedSet = self.tags else { return Set() }
             guard let castedSet = unwrappedSet as? Set<Tag> else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                  self.mergeDebugDictionary("A Task's tags was non-nil but couldn't be cast to a Set of Tag"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return castedSet
         }
@@ -82,8 +80,7 @@ public class Task: NSManagedObject {
         get throws {
             guard let unwrappedSet = self.targetSets else { return nil }
             guard let castedSet = unwrappedSet as? Set<TaskTargetSet> else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                  self.mergeDebugDictionary("A Task's targetSets was non-nil but couldn't be cast to a Set of TaskTargetSets"))
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return castedSet
         }
@@ -132,8 +129,7 @@ public class Task: NSManagedObject {
             for case let tts as TaskTargetSet in targetSets { moc.delete(tts) }
             for case let ti as TaskInstance in instances { moc.delete(ti) }
         } else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.deleteSelf() found instances and/or targetSets to be nil"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
         moc.delete(self)
@@ -198,11 +194,9 @@ extension Task {
     
     /**
      Gathers debug descriptions of this Task and its TaskTargetSets.
-     - parameter userInfo: [String : Any] Dictionary containing existing debug info
-     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
      - returns: Dictionary containing existing debug info and debug descriptions of this Task and its TaskTargetSets
      */
-    func mergeDebugDictionary(_ message: String) -> [String: Any] {
+    func mergeDebugDictionary() -> [String: Any] {
         var userInfo: [String: Any] = [:]
         let prefix = "Task."
         userInfo["\(prefix)debugDescription"] = self.debugDescription
@@ -216,7 +210,6 @@ extension Task {
                 pattern.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(patternPrefix).")
             }
         }
-        userInfo["Message"] = message
         return userInfo
     }
     
@@ -233,7 +226,7 @@ extension Task {
                 let ttsPrefix = "\(prefix)TTS[\(idx)]"
                 let patternPrefix = "\(ttsPrefix)._pattern"
                 let pattern = ttsArray[idx]._pattern
-                
+
                 userInfo["\(ttsPrefix).debugDescription"] = ttsArray[idx].debugDescription
                 pattern.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(patternPrefix).")
             }
@@ -307,8 +300,7 @@ extension Task {
     func getDeltaInstancesSpecific(dates: Set<Date>) throws -> [String] {
         
         guard let instances = self.instances as? Set<TaskInstance> else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.getDeltaInstancesSpecific() could not retrieve instances as Set of TaskInstance"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
         var datesDelta: [String] = []
@@ -332,8 +324,7 @@ extension Task {
         var datesDelta: [Date] = []
         
         guard let instances = self.instances as? Set<TaskInstance> else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.getDeltaInstancesRecurring() could not retrieve instances as Set of TaskInstance"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
         // Filter existing TaskInstances for ones before the proposed start date or after the proposed end date
@@ -361,8 +352,7 @@ extension Task {
                 case .wom:
                     let day = Int16(Calendar.current.component(.day, from: dateCounter))
                     guard let daysInMonth = Calendar.current.range(of: .day, in: .month, for: dateCounter) else {
-                        var userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() received nil days in month while iterating from startDate to endDate",
-                                                        "dateCounter" : dateCounter.debugDescription]
+                        var userInfo: [String : Any] = ["dateCounter" : dateCounter.debugDescription]
                         self.mergeDebugDictionary(userInfo: &userInfo)
                         throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
                     }
@@ -401,8 +391,7 @@ extension Task {
             if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
                 dateCounter = newDate
             } else {
-                var userInfo: [String : Any] = ["Message" : "Task.getDeltaInstancesRecurring() failed to increment dateCounter",
-                                                "dateCounter" : dateCounter.debugDescription]
+                var userInfo: [String : Any] = ["dateCounter" : dateCounter.debugDescription]
                 self.mergeDebugDictionary(userInfo: &userInfo)
                 throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
             }
@@ -443,8 +432,7 @@ extension Task {
         // This Task's existing TaskInstances are iterated through. Ones that don't intersect with new Dates are deleted and save others so they aren't regenerated
         var newDates = Set(dates)
         guard let existingInstances = self.instances as? Set<TaskInstance> else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.updateSpecificInstances() could not retrieve instances as Set of TaskInstance"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         for existingInstance in existingInstances {
             if !dates.contains(try existingInstance._date) {
@@ -509,8 +497,7 @@ extension Task {
                 }
             }
         } else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.updateRecurringInstances() found nil in targetSets"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
         // Set new targetSets and update instances
@@ -531,16 +518,14 @@ extension Task {
     private func generateAndPruneInstances(_ moc: NSManagedObjectContext) throws {
         
         guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0._priority < $1._priority} ) else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.generateAndPruneInstances() could not read from or sort targetSets"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
         guard let sd = self.startDate,
               let ed = self.endDate,
               var dateCounter = SaveFormatter.storedStringToDate(sd),
               let endDate = SaveFormatter.storedStringToDate(ed) else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                              self.mergeDebugDictionary("Task.generateAndPruneInstances() found a nil or invalid startDate and/or endDate"))
+            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
         var newInstances = Set<TaskInstance>()
@@ -568,8 +553,7 @@ extension Task {
             if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
                 dateCounter = newDate
             } else {
-                var userInfo: [String : Any] = ["Message" : "Task.generateAndPruneInstances() failed to increment dateCounter",
-                                                "dateCounter" : dateCounter.debugDescription]
+                var userInfo: [String : Any] = ["dateCounter" : dateCounter.debugDescription]
                 self.mergeDebugDictionary(userInfo: &userInfo)
                 throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
             }

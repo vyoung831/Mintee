@@ -31,7 +31,7 @@ public class Analysis: NSManagedObject {
     var _analysisType: SaveFormatter.analysisType? {
         get {
             guard let type = SaveFormatter.analysisType.init(rawValue: self.analysisType) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Analysis' analysisType couldn't be converted to a valid analysisType"))
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
                 return nil
             }
             return type
@@ -42,7 +42,7 @@ public class Analysis: NSManagedObject {
         get {
             guard let startDateString = self.startDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Analysis' startDate couldn't be converted to a valid Date"))
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
                 return nil
             }
             return formattedDate
@@ -52,7 +52,7 @@ public class Analysis: NSManagedObject {
         get {
             guard let endDateString = self.endDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary("An Analysis' endDate couldn't be converted to a valid Date"))
+                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
                 return nil
             }
             return formattedDate
@@ -146,10 +146,9 @@ extension Analysis {
     
     /**
      Gathers debug descriptions of this Analysis' into a dictionary.
-     - parameter message: Value to set to key "Message".
      - returns: Dictionary containing debug descriptions of this Analysis and its legend.
      */
-    func mergeDebugDictionary(_ message: String) -> [String: Any] {
+    func mergeDebugDictionary() -> [String: Any] {
         
         var userInfo: [String: Any] = [:]
         

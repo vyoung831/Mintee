@@ -62,8 +62,7 @@ struct TaskTargetSetSection: View {
                                         taskTargetSetViews.swapAt(idx, idx - 1)
                                     } else {
                                         ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.moveUp() in TaskTargetSetSection could not find the first index of tts to start swap from",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                    ["taskTargetSetViews" : taskTargetSetViews,
                                                                      "tts.id" : tts.id])
                                     }
                                   }, moveDown: {
@@ -71,8 +70,7 @@ struct TaskTargetSetSection: View {
                                         taskTargetSetViews.swapAt(idx, idx + 1)
                                     } else {
                                         ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.moveDown() in TaskTargetSetSection could not find the first index of tts to start swap from",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                    ["taskTargetSetViews" : taskTargetSetViews,
                                                                      "tts.id" : tts.id])
                                     }
                                   }, update: { ttsv in
@@ -80,8 +78,7 @@ struct TaskTargetSetSection: View {
                                         self.taskTargetSetViews[idx] = ttsv
                                     } else {
                                         ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.update() in TaskTargetSetSection could not find the first index of tts to update",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                    ["taskTargetSetViews" : taskTargetSetViews,
                                                                      "tts.id" : tts.id])
                                     }
                                   }, delete: {
@@ -89,8 +86,7 @@ struct TaskTargetSetSection: View {
                                         self.taskTargetSetViews.remove(at: idx)
                                     } else {
                                         ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.delete() in TaskTargetSetSection could not find the first index of tts to delete",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
+                                                                    ["taskTargetSetViews" : taskTargetSetViews,
                                                                      "tts.id" : tts.id])
                                     }
                                   })

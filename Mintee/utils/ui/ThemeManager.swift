@@ -117,8 +117,7 @@ class ThemeManager: NSObject, ObservableObject {
                   let newKey = unwrappedChanges[.newKey] as? String,
                   let newTheme = ThemeManager.Theme.init(rawValue: newKey) else {
                 ErrorManager.recordNonFatal(.userDefaults_observedInvalidUpdate,
-                                            ["Message" : "ThemeManager.observeValue() could not convert observed change to value of type ThemeManager.Theme",
-                                             "keyPath" : keyPath?.debugDescription,
+                                            ["keyPath" : keyPath?.debugDescription,
                                              "change" : change?.debugDescription])
                 return
             }
@@ -191,9 +190,7 @@ class ThemeManager: NSObject, ObservableObject {
             if let theme = ThemeManager.Theme.init(rawValue: savedTheme) {
                 return theme
             } else {
-                ErrorManager.recordNonFatal(.userDefaults_containedInvalidValue,
-                                            ["Message": "ThemeManager.getUserDefaultsTheme() could not convert the saved theme to a value of type ThemeManager.Theme",
-                                             "savedTheme" : savedTheme])
+                ErrorManager.recordNonFatal(.userDefaults_containedInvalidValue, ["savedTheme" : savedTheme])
                 UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
                 return .system
             }

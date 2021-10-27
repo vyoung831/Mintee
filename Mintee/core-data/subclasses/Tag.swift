@@ -81,14 +81,12 @@ public class Tag: NSManagedObject {
                 if let first = results.first {
                     first.addToAnalyses(analysis)
                 } else {
-                    throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                                      ["Message" : "Tag.associateTags() could not find an existing Tag to associate with an Analysis"])
+                    throw ErrorManager.recordNonFatal(.fetchRequest_failed)
                 }
             } catch {
                 moc.rollback()
                 throw ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                                  ["Message" : "Tag.associateTags() failed to execute NSFetchRequest",
-                                                   "request" : request.debugDescription,
+                                                  ["request" : request.debugDescription,
                                                    "error.localizedDescription" : error.localizedDescription])
             }
         }

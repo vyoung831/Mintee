@@ -67,8 +67,7 @@ struct TaskTargetSetView: View , Identifiable {
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
                 ErrorManager.recordNonFatal(.viewObject_unexpectedNilProperty,
-                                            ["Message" : "TaskTargetSetView.getLabel() found nil selectedWeeksOfMonth when expected non-nil",
-                                             "selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription,
+                                            ["selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription,
                                              "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription,
                                              "minOperator" : self.minOperator,
                                              "maxOperator" : self.maxOperator])
