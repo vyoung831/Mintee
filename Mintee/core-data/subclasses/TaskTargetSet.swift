@@ -20,15 +20,25 @@ public class TaskTargetSet: NSManagedObject {
     @NSManaged private var minOperator: Int16
     @NSManaged private var pattern: DayPattern
     @NSManaged private var priority: Int16
-    @NSManaged private var instances: NSSet?
     @NSManaged private var task: Task
+    
+    @NSManaged private var instances: NSSet?
     
     var _max: Float { get { return self.max } }
     var _min: Float { get { return self.min } }
     var _pattern: DayPattern { get { return self.pattern } }
     var _priority: Int16 { get { return self.priority } }
-    var _instances: NSSet? { get { return self.instances } }
     var _task: Task { get { return self.task } }
+    
+    var _instances: Set<TaskInstance>? {
+        get throws {
+            guard let unwrappedSet = self.instances else { return Set() }
+            guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, ["debugDescription": self.debugDescription])
+            }
+            return castedSet
+        }
+    }
     
     var _minOperator: SaveFormatter.equalityOperator {
         get throws {

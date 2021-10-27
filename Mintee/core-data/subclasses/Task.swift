@@ -40,6 +40,9 @@ public class Task: NSManagedObject {
         get throws {
             guard let startDateString = self.startDate else { return nil }
             guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
+                if (try self._taskType) == .recurring {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formattedDate
@@ -48,7 +51,12 @@ public class Task: NSManagedObject {
     
     var _endDate: Date? {
         get throws {
-            guard let endDateString = self.endDate else { return nil }
+            guard let endDateString = self.endDate else {
+                if (try self._taskType) == .recurring {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
+                return nil
+            }
             guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
@@ -58,7 +66,12 @@ public class Task: NSManagedObject {
     
     var _instances: Set<TaskInstance>? {
         get throws {
-            guard let unwrappedSet = self.instances else { return nil }
+            guard let unwrappedSet = self.instances else {
+                if (try self._taskType) == .specific {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
+                return nil
+            }
             guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
@@ -78,7 +91,12 @@ public class Task: NSManagedObject {
     
     var _targetSets: Set<TaskTargetSet>? {
         get throws {
-            guard let unwrappedSet = self.targetSets else { return nil }
+            guard let unwrappedSet = self.targetSets else {
+                if (try self._taskType) == .recurring {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
+                return nil
+            }
             guard let castedSet = unwrappedSet as? Set<TaskTargetSet> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
