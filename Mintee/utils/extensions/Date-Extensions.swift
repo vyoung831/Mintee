@@ -45,23 +45,21 @@ extension Date {
     /**
      Using the current calendar, returns the number of calendar days from the current date to the endDate
      - parameter endDate: End date to compare against
-     - returns: (Optional) Number of calendar days to end date
+     - returns: Number of calendar days to end date
      */
-    func daysToDate(_ endDate: Date) -> Int? {
-        
-        let startComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: self)
-        let endComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: endDate)
-        guard let startCalendarDate = Calendar.current.date(from: startComponents),
-              let endCalendarDate = Calendar.current.date(from: endComponents) else {
-            return nil
-        }
-        
-        if let days = Calendar.current.dateComponents(Set(arrayLiteral: .day), from: startCalendarDate, to: endCalendarDate).day {
+    func daysToDate(_ endDate: Date) throws -> Int {
+        do {
+            let startComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: self)
+            let endComponents = Calendar.current.dateComponents(Set(arrayLiteral: .day, .month, .year), from: endDate)
+            guard let startCalendarDate = Calendar.current.date(from: startComponents),
+                  let endCalendarDate = Calendar.current.date(from: endComponents),
+                  let days = Calendar.current.dateComponents(Set(arrayLiteral: .day), from: startCalendarDate, to: endCalendarDate).day else {
+                      throw ErrorManager.recordNonFatal(.helperFunction_receivedInvalidData,
+                                                        ["start date": self.debugDescription, "end date": endDate.debugDescription,
+                                                         "start components": startComponents.debugDescription, "end components": endComponents.debugDescription])
+            }
             return days
-        } else {
-            return nil
         }
-        
     }
     
     /**
