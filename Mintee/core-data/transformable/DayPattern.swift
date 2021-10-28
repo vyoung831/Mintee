@@ -62,13 +62,13 @@ class DayPattern: NSObject, NSSecureCoding {
                    DayPattern.Keys.weeksOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue).debugDescription,
                    DayPattern.Keys.daysOfMonth.rawValue : decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue).debugDescription,
                    DayPattern.Keys.type.rawValue : decoder.decodeObject(of: NSNumber.self, forKey: DayPattern.Keys.type.rawValue).debugDescription]
-                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                  let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
                   return nil
               }
         
         // Exit if the decoded type cannot be converted back into an enum value of type DayPattern.patternType
         guard let type = patternType(rawValue: typeValue) else {
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, ["decoded value" : typeValue])
+            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["decoded value" : typeValue])
             return nil
         }
         
@@ -114,7 +114,7 @@ extension DayPattern {
     func check_dayOfWeek(_ date: Date) throws -> Bool {
         let dowComponent = Int16(Calendar.current.component(.weekday, from: date))
         guard let dow = SaveFormatter.dayOfWeek.init(rawValue: dowComponent) else {
-            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+            throw ErrorManager.recordNonFatal(.dateOperationFailed,
                                               ["dowComponent": dowComponent])
         }
         return self.daysOfWeek.contains(dow)
@@ -123,7 +123,7 @@ extension DayPattern {
     func check_weekOfMonth(_ date: Date,_ weekOfMonth: Int16? = nil) throws -> Bool {
         let womComponent = weekOfMonth ?? Int16(Calendar.current.component(.weekOfMonth, from: date))
         guard let wom = SaveFormatter.weekOfMonth.init(rawValue: womComponent) else {
-            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+            throw ErrorManager.recordNonFatal(.dateOperationFailed,
                                               ["womComponent": womComponent])
         }
         return self.weeksOfMonth.contains(wom)
@@ -132,7 +132,7 @@ extension DayPattern {
     func check_dayOfMonth(_ date: Date) throws -> Bool {
         let domComponent = Int16(Calendar.current.component(.day, from: date))
         guard let dom = SaveFormatter.dayOfMonth.init(rawValue: domComponent) else {
-            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
+            throw ErrorManager.recordNonFatal(.dateOperationFailed,
                                               ["domComponent": domComponent])
         }
         return self.daysOfMonth.contains(dom)

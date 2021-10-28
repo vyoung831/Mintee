@@ -116,10 +116,10 @@ class ThemeManager: NSObject, ObservableObject {
             guard let unwrappedChanges = change,
                   let newKey = unwrappedChanges[.newKey] as? String,
                   let newTheme = ThemeManager.Theme.init(rawValue: newKey) else {
-                ErrorManager.recordNonFatal(.userDefaults_observedInvalidUpdate,
-                                            ["keyPath" : keyPath?.debugDescription,
-                                             "change" : change?.debugDescription])
-                return
+                      let _ = ErrorManager.recordNonFatal(.userDefaults_observedInvalidUpdate,
+                                                          ["keyPath" : keyPath?.debugDescription as Any,
+                                                           "change" : change?.debugDescription as Any])
+                      return
             }
             
             self.accent = ThemeManager.getElementColor(.accent, newTheme)
@@ -186,16 +186,16 @@ class ThemeManager: NSObject, ObservableObject {
      - returns: Value currently assigned to key "Theme" in UserDefaults
      */
     static func getUserDefaultsTheme() -> Theme {
-        if let savedTheme = UserDefaults.standard.string(forKey: SettingsPresentationView.PresentationOption.theme.rawValue) {
-            if let theme = ThemeManager.Theme.init(rawValue: savedTheme) {
-                return theme
-            } else {
-                ErrorManager.recordNonFatal(.userDefaults_containedInvalidValue, ["savedTheme" : savedTheme])
-                UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
-                return .system
-            }
+        guard let savedTheme = UserDefaults.standard.string(forKey: SettingsPresentationView.PresentationOption.theme.rawValue) else {
+            // No existing theme was saved to UserDefaults. Use .system until a saved one is found.
+            return .system
         }
-        return .system
+        guard let theme = ThemeManager.Theme.init(rawValue: savedTheme) else {
+            let _ = ErrorManager.recordNonFatal(.userDefaults_containedInvalidValue, ["savedTheme" : savedTheme])
+            UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
+            return .system
+        }
+        return theme
     }
     
 }

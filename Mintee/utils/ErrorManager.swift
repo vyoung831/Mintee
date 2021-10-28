@@ -56,8 +56,8 @@ struct ErrorManager {
         case userDefaults_observedInvalidUpdate = 101
         
         // View object error codes
-        case viewObject_unexpectedNilProperty = 200
-        case viewFunction_receivedInvalidParms = 201
+//        case viewObject_unexpectedNilProperty = 200
+        case view_helperFunction_receivedInvalidInput = 201
         case uiCollectionViewController_castDequeuedCellFailed = 202
         case viewObject_didNotContainExpectedObject = 203
         
@@ -68,6 +68,7 @@ struct ErrorManager {
         case modelObjectInitializer_receivedInvalidInput = 303
         case persistentStore_saveFailed = 304
         case childContextObject_fetchFailed = 305
+        case transformable_decodingFailed = 306
         
         // Helper function error codes
         case helperFunction_receivedInvalidData = 400

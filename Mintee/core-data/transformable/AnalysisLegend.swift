@@ -45,7 +45,7 @@ class AnalysisLegend: NSObject, NSSecureCoding {
                                                     decoder.decodeObject(of: [NSSet.self, CategorizedLegendEntry.self],forKey: AnalysisLegend.Keys.categorizedEntries.rawValue).debugDescription,
                                                   AnalysisLegend.Keys.completionEntries.rawValue:
                                                     decoder.decodeObject(of: [NSSet.self, CompletionLegendEntry.self], forKey: AnalysisLegend.Keys.completionEntries.rawValue).debugDescription]
-                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                  let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
                   return nil
               }
         self.categorizedEntries = categorizedLegendEntries
@@ -150,13 +150,13 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
                                                 coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
                                             CategorizedLegendEntry.Keys.color.rawValue:
                                                 coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
-            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
             return nil
             
         }
         
         guard let cat = Category.init(rawValue: category) else {
-            let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, ["category": category])
+            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["category": category])
             return nil
         }
         
@@ -268,7 +268,7 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
                                                     coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue).debugDescription,
                                                   CompletionLegendEntry.Keys.maxOperator.rawValue:
                                                     coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue).debugDescription]
-                  ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+                  let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
                   return nil
               }
         

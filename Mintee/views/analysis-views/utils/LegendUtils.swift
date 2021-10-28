@@ -76,11 +76,4 @@ class CompletionLegendEntryPreview: ObservableObject {
         self.maxOperator = maxOperator
     }
     
-    /**
-     - returns: String representing the label on a ColorPicker associated with this object.
-     */
-    func getLabel() -> String {
-        return TaskTargetSetView.getTargetString(minOperator: minOperator, maxOperator: maxOperator, minTarget: min, maxTarget: max)
-    }
-    
 }
