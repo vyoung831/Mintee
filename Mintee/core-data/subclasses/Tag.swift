@@ -52,11 +52,11 @@ public class Tag: NSManagedObject {
             request.predicate = NSPredicate(format: "name == [cd] %@", tagName) // Case and diacritic insensitive predicate
             do {
                 let results = try moc.fetch(request)
-                if let first = results.first {
-                    first.addToTasks(task)
-                } else {
+                guard let first = results.first else {
                     Tag(tagName: tagName, moc).addToTasks(task)
+                    continue
                 }
+                first.addToTasks(task)
             } catch {
                 moc.rollback()
                 throw ErrorManager.recordNonFatal(.fetchRequest_failed,
@@ -78,11 +78,10 @@ public class Tag: NSManagedObject {
             request.predicate = NSPredicate(format: "name == [cd] %@", tagName) // Case and diacritic insensitive predicate
             do {
                 let results = try moc.fetch(request)
-                if let first = results.first {
-                    first.addToAnalyses(analysis)
-                } else {
+                guard let first = results.first else {
                     throw ErrorManager.recordNonFatal(.fetchRequest_failed)
                 }
+                first.addToAnalyses(analysis)
             } catch {
                 moc.rollback()
                 throw ErrorManager.recordNonFatal(.fetchRequest_failed,
