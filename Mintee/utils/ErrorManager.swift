@@ -69,6 +69,7 @@ struct ErrorManager {
         case persistentStore_saveFailed = 304
         case childContextObject_fetchFailed = 305
         case transformable_decodingFailed = 306
+        case persistentStore_loadFailed = 307
         
         // Helper function error codes
         case helperFunction_receivedInvalidData = 400

@@ -50,4 +50,8 @@ extension Notification.Name {
         return .init(rawValue: "Leko.Mintee.editTask_initFailed")
     }
     
+    static var persistentStore_loadFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.persistentStore_loadFailed")
+    }
+    
 }

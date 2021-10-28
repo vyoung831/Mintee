@@ -23,6 +23,7 @@ struct MinteeAlertPresenter: ViewModifier {
     let analysisReorderFailed_observer = NotificationCenter.default.publisher(for: .analysisReorderFailed)
     let editAnalysis_initFailed_observer = NotificationCenter.default.publisher(for: .editAnalysis_initFailed)
     let editTask_initFailed_observer = NotificationCenter.default.publisher(for: .editTask_initFailed)
+    let persistentStore_loadFailed_observer = NotificationCenter.default.publisher(for: .persistentStore_loadFailed)
     
     func updateErrorMessage(_ message: String) {
         self.isPresentingAlert = true
@@ -43,5 +44,6 @@ struct MinteeAlertPresenter: ViewModifier {
             .onReceive(analysisReorderFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when saving the Analysis reordering. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(editAnalysis_initFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when trying to read the Task. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(editTask_initFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when trying to read the Analysis. We'll fix this as soon as we can. Please try again later.") }
+            .onReceive(persistentStore_loadFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when trying to load previously saved data. We'll fix this as soon as we can. Please try again later.") }
     }
 }
