@@ -56,22 +56,20 @@ struct EditTask: View {
         
         switch type {
         case .recurring:
-            if let recurringProperties = EditTask.getRecurringProperties(task) {
-                self._startDate = State(initialValue: recurringProperties.startDate)
-                self._endDate = State(initialValue: recurringProperties.endDate)
-                self._taskTargetSetViews = State(initialValue: recurringProperties.ttsvArray)
-            } else {
+            guard let recurringProperties = EditTask.getRecurringProperties(task) else {
                 NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
                 return
             }
+            self._startDate = State(initialValue: recurringProperties.startDate)
+            self._endDate = State(initialValue: recurringProperties.endDate)
+            self._taskTargetSetViews = State(initialValue: recurringProperties.ttsvArray)
             break
         case .specific:
-            if let instances = EditTask.getSpecificDates(task) {
-                self._dates = State(initialValue: instances)
-            } else {
+            guard let instances = EditTask.getSpecificDates(task) else {
                 NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
                 return
             }
+            self._dates = State(initialValue: instances)
             break
         }
         
