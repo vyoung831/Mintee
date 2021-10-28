@@ -141,15 +141,8 @@ public class Task: NSManagedObject {
      */
     public func deleteSelf(_ moc: NSManagedObjectContext) throws {
         try self.removeAllTags(moc)
-        
-        if let targetSets = self.targetSets,
-           let instances = self.instances {
-            for case let tts as TaskTargetSet in targetSets { moc.delete(tts) }
-            for case let ti as TaskInstance in instances { moc.delete(ti) }
-        } else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
-        }
-        
+        for tts in (try self._targetSets) { moc.delete(tts) }
+        for ti in (try self._instances) { moc.delete(ti) }
         moc.delete(self)
     }
     
@@ -277,13 +270,11 @@ extension Task {
      - parameter moc: The MOC in which to unassociate Tags from this Task.
      */
     private func removeUnrelatedTags(newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
-        if let existingTags = self.tags as? Set<Tag> {
-            for tag in existingTags {
-                if !newTagNames.contains(tag._name) {
-                    self.removeFromTags(tag)
-                    if try tag._tasks.count == 0 {
-                        moc.delete(tag)
-                    }
+        for tag in try self._tags {
+            if !newTagNames.contains(tag._name) {
+                self.removeFromTags(tag)
+                if try tag._tasks.count == 0 {
+                    moc.delete(tag)
                 }
             }
         }
@@ -294,12 +285,10 @@ extension Task {
      - parameter moc: The MOC in which to disassociate Tags from this Task.
      */
     private func removeAllTags(_ moc: NSManagedObjectContext) throws {
-        if let tags = self.tags {
-            for case let tag as Tag in tags {
-                self.removeFromTags(tag)
-                if try tag._tasks.count == 0 {
-                    moc.delete(tag)
-                }
+        for tag in try self._tags {
+            self.removeFromTags(tag)
+            if try tag._tasks.count == 0 {
+                moc.delete(tag)
             }
         }
     }
@@ -406,13 +395,12 @@ extension Task {
             }
             
             // Increment dateCounter
-            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
-                dateCounter = newDate
-            } else {
+            guard let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) else {
                 var userInfo: [String : Any] = ["dateCounter" : dateCounter.debugDescription]
                 self.mergeDebugDictionary(userInfo: &userInfo)
                 throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
             }
+            dateCounter = newDate
             
             matched = false
             
@@ -442,10 +430,7 @@ extension Task {
         self.taskType = SaveFormatter.taskType.specific.rawValue
         self.startDate = nil
         self.endDate = nil
-        if let targetSets = self.targetSets {
-            // Delete TaskTargetSets (if any exist)
-            for case let tts as TaskTargetSet in targetSets { moc.delete(tts) }
-        }
+        for tts in try self._targetSets { moc.delete(tts) } // Delete TaskTargetSets (if any exist)
         
         // This Task's existing TaskInstances are iterated through. Ones that don't intersect with new Dates are deleted and save others so they aren't regenerated
         var newDates = Set(dates)
@@ -508,14 +493,8 @@ extension Task {
         self.taskType = SaveFormatter.taskType.recurring.rawValue
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
-        if let existingTargetSets = self.targetSets {
-            for case let tts as TaskTargetSet in existingTargetSets {
-                if !targetSets.contains(tts) {
-                    moc.delete(tts)
-                }
-            }
-        } else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+        for tts in try self._targetSets {
+            !targetSets.contains(tts) ? moc.delete(tts) : nil
         }
         
         // Set new targetSets and update instances
@@ -568,25 +547,22 @@ extension Task {
             }
             
             // Increment dateCounter
-            if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) {
-                dateCounter = newDate
-            } else {
+            guard let newDate = Calendar.current.date(byAdding: .day, value: 1, to: dateCounter) else {
                 var userInfo: [String : Any] = ["dateCounter" : dateCounter.debugDescription]
                 self.mergeDebugDictionary(userInfo: &userInfo)
                 throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
             }
+            dateCounter = newDate
+            
         }
         
         /*
          All TaskInstances that should have been migrated to the new set should have been done so by now.
          The old instances are deleted and self.instances is pointed to the new Set
          */
-        if let instances = self.instances {
-            for case let oldInstance as TaskInstance in instances {
-                moc.delete(oldInstance)
-            }
+        for oldInstance in try self._instances {
+            moc.delete(oldInstance)
         }
-        
         self.instances = NSSet(set: newInstances)
         
     }
@@ -599,12 +575,10 @@ extension Task {
      - parameter moc: The MOC in which to perform updates.
      */
     private func extractInstance(date: Date,_ moc: NSManagedObjectContext) throws -> TaskInstance {
-        if let instances = self.instances {
-            for case let instance as TaskInstance in instances {
-                if try instance._date.equalToDate(date) {
-                    removeFromInstances(instance)
-                    return instance
-                }
+        for instance in try self._instances {
+            if try instance._date.equalToDate(date) {
+                removeFromInstances(instance)
+                return instance
             }
         }
         return TaskInstance(entity: TaskInstance.entity(), insertInto: moc, date: SaveFormatter.dateToStoredString(date))

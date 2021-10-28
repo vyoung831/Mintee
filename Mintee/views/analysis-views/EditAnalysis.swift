@@ -45,6 +45,12 @@ struct EditAnalysis: View {
                   NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
               }
         
+        do {
+            self._tags = State(initialValue: (try analysis._tags).map{$0._name})
+        } catch {
+            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
+        }
+        
         if let start = analysis._startDate,
            let end = analysis._endDate {
             self._startDate = State(initialValue: start)
@@ -58,7 +64,6 @@ struct EditAnalysis: View {
         self._analysisName = State(initialValue: analysis._name)
         self._analysisType = State(initialValue: type)
         self._legendPreviews = State(initialValue: previews)
-        self._tags = State(initialValue: Array(analysis.getTagNames()))
         self.analysis = analysis
         
     }

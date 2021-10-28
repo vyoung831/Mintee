@@ -51,8 +51,6 @@ class DayPattern: NSObject, NSSecureCoding {
     
     required init?(coder decoder: NSCoder) {
         
-        var initFailed = false
-        
         guard let dow = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfWeek.rawValue) as? Set<Int16>,
               let wom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.weeksOfMonth.rawValue) as? Set<Int16>,
               let dom = decoder.decodeObject(of: NSSet.self, forKey: DayPattern.Keys.daysOfMonth.rawValue) as? Set<Int16>,
@@ -76,28 +74,24 @@ class DayPattern: NSObject, NSSecureCoding {
         var finalWom: Set<SaveFormatter.weekOfMonth> = Set()
         var finalDom: Set<SaveFormatter.dayOfMonth> = Set()
         for dayOfWeek in dow {
-            if let decodedDow = SaveFormatter.dayOfWeek.init(rawValue: dayOfWeek) {
-                finalDow.insert(decodedDow)
-            } else {
-                initFailed = true
+            guard let decodedDow = SaveFormatter.dayOfWeek.init(rawValue: dayOfWeek) else {
+                let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["dayOfWeek": dayOfWeek]); return nil
             }
+            finalDow.insert(decodedDow)
         }
         for weekOfMonth in wom {
-            if let decodedWom = SaveFormatter.weekOfMonth.init(rawValue: weekOfMonth) {
-                finalWom.insert(decodedWom)
-            } else {
-                initFailed = true
+            guard let decodedWom = SaveFormatter.weekOfMonth.init(rawValue: weekOfMonth) else {
+                let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["weekOfMonth": weekOfMonth]); return nil
             }
+            finalWom.insert(decodedWom)
         }
         for dayOfMonth in dom {
-            if let decodedDom = SaveFormatter.dayOfMonth.init(rawValue: dayOfMonth) {
-                finalDom.insert(decodedDom)
-            } else {
-                initFailed = true
+            guard let decodedDom = SaveFormatter.dayOfMonth.init(rawValue: dayOfMonth) else {
+                let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["dayOfMonth": dayOfMonth]); return nil
             }
+            finalDom.insert(decodedDom)
         }
         
-        if initFailed { return nil }
         self.type = type
         self.daysOfWeek = finalDow
         self.weeksOfMonth = finalWom

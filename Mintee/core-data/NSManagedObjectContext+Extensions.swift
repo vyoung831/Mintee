@@ -12,23 +12,21 @@ import CoreData
 extension NSManagedObjectContext {
     
     func childTask(_ id: NSManagedObjectID) -> Task? {
-        if let task = self.object(with: id) as? Task {
-            return task
-        } else {
+        guard let task = self.object(with: id) as? Task else {
             let _ = ErrorManager.recordNonFatal(.childContextObject_fetchFailed,
                                                 ["fetched object": self.object(with: id).debugDescription])
             return nil
         }
+        return task
     }
     
     func childAnalysis(_ id: NSManagedObjectID) -> Analysis? {
-        if let analysis = self.object(with: id) as? Analysis {
-            return analysis
-        } else {
+        guard let analysis = self.object(with: id) as? Analysis else {
             let _ = ErrorManager.recordNonFatal(.childContextObject_fetchFailed,
                                                 ["fetched object": self.object(with: id).debugDescription])
             return nil
         }
+        return analysis
     }
     
 }

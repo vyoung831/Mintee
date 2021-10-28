@@ -60,9 +60,9 @@ public class Analysis: NSManagedObject {
         }
     }
     
-    var _tags: Set<Tag>? {
+    var _tags: Set<Tag> {
         get throws {
-            guard let unwrappedSet = self.tags else { return nil }
+            guard let unwrappedSet = self.tags else { return Set() }
             guard let castedSet = unwrappedSet as? Set<Tag> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
@@ -185,22 +185,12 @@ extension Analysis {
 extension Analysis {
     
     /**
-     - returns: A set of strings representing the tagNames of this Analysis' tags
-     */
-    func getTagNames() -> Set<String> {
-        if let tags = self.tags as? Set<Tag> {
-            return Set(tags.map({$0._name}))
-        }
-        return Set<String>()
-    }
-    
-    /**
      Updates this Analysis' tags relationship to contain only the Tags passed in.
      - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
      - parameter moc: The MOC to update this perform updates in.
      */
     func updateTags(_ newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
-        self.removeUnrelatedTags(newTagNames: newTagNames)
+        try self.removeUnrelatedTags(newTagNames: newTagNames)
         try Tag.associateTags(tagNames: newTagNames, self, moc)
     }
     
@@ -209,11 +199,9 @@ extension Analysis {
      Tags that were already but no longer to be associated with this Analysis are removed.
      - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
      */
-    private func removeUnrelatedTags(newTagNames: Set<String>) {
-        if let tags = self.tags as? Set<Tag> {
-            for tag in tags {
-                !newTagNames.contains(tag._name) ? self.removeFromTags(tag) : nil
-            }
+    private func removeUnrelatedTags(newTagNames: Set<String>) throws {
+        for tag in try self._tags {
+            !newTagNames.contains(tag._name) ? self.removeFromTags(tag) : nil
         }
     }
     
