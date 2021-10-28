@@ -64,7 +64,8 @@ public class TaskTargetSet: NSManagedObject {
                      minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator,
                      priority: Int16,
                      pattern: DayPattern) throws {
-        if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
+        do {
+            let validatedValues = try TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)
             self.init(entity: entity, insertInto: context)
             self.minOperator = validatedValues.minOp.rawValue
             self.maxOperator = validatedValues.maxOp.rawValue
@@ -72,14 +73,12 @@ public class TaskTargetSet: NSManagedObject {
             self.max = validatedValues.max
             self.priority = priority
             self.pattern = pattern
-        } else {
-            var userInfo: [String : Any] = ["min" : min,
-                                            "max" : max,
-                                            "minOperator" : minOperator,
-                                            "maxOperator" : maxOperator,
-                                            "priority" : priority]
-            pattern.mergeDebugDictionary(userInfo: &userInfo)
-            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, userInfo)
+        } catch is TaskTargetSet.validateErrorCode {
+            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
+                                              ["min": min, "max": max,
+                                               "minOperator": minOperator.rawValue, "maxOperator": maxOperator.rawValue])
+        } catch {
+            throw ErrorManager.recordUnexpectedError(error)
         }
     }
     
@@ -103,15 +102,16 @@ extension TaskTargetSet {
     
 }
 
-// MARK: - Debug descriptions for error reporting
-
-extension TaskTargetSet {
-    
-}
-
 // MARK: - Validation helper functions
 
 extension TaskTargetSet {
+    
+    enum validateErrorCode: Error {
+        case bothOperators_setToEqual_differentTargetValues
+        case min_greaterThanOrEqualTo_max
+        case min_greaterThan_max
+        case bothOperators_notApplicable
+    }
     
     /**
      Checks provided minOperator, maxOperator, and min/max values to validate against business logic.
@@ -120,53 +120,56 @@ extension TaskTargetSet {
      - parameter maxOp: Value of type SaveFormatter.equalityOperator whose persistent store format should be assigned as TaskTargetSet's maxOperator.
      - parameter min: Float to set TaskTargetSet's min to.
      - parameter max: Float to set TaskTargetSet's max to.
-     - returns: Tuple of optional errorMessage and optional tuple of correct values to set as TaskTargetSet's properties. One and only one of the tuples will be non-nil.
+     - returns: Corrected values to set as TaskTargetSet's properties.
      */
-    static func validateOperators(minOp: SaveFormatter.equalityOperator,
-                                  maxOp: SaveFormatter.equalityOperator,
-                                  min: Float,
-                                  max: Float) -> (errorMessage: String?, operators: (minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, min: Float, max: Float)?) {
+    static func validateOperators(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator,
+                                  min: Float, max: Float) throws -> (minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator,
+                                                                     min: Float, max: Float) {
         
         if minOp == .eq && maxOp == .eq && min != max {
-            return ("Both operators were set to equal but target values were different", nil)
+            throw validateErrorCode.bothOperators_setToEqual_differentTargetValues as NSError
         }
         
         if minOp == .eq {
-            return (nil, (.eq, .na, min, 0))
+            return (.eq, .na, min, 0)
         }; if maxOp == .eq {
-            return (nil, (.eq, .na, max, 0))
+            return (.eq, .na, max, 0)
         }
         
         switch minOp {
         case .lt:
             if maxOp == .lt || maxOp == .lte {
-                return min >= max ?
-                    ("Min/max were set to (lt, lt/lte) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                if min >= max {
+                    throw validateErrorCode.min_greaterThanOrEqualTo_max as NSError
+                }
+                return (minOp, maxOp, min, max)
             } else {
-                return (nil, (minOp, .na, min, 0))
+                return (minOp, .na, min, 0)
             }
         case .lte:
             switch maxOp {
             case .lt:
-                return min >= max ?
-                    ("Min/max were set to (lte, lt) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                if min >= max {
+                    throw validateErrorCode.min_greaterThanOrEqualTo_max as NSError
+                }
+                return (minOp, maxOp, min, max)
             case .lte:
                 if min == max {
-                    return (nil, (.eq, .na, min, 0))
+                    return (.eq, .na, min, 0)
                 } else {
-                    return min > max ?
-                        ("Min/max were set to (lte, lte) but min was greater than max", nil) :
-                        (nil, (minOp, maxOp, min, max))
+                    if min > max {
+                        throw validateErrorCode.min_greaterThan_max as NSError
+                    }
+                    return (minOp, maxOp, min, max)
                 }
             default:
-                return (nil, (minOp, .na, min, 0))
+                return (minOp, .na, min, 0)
             }
         default:
-            return maxOp == .na ?
-                ("Min and max operators were both N/A", nil) :
-                (nil, (.na, maxOp, 0, max))
+            if maxOp == .na {
+                throw validateErrorCode.bothOperators_notApplicable as NSError
+            }
+            return (.na, maxOp, 0, max)
         }
         
     }

@@ -19,6 +19,14 @@ struct ErrorManager {
         return recordNonFatal(errorCode, [:])
     }
     
+    static func recordUnexpectedError(_ error: Error) -> NSError {
+        return ErrorManager.recordNonFatal(.unexpectedError, ["error.localizedDescription": error.localizedDescription])
+    }
+    
+    static func recordUnexpectedError(_ error: NSError) -> NSError {
+        return ErrorManager.recordNonFatal(.unexpectedError, error.userInfo)
+    }
+    
     /**
      Records a non-fatal error to report to Crashlytics.
      - parameter errorCode: Non-fatal error code to report.
@@ -50,6 +58,7 @@ struct ErrorManager {
         // Miscellaneous error codes
         case bundleIdentifierWasNil = 1
         case dateOperationFailed = 2
+        case unexpectedError = 3
         
         // UserDefault error codes
         case userDefaults_containedInvalidValue = 100

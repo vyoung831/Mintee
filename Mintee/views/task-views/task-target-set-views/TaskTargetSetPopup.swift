@@ -65,35 +65,8 @@ struct TaskTargetSetPopup: View {
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      - returns: True if TaskTargetSetView save was successful
      */
-    private func done() {
-        
-        if checkEmptyValues() { errorMessage = "Fill out at least either lower or upper target bound"; return }
-        
-        // Min/Max value input validation
-        var min: Float, max: Float
-        if minValueString.count > 0 {
-            guard let minu = validateMinValue() else {
-                errorMessage = "Remove invalid input from lower target bound"; return
-            }
-            min = minu
-        } else {
-            minOperator = .na; min = 0
-        }
-        if maxValueString.count > 0 {
-            guard let maxu = validateMaxValue() else {
-                errorMessage = "Remove invalid input from upper target bound"; return
-            }
-            max = maxu
-        } else { maxOperator = .na; max = 0 }
-        
-        let ttsValidation = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)
-        guard let validatedValues = ttsValidation.operators else {
-            if let message = ttsValidation.errorMessage {
-                self.errorMessage = message
-            }
-            return
-        }
-        
+    private func done(_ min: Float,_ max: Float) throws {
+        let validatedValues = try TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)
         let ttsv = TaskTargetSetView(type: self.type,
                                      minTarget: validatedValues.min,
                                      minOperator: validatedValues.minOp,
@@ -103,7 +76,6 @@ struct TaskTargetSetPopup: View {
                                      selectedWeeksOfMonth: self.type == .wom ? self.selectedWeeks : Set(),
                                      selectedDaysOfMonth: self.type == .dom ? self.selectedDaysOfMonth : Set())
         self.save(ttsv)
-        self.isBeingPresented = false
     }
     
     /**
@@ -194,7 +166,40 @@ struct TaskTargetSetPopup: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 leading: Button(action: {
-                    self.done()
+                    
+                    if checkEmptyValues() { errorMessage = "Fill out at least either lower or upper target bound"; return }
+                    
+                    // Min/Max value input validation
+                    var min: Float, max: Float
+                    if minValueString.count > 0 {
+                        guard let minu = validateMinValue() else {
+                            errorMessage = "Remove invalid input from lower target bound"; return
+                        }
+                        min = minu
+                    } else {
+                        minOperator = .na; min = 0
+                    }
+                    if maxValueString.count > 0 {
+                        guard let maxu = validateMaxValue() else {
+                            errorMessage = "Remove invalid input from upper target bound"; return
+                        }
+                        max = maxu
+                    } else { maxOperator = .na; max = 0 }
+                    
+                    do {
+                        try self.done(min, max)
+                    } catch TaskTargetSet.validateErrorCode.min_greaterThanOrEqualTo_max {
+                        self.errorMessage = "Min/max were set to (lt, lt/lte) but min was greater than or equal to max"; return
+                    } catch TaskTargetSet.validateErrorCode.bothOperators_setToEqual_differentTargetValues {
+                        self.errorMessage = "Both operators were set to equal but target values were different"; return
+                    } catch TaskTargetSet.validateErrorCode.bothOperators_notApplicable {
+                        self.errorMessage = "Min and max operators were both N/A"; return
+                    } catch TaskTargetSet.validateErrorCode.min_greaterThan_max {
+                        self.errorMessage = "Min/max were set to (lte, lte) but min was greater than max"; return
+                    } catch {
+                        let _ = ErrorManager.recordUnexpectedError(error)
+                    }
+                    self.isBeingPresented = false
                 }, label: {
                     Text("Done")
                 })
