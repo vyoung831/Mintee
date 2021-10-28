@@ -69,18 +69,15 @@ struct SetCountPopup: View {
             .padding(25)
             .background(themeManager.panel)
             .navigationTitle("Set Count")
-            .navigationBarItems(leading:
-                                    Button("Done", action: {
-                                        if let valueToSave = Float(count) { done(valueToSave) }
-                                        else { errorMessage = "Please remove invalid input" }
-                                    })
-                                    .foregroundColor(.accentColor),
-                                trailing:
-                                    Button("Cancel", action: {
-                                        cancel()
-                                    })
-                                    .foregroundColor(.accentColor)
-            )
+            .navigationBarItems(leading: Button("Done", action: {
+                guard let valueToSave = Float(count) else {
+                    errorMessage = "Please remove invalid input"; return
+                }
+                done(valueToSave)
+            }).foregroundColor(.accentColor),
+                                trailing: Button("Cancel", action: {
+                cancel()
+            }).foregroundColor(.accentColor))
             
         }
         .accentColor(themeManager.accent)

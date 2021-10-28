@@ -72,10 +72,18 @@ struct TaskTargetSetPopup: View {
         // Min/Max value input validation
         var min: Float, max: Float
         if minValueString.count > 0 {
-            if let minu = validateMinValue() { min = minu } else { errorMessage = "Remove invalid input from lower target bound"; return }
-        } else { minOperator = .na; min = 0 }
+            guard let minu = validateMinValue() else {
+                errorMessage = "Remove invalid input from lower target bound"; return
+            }
+            min = minu
+        } else {
+            minOperator = .na; min = 0
+        }
         if maxValueString.count > 0 {
-            if let maxu = validateMaxValue() { max = maxu } else { errorMessage = "Remove invalid input from upper target bound"; return }
+            guard let maxu = validateMaxValue() else {
+                errorMessage = "Remove invalid input from upper target bound"; return
+            }
+            max = maxu
         } else { maxOperator = .na; max = 0 }
         
         let ttsValidation = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)

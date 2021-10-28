@@ -64,13 +64,13 @@ public class Task: NSManagedObject {
         }
     }
     
-    var _instances: Set<TaskInstance>? {
+    var _instances: Set<TaskInstance> {
         get throws {
             guard let unwrappedSet = self.instances else {
                 if (try self._taskType) == .specific {
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
                 }
-                return nil
+                return Set()
             }
             guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
@@ -89,13 +89,13 @@ public class Task: NSManagedObject {
         }
     }
     
-    var _targetSets: Set<TaskTargetSet>? {
+    var _targetSets: Set<TaskTargetSet> {
         get throws {
             guard let unwrappedSet = self.targetSets else {
                 if (try self._taskType) == .recurring {
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
                 }
-                return nil
+                return Set()
             }
             guard let castedSet = unwrappedSet as? Set<TaskTargetSet> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())

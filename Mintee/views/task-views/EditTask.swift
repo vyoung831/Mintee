@@ -355,12 +355,9 @@ extension EditTask {
      */
     static func getSpecificDates(_ task: Task) -> [Date]? {
         do {
-            if let instances = try task._instances?.sorted(by: {try $0._date.lessThanDate(try $1._date)}) {
-                return try instances.map{
-                    try $0._date
-                }
-            } else {
-                return nil
+            let instances = try task._instances.sorted(by: {try $0._date.lessThanDate(try $1._date)})
+            return try instances.map{
+                try $0._date
             }
         } catch {
             return nil
@@ -373,19 +370,17 @@ extension EditTask {
      - returns: (Optional) An array of TaskTargetSetViews representing the TaskTargetSets of the provided Task.
      */
     static func extractTTSVArray(_ task: Task) throws -> [TaskTargetSetView]? {
-        if let sets = try task._targetSets?.sorted(by: {$0._priority < $1._priority}) {
-            return try sets.map({
-                TaskTargetSetView(type: $0._pattern.type,
-                                  minTarget: $0._min,
-                                  minOperator: try $0._minOperator,
-                                  maxTarget: $0._max,
-                                  maxOperator: try $0._maxOperator,
-                                  selectedDaysOfWeek: $0._pattern.daysOfWeek,
-                                  selectedWeeksOfMonth: $0._pattern.weeksOfMonth,
-                                  selectedDaysOfMonth: $0._pattern.daysOfMonth)
-            })
-        }
-        return nil
+        let sets = try task._targetSets.sorted(by: {$0._priority < $1._priority})
+        return try sets.map({
+            TaskTargetSetView(type: $0._pattern.type,
+                              minTarget: $0._min,
+                              minOperator: try $0._minOperator,
+                              maxTarget: $0._max,
+                              maxOperator: try $0._maxOperator,
+                              selectedDaysOfWeek: $0._pattern.daysOfWeek,
+                              selectedWeeksOfMonth: $0._pattern.weeksOfMonth,
+                              selectedDaysOfMonth: $0._pattern.daysOfMonth)
+        })
     }
     
 }
