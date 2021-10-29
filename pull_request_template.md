@@ -8,11 +8,9 @@
 ### Notes
 
 # [Application architecture](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
-- [ ] Model, view, and utility components maintain separation of concerns.
-
-| Area | N/A | Checks |
-|-|-|-|
-|__Model components - Business rules syncing__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md):<ul><li/>- [ ] The data model<li/>- [ ] NSManagedObject subclasses<li/>- [ ] Transformables used by NSManagedObject subclasses</ul><li>- [ ] New/updated business rules that include any of the following include [appropriate](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#syncing-model-and-objects-with-business-rules) updates to the Core Data model or NSManagedObject subclasses:<ul><li/>Property is unique<li/>Property is non-nil (including transformables)<li/>To-one relationship is never nil<li/>To-many relationship is never nil</ul></ul>|
+- [ ] __Separation of concerns:__ The following are true for new/updated code.
+    - Views only use helper functions from NSManagedObject subclass and CDCoordinator when updating and saving the model.
+    - Views do not directly save or rollback any MOCs.
 
 ## View components
 - [ ] __Keyboard usability:__ Displayed keyboards are dismissed when the following occurs:
@@ -51,7 +49,11 @@
 # [Business rules and logic](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 
 ## General checks
-- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](#business-rule-checking).
+- [ ] Changes to business rules include appropriate updates to [data validators](#business-rule-checking).
+- [ ] Changes to any of the following include appropriate updates to business rules:
+    - The data model
+    - NSManagedObject subclasses
+    - Transformables used by NSManagedObject subclasses
 
 ## Enforcing business rules
 - [ ] __Enforcing business rules in code:__ All new/updated business rules are enforced the following way:
