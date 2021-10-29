@@ -1,6 +1,6 @@
 # Business Rules
 This document specifies business rules that govern how Mintee stores data in persistent store. These business rules serve to both highlight business restrictions and centralize practices about how stored data represents different user scenarios.  
-All business rules are verified after every test. For more info, see [Mintee's test approach](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).  
+All business rules are [verified](../pull_request_template.md#business-rule-validation) after every test.
 __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 
 1. [Model objects](#model-objects)
