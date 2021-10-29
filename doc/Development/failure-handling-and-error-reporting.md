@@ -1,40 +1,16 @@
 # Failure Handling and Error Reporting
-This document describes the responsibilities in handling failures and reporting non-fatal errors to Crashlytics.  
-Although Crashlytics allows applications to report both fatal and non-fatal errors, Mintee's error reporting and handling architecture is designed such that fatal errors are __NEVER__ issued.  
+Mintee uses Crashlytics for error reporting.  
 The following definitions are used as such throughout the document:  
 * __Failure__: A code execution that has resulted in an error that cannot be corrected by user action.
 
 # Table of Contents
-1. [Failure handling and error reporting](#failure-handling-and-error-reporting)
-    * [Base debug objects](#base-debug-objects)
+1. [Guidelines](#guidelines)
 1. [Crashlytics configurations](#crashlytics-configurations)
     1. [Build versioning](#build-versioning)
 
-# Failure handling and error reporting
-All failures are [reported to Crashlytics](#error-reporting) using the `ErrorManager` utility. After finding and reporting an error, failable functions notify callers of failures by returning optionals or throwing errors.  
-Depending on how the failures are detected, error reporting responsibilities adhere to the following:  
-1. A function reports an error to Crashlytics if it calls a non-Mintee function that returns a failure. ex: Catching an error when saving an NSManagedObjectContext.
-1. A function reports an error to Crashlytics if it is directly manipulating/accessing/converting data. ex: Accessing persistent store data can't be converted to a valid enum value.
-1. A function does __NOT__ report an error if it calls a failable Mintee function. It's assumed that an error was already detected and reported further down in the call chain.
-  
-__Note__  
-View components are __NEVER__ responsible for actually reporting errors to Crashlytics. When accessing optional data or calling failable functions, View components should use helper functions that report the error.  
-View components (and their completion handlers) are only responsible for presenting error alerts to the user after being notified of failure by helper functions.  
-
-## Base debug objects
-When a failure occurs in a model component, error reporting, in addition to relevant debug data, uses APIs provided by certain model components (base objects) to report an additional set of standard debug data.  
-If the base debug object is unavailable (ex. failure occurs in a model component initializer), as much debug data is reported as possible/needed.  
-The following table specifies base objects for each of Mintee's model components.
-| Model component | Is base object? | Base debug object |
-|-|-|-|
-| Task | Y | N/A |
-| Analysis | Y | N/A |
-| Tag | N | None |
-| TaskInstance | N | Task |
-| TaskTargetSet | N | Task |
-| TaskSummaryAnalysis | N | Task |
-| LegendEntry | N | Analysis |
-| DayPattern | N | Task |
+# Guidelines
+- [Error reporting responsibilities](../../pull_request_template.md#error_reporting_responsibilities)
+- [Failure handling by Views](../../pull_request_template.md#failure_handling_by_views)
 
 # Crashlytics configurations
 In order to separate testing and release data, Mintee uses the following build phases and configurations to capture data in 2 separate Firebase applications:  
