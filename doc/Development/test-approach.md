@@ -6,42 +6,19 @@ The following acronyms and definitions are used in this document as follows:
 * __UIT__: Automated UI test/testing.
 
 # Table of contents
-1. [Tooling and environment](#tooling-and-environment)
-    1. [AUT](#aut-structure)
-    1. [UIT](#uit-structure)
-    1. [SharedTestUtils](#sharedtestutils)
-        1. [Data validators](#data-validators)
+1. [SharedTestUtils](#sharedtestutils)
 1. [AUT coverage](#aut-coverage)
 1. [UIT coverage](#uit-coverage)
 
-# Tooling and environment
-Mintee uses XCTest to perform AUT on application code, and UIT on the application's user flows.  
+# Guidelines
+1. [Data validators](../../pull_request_template.md#moc_validation)
 
-## AUT structure
-`Mintee_AUT_Function` and `Mintee_AUT_Performance` contain XCTestCases for Mintee's function and performance AUTs, respectively. Their structures are as follows:  
-* `Mintee_AUT_Function`'s directory structure mirrors that of `Mintee`, with identical nested directory name(s) and `-tests` appended to each directory.
-* `Mintee_AUT_Performance` does not contain subdirectories. Each performance XCTestCase is placed directly into the target's main dir and is named after one XCTestCase in `Mintee_AUT_Function`, with `-Performance` appended to its name.
-
-## UIT structure
-`Mintee_UIT` contains XCTestCases for Mintee's automated UITs.
-
-## SharedTestUtils
-`SharedTestUtils` contains utility classes used by test targets. It includes the following:
+# SharedTestUtils
+`SharedTestUtils` contains helper classes used by test targets. It includes the following:
 - Setup and helper functions for function and performance AUTs that correspond to the same test scenario.  
 - The `TestContainer` class, used for
     - Setting up a persistent container separate from `CDCoordinator`.
     - Performing [validation](#data-validators) of the test MOC.
-
-### Data validators
-Data validators are used to validate the MOC after each test case, ensuring that [business rules](../business-rules.md) for data storage are being followed. The following rules are observed:  
-- Every AUT case performs MOC validation (via [TestContainer](#sharedtestutils)) as part of teardown, even those that don't appear to touch the persistent store.
-- Separate validator classes are defined for each entity and transformable defined in business rules.
-    - Custom classes used by transformables are validated in the transformable's validator.
-- In validator classes, each business rule is either:
-    - Validated and labeled in the comments of its validating function, OR
-    - Not validated and noted in comments that the rule is:
-        - Validated by another validator class, OR
-        - [Enforced](./application-architecture.md#syncing-model-and-objects-with-business-rules) by the model or its subclassed objects. 
 
 # AUT coverage
 Development decides which new functions to include in AUT (and makes note of them in PRs), and makes and documents AUT coverage decisions in the comments of the XCTestCase(s) itself.  
