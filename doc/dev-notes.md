@@ -1,4 +1,4 @@
-# Application architecture
+# Dev notes
 
 # Table of Contents
 1. [Development](#development)
