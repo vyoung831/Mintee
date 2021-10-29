@@ -7,7 +7,7 @@
 
 ### Related issue(s)
 
-# [Application architecture](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
+# [Application architecture](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md)
 - [ ] __Separation of concerns:__ The following are true for new/updated code.
     - Views only use helper functions from NSManagedObject subclass and CDCoordinator when updating and saving the model.
     - Views do not directly save or rollback any MOCs.
@@ -65,7 +65,7 @@
 | To-one relationship is never nil | Specify property as non-optional in NSManagedObject subclass. |
 | To-many relationship is never nil | Specify NSSet as non-optional in NSManagedObject subclass. |
 
-# [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#testing)
+# [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#testing)
 
 ## General checks
 - [ ] New and existing functional AUT pass.
@@ -74,10 +74,10 @@
 
 ## Business rule validation
 Data validators are used to validate the MOC after each AUT to ensure that [business rules](../business-rules.md) are being followed.
-- [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
+- [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
 - [ ] Separate validators are defined for each entity and transformable that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) define.
 - [ ] In validators, business rules are validated in one of the following ways:
     - Validated and labeled in the comments of its validating function, OR
     - Not validated and noted in comments that the rule is:
         - Validated by another validator class, OR
-        - [Enforced](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#syncing-model-and-objects-with-business-rules) by the model or its subclassed objects.
+        - [Enforced](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#syncing-model-and-objects-with-business-rules) by the model or its subclassed objects.
