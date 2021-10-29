@@ -4,12 +4,7 @@ This document outlines Mintee's code components and their integration with one a
 # Table of Contents
 1. [Application components](#application-components)
 1. [Model development](#model-development)
-    1. [Syncing model and objects with business rules](#syncing-model-and-objects-with-business-rules)
-    1. [Transformables](#transformables)
-1. [View development](#view-development)
-    1. [Usability/UX](#usabilityux)
-    1. [Navigation](#navigation)
-    1. [Accessibility](#accessibility)
+    1. [Syncing model components with business rules](#syncing-model-components-with-business-rules)
 1. [Notable components](#notable-components)
     1. [SaveFormatter](#persistent-store-data-conversion)
     1. [Singletons](#singletons)
@@ -21,16 +16,9 @@ Mintee places all application code into 1 of the following 3 categories:
 1. Model components. Stored in the `core-data` dir and comprised of the following:  
     1. NSManagedObject subclasses.
     1. Custom data types used as transformables.
-1. View components. Stored in the `views` dir and comprised of the following:  
-    1. SwiftUI Views.
-    1. UIKit components:  
-        1. UIViewController subclasses.
-        1. UIView subclasses.
-    1. SwiftUI/UIKit bridging components:  
-        1. UIViewControllerRepresentable subclasses.
-        1. UIHostingController subclasses.
+1. View components. SwiftUI Views stored in the `views` dir.
 
-To maintain separation of concerns between view, model, and utility components, the following table illustrates each component's responsibilities.
+To maintain separation of concerns, the following defines each component's responsibilities.
 | Component | Responsibilities | What the component should __NEVER__ do |
 |-|-|-|
 | Model components | <ul> <li/> Implement and provide APIs for other components to use to execute business logic. <li/> Implement and provide APIs for other components to use to validate data against business rules. </ul> | <ul> <li/> Save or rollback MOC changes. </ul> |
@@ -42,43 +30,14 @@ To maintain separation of concerns between view, model, and utility components, 
 __Notes__  
 * To ensure that user experience of dates remain consistent across time zones, dates are stored as strings. This avoids a Date object being created and saved to user data, only to be accessed later using a different Calendar object and displaying a potentially different day.
 
-## Syncing model and objects with business rules
-Where appropriate, Mintee uses the Core Data model editor or generated NSManagedObject subclasses to enforce [business rules](../business-rules.md). See the below table for development guidelines:
+## Syncing model components with business rules
+Where appropriate, Mintee uses the Core Data model editor or generated NSManagedObject subclasses to enforce [business rules](../business-rules.md). See below:
 | What the business rule states | Method of enforcing |
 |-|-|
 | Property is unique | Specify constraint in Core Data model editor. |
 | Property is non-nil (including transformables) | Specify property as non-optional in NSManagedObject subclass. |
 | To-one relationship is never nil | Specify property as non-optional in NSManagedObject subclass. |
 | To-many relationship is never nil | Specify NSSet as non-optional in NSManagedObject subclass. |
-
-## Transformables
-Mintee uses transformables to represent various custom objects. To allow for secure reading from persistent store, the following are implemented for each transformable:  
-* The custom class is updated to conform to `NSSecureCoding`.
-* The custom class is specified under the transformable's attributes in the Core Data model, allowing Core Data codegen to automatically protect against object substitution.
-* A custom transformer is subclassed from `NSSecureUnarchiveFromDataTransformer` and specified under the transformable's attributes in the Core Data model. The custom transformer does the following:  
-    * Includes the `@objc` attribute in order to be accessible to the objective-C runtime and to Core Data.
-    * Includes the custom class in its allowed top-level classes.
-* SceneDelegate is updated to register the custom transformer before initializing the persistent container.  
-
-More on transformable properties [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).
-
-# View development
-
-## Usability/UX
-If a control displays the keyboard, the keyboard must be dismissed when the following occurs:
-- A button is tapped that presents a new modal or popover.
-- A button is tapped that dismisses the current modal or popover (handled automatically).
-
-Some Views also dismiss the keyboard when a tap is registered outside of the control that activated the keyboard. The Views and tap locations that exhibit this behavior are determined case-by-case. Examples include:
-- A tap is registered in the ScrollView of `AddTask`.
-- A row is tapped in `AddTagPopup`.
-
-## Navigation
-To prepare for additional navigation and ensure consistent UI, every SwiftUI View in Mintee declares a `NavigationView`.
-
-## Accessibility
-Accessibility is only used for identifying UI elements for UI testing.  
-To ensure consistent user experience and test coverage, Mintee doesn't currently use any accessibility attributes other than identifiers.
 
 # Notable components
 

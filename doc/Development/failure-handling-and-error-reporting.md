@@ -8,7 +8,7 @@ The following definitions are used as such throughout the document:
 1. [Failure handling and error reporting](#failure-handling-and-error-reporting)
     * [Base debug objects](#base-debug-objects)
 1. [Crashlytics configurations](#crashlytics-configurations)
-1. [Build versioning](#build-versioning)
+    1. [Build versioning](#build-versioning)
 
 # Failure handling and error reporting
 All failures are [reported to Crashlytics](#error-reporting) using the `ErrorManager` utility. After finding and reporting an error, failable functions notify callers of failures by returning optionals or throwing errors.  
@@ -43,7 +43,7 @@ In order to separate testing and release data, Mintee uses the following build p
     * Builds that use `GoogleService-Info-Debug.plist` report to Firebase application `Leko-Mintee (debug)`
     * Builds that use `GoogleService-Info-Release.plist` report to Firebase application `Leko-Mintee`
 
-# Build versioning
+## Build versioning
 To correlated reported errors with source code version, Mintee largely follows [Twitch's iOS versioning practices](https://blog.twitch.tv/en/2016/09/20/ios-versioning-89e02f0a5146/).
 Mintee generates and updates the app's build version everytime the project is archived for distribution. This is achieved by the following build phases, targets, scripts, and configurations:  
 1. Mintee preprocesses `Info.plist` by defining the following project-wide build settings:
