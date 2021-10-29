@@ -49,7 +49,7 @@
 # [Business rules and logic](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 
 ## General checks
-- [ ] Changes to business rules include appropriate updates to [data validators](#business-rule-checking).
+- [ ] Changes to business rules include appropriate updates to [data validators](#business-rule-validation).
 - [ ] Changes to any of the following include appropriate updates to business rules:
     - The data model
     - NSManagedObject subclasses
@@ -65,16 +65,16 @@
 | To-one relationship is never nil | Specify property as non-optional in NSManagedObject subclass. |
 | To-many relationship is never nil | Specify NSSet as non-optional in NSManagedObject subclass. |
 
-# [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
+# [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#testing)
 
 ## General checks
 - [ ] New and existing functional AUT pass.
 - [ ] Functional AUT are implemented for new function that is deemed likely to fail.
 - [ ] New and existing UIT pass locally with proposed changes.
 
-## Business rule checking
+## Business rule validation
 Data validators are used to validate the MOC after each AUT to ensure that [business rules](../business-rules.md) are being followed.
-- [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
+- [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
 - [ ] Separate validators are defined for each entity and transformable that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) define.
 - [ ] In validators, business rules are validated in one of the following ways:
     - Validated and labeled in the comments of its validating function, OR
