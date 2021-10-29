@@ -27,7 +27,7 @@
         * Includes the custom class in its allowed top-level classes.
     - SceneDelegate is updated to register the custom transformer before initializing the persistent container.  
 
-# [Failure handling](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)
+# Failure handling
 
 ## General failure handling
 - [ ] No fatal errors are introduced to the code.
