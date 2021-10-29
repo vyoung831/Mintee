@@ -8,14 +8,24 @@
 ### Related issue(s)
 
 # [Application architecture](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
-- [ ] Model, view, and utility components maintain separation of concerns.
+- [ ] __Separation of concerns:__ The following are true for new/updated code.
+    - Views only use helper functions from NSManagedObject subclass and CDCoordinator when updating and saving the model.
+    - Views do not directly save or rollback any MOCs.
 
-| Area | N/A | Checks |
-|-|-|-|
-|__Model components - Business rules syncing__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md):<ul><li/>- [ ] The data model<li/>- [ ] NSManagedObject subclasses<li/>- [ ] Transformables used by NSManagedObject subclasses</ul><li>- [ ] New/updated business rules that include any of the following include [appropriate](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#syncing-model-and-objects-with-business-rules) updates to the Core Data model or NSManagedObject subclasses:<ul><li/>Property is unique<li/>Property is non-nil (including transformables)<li/>To-one relationship is never nil<li/>To-many relationship is never nil</ul></ul>|
-|__Model components - Transformables__|<ul><li/>- [ ] N/A</ul>|If changes include updates to or new transformables,<ul><li/>- [ ] Custom classes for transformables conform to NSSecureCoding.<li/>- [ ] Custom classes for transformables are specified in the model (`xcdatamodeld`).<li/>- [ ] Custom data transformers are implemented and registered during app startup.</ul>|
-|__View components - Keyboard dismissal__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] If a control displays the keyboard, the keyboard is dismissed when any of the following occur:<ul><li/> A button is tapped that presents a new modal or popover.<li/> A button is tapped that dismisses the current modal or popover (handled automatically).</ul></ul>|
-|__View components - New SwiftUI views__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New SwiftUI Views define `NavigationViews`.<li/>- [ ] View components use accessibility for UIT identification __only__.</ul>|
+## View components
+- [ ] __Keyboard usability:__ Displayed keyboards are dismissed when the following occurs:
+    - A button is tapped that presents a new modal or popover.
+- [ ] __Navigation:__ Every new/updated SwiftUI View declares a `NavigationView` in its body (to prepare for additional navigation and ensure consistent UI).
+- [ ] __Accessibility:__ View components use accessibility for UIT identification __only__.
+
+## Transformables (more on transformable security [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html))
+- [ ] __Security:__ For new/updated Transformables, the following are true for the custom classes that back it:
+    - The custom class is updated to conform to `NSSecureCoding`.
+    - The custom class is specified under the transformable's attributes in the Core Data model, allowing Core Data codegen to automatically protect against object substitution.
+    - A custom transformer is subclassed from `NSSecureUnarchiveFromDataTransformer` and specified under the transformable's attributes in the Core Data model. The custom transformer does the following:  
+        * Includes the `@objc` attribute in order to be accessible to the objective-C runtime and to Core Data.
+        * Includes the custom class in its allowed top-level classes.
+    - SceneDelegate is updated to register the custom transformer before initializing the persistent container.  
 
 # [Failure handling](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)
 
@@ -39,7 +49,11 @@
 # [Business rules and logic](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 
 ## General checks
-- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](#business-rule-checking).
+- [ ] Changes to business rules include appropriate updates to [data validators](#business-rule-checking).
+- [ ] Changes to any of the following include appropriate updates to business rules:
+    - The data model
+    - NSManagedObject subclasses
+    - Transformables used by NSManagedObject subclasses
 
 ## Enforcing business rules
 - [ ] __Enforcing business rules in code:__ All new/updated business rules are enforced the following way:
