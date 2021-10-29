@@ -7,7 +7,7 @@
 
 ### Notes
 
-# [Application architecture checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
+# [Application architecture](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
 - [ ] Model, view, and utility components maintain separation of concerns.
 
 | Area | N/A | Checks |
@@ -48,12 +48,24 @@
     - When accessing optional data or calling throwing functions, View components use helper functions that report the error.  
     - Where appropriate, Views post to NotificationCenter to alert the user of an error.  
 
-# [Testing checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
-| Area | N/A | Checks |
-|-|-|-|
-|__MOC validation__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).<li/>- [ ] New or updated AUT run the MOC validator as part of teardown.</ul>|
-|__Functional AUT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing functional AUT pass (via workflow).<li/>- [ ] Functional AUT are implemented for new function that is deemed likely to fail.<li/>- [ ] New function that is not included in AUT is specified in the below table.  </ul>|
-|__UIT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing UIT pass locally with proposed changes.</ul>|
+# [Business rules and logic](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 
-| AUT exception | Reasoning |
-|-|-|
+## General checks
+- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](#aut-data-validation).
+
+# [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
+
+## General checks
+- [ ] New and existing functional AUT pass.
+- [ ] Functional AUT are implemented for new function that is deemed likely to fail.
+- [ ] New and existing UIT pass locally with proposed changes.
+
+## AUT data validation
+Data validators are used to validate the MOC after each AUT to ensure that [business rules](../business-rules.md) are being followed.
+- [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
+- [ ] Separate validators are defined for each entity and transformable that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) define.
+- [ ] In validators, business rules are validated in one of the following ways:
+    - Validated and labeled in the comments of its validating function, OR
+    - Not validated and noted in comments that the rule is:
+        - Validated by another validator class, OR
+        - [Enforced](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#syncing-model-and-objects-with-business-rules) by the model or its subclassed objects.

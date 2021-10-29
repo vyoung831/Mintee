@@ -20,7 +20,7 @@ In order to separate testing and release data, Mintee uses the following build p
     * Builds that use `GoogleService-Info-Release.plist` report to Firebase application `Leko-Mintee`
 
 ## Build versioning
-To correlated reported errors with source code version, Mintee largely follows [Twitch's iOS versioning practices](https://blog.twitch.tv/en/2016/09/20/ios-versioning-89e02f0a5146/).
+To correlate reported errors with source code version, Mintee largely follows [Twitch's iOS versioning practices](https://blog.twitch.tv/en/2016/09/20/ios-versioning-89e02f0a5146/).
 Mintee generates and updates the app's build version everytime the project is archived for distribution. This is achieved by the following build phases, targets, scripts, and configurations:  
 1. Mintee preprocesses `Info.plist` by defining the following project-wide build settings:
     * `INFOPLIST_PREFIX_HEADER` = `${PROJECT_DIR}/Versions/versions.h`
