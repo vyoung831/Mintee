@@ -4,7 +4,6 @@
 1. [Development](#development)
     1. [Error reporting](#error-reporting)
         1. [Crashlytics configurations](#crashlytics-configurations)
-        1. [Error reporting](#error-reporting)
     1. [Notable singletons](#notable-singletons)
         1. [ThemeManager](#thememanager)
 1. [Testing](#testing)
@@ -14,8 +13,8 @@
 
 ## Error reporting
 Mintee uses Crashlytics for error reporting.
-- [Error reporting responsibilities](../../pull_request_template.md#error_reporting_responsibilities)
-- [Failure handling by Views](../../pull_request_template.md#failure_handling_by_views)
+- [Error reporting responsibilities](../../pull_request_template.md#separation-of-error-reporting-responsibilities)
+- [Failure handling by Views](../../pull_request_template.md#failure-handling-by-views)
 
 ### Crashlytics configurations
 In order to separate testing and release data, Mintee uses the following build phases and configurations to capture data in 2 separate Firebase applications:  
