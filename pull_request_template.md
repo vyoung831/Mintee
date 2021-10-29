@@ -39,7 +39,17 @@
 # [Business rules and logic](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 
 ## General checks
-- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](#aut-data-validation).
+- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](#business-rule-checking).
+
+## Enforcing business rules
+- [ ] __Enforcing business rules in code:__ All new/updated business rules are enforced the following way:
+
+| What the business rule states | Method of enforcing |
+|-|-|
+| Property is unique | Specify constraint in Core Data model editor. |
+| Property is non-nil (including transformables) | Specify property as non-optional in NSManagedObject subclass. |
+| To-one relationship is never nil | Specify property as non-optional in NSManagedObject subclass. |
+| To-many relationship is never nil | Specify NSSet as non-optional in NSManagedObject subclass. |
 
 # [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
 
@@ -48,7 +58,7 @@
 - [ ] Functional AUT are implemented for new function that is deemed likely to fail.
 - [ ] New and existing UIT pass locally with proposed changes.
 
-## AUT data validation
+## Business rule checking
 Data validators are used to validate the MOC after each AUT to ensure that [business rules](../business-rules.md) are being followed.
 - [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
 - [ ] Separate validators are defined for each entity and transformable that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) define.
