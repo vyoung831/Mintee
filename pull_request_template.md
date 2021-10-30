@@ -7,30 +7,69 @@
 
 ### Related issue(s)
 
-# [Application architecture checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md)
-- [ ] Model, view, and utility components maintain separation of concerns.
+# Checklist
+Check off boxes that are true or not applicable
 
-| Area | N/A | Checks |
-|-|-|-|
-|__Model components - Business rules syncing__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to any of the following include appropriate updates to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md):<ul><li/>- [ ] The data model<li/>- [ ] NSManagedObject subclasses<li/>- [ ] Transformables used by NSManagedObject subclasses</ul><li>- [ ] New/updated business rules that include any of the following include [appropriate](https://github.com/vyoung831/Mintee/blob/master/doc/Development/application-architecture.md#syncing-model-and-objects-with-business-rules) updates to the Core Data model or NSManagedObject subclasses:<ul><li/>Property is unique<li/>Property is non-nil (including transformables)<li/>To-one relationship is never nil<li/>To-many relationship is never nil</ul></ul>|
-|__Model components - Transformables__|<ul><li/>- [ ] N/A</ul>|If changes include updates to or new transformables,<ul><li/>- [ ] Custom classes for transformables conform to NSSecureCoding.<li/>- [ ] Custom classes for transformables are specified in the model (`xcdatamodeld`).<li/>- [ ] Custom data transformers are implemented and registered during app startup.</ul>|
-|__View components - Keyboard dismissal__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] If a control displays the keyboard, the keyboard is dismissed when any of the following occur:<ul><li/> A button is tapped that presents a new modal or popover.<li/> A button is tapped that dismisses the current modal or popover (handled automatically).</ul></ul>|
-|__View components - New SwiftUI views__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New SwiftUI Views define `NavigationViews`.<li/>- [ ] View components use accessibility for UIT identification __only__.</ul>|
+## Development
 
-# [Failure handling checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/failure-handling-and-error-reporting.md)
-| Area | N/A | Checks |
-|-|-|-|
-|__Failure handling__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] All failures are handled gracefully by view components via error messages/graphics on UI.<li/>- [ ] New Swift code avoids `if let` blocks and handles errors via `guard let else` blocks.</ul>|
-|__Failure detection and propagation - Failable functions in non-model components__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Return optionals if there is one (and only one) possible reason of failure.<li/>- [ ] Throw if there are multiple possible reasons for failure.<li/>- [ ] Re-throw if there are calls to other throwing functions.</ul>|
-|__Failure detection and propagation - Failable functions in model components__ |<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Failable functions in model components are defined as throwing functions.</ul>|
-|__Failure reporting - Failure reporting responsibilities__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] If a failure is first detected in a throwing function, that function reports the failure.<li>- [ ] If a failure is first detected by a view component receiving a nil return value, that view component reports the failure.<li/>- [ ] All failures are reported to Crashlytics via `ErrorManager`.</ul>|
+### View components
+- [ ] __Keyboard usability:__ Displayed keyboards are dismissed when a button is tapped that presents a new modal or popover.
+- [ ] __Navigation:__ New/updated Views declare `NavigationView`s in their bodies (to prepare for additional navigation and ensure consistent UI).
+- [ ] __Accessibility:__ New/updated Views use accessibility for UIT identification __only__.
+- [ ] __UI appearance:__ New/updated Views use the shared [ThemeManager](./doc/dev-notes#thememanager) to color the UI.
+- [ ] __Separation of concerns:__ The following are true:
+    - Views only use helper functions from NSManagedObject subclass and CDCoordinator when updating and saving the model.
+    - Views do not directly save or rollback any MOCs.
 
-# [Testing checklist](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md)
-| Area | N/A | Checks |
-|-|-|-|
-|__MOC validation__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] Changes to [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) include appropriate updates to [data validators](https://github.com/vyoung831/Mintee/blob/master/doc/Development/test-approach.md#data-validators).<li/>- [ ] New or updated AUT run the MOC validator as part of teardown.</ul>|
-|__Functional AUT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing functional AUT pass (via workflow).<li/>- [ ] Functional AUT are implemented for new function that is deemed likely to fail.<li/>- [ ] New function that is not included in AUT is specified in the below table.  </ul>|
-|__UIT__|<ul><li/>- [ ] N/A</ul>|<ul><li/>- [ ] New and existing UIT pass locally with proposed changes.</ul>|
+### Transformables
+More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).  
+- [ ] __Security:__ For new/updated Transformables, the following are true for the custom classes that back it:
+    - The custom class is updated to conform to `NSSecureCoding`.
+    - The custom class is specified under the transformable's attributes in the Core Data model, allowing Core Data codegen to automatically protect against object substitution.
+    - A custom transformer is subclassed from `NSSecureUnarchiveFromDataTransformer` and specified under the transformable's attributes in the Core Data model. The custom transformer does the following:  
+        * Includes the `@objc` attribute in order to be accessible to the objective-C runtime and to Core Data.
+        * Includes the custom class in its allowed top-level classes.
+    - SceneDelegate is updated to register the custom transformer before initializing the persistent container.  
 
-| AUT exception | Reasoning |
-|-|-|
+## Failure handling
+
+### Code health
+- [ ] No fatal errors are introduced to the code.
+- [ ] `if let` code is avoided, except for SwiftUI Views checking for optionals returns from their helper functions.
+
+### Separation of error reporting responsibilities
+- [ ] Functions that do any of the following report an error to Crashlytics using `ErrorManager`.
+    - Calls a non-Mintee function that fails (can't be corrected by user action). ex: Calling `save()` on an NSManagedObjectContext fails.
+    - Directly manipulates/converts model data. ex: Throwing getters in NSManagedObject subclasses.
+- [ ] If calling a failable function that reports errors to Crashlytics, calling functions re-throw the error (unless returning an optional for a SwiftUI View to use). Only one error is reported to Crashlytics for each call stack that finds an error.
+- [ ] Views do __not__ report any errors to Crashlytics.
+- [ ] Where appropriate, Views post to NotificationCenter to alert the user of an error.
+- [ ] Where appropriate, Views display an error graphic to inform the user of an error.
+
+## [Business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
+Related: [AUT data validation](#business-rule-validation)
+- [ ] Changes to business rules include appropriate updates to:
+    - NSManagedObject vars
+    - NSManagedObject APIs, including getters
+- [ ] Changes to any of the following include appropriate updates to business rules:
+    - The data model
+    - NSManagedObject subclasses
+    - Custom classes used as Transformables
+
+## [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#testing)
+
+### Test coverage
+- [ ] New and existing functional AUT pass.
+- [ ] Functional AUT are implemented for new function that is deemed likely to fail.
+- [ ] New and existing UIT pass locally with proposed changes.
+
+### Business rule validation
+Data validators are used to validate the MOC after each AUT to ensure that [business rules](../business-rules.md) are being followed.
+- [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
+- [ ] Separate validators are defined for each entity and transformable that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) define.
+- [ ] In validators, business rules are either
+    - Validated and labeled in the comments of its validating function, OR
+    - Noted in comments that the rule is validated by another validator class, or enforced by the model editor or NSManagedObject subclasses.
+
+# Exceptions
+Document unchecked items here:

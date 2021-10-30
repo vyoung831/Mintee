@@ -11,8 +11,6 @@ To get started, complete the following after cloning this repo:
 1. Install [Cocoapods](https://cocoapods.org/) on your machine.
 1. Run `pod install` to install dependencies locally.
 
-# Development Technotes
-For technotes on design and development guidelines, see the following:  
-1. [Application architecture](./doc/Development/application-architecture.md)
-1. [Testing approaches](./doc/Development/test-approach.md)
-1. [Error reporting and failure handling](./doc/Development/error-reporting-and-handling.md)
+# Doc, design and guidelines
+- For development guidelines/pracices, see the [PR template](./pull_request_template.md)
+- For design notes/doc, see [dev notes](./doc/dev-notes.md)
