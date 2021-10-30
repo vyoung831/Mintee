@@ -3,9 +3,10 @@
 # Table of Contents
 1. [Development](#development)
     1. [Error reporting](#error-reporting)
-        1. [Crashlytics configurations](#crashlytics-configurations)
+        * [Crashlytics configurations](#crashlytics-configurations)
+        * [Build versioning](#build-versioning)
     1. [Notable singletons](#notable-singletons)
-        1. [ThemeManager](#thememanager)
+        * [ThemeManager](#thememanager)
 1. [Testing](#testing)
     1. [SharedTestUtils](#sharedtestutils)
 
@@ -37,7 +38,6 @@ __Notes__
 * XCode actions using the `Debug` build configuration have, at times, not updated the Version number (unless a full clean and rebuild is executed). The exact issue and solution has not been found. The following (potential) workarounds are recommended to have the `Debug` build configuration generate a new version number for each build:  
     * In your machine's XCode developer dir, delete the `DerivedData` dir.
 * For builds that use the `Release` configuration, the `Check Git changes` build phase of `Versions` is used to verify that the current branch is up-to-date with and tracking `origin/master`, with no merge conflicts or uncommitted changes.
-
 
 ## Notable singletons
 

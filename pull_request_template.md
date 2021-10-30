@@ -13,10 +13,10 @@ Check off boxes that are true or not applicable
 ## Development
 
 ### View components
-- [ ] __Keyboard usability:__ Displayed keyboards are dismissed when the following occurs:
-    - A button is tapped that presents a new modal or popover.
-- [ ] __Navigation:__ Every new/updated SwiftUI View declares a `NavigationView` in its body (to prepare for additional navigation and ensure consistent UI).
-- [ ] __Accessibility:__ View components use accessibility for UIT identification __only__.
+- [ ] __Keyboard usability:__ Displayed keyboards are dismissed when a button is tapped that presents a new modal or popover.
+- [ ] __Navigation:__ New/updated Views declare `NavigationView`s in their bodies (to prepare for additional navigation and ensure consistent UI).
+- [ ] __Accessibility:__ New/updated Views use accessibility for UIT identification __only__.
+- [ ] __UI appearance:__ New/updated Views use the shared [ThemeManager](./doc/dev-notes#thememanager) to color the UI.
 - [ ] __Separation of concerns:__ The following are true:
     - Views only use helper functions from NSManagedObject subclass and CDCoordinator when updating and saving the model.
     - Views do not directly save or rollback any MOCs.
@@ -35,23 +35,26 @@ More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nss
 
 ### Code health
 - [ ] No fatal errors are introduced to the code.
-- [ ] `if let` code is avoided, except for SwiftUI Views and their helper functions checking for optionals (see [error reporting responsibilities](#separation-of-error-reporting-responsibilities)).
+- [ ] `if let` code is avoided, except for SwiftUI Views checking for optionals returns from their helper functions.
 
 ### Separation of error reporting responsibilities
 - [ ] Functions that do any of the following report an error to Crashlytics using `ErrorManager`.
-    - Calls a non-Mintee function that fails (can't be corrected by user action). ex: Catching an error when saving an NSManagedObjectContext.
+    - Calls a non-Mintee function that fails (can't be corrected by user action). ex: Calling `save()` on an NSManagedObjectContext fails.
     - Directly manipulates/converts model data. ex: Throwing getters in NSManagedObject subclasses.
-- [ ] Functions that call a failable function re-throw the error unless returning an optional for a SwiftUI View to use. Only one error is reported to crashlytics for each call stack that finds an error.
+- [ ] If calling a failable function that reports errors to Crashlytics, calling functions re-throw the error (unless returning an optional for a SwiftUI View to use). Only one error is reported to Crashlytics for each call stack that finds an error.
+- [ ] Views do __not__ report any errors to Crashlytics.
 - [ ] Where appropriate, Views post to NotificationCenter to alert the user of an error.
+- [ ] Where appropriate, Views display an error graphic to inform the user of an error.
 
 ## [Business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
-- [ ] Changes to business rules include appropriate updates to
-    - [Data validators](#business-rule-validation)
+Related: [AUT data validation](#business-rule-validation)
+- [ ] Changes to business rules include appropriate updates to:
+    - NSManagedObject vars
     - NSManagedObject APIs, including getters
 - [ ] Changes to any of the following include appropriate updates to business rules:
     - The data model
     - NSManagedObject subclasses
-    - Transformables used by NSManagedObject subclasses
+    - Custom classes used as Transformables
 
 ## [Testing](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#testing)
 
@@ -64,11 +67,9 @@ More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nss
 Data validators are used to validate the MOC after each AUT to ensure that [business rules](../business-rules.md) are being followed.
 - [ ] All AUT perform MOC validation (using [TestContainer](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#sharedtestutils)) as part of teardown. This includes AUT that don't appear to touch the persistent store.
 - [ ] Separate validators are defined for each entity and transformable that [business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md) define.
-- [ ] In validators, business rules are validated in one of the following ways:
+- [ ] In validators, business rules are either
     - Validated and labeled in the comments of its validating function, OR
-    - Not validated and noted in comments that the rule is:
-        - Validated by another validator class, OR
-        - [Enforced](https://github.com/vyoung831/Mintee/blob/master/doc/dev-notes.md#syncing-model-and-objects-with-business-rules) by the model or its subclassed objects.
+    - Noted in comments that the rule is validated by another validator class, or enforced by the model editor or NSManagedObject subclasses.
 
 # Exceptions
-Document unchecked boxes here:
+Document unchecked items here:
