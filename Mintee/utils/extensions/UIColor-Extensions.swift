@@ -38,7 +38,7 @@ extension UIColor {
     }
     
     /**
-     Returns a hex String representing this UIColor.
+     Returns the 8-character hex String representing this UIColor.
      - returns: (Optional) String representing this UIColor's hex value, including alpha.
      */
     func toHex() -> String? {
