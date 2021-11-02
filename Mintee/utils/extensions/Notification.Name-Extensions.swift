@@ -8,11 +8,23 @@
 
 import Foundation
 
+// MARK: - Miscellaneous Notifications
+
 extension Notification.Name {
     
     static var themeChanged: Notification.Name {
         return .init(rawValue: "ThemeManager.themeChanged")
     }
+    
+    static var persistentStore_loadFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.persistentStore_loadFailed")
+    }
+    
+}
+
+// MARK: - Task-related Notifications
+
+extension Notification.Name {
     
     static var taskSaveFailed: Notification.Name {
         return .init(rawValue: "Leko.Mintee.taskSaveFailed")
@@ -25,6 +37,16 @@ extension Notification.Name {
     static var taskDeleteFailed: Notification.Name {
         return .init(rawValue: "Leko.Mintee.taskDeleteFailed")
     }
+    
+    static var editTask_initFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.editTask_initFailed")
+    }
+    
+}
+
+// MARK: - Analysis-related Notifications
+
+extension Notification.Name {
     
     static var analysisSaveFailed: Notification.Name {
         return .init(rawValue: "Leko.Mintee.analysisSaveFailed")
@@ -42,16 +64,12 @@ extension Notification.Name {
         return .init(rawValue: "Leko.Mintee.analysisReorderFailed")
     }
     
+    static var analysisListLoadFailed: Notification.Name {
+        return .init(rawValue: "Leko.Mintee.analysisListLoadFailed")
+    }
+    
     static var editAnalysis_initFailed: Notification.Name {
         return .init(rawValue: "Leko.Mintee.editAnalysis_initFailed")
-    }
-    
-    static var editTask_initFailed: Notification.Name {
-        return .init(rawValue: "Leko.Mintee.editTask_initFailed")
-    }
-    
-    static var persistentStore_loadFailed: Notification.Name {
-        return .init(rawValue: "Leko.Mintee.persistentStore_loadFailed")
     }
     
 }

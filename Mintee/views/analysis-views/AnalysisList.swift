@@ -346,23 +346,19 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
         
         switch type {
         case .insert:
-            
             // A new Analysis was inserted into the MOC; insert it into the previews but set it as not included on Analysis homepage.
             if let insertedAnalysis = anObject as? Analysis {
                 sortedPreviews.append(AnalysisListCardPreview(id: insertedAnalysis, order: Int(insertedAnalysis._order)))
                 AnalysisListModel.sortPreviews(&self.sortedPreviews)
             }
             break
-            
         case .delete:
-            
             if let deletedAnalysis = anObject as? Analysis,
                let idx = sortedPreviews.firstIndex(where: { $0.id == deletedAnalysis }) {
                 sortedPreviews.remove(at: idx)
                 AnalysisListModel.sortPreviews(&self.sortedPreviews)
             }
             break
-            
         case .update:
             // Invoked when a change occurs to an attribute of a fetched object that IS NOT included in the NSFetchedResultsController's sort descriptors.
             AnalysisListModel.sortPreviews(&self.sortedPreviews)
@@ -372,7 +368,9 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
             AnalysisListModel.sortPreviews(&self.sortedPreviews)
             break
         @unknown default:
-            fatalError()
+            let _ = ErrorManager.recordNonFatal(.unexpectedError,
+                                                ["type": type.rawValue])
+            NotificationCenter.default.post(name: .analysisListLoadFailed, object: nil)
         }
         
     }

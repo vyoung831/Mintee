@@ -59,6 +59,7 @@ struct ErrorManager {
         case bundleIdentifierWasNil = 1
         case dateOperationFailed = 2
         case unexpectedError = 3
+        case unexpectedCase = 4
         
         // UserDefault error codes
         case userDefaults_containedInvalidValue = 100
