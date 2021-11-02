@@ -66,11 +66,11 @@ struct TaskTargetSetView: View , Identifiable {
             return "Every week"
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
-                ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                            ["selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription as Any,
-                                             "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription as Any,
-                                             "minOperator" : self.minOperator,
-                                             "maxOperator" : self.maxOperator])
+                let _ = ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                    ["selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription as Any,
+                                                     "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription as Any,
+                                                     "minOperator" : self.minOperator,
+                                                     "maxOperator" : self.maxOperator])
                 return "Weekdays of month"
             }
             

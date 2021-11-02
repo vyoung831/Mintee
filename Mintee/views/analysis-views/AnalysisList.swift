@@ -335,9 +335,10 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
                 }
             }
         } catch {
-            ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                        ["fetchRequest" : fetchRequest.debugDescription,
-                                         "error.localizedDescription" : error.localizedDescription])
+            let _ = ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                                ["fetchRequest" : fetchRequest.debugDescription,
+                                                 "error.localizedDescription" : error.localizedDescription])
+            NotificationCenter.default.post(name: .analysisListLoadFailed, object: nil)
             return
         }
     }
