@@ -127,7 +127,7 @@
 		C4DACF8D25D8BB02001F3468 /* AddAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DACF8C25D8BB02001F3468 /* AddAnalysis.swift */; };
 		C4DB3ED92491508700C2DC8E /* ConfirmDeletePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */; };
 		C4DCDFBA24B12A3B008F727F /* XCUIElement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DCDFB924B12A3B008F727F /* XCUIElement+Extensions.swift */; };
-		C4E551A927188B9B00E87EBB /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E551A827188B9B00E87EBB /* Modifiers.swift */; };
+		C4E551A927188B9B00E87EBB /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E551A827188B9B00E87EBB /* AlertPresenter.swift */; };
 		C4E5D5EE250426A000557373 /* Task-TagHandling-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */; };
 		C4E5D5F225042F6C00557373 /* Task-InstanceDelta-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5F125042F6C00557373 /* Task-InstanceDelta-Tests.swift */; };
 		C4E5D5F525042F9400557373 /* Task-InstanceHandling-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5D5F425042F9400557373 /* Task-InstanceHandling-Tests.swift */; };
@@ -323,7 +323,7 @@
 		C4DACF8C25D8BB02001F3468 /* AddAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnalysis.swift; sourceTree = "<group>"; };
 		C4DB3ED82491508700C2DC8E /* ConfirmDeletePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopup.swift; sourceTree = "<group>"; };
 		C4DCDFB924B12A3B008F727F /* XCUIElement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extensions.swift"; sourceTree = "<group>"; };
-		C4E551A827188B9B00E87EBB /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
+		C4E551A827188B9B00E87EBB /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		C4E5D5ED250426A000557373 /* Task-TagHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-TagHandling-Tests.swift"; sourceTree = "<group>"; };
 		C4E5D5F125042F6C00557373 /* Task-InstanceDelta-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceDelta-Tests.swift"; sourceTree = "<group>"; };
 		C4E5D5F425042F9400557373 /* Task-InstanceHandling-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task-InstanceHandling-Tests.swift"; sourceTree = "<group>"; };
@@ -486,6 +486,14 @@
 			path = Mintee_UIT;
 			sourceTree = "<group>";
 		};
+		C40482502731BE0500911C38 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				C4E551A827188B9B00E87EBB /* AlertPresenter.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
 		C405FA0124F15BDB00F6A547 /* utils-tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,6 +600,7 @@
 		C44C7F85243CA54A00072AD8 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */,
 				C4DACF8B25D8B972001F3468 /* analysis-views */,
 				C42B5B52259ACD7300E6A093 /* error-views */,
 				C48F9763245B0B6B000339E9 /* popups */,
@@ -599,6 +608,7 @@
 				C416E6BD251807EA0063309F /* settings-views */,
 				C4D0439024598DB200A75BC9 /* tab-bar */,
 				C43BD94F2444728C003E68DC /* task-views */,
+				C40482502731BE0500911C38 /* util */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -668,7 +678,6 @@
 			isa = PBXGroup;
 			children = (
 				C442AE0C2546D71000A9EB72 /* ErrorManager.swift */,
-				C4E551A827188B9B00E87EBB /* Modifiers.swift */,
 				C466A7A424473A1100EC3E97 /* extensions */,
 				C483241F25B4FB1A0047EA86 /* ui */,
 			);
@@ -834,7 +843,6 @@
 			isa = PBXGroup;
 			children = (
 				C46DC969243DEC3B0037C74C /* AnalysisView.swift */,
-				C44C7F88243DCCC900072AD8 /* MainTabBarView.swift */,
 				C46DC96B243DEC420037C74C /* ManageView.swift */,
 				C46DC96D243DEC480037C74C /* SettingsView.swift */,
 				C46DC967243DEBB20037C74C /* TodayView.swift */,
@@ -1376,7 +1384,7 @@
 				C482233324BA57B000E6426E /* TaskTargetSetSection.swift in Sources */,
 				C48F024E2448A5730088227F /* Task.swift in Sources */,
 				C4EADF7324889D1C0080CD01 /* BubbleRows.swift in Sources */,
-				C4E551A927188B9B00E87EBB /* Modifiers.swift in Sources */,
+				C4E551A927188B9B00E87EBB /* AlertPresenter.swift in Sources */,
 				C43BD951244472A4003E68DC /* AddTask.swift in Sources */,
 				C4578D2524B4076D008BD3D4 /* StartAndEndDateSection.swift in Sources */,
 				C45AA22B261E32DB001F6A28 /* AnalysisList.swift in Sources */,

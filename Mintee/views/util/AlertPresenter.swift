@@ -1,5 +1,5 @@
 //
-//  Modifiers.swift
+//  AlertPresenter.swift
 //  Mintee
 //
 //  Created by Vincent Young on 10/14/21.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct MinteeAlertPresenter: ViewModifier {
+struct AlertPresenter: ViewModifier {
     
     @State var isPresentingAlert: Bool = false
     @State var errorAlert_message: String = ""
