@@ -46,9 +46,7 @@ class AnalysisLegend: NSObject, NSSecureCoding {
                                                   AnalysisLegend.Keys.completionEntries.rawValue:
                                                     decoder.decodeObject(of: [NSSet.self, CompletionLegendEntry.self], forKey: AnalysisLegend.Keys.completionEntries.rawValue).debugDescription]
                   let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
-                  self.categorizedEntries = Set()
-                  self.completionEntries = Set()
-                  return
+                  return nil
               }
         self.categorizedEntries = categorizedLegendEntries
         self.completionEntries = completionLegendEntries
@@ -147,23 +145,19 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
         
         guard let category = coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue) as? Int16,
               let color = coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue) as String? else {
-                  
-                  let userInfo: [String : Any] = [CategorizedLegendEntry.Keys.category.rawValue:
-                                                    coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
-                                                  CategorizedLegendEntry.Keys.color.rawValue:
-                                                    coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
-                  let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
-                  self.color = "00000000"
-                  self.category = .reachedTarget
-                  return
-                  
-              }
+            
+            let userInfo: [String : Any] = [CategorizedLegendEntry.Keys.category.rawValue:
+                                                coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
+                                            CategorizedLegendEntry.Keys.color.rawValue:
+                                                coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
+            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
+            return nil
+            
+        }
         
         guard let cat = Category.init(rawValue: category) else {
             let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["category": category])
-            self.color = "00000000"
-            self.category = .reachedTarget
-            return
+            return nil
         }
         
         self.category = cat
@@ -275,11 +269,7 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
                                                   CompletionLegendEntry.Keys.maxOperator.rawValue:
                                                     coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue).debugDescription]
                   let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
-                  self.color = "00000000"
-                  self.min = 0; self.max = 1
-                  self.minOperator = SaveFormatter.equalityOperator.lt.rawValue
-                  self.maxOperator = SaveFormatter.equalityOperator.lt.rawValue
-                  return
+                  return nil
               }
         
         self.color = color
