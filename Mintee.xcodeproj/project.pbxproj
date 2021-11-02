@@ -29,7 +29,6 @@
 		C4037A9824342E1F00150D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037A9724342E1F00150D47 /* AppDelegate.swift */; };
 		C4037AA124342E2300150D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4037AA024342E2300150D47 /* Assets.xcassets */; };
 		C4037ABD24342E2300150D47 /* AddTaskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037ABC24342E2300150D47 /* AddTaskUITests.swift */; };
-		C40416EF259E7AA400849E1D /* ErrorViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */; };
 		C406563424AA01A9002926EB /* TaskTargetSet-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */; };
 		C406563724AA08E9002926EB /* Tag-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C406563624AA08E9002926EB /* Tag-Tests.swift */; };
 		C408445D25FFC532007C4105 /* MainTabBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408445C25FFC532007C4105 /* MainTabBarUITests.swift */; };
@@ -225,7 +224,6 @@
 		C4037AB824342E2300150D47 /* Mintee_UIT.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mintee_UIT.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4037ABC24342E2300150D47 /* AddTaskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskUITests.swift; sourceTree = "<group>"; };
 		C4037ABE24342E2300150D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewHostingController.swift; sourceTree = "<group>"; };
 		C406563324AA01A9002926EB /* TaskTargetSet-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskTargetSet-Tests.swift"; sourceTree = "<group>"; };
 		C406563624AA08E9002926EB /* Tag-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag-Tests.swift"; sourceTree = "<group>"; };
 		C408445C25FFC532007C4105 /* MainTabBarUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarUITests.swift; sourceTree = "<group>"; };
@@ -488,14 +486,6 @@
 			path = Mintee_UIT;
 			sourceTree = "<group>";
 		};
-		C40416ED259E7A8200849E1D /* hosting */ = {
-			isa = PBXGroup;
-			children = (
-				C40416EE259E7AA400849E1D /* ErrorViewHostingController.swift */,
-			);
-			path = hosting;
-			sourceTree = "<group>";
-		};
 		C405FA0124F15BDB00F6A547 /* utils-tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -562,7 +552,6 @@
 			isa = PBXGroup;
 			children = (
 				C42B5B4C259ACD6E00E6A093 /* ErrorView.swift */,
-				C40416ED259E7A8200849E1D /* hosting */,
 			);
 			path = "error-views";
 			sourceTree = "<group>";
@@ -1394,7 +1383,6 @@
 				C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */,
 				C46DC96A243DEC3B0037C74C /* AnalysisView.swift in Sources */,
 				C46DC968243DEBB20037C74C /* TodayView.swift in Sources */,
-				C40416EF259E7AA400849E1D /* ErrorViewHostingController.swift in Sources */,
 				C44C7F89243DCCC900072AD8 /* MainTabBarView.swift in Sources */,
 				C4DACF8D25D8BB02001F3468 /* AddAnalysis.swift in Sources */,
 				C4ACD3CB250D715100D56277 /* TagsSection.swift in Sources */,
