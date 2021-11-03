@@ -19,6 +19,7 @@ public class Analysis: NSManagedObject {
     @NSManaged private var endDate: String?
     @NSManaged private var dateRange: Int16
     @NSManaged private var order: Int16
+    @NSManaged private var rangeType: Int16
     @NSManaged private var legend: AnalysisLegend
     
     @NSManaged private var tags: NSSet?
@@ -28,33 +29,49 @@ public class Analysis: NSManagedObject {
     var _order: Int16 { get { return self.order }}
     var _legend: AnalysisLegend { get { return self.legend } }
     
-    var _analysisType: SaveFormatter.analysisType? {
-        get {
+    var _analysisType: SaveFormatter.analysisType {
+        get throws {
             guard let type = SaveFormatter.analysisType.init(rawValue: self.analysisType) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return type
+        }
+    }
+    
+    var _rangeType: SaveFormatter.analysisRangeType {
+        get throws {
+            guard let type = SaveFormatter.analysisRangeType.init(rawValue: self.rangeType) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return type
         }
     }
     
     var _startDate: Date? {
-        get {
-            guard let startDateString = self.startDate else { return nil }
-            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+        get throws {
+            guard let startDateString = self.startDate else {
+                if (try self._rangeType) == .startEnd {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
                 return nil
+            }
+            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formattedDate
         }
     }
     
     var _endDate: Date? {
-        get {
-            guard let endDateString = self.endDate else { return nil }
-            guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+        get throws {
+            guard let endDateString = self.endDate else {
+                if (try self._rangeType) == .startEnd {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
                 return nil
+            }
+            guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formattedDate
         }

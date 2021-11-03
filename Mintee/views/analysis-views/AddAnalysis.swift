@@ -19,7 +19,7 @@ struct AddAnalysis: View {
     @State var tags: [String] = [] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
     
     // Date range selection vars
-    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
+    @State var rangeType: SaveFormatter.analysisRangeType = .startEnd
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var dateRangeString: String = ""
@@ -118,9 +118,9 @@ struct AddAnalysis: View {
                                                                       selection: self.$analysisType)
                     
                     // MARK: - Date range selection
-                    SelectableTypeSection<AnalysisUtils.dateRangeType>(sectionLabel: "Date range",
-                                                                       options: AnalysisUtils.dateRangeType.allCases,
-                                                                       selection: self.$rangeType)
+                    SelectableTypeSection<SaveFormatter.analysisRangeType>(sectionLabel: "Date range",
+                                                                           options: SaveFormatter.analysisRangeType.allCases,
+                                                                           selection: self.$rangeType)
                     
                     if self.rangeType == .startEnd {
                         StartAndEndDateSection(startDate: self.$startDate,

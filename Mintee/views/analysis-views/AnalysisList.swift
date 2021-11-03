@@ -127,22 +127,29 @@ struct AnalysisListCard: View {
     
     let cardPadding: CGFloat = 15
     let togglePreview: () -> () // Closure for toggling the order of the AnalysisListCardPreview held in AnalysisListModel.
-    var analysis: Analysis
+    @ObservedObject var analysis: Analysis
     
     @State var isChecked: Bool
     @State var isPresentingEditAnalysis: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
+    func getAnalysisProperties() -> (type: SaveFormatter.analysisType, rangeType: SaveFormatter.analysisRangeType)? {
+        do {
+            return (try analysis._analysisType, try analysis._rangeType)
+        } catch {
+            return nil
+        }
+    }
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
             
-            if let analysisName = analysis._name,
-               let analysisType = analysis._analysisType {
+            if let props = getAnalysisProperties() {
                 
                 HStack {
-                    Text(analysisName)
+                    Text(analysis._name)
                     Spacer()
                     Button("Edit", action: {
                         self.isPresentingEditAnalysis = true
@@ -153,19 +160,14 @@ struct AnalysisListCard: View {
                     })
                 }
                 
-                Text("Type: \(analysisType.stringValue)")
+                Text("Type: \(props.type.stringValue)")
                 
-                if let start = analysis._startDate,
-                   let end = analysis._endDate {
-                    
-                    // Start/end date analysis
-                    Text("\(Date.toMDYPresent(start)) to \(Date.toMDYPresent(end))")
-                    
+                if props.rangeType == .startEnd {
+                    if let dates = EditAnalysis.getDates(analysis) {
+                        Text("\(Date.toMDYPresent(dates.startDate)) to \(Date.toMDYPresent(dates.endDate))")
+                    }
                 } else {
-                    
-                    // Ranged analysis
                     Text("Last \(analysis._dateRange) days")
-                    
                 }
                 
                 Button(action: {

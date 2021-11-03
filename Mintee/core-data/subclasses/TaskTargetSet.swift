@@ -30,7 +30,7 @@ public class TaskTargetSet: NSManagedObject {
     var _priority: Int16 { get { return self.priority } }
     var _task: Task { get { return self.task } }
     
-    var _instances: Set<TaskInstance>? {
+    var _instances: Set<TaskInstance> {
         get throws {
             guard let unwrappedSet = self.instances else { return Set() }
             guard let castedSet = unwrappedSet as? Set<TaskInstance> else {

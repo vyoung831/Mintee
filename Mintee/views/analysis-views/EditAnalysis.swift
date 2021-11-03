@@ -22,7 +22,7 @@ struct EditAnalysis: View {
     @State var analysisName: String = ""
     @State var tags: [String] = [] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
     @State var analysisType: SaveFormatter.analysisType = .box
-    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
+    @State var rangeType: SaveFormatter.analysisRangeType = .startEnd
     @State var legendType: AnalysisLegend.EntryType = .categorized
     @State var legendPreviews: [CategorizedLegendEntryPreview] = CategorizedLegendEntryPreview.getDefaults()
     
@@ -40,31 +40,38 @@ struct EditAnalysis: View {
         
         self.isBeingPresented = presented
         
-        guard let type = analysis._analysisType,
-              let previews = EditAnalysis.extractCategorizedPreviews(analysis) else {
-                  NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
-              }
-        
-        do {
-            self._tags = State(initialValue: (try analysis._tags).map{$0._name})
-        } catch {
+        guard let previews = EditAnalysis.extractCategorizedPreviews(analysis) else {
             NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
         }
         
-        if let start = analysis._startDate,
-           let end = analysis._endDate {
-            self._startDate = State(initialValue: start)
-            self._endDate = State(initialValue: end)
-            self._rangeType = State(initialValue: .startEnd)
-        } else {
-            self._dateRangeString = State(initialValue: String(analysis._dateRange))
-            self._rangeType = State(initialValue: .dateRange)
+        do {
+            let type = try analysis._analysisType
+            let rangeType = try analysis._rangeType
+            self._tags = State(initialValue: (try analysis._tags).map{$0._name})
+            
+            switch rangeType {
+            case .startEnd:
+                guard let dates = EditAnalysis.getDates(analysis) else {
+                    NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
+                }
+                self._startDate = State(initialValue: dates.startDate)
+                self._endDate = State(initialValue: dates.endDate)
+                self._rangeType = State(initialValue: .startEnd)
+                break
+            case .dateRange:
+                self._dateRangeString = State(initialValue: String(analysis._dateRange))
+                self._rangeType = State(initialValue: .dateRange)
+                break
+            }
+            
+            self._analysisName = State(initialValue: analysis._name)
+            self._analysisType = State(initialValue: type)
+            self._legendPreviews = State(initialValue: previews)
+            self.analysis = analysis
+            
+        } catch {
+            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
         }
-        
-        self._analysisName = State(initialValue: analysis._name)
-        self._analysisType = State(initialValue: type)
-        self._legendPreviews = State(initialValue: previews)
-        self.analysis = analysis
         
     }
     
@@ -103,6 +110,18 @@ struct EditAnalysis: View {
             
         }
         
+    }
+    
+    static func getDates(_ analysis: Analysis) -> (startDate: Date, endDate: Date)? {
+        do {
+            guard let start = try analysis._startDate,
+                  let end = try analysis._endDate else {
+                return nil
+            }
+            return (start, end)
+        } catch {
+            return nil
+        }
     }
     
     /**
@@ -158,9 +177,9 @@ struct EditAnalysis: View {
                                                                       selection: self.$analysisType)
                     
                     // MARK: - Date range selection
-                    SelectableTypeSection<AnalysisUtils.dateRangeType>(sectionLabel: "Date range",
-                                                                       options: AnalysisUtils.dateRangeType.allCases,
-                                                                       selection: self.$rangeType)
+                    SelectableTypeSection<SaveFormatter.analysisRangeType>(sectionLabel: "Date range",
+                                                                           options: SaveFormatter.analysisRangeType.allCases,
+                                                                           selection: self.$rangeType)
                     
                     if self.rangeType == .startEnd {
                         StartAndEndDateSection(startDate: self.$startDate,

@@ -93,7 +93,6 @@
 		C48F024E2448A5730088227F /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F023A2448A5730088227F /* Task.swift */; };
 		C48F02562448A5730088227F /* Analysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F02422448A5730088227F /* Analysis.swift */; };
 		C4908D28253E20A100B51ADF /* SelectDatePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4908D27253E20A100B51ADF /* SelectDatePopup.swift */; };
-		C4922181261D058600B92453 /* AnalysisUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4922180261D058600B92453 /* AnalysisUtils.swift */; };
 		C49221A3261D0AC500B92453 /* DateRangeTextFieldSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49221A2261D0AC500B92453 /* DateRangeTextFieldSection.swift */; };
 		C492BDDC255B93EF0054CD2A /* FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492BDDB255B93EF0054CD2A /* FetchRequests.swift */; };
 		C493C03525E1EEC900538B59 /* SearchTagPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493C03425E1EEC900538B59 /* SearchTagPopup.swift */; };
@@ -292,7 +291,6 @@
 		C48F023A2448A5730088227F /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C48F02422448A5730088227F /* Analysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analysis.swift; sourceTree = "<group>"; };
 		C4908D27253E20A100B51ADF /* SelectDatePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePopup.swift; sourceTree = "<group>"; };
-		C4922180261D058600B92453 /* AnalysisUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisUtils.swift; sourceTree = "<group>"; };
 		C49221A2261D0AC500B92453 /* DateRangeTextFieldSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeTextFieldSection.swift; sourceTree = "<group>"; };
 		C492BDDB255B93EF0054CD2A /* FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequests.swift; sourceTree = "<group>"; };
 		C493C03425E1EEC900538B59 /* SearchTagPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTagPopup.swift; sourceTree = "<group>"; };
@@ -774,7 +772,6 @@
 		C492217F261D049F00B92453 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				C4922180261D058600B92453 /* AnalysisUtils.swift */,
 				C4478CCB2634CE4A00632352 /* LegendUtils.swift */,
 			);
 			path = utils;
@@ -1371,7 +1368,6 @@
 				C499FFED247364DF00ABB64C /* SaveFormatter.swift in Sources */,
 				C4A657F325F28D9800A0756A /* UIColor-Extensions.swift in Sources */,
 				C43AE1C1256075D200F1D560 /* CollectionSizer.swift in Sources */,
-				C4922181261D058600B92453 /* AnalysisUtils.swift in Sources */,
 				C4130C2324C86E9A003EF047 /* SelectableTypeSection.swift in Sources */,
 				C48F02562448A5730088227F /* Analysis.swift in Sources */,
 				C4B4357F2647718500FB87A0 /* TagPopupUtils.swift in Sources */,

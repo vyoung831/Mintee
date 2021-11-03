@@ -188,6 +188,20 @@ extension SaveFormatter {
 
 extension SaveFormatter {
     
+    enum analysisRangeType: Int16, CaseIterable, SelectableType {
+        
+        case startEnd = 0
+        case dateRange = 1
+        
+        var stringValue: String {
+            switch self {
+            case .startEnd: return "Start/End"
+            case .dateRange: return "Ranged"
+            }
+        }
+        
+    }
+    
     enum analysisType: Int16, CaseIterable, SelectableType {
         
         case box = 0

@@ -19,12 +19,20 @@ public class Tag: NSManagedObject {
     @NSManaged private var tasks: NSSet
     
     var _name: String { get { return self.name } }
-    var _analyses: NSSet? { get { return self.analyses } }
     
     var _tasks: Set<Task> {
         get throws {
             guard let castSet = self.tasks as? Set<Task> else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData)
+            }
+            return castSet
+        }
+    }
+    
+    var _analyses: Set<Analysis> {
+        get throws {
+            guard let castSet = self.analyses as? Set<Analysis> else {
+                return Set<Analysis>()
             }
             return castSet
         }

@@ -38,11 +38,13 @@ public class Task: NSManagedObject {
     
     var _startDate: Date? {
         get throws {
-            guard let startDateString = self.startDate else { return nil }
-            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
+            guard let startDateString = self.startDate else {
                 if (try self._taskType) == .recurring {
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
                 }
+                return nil
+            }
+            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
                 throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
             }
             return formattedDate
@@ -305,17 +307,11 @@ extension Task {
      - returns: Array of Strings representing TaskInstances that would be deleted, sorted by date. The Strings represent the dates in "M-d-yyyy" format
      */
     func getDeltaInstancesSpecific(dates: Set<Date>) throws -> [String] {
-        
-        guard let instances = self.instances as? Set<TaskInstance> else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
-        }
-        
         var datesDelta: [String] = []
-        for instance in instances {
+        for instance in try self._instances {
             let date = try instance._date
             dates.contains(date) ? datesDelta.append(Date.toMDYPresent(date)) : nil
         }
-        
         return datesDelta.sorted{ $0 < $1 }
     }
     
@@ -328,13 +324,9 @@ extension Task {
      */
     func getDeltaInstancesRecurring(startDate: Date, endDate: Date, dayPatterns: Set<DayPattern>) throws -> [Date] {
         
-        var datesDelta: [Date] = []
-        
-        guard let instances = self.instances as? Set<TaskInstance> else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
-        }
-        
         // Filter existing TaskInstances for ones before the proposed start date or after the proposed end date
+        let instances = try self._instances
+        var datesDelta: [Date] = []
         for instance in instances {
             let date = try instance._date
             if date.lessThanDate(startDate) || endDate.lessThanDate(date) {
@@ -434,9 +426,7 @@ extension Task {
         
         // This Task's existing TaskInstances are iterated through. Ones that don't intersect with new Dates are deleted and save others so they aren't regenerated
         var newDates = Set(dates)
-        guard let existingInstances = self.instances as? Set<TaskInstance> else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
-        }
+        let existingInstances = try self._instances
         for existingInstance in existingInstances {
             if !dates.contains(try existingInstance._date) {
                 moc.delete(existingInstance)
@@ -514,14 +504,9 @@ extension Task {
      */
     private func generateAndPruneInstances(_ moc: NSManagedObjectContext) throws {
         
-        guard let sortedTargetSets = (self.targetSets as? Set<TaskTargetSet>)?.sorted(by: { $0._priority < $1._priority} ) else {
-            throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
-        }
-        
-        guard let sd = self.startDate,
-              let ed = self.endDate,
-              var dateCounter = SaveFormatter.storedStringToDate(sd),
-              let endDate = SaveFormatter.storedStringToDate(ed) else {
+        let sortedTargetSets = (try self._targetSets).sorted(by: { $0._priority < $1._priority} )
+        guard var dateCounter = try self._startDate,
+              let endDate = try self._endDate else {
             throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
         }
         
