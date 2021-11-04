@@ -1,6 +1,6 @@
 # Business Rules
 This document specifies business rules that govern how Mintee stores data in persistent store. These business rules serve to both highlight business restrictions and centralize practices about how stored data represents different user scenarios.  
-All business rules are [verified](../pull_request_template.md#business-rule-validation) after every test.
+All business rules are [verified](../pull_request_template.md#business-rule-validation) after every test.  
 __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 
 1. [Model objects](#model-objects)
@@ -22,13 +22,12 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | BR code | Entity | Rule |
 |-|-|-|
 | ANL-1 | Analysis | An Analysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
-| ANL-2 | Analysis | An Analysis' __startDate__ and __endDate__ are either: <ul> <li/> both non-nil OR <li/> both nil </ul> |
-| ANL-3 | Analysis | If an Analysis' __startDate__ and __endDate__ are both non-nil, then its __dateRange__ is `0`. |
-| ANL-4 | Analysis | If an Analysis' __startDate__ and __endDate__ are both nil, then its __dateRange__ is greater than `0`. |
 | ANL-5 | Analysis | An Analysis' __order__ is either: <ul> <li/> `-1` OR <li/> A unique number greater than or equal to `0` </ul>|
 | ANL-6 | Analysis | An Analysis' __name__ is unique. |
 | ANL-7 | Analysis | An Analysis' __legend__ is non-nil. |
-| ANL-8 | Analysis | If an Analysis' __startDate__ and __endDate__ are both non-nil, then its __endDate__ is later than or equal to __startDate__. |
+| ANL-9 | Analysis | An Analysis' __rangeType__ can only be one of the following values: <ul> <li/> `Start/End` <li/> `Ranged` </ul> |
+| ANL-11 | Analysis | If an Analysis' __rangeType__ is `Ranged`, then its __dateRange__ is greater than `0`. |
+| ANL-12 | Analysis | If an Analysis' __rangeType__ is `Start/End`, then its __endDate__ is later than or equal to __startDate__. |
 
 ## Tag
 | BR code | Entity | Rule |
@@ -45,8 +44,6 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 | TASK-5 | Task | A Task's __name__ is unique. |
 | TASK-6 | Task | If a Task's __taskType__ is `Recurring`, then its __endDate__ is later than or equal to __startDate__. |
 | TASK-7 | Task | A Task is associated with one and only one TaskSummaryAnalysis. |
-| TASK-8 | Task | If a Task's __taskType__ is `Specific`, then its __startDate__ and __endDate__ are nil. |
-| TASK-9 | Task | If a Task's __taskType__ is `Specific`, then its __targetSets__ is empty. |
 
 ## TaskInstance
 | BR code | Entity | Rule |
@@ -60,13 +57,13 @@ __Note:__ In this document, fields are __bolded__ and values are `backticked`.
 ## TaskSummaryAnalysis
 | BR code | Entity | Rule |
 |-|-|-|
-| TSA-1 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
+<!-- | TSA-1 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __analysisType__ can only be one of the following values: <ul> <li/> `Box` <li/> `Line` </ul> |
 | TSA-2 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __startDate__ and __endDate__ are either: <ul> <li/> both non-nil OR <li/> both nil </ul> |
 | TSA-3 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __dateRange__ is `0`. |
 | TSA-4 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both nil, then its __dateRange__ is greater than `0`. |
 | TSA-5 | TaskSummaryAnalysis | A TaskSummaryAnalysis is associated with one and only one Task. |
 | TSA-7 | TaskSummaryAnalysis | A TaskSummaryAnalysis' __legend__ is non-nil. |
-| TSA-8 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __endDate__ is later than or equal to __startDate__. |
+| TSA-8 | TaskSummaryAnalysis | If a TaskSummaryAnalysis' __startDate__ and __endDate__ are both non-nil, then its __endDate__ is later than or equal to __startDate__. | -->
 
 ## TaskTargetSet
 | BR code | Entity | Rule |

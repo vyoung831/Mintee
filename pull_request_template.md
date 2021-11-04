@@ -46,11 +46,19 @@ More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nss
 - [ ] Where appropriate, Views post to NotificationCenter to alert the user of an error.
 - [ ] Where appropriate, Views display an error graphic to inform the user of an error.
 
+### Model data access and validation
+- [ ] `NSManagedObject` subclasses declare all `@NSManaged` attributes and relationships as private and provide getters.
+- [ ] Where appropriate, getters validate [business rules](#business-rules) when accessing backing vars and throw if business rules are violated.
+- [ ] If business rules aren't violated, getters return the following values:
+    - __Non-optionals__ for vars that are never nil.
+    - __Optionals__ for vars that are may be nil.
+    - __An empty set__ for relationships (to-one or to-many) if the backing `Set` is nil.
+- [ ] Private properties in `NSManagedObject` subclasses are __only__ accessed by the class' getters and `mergeDebugDictionary` helper functions.
+
 ## [Business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 Related: [AUT data validation](#business-rule-validation)
-- [ ] Changes to business rules include appropriate updates to:
-    - NSManagedObject vars
-    - NSManagedObject APIs, including getters
+- [ ] Where appropriate, business rules are [validated](#model-data-access-and-validation) within getters.
+- [ ] Changes to business rules include appropriate updates to NSManagedObject getters and helper functions.
 - [ ] Changes to any of the following include appropriate updates to business rules:
     - The data model
     - NSManagedObject subclasses

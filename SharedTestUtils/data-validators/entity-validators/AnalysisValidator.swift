@@ -3,6 +3,14 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
+//  ANL-1: An Analysis' analysisType can only be one of the following values:
+//      * `Box`
+//      * `Line`
+//  (validated by getters)
+//  ANL-9: An Analysis' rangeType can only be one of the following values:
+//      * `Start/End`
+//      * `Ranged`
+//  (validated by getters)
 //  ANL-5: An Analysis' order is either:
 //      * `-1` OR
 //      * A unique number greater than or equal to `0`
@@ -21,8 +29,8 @@ import XCTest
 class AnalysisValidator {
     
     static var validators: [(Analysis) -> ()] = [
-        AnalysisValidator.validateAnalysisType,
-        AnalysisValidator.validateAnalysisDateValues,
+        AnalysisValidator.validate_dateRange,
+        AnalysisValidator.validate_startAndEndDates,
         AnalysisValidator.validateLegend
     ]
     
@@ -35,30 +43,20 @@ class AnalysisValidator {
     }
     
     /**
-     ANL-1: An Analysis' analysisType can only be one of the following values:
-     - `Box`
-     - `Line`
+     ANL-11: If an Analysis' rangeType is `Ranged`, then its dateRange is greater than `0`..
      */
-    static var validateAnalysisType: (Analysis) -> () = { analysis in
-        XCTAssert(analysis._analysisType == .box || analysis._analysisType == .line)
+    static var validate_dateRange: (Analysis) -> () = { analysis in
+        if analysis._rangeType == .dateRange {
+            XCTAssert(analysis._dateRange > 0)
+        }
     }
     
     /**
-     ANL-2: An Analysis' startDate and endDate are either:
-     - both non-nil OR
-     - both nil
-     ANL-3: If an Analysis' startDate and endDate are both non-nil, then its dateRange is `0`.
-     ANL-4: If an Analysis' startDate and endDate are both nil, then its dateRange is greater than `0`.
-     ANL-8: If an Analysis' startDate and endDate are both non-nil, then its endDate is later than or equal to startDate.
+     ANL-12: If an Analysis' rangeType is `Start/End`, then its endDate is later than or equal to startDate.
      */
-    static var validateAnalysisDateValues: (Analysis) -> () = { analysis in
-        if analysis._startDate == nil && analysis._endDate == nil {
-            XCTAssert(analysis._dateRange > 0) // ANL-4
-        } else if analysis._startDate != nil && analysis._endDate != nil {
-            XCTAssert(analysis._dateRange == 0) // ANL-3
-            XCTAssert(analysis._startDate!.lessThanOrEqualToDate(analysis._endDate!)) // ANL-8
-        } else {
-            XCTFail() // ANL-2
+    static var validate_startAndEndDates: (Analysis) -> () = { analysis in
+        if analysis._rangeType == .startEnd {
+            XCTAssert(analysis._startDate!.lessThanOrEqualToDate(analysis._endDate!))
         }
     }
     

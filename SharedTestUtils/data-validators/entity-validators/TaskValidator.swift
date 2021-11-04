@@ -3,6 +3,10 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
+//  TASK-1: A Task's taskType can only be one of the following values:
+//      * `Recurring`
+//      * `Specific`
+//  (validated by getters)
 //  - TASK-5: A Task's name is unique. (validated by MOC_Validator)
 //  - TASK-7: A Task is associated with one and only one TaskSummaryAnalysis. (defined as non-optional in NSManagedObject subclass)
 //
@@ -17,7 +21,6 @@ import XCTest
 class TaskValidator {
     
     static var validators: [(Task) -> ()] = [
-        TaskValidator.validateTaskType,
         TaskValidator.validateRecurringTask,
         TaskValidator.validateSpecificTask,
         TaskValidator.validateUniqueTaskInstanceDates,
@@ -30,15 +33,6 @@ class TaskValidator {
                 validator(task)
             }
         }
-    }
-    
-    /**
-     TASK-1: A Task's taskType can only be one of the following values:
-     - `Recurring`
-     - `Specific`
-     */
-    static var validateTaskType: (Task) -> () = { task in
-        XCTAssert(task._taskType == .recurring || task._taskType == .specific)
     }
     
     /**
@@ -66,8 +60,6 @@ class TaskValidator {
     
     /**
      TASK-4: If a Task's taskType is `Specific`, then its instances contains at least one TaskInstance.
-     TASK-8: If a Task's taskType is `Specific`, then its startDate and endDate are nil.
-     TASK-9: If a Task's taskType is `Specific`, then its targetSets is empty.
      TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
      */
     static var validateSpecificTask: (Task) -> () = { task in
@@ -76,13 +68,6 @@ class TaskValidator {
             
             // TASK-4
             XCTAssert(task._instances!.count > 0)
-            
-            // TASK-8
-            XCTAssert(task._startDate == nil)
-            XCTAssert(task._endDate == nil)
-            
-            // TASK-9
-            XCTAssert(task._targetSets!.count == 0)
             
             // TI-3
             if let instances = task._instances {
