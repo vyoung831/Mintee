@@ -280,8 +280,11 @@ extension EditAnalysis {
     private static func extractCategorizedPreviews(_ analysis: Analysis) -> [CategorizedLegendEntryPreview]? {
         var previews: [CategorizedLegendEntryPreview] = []
         for categorizedEntry in analysis._legend.categorizedEntries {
-            guard let color = categorizedEntry._color else { return nil }
-            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry._category))
+            do {
+                previews.append(CategorizedLegendEntryPreview(color: Color(try categorizedEntry._color), category: categorizedEntry._category))
+            } catch {
+                return nil
+            }
         }
         return previews
     }

@@ -105,12 +105,11 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     private var category: Category
     
     var _category: Category { get { return self.category } }
-    var _color: UIColor? {
-        get {
+    var _color: UIColor {
+        get throws {
             guard let castColor = UIColor(hex: self.color) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
                                                     ["color": self.color])
-                return nil
             }
             return castColor
         }
@@ -191,34 +190,31 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
     var _min: Float { get { return self.min } }
     var _max: Float { get { return self.max } }
     
-    var _color: UIColor? {
-        get {
+    var _color: UIColor {
+        get throws {
             guard let castColor = UIColor(hex: self.color) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    ["color": self.color])
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["color": self.color])
             }
             return castColor
         }
     }
     
-    var _minOperator: SaveFormatter.equalityOperator? {
-        get {
+    var _minOperator: SaveFormatter.equalityOperator {
+        get throws {
             guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    ["minOperator": self.minOperator])
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["minOperator": self.minOperator])
             }
             return minOp
         }
     }
     
-    var _maxOperator: SaveFormatter.equalityOperator? {
-        get {
+    var _maxOperator: SaveFormatter.equalityOperator {
+        get throws {
             guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
-                let _ = ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    ["maxOperator": self.maxOperator])
-                return nil
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["maxOperator": self.maxOperator])
             }
             return maxOp
         }
