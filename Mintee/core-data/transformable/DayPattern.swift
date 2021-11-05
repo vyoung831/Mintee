@@ -19,34 +19,87 @@ class DayPattern: NSObject, NSSecureCoding {
         case type = "Type"
     }
     
-    static var supportsSecureCoding: Bool = true
-    
     enum patternType: Int8, CaseIterable {
         case dow = 1
         case wom = 2
         case dom = 3
     }
     
-    var daysOfWeek: Set<SaveFormatter.dayOfWeek>
-    var weeksOfMonth: Set<SaveFormatter.weekOfMonth>
-    var daysOfMonth: Set<SaveFormatter.dayOfMonth>
-    var type: DayPattern.patternType
+    static var supportsSecureCoding: Bool = true
+    private var daysOfWeek: Set<Int16>
+    private var weeksOfMonth: Set<Int16>
+    private var daysOfMonth: Set<Int16>
+    private var type: Int8
+    
+    var _type: DayPattern.patternType {
+        get throws {
+            guard let castType = DayPattern.patternType.init(rawValue: self.type) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["type": self.type])
+            }
+            return castType
+        }
+    }
+    
+    var _daysOfWeek: Set<SaveFormatter.dayOfWeek> {
+        get throws {
+            var castDow: Set<SaveFormatter.dayOfWeek> = Set()
+            for dow in self.daysOfWeek {
+                guard let decodedDow = SaveFormatter.dayOfWeek.init(rawValue: dow) else {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                      ["daysOfWeek": self.daysOfWeek])
+                }
+                castDow.insert(decodedDow)
+            }
+            return castDow
+        }
+    }
+    
+    var _weeksOfMonth: Set<SaveFormatter.weekOfMonth> {
+        get throws {
+            var castWom: Set<SaveFormatter.weekOfMonth> = Set()
+            for wom in self.weeksOfMonth {
+                guard let decodedWom = SaveFormatter.weekOfMonth.init(rawValue: wom) else {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                      ["weeksOfMonth": self.weeksOfMonth])
+                }
+                castWom.insert(decodedWom)
+            }
+            return castWom
+        }
+    }
+    
+    var _daysOfMonth: Set<SaveFormatter.dayOfMonth> {
+        get throws {
+            var castDom: Set<SaveFormatter.dayOfMonth> = Set()
+            for dom in self.daysOfMonth {
+                guard let decodedDom = SaveFormatter.dayOfMonth.init(rawValue: dom) else {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                      ["daysOfMonth": self.daysOfMonth])
+                }
+                castDom.insert(decodedDom)
+            }
+            return castDom
+        }
+    }
     
     init(dow: Set<SaveFormatter.dayOfWeek>, wom: Set<SaveFormatter.weekOfMonth>, dom: Set<SaveFormatter.dayOfMonth>) {
-        self.daysOfWeek = dow
-        self.weeksOfMonth = wom
-        self.daysOfMonth = dom
-        if dom.count > 0 { self.type = .dom } else {
-            if wom.count > 0 { self.type = .wom }
-            else { self.type = .dow }
+        self.daysOfWeek = Set(dow.map{$0.rawValue})
+        self.weeksOfMonth = Set(wom.map{$0.rawValue})
+        self.daysOfMonth = Set(dom.map{$0.rawValue})
+        if dom.count > 0 {
+            self.type = DayPattern.patternType.dom.rawValue
+        } else {
+            if wom.count > 0 { self.type = DayPattern.patternType.wom.rawValue }
+            else { self.type = DayPattern.patternType.dow.rawValue }
         }
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(NSSet(set: Set(self.daysOfWeek.map{ $0.rawValue })), forKey: DayPattern.Keys.daysOfWeek.rawValue)
-        coder.encode(NSSet(set: Set(self.weeksOfMonth.map{ $0.rawValue })), forKey: DayPattern.Keys.weeksOfMonth.rawValue)
-        coder.encode(NSSet(set: Set(self.daysOfMonth.map{ $0.rawValue })), forKey: DayPattern.Keys.daysOfMonth.rawValue)
-        coder.encode(NSNumber(value: self.type.rawValue), forKey: DayPattern.Keys.type.rawValue)
+        coder.encode(NSSet(set: self.daysOfWeek), forKey: DayPattern.Keys.daysOfWeek.rawValue)
+        coder.encode(NSSet(set: self.weeksOfMonth), forKey: DayPattern.Keys.weeksOfMonth.rawValue)
+        coder.encode(NSSet(set: self.daysOfMonth), forKey: DayPattern.Keys.daysOfMonth.rawValue)
+        coder.encode(NSNumber(value: self.type), forKey: DayPattern.Keys.type.rawValue)
     }
     
     required init?(coder decoder: NSCoder) {
@@ -64,38 +117,10 @@ class DayPattern: NSObject, NSSecureCoding {
                   return nil
               }
         
-        // Exit if the decoded type cannot be converted back into an enum value of type DayPattern.patternType
-        guard let type = patternType(rawValue: typeValue) else {
-            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["decoded value" : typeValue])
-            return nil
-        }
-        
-        var finalDow: Set<SaveFormatter.dayOfWeek> = Set()
-        var finalWom: Set<SaveFormatter.weekOfMonth> = Set()
-        var finalDom: Set<SaveFormatter.dayOfMonth> = Set()
-        for dayOfWeek in dow {
-            guard let decodedDow = SaveFormatter.dayOfWeek.init(rawValue: dayOfWeek) else {
-                let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["dayOfWeek": dayOfWeek]); return nil
-            }
-            finalDow.insert(decodedDow)
-        }
-        for weekOfMonth in wom {
-            guard let decodedWom = SaveFormatter.weekOfMonth.init(rawValue: weekOfMonth) else {
-                let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["weekOfMonth": weekOfMonth]); return nil
-            }
-            finalWom.insert(decodedWom)
-        }
-        for dayOfMonth in dom {
-            guard let decodedDom = SaveFormatter.dayOfMonth.init(rawValue: dayOfMonth) else {
-                let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["dayOfMonth": dayOfMonth]); return nil
-            }
-            finalDom.insert(decodedDom)
-        }
-        
-        self.type = type
-        self.daysOfWeek = finalDow
-        self.weeksOfMonth = finalWom
-        self.daysOfMonth = finalDom
+        self.type = typeValue
+        self.daysOfWeek = dow
+        self.weeksOfMonth = wom
+        self.daysOfMonth = dom
         super.init()
     }
     
@@ -105,31 +130,19 @@ class DayPattern: NSObject, NSSecureCoding {
 
 extension DayPattern {
     
-    func check_dayOfWeek(_ date: Date) throws -> Bool {
+    func check_dayOfWeek(_ date: Date) -> Bool {
         let dowComponent = Int16(Calendar.current.component(.weekday, from: date))
-        guard let dow = SaveFormatter.dayOfWeek.init(rawValue: dowComponent) else {
-            throw ErrorManager.recordNonFatal(.dateOperationFailed,
-                                              ["dowComponent": dowComponent])
-        }
-        return self.daysOfWeek.contains(dow)
+        return self.daysOfWeek.contains(dowComponent)
     }
     
-    func check_weekOfMonth(_ date: Date,_ weekOfMonth: Int16? = nil) throws -> Bool {
+    func check_weekOfMonth(_ date: Date,_ weekOfMonth: Int16? = nil) -> Bool {
         let womComponent = weekOfMonth ?? Int16(Calendar.current.component(.weekOfMonth, from: date))
-        guard let wom = SaveFormatter.weekOfMonth.init(rawValue: womComponent) else {
-            throw ErrorManager.recordNonFatal(.dateOperationFailed,
-                                              ["womComponent": womComponent])
-        }
-        return self.weeksOfMonth.contains(wom)
+        return self.weeksOfMonth.contains(womComponent)
     }
     
-    func check_dayOfMonth(_ date: Date) throws -> Bool {
+    func check_dayOfMonth(_ date: Date) -> Bool {
         let domComponent = Int16(Calendar.current.component(.day, from: date))
-        guard let dom = SaveFormatter.dayOfMonth.init(rawValue: domComponent) else {
-            throw ErrorManager.recordNonFatal(.dateOperationFailed,
-                                              ["domComponent": domComponent])
-        }
-        return self.daysOfMonth.contains(dom)
+        return self.daysOfMonth.contains(domComponent)
     }
     
 }

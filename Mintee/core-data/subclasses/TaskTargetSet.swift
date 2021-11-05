@@ -192,23 +192,23 @@ extension TaskTargetSet {
             throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
         }
         
-        switch pattern.type {
+        switch try pattern._type {
         case .dow:
-            return pattern.daysOfWeek.contains(dow)
+            return try pattern._daysOfWeek.contains(dow)
         case .wom:
-            if pattern.weeksOfMonth.contains(.last) {
-                return pattern.daysOfWeek.contains(dow) &&
-                    (pattern.weeksOfMonth.contains(lastWom) || day + 7 > daysInMonth)
+            if try pattern._weeksOfMonth.contains(.last) {
+                return try pattern._daysOfWeek.contains(dow) &&
+                    (try pattern._weeksOfMonth.contains(lastWom) || day + 7 > daysInMonth)
             }
-            return pattern.daysOfWeek.contains(dow) &&
-                (pattern.weeksOfMonth.contains(lastWom))
+            return try pattern._daysOfWeek.contains(dow) &&
+                (try pattern._weeksOfMonth.contains(lastWom))
         case .dom:
             /*
              The following conditions are checked:
              - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
              - The DayPattern's selected days of month contains `.last` and dateCounter is the last day of the month
              */
-            return pattern.daysOfMonth.contains(dom) || ( pattern.daysOfMonth.contains(.last) && day == daysInMonth)
+            return try pattern._daysOfMonth.contains(dom) || ( try pattern._daysOfMonth.contains(.last) && day == daysInMonth)
         }
         
     }

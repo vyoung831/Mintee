@@ -344,9 +344,9 @@ extension Task {
              If one of the DayPatterns intersects with dateCounter's current Date, this Date is ignored and the next Date is checked, since the TaskInstance would be created or carried over.
              */
             for pattern in dayPatterns {
-                switch pattern.type {
+                switch try pattern._type {
                 case .dow:
-                    matched = try pattern.check_dayOfWeek(dateCounter)
+                    matched = pattern.check_dayOfWeek(dateCounter)
                     break
                 case .wom:
                     let day = Int16(Calendar.current.component(.day, from: dateCounter))
@@ -356,10 +356,10 @@ extension Task {
                         throw ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
                     }
                     
-                    if try pattern.check_dayOfWeek(dateCounter) {
-                        if try pattern.check_weekOfMonth(dateCounter, Int16(ceil(Float(day)/7))) {
+                    if pattern.check_dayOfWeek(dateCounter) {
+                        if pattern.check_weekOfMonth(dateCounter, Int16(ceil(Float(day)/7))) {
                             matched = true
-                        } else if pattern.weeksOfMonth.contains(.last) {
+                        } else if try pattern._weeksOfMonth.contains(.last) {
                             if day + 7 > daysInMonth.count { matched = true }
                         }
                     }
@@ -370,9 +370,9 @@ extension Task {
                      - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
                      - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
                      */
-                    if try pattern.check_dayOfMonth(dateCounter) {
+                    if pattern.check_dayOfMonth(dateCounter) {
                         matched = true
-                    } else if pattern.daysOfMonth.contains(.last) && Calendar.current.component(.day, from: dateCounter) == Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count {
+                    } else if try pattern._daysOfMonth.contains(.last) && Calendar.current.component(.day, from: dateCounter) == Calendar.current.range(of: .day, in: .month, for: dateCounter)?.count {
                         matched = true
                     }
                     break

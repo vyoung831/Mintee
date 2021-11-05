@@ -281,7 +281,9 @@ extension EditAnalysis {
         var previews: [CategorizedLegendEntryPreview] = []
         for categorizedEntry in analysis._legend.categorizedEntries {
             do {
-                previews.append(CategorizedLegendEntryPreview(color: Color(try categorizedEntry._color), category: categorizedEntry._category))
+                previews.append(
+                    CategorizedLegendEntryPreview(color: Color(try categorizedEntry._color),
+                                                  category: try categorizedEntry._category))
             } catch {
                 return nil
             }

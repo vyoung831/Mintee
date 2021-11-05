@@ -13,10 +13,6 @@ import UIKit
 
 class AnalysisLegend: NSObject, NSSecureCoding {
     
-    static var supportsSecureCoding: Bool = true
-    var categorizedEntries: Set<CategorizedLegendEntry>
-    var completionEntries: Set<CompletionLegendEntry>
-    
     enum Keys: String {
         case categorizedEntries = "categorizedEntries"
         case completionEntries = "completionEntries"
@@ -26,6 +22,10 @@ class AnalysisLegend: NSObject, NSSecureCoding {
         case categorized = 1
         case completion = 2
     }
+    
+    static var supportsSecureCoding: Bool = true
+    var categorizedEntries: Set<CategorizedLegendEntry>
+    var completionEntries: Set<CompletionLegendEntry>
     
     init(categorizedEntries: Set<CategorizedLegendEntry>, completionEntries: Set<CompletionLegendEntry>) {
         self.categorizedEntries = categorizedEntries
@@ -38,7 +38,6 @@ class AnalysisLegend: NSObject, NSSecureCoding {
     }
     
     required init?(coder decoder: NSCoder) {
-        
         guard let categorizedLegendEntries = decoder.decodeObject(of: [NSSet.self, CategorizedLegendEntry.self], forKey: AnalysisLegend.Keys.categorizedEntries.rawValue ) as? Set<CategorizedLegendEntry>,
               let completionLegendEntries = decoder.decodeObject(of: [NSSet.self, CompletionLegendEntry.self], forKey: AnalysisLegend.Keys.completionEntries.rawValue ) as? Set<CompletionLegendEntry> else {
                   let userInfo: [String : Any] = [AnalysisLegend.Keys.categorizedEntries.rawValue:
@@ -50,7 +49,6 @@ class AnalysisLegend: NSObject, NSSecureCoding {
               }
         self.categorizedEntries = categorizedLegendEntries
         self.completionEntries = completionLegendEntries
-        
     }
     
     /**
@@ -100,21 +98,6 @@ final class AnalysisLegendTransformer: NSSecureUnarchiveFromDataTransformer {
 
 class CategorizedLegendEntry: NSObject, NSSecureCoding {
     
-    static var supportsSecureCoding: Bool = true
-    private var color: String
-    private var category: Category
-    
-    var _category: Category { get { return self.category } }
-    var _color: UIColor {
-        get throws {
-            guard let castColor = UIColor(hex: self.color) else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                    ["color": self.color])
-            }
-            return castColor
-        }
-    }
-    
     enum Category: Int16 {
         case reachedTarget = 1
         case underTarget = 2
@@ -126,42 +109,56 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
         case color = "color"
     }
     
+    static var supportsSecureCoding: Bool = true
+    private var color: String
+    private var category: Int16
+    
+    var _color: UIColor {
+        get throws {
+            guard let castColor = UIColor(hex: self.color) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    ["color": self.color])
+            }
+            return castColor
+        }
+    }
+    
+    var _category: Category {
+        get throws {
+            guard let cat = CategorizedLegendEntry.Category.init(rawValue: self.category) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["category": self.category])
+            }
+            return cat
+        }
+    }
+    
     init(category: Category, color: UIColor) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
                                               ["color": color.debugDescription])
         }
-        self.category = category
+        self.category = category.rawValue
         self.color = hexStringColor
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(NSNumber(value: self.category.rawValue), forKey: CategorizedLegendEntry.Keys.category.rawValue)
+        coder.encode(NSNumber(value: self.category), forKey: CategorizedLegendEntry.Keys.category.rawValue)
         coder.encode(self.color as NSString, forKey: CategorizedLegendEntry.Keys.color.rawValue)
     }
     
     required init?(coder: NSCoder) {
-        
         guard let category = coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue) as? Int16,
               let color = coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue) as String? else {
-            
             let userInfo: [String : Any] = [CategorizedLegendEntry.Keys.category.rawValue:
                                                 coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
                                             CategorizedLegendEntry.Keys.color.rawValue:
                                                 coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
             let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
             return nil
-            
         }
-        
-        guard let cat = Category.init(rawValue: category) else {
-            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, ["category": category])
-            return nil
-        }
-        
-        self.category = cat
+        self.category = category
         self.color = color
-        
     }
     
     /**
@@ -179,6 +176,14 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
 // MARK: - CompletionLegendEntry
 
 class CompletionLegendEntry: NSObject, NSSecureCoding {
+    
+    enum Keys: String {
+        case color = "color"
+        case min = "min"
+        case max = "max"
+        case minOperator = "minOperator"
+        case maxOperator = "maxOperator"
+    }
     
     static var supportsSecureCoding: Bool = true
     private var color: String
@@ -220,14 +225,6 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         }
     }
     
-    enum Keys: String {
-        case color = "color"
-        case min = "min"
-        case max = "max"
-        case minOperator = "minOperator"
-        case maxOperator = "maxOperator"
-    }
-    
     init(color: UIColor, min: Float, max: Float, minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, ["color": color.debugDescription])
@@ -248,7 +245,6 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
     }
     
     required init?(coder: NSCoder) {
-        
         guard let color = coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue) as String?,
               let min = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.min.rawValue) as? Float,
               let max = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.max.rawValue) as? Float,
@@ -267,13 +263,11 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
                   let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
                   return nil
               }
-        
         self.color = color
         self.min = min
         self.max = max
         self.minOperator = minOp
         self.maxOperator = maxOp
-        
     }
     
     /**

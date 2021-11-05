@@ -370,14 +370,14 @@ extension EditTask {
     static func extractTTSVArray(_ task: Task) throws -> [TaskTargetSetView]? {
         let sets = try task._targetSets.sorted(by: {$0._priority < $1._priority})
         return try sets.map({
-            TaskTargetSetView(type: $0._pattern.type,
+            TaskTargetSetView(type: try $0._pattern._type,
                               minTarget: $0._min,
                               minOperator: try $0._minOperator,
                               maxTarget: $0._max,
                               maxOperator: try $0._maxOperator,
-                              selectedDaysOfWeek: $0._pattern.daysOfWeek,
-                              selectedWeeksOfMonth: $0._pattern.weeksOfMonth,
-                              selectedDaysOfMonth: $0._pattern.daysOfMonth)
+                              selectedDaysOfWeek: try $0._pattern._daysOfWeek,
+                              selectedWeeksOfMonth: try $0._pattern._weeksOfMonth,
+                              selectedDaysOfMonth: try $0._pattern._daysOfMonth)
         })
     }
     

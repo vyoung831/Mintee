@@ -21,6 +21,15 @@ Check off boxes that are true or not applicable
     - Views only use helper functions from NSManagedObject subclass and CDCoordinator when updating and saving the model.
     - Views do not directly save or rollback any MOCs.
 
+### Model components
+- [ ] `NSManagedObject` subclasses declare all `@NSManaged` attributes and relationships as private and provide getters.
+- [ ] Where appropriate, getters validate [business rules](#business-rules) when accessing backing vars and [throw](#separation-of-error-reporting-responsibilities) if business rules are violated.
+- [ ] If business rules aren't violated, getters return the following values:
+    - __Non-optionals__ for vars that are never nil.
+    - __Optionals__ for vars that may be nil.
+    - __An empty set__ for relationships (to-one or to-many) if the backing `Set` is nil.
+- [ ] Private properties in `NSManagedObject` subclasses are __only__ accessed by the class' getters and `mergeDebugDictionary` helper functions.
+
 ### Transformables
 More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nssecurecoding-and-transformable-properties-in-core-data.html).  
 - [ ] __Security:__ For new/updated Transformables, the following are true for the custom classes that back it:
@@ -46,14 +55,8 @@ More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nss
 - [ ] Where appropriate, Views post to NotificationCenter to alert the user of an error.
 - [ ] Where appropriate, Views display an error graphic to inform the user of an error.
 
-### Model data access and validation
-- [ ] `NSManagedObject` subclasses declare all `@NSManaged` attributes and relationships as private and provide getters.
-- [ ] Where appropriate, getters validate [business rules](#business-rules) when accessing backing vars and throw if business rules are violated.
-- [ ] If business rules aren't violated, getters return the following values:
-    - __Non-optionals__ for vars that are never nil.
-    - __Optionals__ for vars that are may be nil.
-    - __An empty set__ for relationships (to-one or to-many) if the backing `Set` is nil.
-- [ ] Private properties in `NSManagedObject` subclasses are __only__ accessed by the class' getters and `mergeDebugDictionary` helper functions.
+### Transformables
+- [ ] For custom classes used as transformables, initializers only fail and return nil if problems occur while decoding properties.
 
 ## [Business rules](https://github.com/vyoung831/Mintee/blob/master/doc/business-rules.md)
 Related: [AUT data validation](#business-rule-validation)
