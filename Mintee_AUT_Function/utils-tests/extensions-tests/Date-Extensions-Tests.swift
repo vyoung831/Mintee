@@ -203,49 +203,49 @@ class Date_Extension_Tests: XCTestCase {
     func test_daysToDate_oneDay_exact() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 0, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 0, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == 1)
+        XCTAssert(try startDate.daysToDate(endDate) == 1)
     }
     
     func test_daysToDate_oneDay_lessThan24Hours() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 23, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 1, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == 1)
+        XCTAssert(try startDate.daysToDate(endDate) == 1)
     }
     
     func test_daysToDate_oneDay_greaterThan24Hours() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 12, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 13, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == 1)
+        XCTAssert(try startDate.daysToDate(endDate) == 1)
     }
     
     func test_daysToDate_twoDays_lessThan48Hours() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 23, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 17, hour: 1, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == 2)
+        XCTAssert(try startDate.daysToDate(endDate) == 2)
     }
     
     func test_daysToDate_oneDayBack_exact() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 0, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 0, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == -1)
+        XCTAssert(try startDate.daysToDate(endDate) == -1)
     }
     
     func test_daysToDate_oneDayBack_lessThan24Hours() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 1, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 23, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == -1)
+        XCTAssert(try startDate.daysToDate(endDate) == -1)
     }
     
     func test_daysToDate_oneDayBack_greaterThan24Hours() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 13, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 15, hour: 12, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == -1)
+        XCTAssert(try startDate.daysToDate(endDate) == -1)
     }
     
     func test_daysToDate_twoDaysBack_lessThan48Hours() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 16, hour: 1, minute: 0, second: 0))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 1, day: 14, hour: 23, minute: 0, second: 0))!
-        XCTAssert(startDate.daysToDate(endDate) == -2)
+        XCTAssert(try startDate.daysToDate(endDate) == -2)
     }
     
 }

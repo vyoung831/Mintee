@@ -52,7 +52,7 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateSpecificInstances_confirmTaskType() throws {
         try task.updateSpecificInstances(dates: [], CDCoordinator.mainContext)
-        XCTAssert(task._taskType! == .specific)
+        XCTAssert(try task._taskType == .specific)
     }
     
     // MARK: - TaskInstance generation
@@ -68,7 +68,7 @@ extension Task_InstanceHandling_Tests {
         let instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         XCTAssert(instances.count == 3)
         for instance in instances {
-            XCTAssert(dates.contains(SaveFormatter.storedStringToDate(instance._date)!))
+            XCTAssert(dates.contains(try instance._date))
         }
         
     }
@@ -83,12 +83,12 @@ extension Task_InstanceHandling_Tests {
     
     func test_updateRecurringInstances_withoutTargetSets_confirmTaskType() throws {
         try task.updateRecurringInstances(startDate: Date(), endDate: Date(), CDCoordinator.mainContext)
-        XCTAssert(task._taskType! == .recurring)
+        XCTAssert(try task._taskType == .recurring)
     }
     
     func test_updateRecurringInstances_withTargetSets_confirmTaskType() throws {
         try task.updateRecurringInstances(startDate: Date(), endDate: Date(), targetSets: Set<TaskTargetSet>(), CDCoordinator.mainContext)
-        XCTAssert(task._taskType! == .recurring)
+        XCTAssert(try task._taskType == .recurring)
     }
     
     // MARK: - Start or end date updates
@@ -104,16 +104,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                newDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                newWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                newDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -139,16 +139,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                newDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                newWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                newDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -171,16 +171,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                newDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                newWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                newDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -206,16 +206,16 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                newDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                newWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                newDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
@@ -240,9 +240,9 @@ extension Task_InstanceHandling_Tests {
         var expectedDowDates = globalDowDates
         
         for instance in instances {
-            if expectedDowDates.contains(instance._date) {
+            if expectedDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                expectedDowDates.remove(instance._date)
+                expectedDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
             }
         }
         
@@ -262,9 +262,9 @@ extension Task_InstanceHandling_Tests {
         var expectedWomDates = globalWomDates
         
         for instance in instances {
-            if expectedWomDates.contains(instance._date) {
+            if expectedWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                expectedWomDates.remove(instance._date)
+                expectedWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
             }
         }
         
@@ -284,9 +284,9 @@ extension Task_InstanceHandling_Tests {
         var expectedDomDates = globalDomDates
         
         for instance in instances {
-            if expectedDomDates.contains(instance._date) {
+            if expectedDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                expectedDomDates.remove(instance._date)
+                expectedDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
             }
         }
         
@@ -309,13 +309,13 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newWomDates.contains(instance._date) {
+            if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                newWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                newDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -339,13 +339,13 @@ extension Task_InstanceHandling_Tests {
         
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                newDowDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                newDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -369,13 +369,13 @@ extension Task_InstanceHandling_Tests {
         
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                newDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                newWomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -424,19 +424,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if oldDowDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                oldDowDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                oldDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -473,19 +473,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if oldDowDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                oldDowDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                oldDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -522,19 +522,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if oldDowDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                oldDowDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                oldDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -571,19 +571,19 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if oldDowDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                oldDowDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                oldDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -632,25 +632,25 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if oldDowDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                oldDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                oldDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newWomMin) && instance._targetSet!._max == Float(newWomMax))
-                newWomDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDomMin) && instance._targetSet!._max == Float(newDomMax))
-                newDomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -702,25 +702,25 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if oldDowDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(dowMin) && instance._targetSet!._max == Float(dowMax))
-                oldDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                oldDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newWomMin) && instance._targetSet!._max == Float(newWomMax))
-                newWomDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDomMin) && instance._targetSet!._max == Float(newDomMax))
-                newDomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
@@ -773,22 +773,22 @@ extension Task_InstanceHandling_Tests {
         let instancesFetchRequest: NSFetchRequest<TaskInstance> = TaskInstance.fetchRequest()
         var instances = try CDCoordinator.mainContext.fetch(instancesFetchRequest)
         for instance in instances {
-            if newDowDates.contains(instance._date) {
+            if newDowDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDowMin) && instance._targetSet!._max == Float(newDowMax))
-                newDowDates.remove(instance._date)
-            } else if newWomDates.contains(instance._date) {
+                newDowDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newWomMin) && instance._targetSet!._max == Float(newWomMax))
-                newWomDates.remove(instance._date)
-            } else if oldWomDates.contains(instance._date) {
+                newWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldWomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(womMin) && instance._targetSet!._max == Float(womMax))
-                oldWomDates.remove(instance._date)
-            } else if newDomDates.contains(instance._date) {
+                oldWomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if newDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(newDomMin) && instance._targetSet!._max == Float(newDomMax))
-                newDomDates.remove(instance._date)
-            } else if oldDomDates.contains(instance._date) {
+                newDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else if oldDomDates.contains(SaveFormatter.dateToStoredString(try instance._date)) {
                 XCTAssert(instance._targetSet!._min == Float(domMin) && instance._targetSet!._max == Float(domMax))
-                oldDomDates.remove(instance._date)
-            } else { print(instance._date); XCTFail() }
+                oldDomDates.remove(SaveFormatter.dateToStoredString(try instance._date))
+            } else { print(SaveFormatter.dateToStoredString(try instance._date)); XCTFail() }
             CDCoordinator.mainContext.delete(instance)
         }
         
