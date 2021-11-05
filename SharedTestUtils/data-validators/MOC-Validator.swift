@@ -51,7 +51,7 @@ class MOC_Validator {
      * A unique number greater than or equal to 0
      */
     static func validateAnalysesOrdering(_ analyses: Set<Analysis>) {
-        XCTAssert( analyses.map{ $0._order < -1 }.count == 0 )
+        XCTAssert( analyses.filter{ $0._order < -1 }.count == 0 )
         let nonNegativeOrders = analyses.filter{ $0._order >= 0 }.map{ $0._order }
         let duplicates = Dictionary(grouping: nonNegativeOrders, by: {$0}).filter{ $1.count > 1 }.keys
         XCTAssert( duplicates.count == 0)
