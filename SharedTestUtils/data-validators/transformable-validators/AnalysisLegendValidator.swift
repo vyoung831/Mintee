@@ -3,18 +3,9 @@
 //  SharedTestUtils
 //
 //  Business rules NOT checked for by this validator:
-//  * CATLE-1
-//  CMPLE-1: A CompletionLegendEntry's minOperator can only be one of the following values:
-//      * `Less than`
-//      * `Less than or equal to`
-//      * `Equal to`
-//      * `N/A`
-//  (validated by getter)
-//  CMPLE-2: A CompletionLegendEntry's maxOperator can only be one of the following values:
-//      * `Less than`
-//      * `Less than or equal to`
-//      * `N/A`
-//  (validated by getter)
+//  * CATLE-1 (validated by getter)
+//  * CMPLE-1 (validated by getter)
+//  * CMPLE-2 (validated by getter)
 //
 //  Created by Vincent Young on 7/6/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -39,8 +30,8 @@ class AnalysisLegendValidator {
     }
     
     /**
-     ALGND-1: If an AnalysisLegend's categorizedEntries is non-empty, then its completionEntries is empty.
-     ALGND-2: If an AnalysisLegend's completionEntries is non-empty, then its categorizedEntries is empty.
+     ALGND-1
+     ALGND-2
      */
     static var validateLegendEntryCount: (AnalysisLegend) throws -> () = { legend in
         if legend.categorizedEntries.count > 0 {
@@ -67,11 +58,11 @@ extension AnalysisLegendValidator {
 extension AnalysisLegendValidator {
     
     /**
-     CMPLE-3: If a CompletionLegendEntry's maxOperator is `N/A`, then its max is `0`.
-     CMPLE-4: If a CompletionLegendEntry's minOperator is `N/A`, then its min is `0`.
-     CMPLE-5: A CompletionLegendEntry's minOperator and maxOperator cannot both be `N/A`.
-     CMPLE-6: If a CompletionLegendEntry's minOperator is `Equal to`, then its maxOperator is `N/A`.
-     CMPLE-7: If a CompletionLegendEntry's minOperator and maxOperator are both not `N/A`, then its min is less than its max.
+     CMPLE-3
+     CMPLE-4
+     CMPLE-5
+     CMPLE-6
+     CMPLE-7
      */
     static var validate_completionLegendEntries: (AnalysisLegend) throws -> () = { legend in
         

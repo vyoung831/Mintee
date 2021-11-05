@@ -3,7 +3,7 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  - TAG-1: A Tag's name is unique. (validated by MOC_Validator)
+//  * TAG-1 (validated by MOC_Validator)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -28,7 +28,7 @@ class TagValidator {
     }
     
     /**
-     TAG-2: A Tag is associated with at least one Task.
+     TAG-2
      */
     static var validateTagAssociation: (Tag) throws -> () = { tag in
         XCTAssert((try tag._tasks).count >= 1)

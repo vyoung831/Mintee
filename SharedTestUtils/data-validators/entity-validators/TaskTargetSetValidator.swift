@@ -3,20 +3,11 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  TTS-1: A TaskTargetSet's minOperator can only be one of the following values:
-//      * `Less than`
-//      * `Less than or equal to`
-//      * `Equal to`
-//      * `N/A`
-//  (validated by getter)
-//  TTS-2: A TaskTargetSet's maxOperator can only be one of the following values:
-//      * `Less than`
-//      * `Less than or equal to`
-//      * `N/A`
-//  (validated by getter)
-//  TTS-8: A TaskTargetSet is associated with one and only one Task. (defined as non-optional in NSManagedObject subclass)
-//  TTS-9: TaskTargetSets with the same associated Task each have a unique priority. (validated by TaskValidator)
-//  TTS-10: A TaskTargetSet's pattern is non-nil. (defined as non-optional in NSManagedObject subclass)
+//  TTS-1 (validated by getter)
+//  TTS-2 (validated by getter)
+//  TTS-8 (defined as non-optional in NSManagedObject subclass)
+//  TTS-9 (validated by TaskValidator)
+//  TTS-10 (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -42,11 +33,11 @@ class TaskTargetSetValidator {
     }
     
     /**
-     TTS-3: If a TaskTargetSet's maxOperator is `N/A`, then its max is `0`.
-     TTS-4: If a TaskTargetSet's minOperator is `N/A`, then its min is `0`.
-     TTS-5: A TaskTargetSet's minOperator and maxOperator cannot both be `N/A`.
-     TTS-6: If a TaskTargetSet's minOperator is `Equal to`, then its maxOperator is `N/A`.
-     TTS-7: If a TaskTargetSet's minOperator and maxOperator are both not `N/A`, then its min is less than its max.
+     TTS-3
+     TTS-4
+     TTS-5
+     TTS-6
+     TTS-7
      */
     static var validateOperatorsAndValues: (TaskTargetSet) throws -> () = { tts in
         

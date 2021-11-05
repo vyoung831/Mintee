@@ -3,20 +3,11 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  ANL-1: An Analysis' analysisType can only be one of the following values:
-//      * `Box`
-//      * `Line`
-//  (validated by getters)
-//  ANL-9: An Analysis' rangeType can only be one of the following values:
-//      * `Start/End`
-//      * `Ranged`
-//  (validated by getters)
-//  ANL-5: An Analysis' order is either:
-//      * `-1` OR
-//      * A unique number greater than or equal to `0`
-//  (validated by MOC_Validator)
-//  ANL-6: An Analysis' name is unique. (validated by MOC_Validator)
-//  ANL-7: An Analysis' legend is non-nil. (defined as non-optional in NSManagedObject subclass)
+//  ANL-1 (validated by getters)
+//  ANL-9 (validated by getters)
+//  ANL-5 (validated by MOC_Validator)
+//  ANL-6 (validated by MOC_Validator)
+//  ANL-7 (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -43,7 +34,7 @@ class AnalysisValidator {
     }
     
     /**
-     ANL-11: If an Analysis' rangeType is `Ranged`, then its dateRange is greater than `0`..
+     ANL-11
      */
     static var validate_dateRange: (Analysis) throws -> () = { analysis in
         if try analysis._rangeType == .dateRange {
@@ -52,7 +43,7 @@ class AnalysisValidator {
     }
     
     /**
-     ANL-12: If an Analysis' rangeType is `Start/End`, then its endDate is later than or equal to startDate.
+     ANL-12
      */
     static var validate_startAndEndDates: (Analysis) throws -> () = { analysis in
         if try analysis._rangeType == .startEnd {

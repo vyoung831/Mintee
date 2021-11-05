@@ -2,8 +2,10 @@
 //  TaskSummaryAnalysisValidator.swift
 //  Mintee_AUT_Function
 //
-//  TSA-5: A TaskSummaryAnalysis is associated with one and only one Task. (defined as non-optional in NSManagedObject subclass)
-//  TSA-7: A TaskSummaryAnalysis' legend is non-nil. (defined as non-optional in NSManagedObject subclass)
+//  Business rules NOT checked for by this validator:
+//  * TSA-1 (validated by getter)
+//  * TSA-5 (defined as non-optional in NSManagedObject subclass)
+//  * TSA-7 (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -16,7 +18,6 @@ import XCTest
 class TaskSummaryAnalysisValidator {
     
     static var validators: [(TaskSummaryAnalysis) -> ()] = [
-        TaskSummaryAnalysisValidator.validateAnalysisType,
         TaskSummaryAnalysisValidator.validateAnalysisDateValues,
         TaskSummaryAnalysisValidator.validateLegend
     ]
@@ -27,15 +28,6 @@ class TaskSummaryAnalysisValidator {
                 validator(analysis)
             }
         }
-    }
-    
-    /**
-     TSA-1: A TaskSummaryAnalysis' analysisType can only be one of the following values:
-     - `Box`
-     - `Line`
-     */
-    static var validateAnalysisType: (TaskSummaryAnalysis) -> () = { tsa in
-        XCTAssert(tsa._analysisType == 0 || tsa._analysisType == 1)
     }
     
     /**

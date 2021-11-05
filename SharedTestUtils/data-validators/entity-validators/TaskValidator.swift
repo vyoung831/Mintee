@@ -3,12 +3,9 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  TASK-1: A Task's taskType can only be one of the following values:
-//      * `Recurring`
-//      * `Specific`
-//  (validated by getters)
-//  - TASK-5: A Task's name is unique. (validated by MOC_Validator)
-//  - TASK-7: A Task is associated with one and only one TaskSummaryAnalysis. (defined as non-optional in NSManagedObject subclass)
+//  * TASK-1 (validated by getters)
+//  * TASK-5 (validated by MOC_Validator)
+//  * TASK-7 (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 5/18/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -36,9 +33,9 @@ class TaskValidator {
     }
     
     /**
-     TASK-3: If a Task's taskType is `Recurring`, then its targetSets contains at least one TaskTargetSet.
-     TASK-6: If a Task's taskType is `Recurring`, then its endDate is later than or equal to startDate.
-     TI-2: If a TaskInstance's associated Task's taskType is `Recurring`, then the TaskInstance is associated with a TaskTargetSet.
+     TASK-3
+     TASK-6
+     TI-2
      */
     static var validateRecurringTask: (Task) throws -> () = { task in
         if try task._taskType == .recurring {
@@ -56,8 +53,8 @@ class TaskValidator {
     }
     
     /**
-     TASK-4: If a Task's taskType is `Specific`, then its instances contains at least one TaskInstance.
-     TI-3: If a TaskInstance's associated Task's taskType is `Specific`, then the TaskInstance is not associated with a TaskTargetSet.
+     TASK-4
+     TI-3
      */
     static var validateSpecificTask: (Task) throws -> () = { task in
         if try task._taskType == .specific {
@@ -72,7 +69,7 @@ class TaskValidator {
     }
     
     /**
-     TI-4: TaskInstances with the same associated Task must each have a unique date. (validated by TaskValidator)
+     TI-4
      */
     static var validateUniqueTaskInstanceDates: (Task) throws -> () = { task in
         let instanceDates = try (try task._instances).map{ try $0._date }
@@ -81,7 +78,7 @@ class TaskValidator {
     }
     
     /**
-     TTS-9: TaskTargetSets with the same associated Task must have each have a unique priority.
+     TTS-9
      */
     static var validateUniqueTTSPriorities: (Task) throws -> () = { task in
         let targetSets = try task._targetSets
