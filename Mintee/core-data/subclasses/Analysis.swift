@@ -15,13 +15,12 @@ public class Analysis: NSManagedObject {
     
     @NSManaged private var name: String
     @NSManaged private var analysisType: Int16
+    @NSManaged private var rangeType: Int16
     @NSManaged private var startDate: String?
     @NSManaged private var endDate: String?
     @NSManaged private var dateRange: Int16
     @NSManaged private var order: Int16
-    @NSManaged private var rangeType: Int16
     @NSManaged private var legend: AnalysisLegend
-    
     @NSManaged private var tags: NSSet?
     
     var _name: String { get { return self.name } set { self.name = newValue } }
@@ -111,7 +110,8 @@ extension Analysis {
 
 extension Analysis {
     
-    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext,
+    convenience init(entity: NSEntityDescription,
+                     insertInto context: NSManagedObjectContext,
                      name: String,
                      type: SaveFormatter.analysisType,
                      startDate: Date,
@@ -126,10 +126,12 @@ extension Analysis {
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         self.legend = legend
         self.order = order
+        self.rangeType = SaveFormatter.analysisRangeType.startEnd.rawValue
         try self.updateTags(tags, context)
     }
     
-    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext,
+    convenience init(entity: NSEntityDescription,
+                     insertInto context: NSManagedObjectContext,
                      name: String,
                      type: SaveFormatter.analysisType,
                      dateRange: Int16,
@@ -142,6 +144,7 @@ extension Analysis {
         self.dateRange = dateRange
         self.legend = legend
         self.order = order
+        self.rangeType = SaveFormatter.analysisRangeType.dateRange.rawValue
         try self.updateTags(tags, context)
     }
     
@@ -154,11 +157,20 @@ extension Analysis {
     /**
      Gathers debug descriptions of this Analysis' legend and tags, and adds them to an existing inout Dictionary.
      - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
-     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
+     - parameter prefix: String to be prepended to keys added to `userInfo`.
      */
     func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
         
-        // Add associated tag names
+        userInfo["\(prefix)name"] = self.name
+        userInfo["\(prefix)analysisType"] = self.analysisType
+        userInfo["\(prefix)rangeType"] = self.rangeType
+        userInfo["\(prefix)startDate"] = self.startDate
+        userInfo["\(prefix)endDate"] = self.endDate
+        userInfo["\(prefix)dateRange"] = self.dateRange
+        userInfo["\(prefix)order"] = self.order
+        
+        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
+        
         if let tagsArray = self.tags?.sortedArray(using: []) as? [Tag] {
             var tagsIndex = 0
             for unwrappedTag in tagsArray {
@@ -167,44 +179,29 @@ extension Analysis {
             }
         }
         
-        // Add AnalysisLegend debug info
-        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
-        
     }
     
     /**
      Gathers debug descriptions of this Analysis' into a dictionary.
+     - parameter prefix: String to be prepended to keys added to `userInfo`.
      - returns: Dictionary containing debug descriptions of this Analysis and its legend.
      */
-    func mergeDebugDictionary() -> [String: Any] {
-        
+    func mergeDebugDictionary(prefix: String = "") -> [String: Any] {
         var userInfo: [String: Any] = [:]
-        
-        // Add associated tag names
-        if let tagsArray = self.tags?.sortedArray(using: []) as? [Tag] {
-            var tagsIndex = 0
-            for unwrappedTag in tagsArray {
-                userInfo["tags[\(tagsIndex)]"] = unwrappedTag._name
-                tagsIndex += 1
-            }
-        }
-        
-        // Add AnalysisLegend debug info
-        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "legend.")
+        self.mergeDebugDictionary(userInfo: &userInfo, prefix: prefix)
         return userInfo
-        
     }
     
 }
 
-// MARK: - Tag utility functions
+// MARK: - Tag helper functions
 
 extension Analysis {
     
     /**
      Updates this Analysis' tags relationship to contain only the Tags passed in.
      - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
-     - parameter moc: The MOC to update this perform updates in.
+     - parameter moc: The MOC to perform updates in.
      */
     func updateTags(_ newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
         try self.removeUnrelatedTags(newTagNames: newTagNames)
@@ -213,7 +210,6 @@ extension Analysis {
     
     /**
      Removes Tags that are no longer to be associated with this Analysis.
-     Tags that were already but no longer to be associated with this Analysis are removed.
      - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
      */
     private func removeUnrelatedTags(newTagNames: Set<String>) throws {
@@ -224,7 +220,7 @@ extension Analysis {
     
 }
 
-// MARK: - Ordering utility functions
+// MARK: - Ordering helper functions
 
 extension Analysis {
     
@@ -245,7 +241,7 @@ extension Analysis {
     
 }
 
-// MARK: - Legend update functions
+// MARK: - Legend helper functions
 
 extension Analysis {
     
@@ -301,7 +297,7 @@ extension Analysis {
 extension Analysis {
     
     /**
-     - parameter analysistype: Value of type `SaveFormatter.analysisType` to assign to this Analysis
+     - parameter type: Value of type `SaveFormatter.analysisType` to assign to this Analysis.
      */
     func updateAnalysisType(_ type: SaveFormatter.analysisType) {
         self.analysisType = type.rawValue
