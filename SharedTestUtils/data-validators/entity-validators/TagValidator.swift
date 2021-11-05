@@ -15,14 +15,14 @@ import XCTest
 
 class TagValidator {
     
-    static var validators: [(Tag) -> ()] = [
+    static var validators: [(Tag) throws -> ()] = [
         TagValidator.validateTagAssociation
     ]
     
     static func validateTags(_ tags: Set<Tag>) {
         for tag in tags {
             for validator in TagValidator.validators {
-                validator(tag)
+                try! validator(tag)
             }
         }
     }
@@ -30,8 +30,8 @@ class TagValidator {
     /**
      TAG-2: A Tag is associated with at least one Task.
      */
-    static var validateTagAssociation: (Tag) -> () = { tag in
-        XCTAssert(tag._tasks.count >= 1)
+    static var validateTagAssociation: (Tag) throws -> () = { tag in
+        XCTAssert((try tag._tasks).count >= 1)
     }
     
 }

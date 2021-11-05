@@ -28,7 +28,7 @@ import XCTest
 
 class AnalysisValidator {
     
-    static var validators: [(Analysis) -> ()] = [
+    static var validators: [(Analysis) throws -> ()] = [
         AnalysisValidator.validate_dateRange,
         AnalysisValidator.validate_startAndEndDates,
         AnalysisValidator.validateLegend
@@ -37,7 +37,7 @@ class AnalysisValidator {
     static func validateAnalyses(_ analyses: Set<Analysis>) {
         for analysis in analyses {
             for validator in AnalysisValidator.validators {
-                validator(analysis)
+                try! validator(analysis)
             }
         }
     }
@@ -45,18 +45,18 @@ class AnalysisValidator {
     /**
      ANL-11: If an Analysis' rangeType is `Ranged`, then its dateRange is greater than `0`..
      */
-    static var validate_dateRange: (Analysis) -> () = { analysis in
-        if analysis._rangeType == .dateRange {
-            XCTAssert(analysis._dateRange > 0)
+    static var validate_dateRange: (Analysis) throws -> () = { analysis in
+        if try analysis._rangeType == .dateRange {
+            XCTAssert(try analysis._dateRange > 0)
         }
     }
     
     /**
      ANL-12: If an Analysis' rangeType is `Start/End`, then its endDate is later than or equal to startDate.
      */
-    static var validate_startAndEndDates: (Analysis) -> () = { analysis in
-        if analysis._rangeType == .startEnd {
-            XCTAssert(analysis._startDate!.lessThanOrEqualToDate(analysis._endDate!))
+    static var validate_startAndEndDates: (Analysis) throws -> () = { analysis in
+        if try analysis._rangeType == .startEnd {
+            XCTAssert((try analysis._startDate!).lessThanOrEqualToDate(try analysis._endDate!))
         }
     }
     
@@ -66,7 +66,7 @@ class AnalysisValidator {
 
 extension AnalysisValidator {
     
-    static var validateLegend: (Analysis) -> () = { analysis in
+    static var validateLegend: (Analysis) throws -> () = { analysis in
         AnalysisLegendValidator.validateAnalysisLegend(analysis._legend)
     }
     
