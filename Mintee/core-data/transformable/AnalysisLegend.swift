@@ -136,7 +136,7 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
     init(category: Category, color: UIColor) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
-                                              ["color": color.debugDescription])
+                                              ["color": color])
         }
         self.category = category.rawValue
         self.color = hexStringColor

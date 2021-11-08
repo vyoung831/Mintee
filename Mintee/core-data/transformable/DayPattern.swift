@@ -43,43 +43,40 @@ class DayPattern: NSObject, NSSecureCoding {
     
     var _daysOfWeek: Set<SaveFormatter.dayOfWeek> {
         get throws {
-            var castDow: Set<SaveFormatter.dayOfWeek> = Set()
-            for dow in self.daysOfWeek {
-                guard let decodedDow = SaveFormatter.dayOfWeek.init(rawValue: dow) else {
+            let castDow: [SaveFormatter.dayOfWeek] = try self.daysOfWeek.map{
+                guard let decodedDow = SaveFormatter.dayOfWeek.init(rawValue: $0) else {
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                      ["daysOfWeek": self.daysOfWeek])
+                                                      ["daysOfWeek": self.daysOfWeek.debugDescription])
                 }
-                castDow.insert(decodedDow)
+                return decodedDow
             }
-            return castDow
+            return Set(castDow)
         }
     }
     
     var _weeksOfMonth: Set<SaveFormatter.weekOfMonth> {
         get throws {
-            var castWom: Set<SaveFormatter.weekOfMonth> = Set()
-            for wom in self.weeksOfMonth {
-                guard let decodedWom = SaveFormatter.weekOfMonth.init(rawValue: wom) else {
+            let castWom: [SaveFormatter.weekOfMonth] = try self.weeksOfMonth.map{
+                guard let decodedWom = SaveFormatter.weekOfMonth.init(rawValue: $0) else {
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                      ["weeksOfMonth": self.weeksOfMonth])
+                                                      ["weeksOfMonth": self.weeksOfMonth.debugDescription])
                 }
-                castWom.insert(decodedWom)
+                return decodedWom
             }
-            return castWom
+            return Set(castWom)
         }
     }
     
     var _daysOfMonth: Set<SaveFormatter.dayOfMonth> {
         get throws {
-            var castDom: Set<SaveFormatter.dayOfMonth> = Set()
-            for dom in self.daysOfMonth {
-                guard let decodedDom = SaveFormatter.dayOfMonth.init(rawValue: dom) else {
+            let castDom: [SaveFormatter.dayOfMonth] = try self.daysOfMonth.map{
+                guard let decodedDom = SaveFormatter.dayOfMonth.init(rawValue: $0) else {
                     throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
-                                                      ["daysOfMonth": self.daysOfMonth])
+                                                      ["daysOfMonth": self.daysOfMonth.debugDescription])
                 }
-                castDom.insert(decodedDom)
+                return decodedDom
             }
-            return castDom
+            return Set(castDom)
         }
     }
     
@@ -158,9 +155,9 @@ extension DayPattern {
      - returns: Dictionary containing existing debug info + debug descriptions of DayPattern
      */
     func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
-        userInfo["\(prefix)daysOfWeek"] = self.daysOfWeek
-        userInfo["\(prefix)weeksOfMonth"] = self.weeksOfMonth
-        userInfo["\(prefix)daysOfMonth"] = self.daysOfMonth
+        userInfo["\(prefix)daysOfWeek"] = self.daysOfWeek.debugDescription
+        userInfo["\(prefix)weeksOfMonth"] = self.weeksOfMonth.debugDescription
+        userInfo["\(prefix)daysOfMonth"] = self.daysOfMonth.debugDescription
         userInfo["\(prefix)type"] = self.type
     }
     
