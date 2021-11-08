@@ -34,7 +34,7 @@ public class TaskTargetSet: NSManagedObject {
         get throws {
             guard let unwrappedSet = self.instances else { return Set() }
             guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
-                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, ["debugDescription": self.debugDescription])
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.task.mergeDebugDictionary())
             }
             return castedSet
         }

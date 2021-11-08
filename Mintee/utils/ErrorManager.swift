@@ -11,14 +11,6 @@ import Firebase
 
 struct ErrorManager {
     
-    /**
-     Records a non-fatal error to report to Crashlytics.
-     - parameter errorCode: Non-fatal error code to report.
-     */
-    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal) -> NSError {
-        return recordNonFatal(errorCode, [:])
-    }
-    
     static func recordUnexpectedError(_ error: Error) -> NSError {
         return ErrorManager.recordNonFatal(.unexpectedError, ["error.localizedDescription": error.localizedDescription])
     }
@@ -30,10 +22,17 @@ struct ErrorManager {
     /**
      Records a non-fatal error to report to Crashlytics.
      - parameter errorCode: Non-fatal error code to report.
+     */
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal) -> NSError {
+        return recordNonFatal(errorCode, [:])
+    }
+    
+    /**
+     Records a non-fatal error to report to Crashlytics.
+     - parameter errorCode: Non-fatal error code to report.
      - parameter userInfo: [String:Any] pairs to be reported with error record.
      */
-    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,
-                               _ userInfo: [String: Any]) -> NSError {
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal, _ userInfo: [String: Any]) -> NSError {
         
         var domain: String
         if let bundleID = Bundle.main.bundleIdentifier {
