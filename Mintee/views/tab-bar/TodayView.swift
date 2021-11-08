@@ -18,31 +18,25 @@ struct TodayView: View {
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     func getLabel() -> String {
-        
-        guard let daysToToday = date.daysToDate(Date()) else {
-            let userInfo: [String : Any] = ["Message" : "TodayView.getLabel() received nil return from call to Date.daysToDate()",
-                                            "date" : date.debugDescription,
-                                            "Date()" : Date().debugDescription,
-                                            "Calendar.current" : Calendar.current.debugDescription]
-            ErrorManager.recordNonFatal(.dateOperationFailed, userInfo)
-            return Date.toMDYPresent(date)
-        }
-        
-        switch daysToToday {
-        case 0:
-            return "Today"
-        case -1:
-            return "Tomorrow"
-        case 1:
-            return "Yesterday"
-        default:
+        do {
+            switch (try date.daysToDate(Date())) {
+            case 0:
+                return "Today"
+            case -1:
+                return "Tomorrow"
+            case 1:
+                return "Yesterday"
+            default:
+                return Date.toMDYPresent(date)
+            }
+        } catch {
             return Date.toMDYPresent(date)
         }
     }
     
     var body: some View {
         NavigationView {
-            TodayCollectionViewControllerRepresentable(date: self.$date)
+            Text("This page unintentionally left blank")
                 .accentColor(themeManager.accent)
                 .navigationBarTitle(self.getLabel())
                 .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {

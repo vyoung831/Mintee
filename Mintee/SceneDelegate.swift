@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         DayPatternTransformer.register()
         AnalysisLegendTransformer.register()
         
-        // Get the managed object context from the shared persistent container.
-        let context = CDCoordinator.moc
+        // Initialize the shared persistent container.
+        let _ = CDCoordinator.shared.persistentContainer
         
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
@@ -63,11 +63,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-
-        // Save changes in the application's managed object context when the application transitions to the background.
-        CDCoordinator.shared.saveContext()
     }
 
-
 }
-

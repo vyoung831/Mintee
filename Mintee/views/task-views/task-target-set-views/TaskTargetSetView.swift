@@ -66,16 +66,15 @@ struct TaskTargetSetView: View , Identifiable {
             return "Every week"
         case .wom:
             guard let selectedWom = self.selectedWeeksOfMonth else {
-                ErrorManager.recordNonFatal(.viewObject_unexpectedNilProperty,
-                                            ["Message" : "TaskTargetSetView.getLabel() found nil selectedWeeksOfMonth when expected non-nil",
-                                             "selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription,
-                                             "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription,
-                                             "minOperator" : self.minOperator,
-                                             "maxOperator" : self.maxOperator])
+                let _ = ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                    ["selectedDaysOfWeek" : selectedDaysOfWeek?.debugDescription as Any,
+                                                     "selectedDaysOfMonth" : selectedDaysOfMonth?.debugDescription as Any,
+                                                     "minOperator" : self.minOperator,
+                                                     "maxOperator" : self.maxOperator])
                 return "Weekdays of month"
             }
             
-            let orderedWeeks = selectedWom.sorted(by: { SaveFormatter.weekOfMonthToStored($0) < SaveFormatter.weekOfMonthToStored($1) }).map{ $0.shortValue }
+            let orderedWeeks = selectedWom.sorted(by: { $0.rawValue < $1.rawValue }).map{ $0.shortValue }
             var label: String = ""
             for idx in 0 ..< orderedWeeks.count {
                 label.append(contentsOf: orderedWeeks[idx])
@@ -98,9 +97,9 @@ struct TaskTargetSetView: View , Identifiable {
      - parameter maxOperator: The maximum value equality operator
      - parameter minValue: The minimum target value
      - parameter maxValue: The maximum target value
-     - returns: String representing the target value(s)
+     - returns: (Optional) String representing the target value(s)
      */
-    static func getTargetString(minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float) -> String {
+    static func getTargetString(minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator, minTarget: Float, maxTarget: Float) -> String? {
         
         if minOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.stringValue) \(minTarget.clean)"}
         if maxOperator == .eq { return "Target \(SaveFormatter.equalityOperator.eq.stringValue) \(maxTarget.clean)"}
@@ -109,11 +108,10 @@ struct TaskTargetSetView: View , Identifiable {
         if minOperator != .na { return "Target \(minOperator.stringValue.replacingOccurrences(of: "<", with: ">")) \(minTarget.clean)" }
         if maxOperator != .na { return "Target \(maxOperator.stringValue.replacingOccurrences(of: ">", with: "<")) \(maxTarget.clean)" }
         
-        ErrorManager.recordNonFatal(.viewFunction_receivedInvalidParms, ["minOperator": minOperator.rawValue,
-                                                                         "maxOperator": maxOperator.rawValue,
-                                                                         "minTarget": minTarget,
-                                                                         "maxTarget": maxTarget])
-        return ""
+        let _ = ErrorManager.recordNonFatal(.view_helperFunction_receivedInvalidInput,
+                                            ["minOperator": minOperator.rawValue, "maxOperator": maxOperator.rawValue,
+                                             "minTarget": minTarget, "maxTarget": maxTarget])
+        return nil
     }
     
     // MARK: - View
@@ -196,10 +194,8 @@ struct TaskTargetSetView: View , Identifiable {
             // MARK: - Target
             
             Group {
-                Text( TaskTargetSetView.getTargetString(minOperator: self.minOperator,
-                                                        maxOperator: self.maxOperator,
-                                                        minTarget: self.minTarget,
-                                                        maxTarget: self.maxTarget) )
+                Text(TaskTargetSetView.getTargetString(minOperator: self.minOperator, maxOperator: self.maxOperator,
+                                                       minTarget: self.minTarget, maxTarget: self.maxTarget) ?? "")
             }
             
         }

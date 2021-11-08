@@ -34,24 +34,6 @@ extension SaveFormatter {
         }
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.equalityOperator (to be stored in TaskTargetSet).
-     - parameter op: SaveFormatter.equalityOperator being used in-memory.
-     - returns: Int16 to store in TaskTargetSet's minOperator or maxOperator.
-     */
-    static func equalityOperatorToStored(_ op: equalityOperator) -> Int16 {
-        return op.rawValue
-    }
-    
-    /**
-     Converts a persistent store value to the equivalent value of type SaveFormatter.equalityOperator
-     - parameter op: Int16 stored in TaskTargetset's minOperator or maxOperator
-     - returns: (Optional) Value of type SaveFormatter.equalityOperator to be used by Views or Model objects.
-     */
-    static func storedToEqualityOperator(_ op: Int16) -> equalityOperator? {
-        return equalityOperator.init(rawValue: op)
-    }
-    
 }
 
 // MARK: - DayPattern day enums
@@ -97,24 +79,6 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.dayOfWeek (to be stored in DayPattern).
-     - parameter dow: Value of type SaveFormatter.dayOfWeek to obtain the Int16 persistent store value of.
-     - returns: Int16 representing provided SaveFormatter.dayOfWeek.
-     */
-    static func dayOfWeekToStored(_ dow: SaveFormatter.dayOfWeek) -> Int16 {
-        return dow.rawValue
-    }
-    
-    /**
-     Converts a value from persistent store to the equivalent value of type SaveFormatter.dayOfWeek
-     - parameter dow: Int16 used by DayPattern's dow; 1 = Sunday
-     - returns: (Optional) Value of type SaveFormatter.dayOfWeek to be used by Views or Model objects.
-     */
-    static func storedToDayOfWeek(_ dow: Int16) -> dayOfWeek? {
-        return SaveFormatter.dayOfWeek.init(rawValue: dow)
-    }
-    
     enum weekOfMonth: Int16, Day, CaseIterable {
         
         case first = 1, second = 2, third = 3, fourth = 4, last = 5
@@ -145,24 +109,6 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.weekOfMonth (to be stored in DayPattern).
-     - parameter wom: Value of type SaveFormatter.weekOfMonth to obtain the Int16 persistent store value of.
-     - returns: Int16 representing provided SaveFormatter.weekOfMonth.
-     */
-    static func weekOfMonthToStored(_ wom: SaveFormatter.weekOfMonth) -> Int16 {
-        return wom.rawValue
-    }
-    
-    /**
-     Converts a value from persistent store to the equivalent value of type SaveFormatter.weekOfMonth
-     - parameter wom: Int16 in DayPattern's wom; 5 = last week of month
-     - returns: (Optional) Value of type SaveFormatter.weekOfMonth to be used by Views or Model objects.
-     */
-    static func storedToWeekOfMonth(_ wom: Int16) -> SaveFormatter.weekOfMonth? {
-        return SaveFormatter.weekOfMonth.init(rawValue: wom)
-    }
-    
     enum dayOfMonth: Int16, Day, CaseIterable {
         
         case one = 1, two = 2, three = 3, four = 4, five = 5
@@ -181,24 +127,6 @@ extension SaveFormatter {
             return self == .last ? "Last" : String(self.rawValue)
         }
         
-    }
-    
-    /**
-     Returns persistent store format of a value of type SaveFormatter.dayOfMonth (to be stored in DayPattern).
-     - parameter dom: Value of type SaveFormatter.dayOfMonth to obtain the Int16 persistent store value of.
-     - returns: Int16 representing provided SaveFormatter.dayOfMonth.
-     */
-    static func dayOfMonthToStored(_ dom: SaveFormatter.dayOfMonth) -> Int16 {
-        return dom.rawValue
-    }
-    
-    /**
-     Converts a value from persistent store to the equivalent value of type SaveFormatter.dayOfMonth
-     - parameter dom: Int16 in DayPattern's dom; 0 = last day of month
-     - returns: (Optional) Value of type SaveFormatter.dayOfMonth to be used by Views or Model objects.
-     */
-    static func storedToDayOfMonth(_ dom: Int16) -> SaveFormatter.dayOfMonth? {
-        return SaveFormatter.dayOfMonth.init(rawValue: dom)
     }
     
 }
@@ -254,29 +182,25 @@ extension SaveFormatter {
         
     }
     
-    /**
-     Returns persistent store format of a value of type SaveFormatter.taskType (to be stored in Task).
-     - parameter type: SaveFormatter.taskType being used in-memory.
-     - returns: Int16 to store to Task's taskType.
-     */
-    static func taskTypeToStored(_ type: taskType) -> Int16 {
-        return type.rawValue
-    }
-    
-    /**
-     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.taskType
-     - parameter storedType: Int16 stored in Task's taskType
-     - returns: (Optional) Value of type SaveFormatter.taskType to be used by Views or Model components.
-     */
-    static func storedToTaskType(_ storedType: Int16) -> taskType? {
-        return taskType.init(rawValue: storedType)
-    }
-    
 }
 
 // MARK: - Analysis types
 
 extension SaveFormatter {
+    
+    enum analysisRangeType: Int16, CaseIterable, SelectableType {
+        
+        case startEnd = 0
+        case dateRange = 1
+        
+        var stringValue: String {
+            switch self {
+            case .startEnd: return "Start/End"
+            case .dateRange: return "Ranged"
+            }
+        }
+        
+    }
     
     enum analysisType: Int16, CaseIterable, SelectableType {
         
@@ -290,24 +214,6 @@ extension SaveFormatter {
             }
         }
         
-    }
-    
-    /**
-     Converts a persistent store Int16 to the equivalent value of type SaveFormatter.analysisType
-     - parameter stored: Int16 saved to an Analysis' analysisType
-     - returns: (Optional) Value of type SaveFormatter.analysisType to be used by Views or Model components.
-     */
-    static func storedToAnalysisType(_ stored: Int16) -> SaveFormatter.analysisType? {
-        return analysisType.init(rawValue: stored)
-    }
-    
-    /**
-     Returns persistent store format of a value of type SaveFormatter.analysisType.
-     - parameter type: SaveFormatter.analysisType being used in-memory.
-     - returns: Int16 to store to an Analysis' analysisType.
-     */
-    static func analysisTypeToStored(_ type: SaveFormatter.analysisType) -> Int16 {
-        return type.rawValue
     }
     
 }

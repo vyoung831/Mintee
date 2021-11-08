@@ -13,10 +13,6 @@ import UIKit
 
 class AnalysisLegend: NSObject, NSSecureCoding {
     
-    static var supportsSecureCoding: Bool = true
-    var categorizedEntries: Set<CategorizedLegendEntry>
-    var completionEntries: Set<CompletionLegendEntry>
-    
     enum Keys: String {
         case categorizedEntries = "categorizedEntries"
         case completionEntries = "completionEntries"
@@ -26,6 +22,10 @@ class AnalysisLegend: NSObject, NSSecureCoding {
         case categorized = 1
         case completion = 2
     }
+    
+    static var supportsSecureCoding: Bool = true
+    var categorizedEntries: Set<CategorizedLegendEntry>
+    var completionEntries: Set<CompletionLegendEntry>
     
     init(categorizedEntries: Set<CategorizedLegendEntry>, completionEntries: Set<CompletionLegendEntry>) {
         self.categorizedEntries = categorizedEntries
@@ -38,18 +38,17 @@ class AnalysisLegend: NSObject, NSSecureCoding {
     }
     
     required init?(coder decoder: NSCoder) {
-        
         guard let categorizedLegendEntries = decoder.decodeObject(of: [NSSet.self, CategorizedLegendEntry.self], forKey: AnalysisLegend.Keys.categorizedEntries.rawValue ) as? Set<CategorizedLegendEntry>,
               let completionLegendEntries = decoder.decodeObject(of: [NSSet.self, CompletionLegendEntry.self], forKey: AnalysisLegend.Keys.completionEntries.rawValue ) as? Set<CompletionLegendEntry> else {
-            let userInfo: [String : Any] = ["Message" : "AnalysisLegend.init() could not decode its entries",
-                                            AnalysisLegend.Keys.categorizedEntries.rawValue : decoder.decodeObject(of: [NSSet.self, CategorizedLegendEntry.self], forKey: AnalysisLegend.Keys.categorizedEntries.rawValue).debugDescription,
-                                            AnalysisLegend.Keys.completionEntries.rawValue : decoder.decodeObject(of: [NSSet.self, CompletionLegendEntry.self], forKey: AnalysisLegend.Keys.completionEntries.rawValue).debugDescription]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
-        }
+                  let userInfo: [String : Any] = [AnalysisLegend.Keys.categorizedEntries.rawValue:
+                                                    decoder.decodeObject(of: [NSSet.self, CategorizedLegendEntry.self],forKey: AnalysisLegend.Keys.categorizedEntries.rawValue).debugDescription,
+                                                  AnalysisLegend.Keys.completionEntries.rawValue:
+                                                    decoder.decodeObject(of: [NSSet.self, CompletionLegendEntry.self], forKey: AnalysisLegend.Keys.completionEntries.rawValue).debugDescription]
+                  let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
+                  return nil
+              }
         self.categorizedEntries = categorizedLegendEntries
         self.completionEntries = completionLegendEntries
-        
     }
     
     /**
@@ -59,20 +58,15 @@ class AnalysisLegend: NSObject, NSSecureCoding {
      */
     func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
         
-        var idx = 0;
+        var idx = 0
         for entry in self.categorizedEntries {
-            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            userInfo["\(prefix)CategorizedLegendEntry[\(idx)].type"] = entry.category.rawValue
+            entry.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)CategorizedLegendEntry[\(idx)].")
             idx += 1
         }
         
         idx = 0
         for entry in self.completionEntries {
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].color"] = entry.color.debugDescription
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].min"] = entry.min
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].max"] = entry.max
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].minOperator"] = entry.minOperator.rawValue
-            userInfo["\(prefix)CompletionLegendEntry[\(idx)].maxOperator"] = entry.maxOperator.rawValue
+            entry.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)CompletionLegendEntry[\(idx)].")
             idx += 1
         }
         
@@ -104,10 +98,6 @@ final class AnalysisLegendTransformer: NSSecureUnarchiveFromDataTransformer {
 
 class CategorizedLegendEntry: NSObject, NSSecureCoding {
     
-    static var supportsSecureCoding: Bool = true
-    var color: String
-    var category: Category
-    
     enum Category: Int16 {
         case reachedTarget = 1
         case underTarget = 2
@@ -119,44 +109,66 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
         case color = "color"
     }
     
+    static var supportsSecureCoding: Bool = true
+    private var color: String
+    private var category: Int16
+    
+    var _color: UIColor {
+        get throws {
+            guard let castColor = UIColor(hex: self.color) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                    ["color": self.color])
+            }
+            return castColor
+        }
+    }
+    
+    var _category: Category {
+        get throws {
+            guard let cat = CategorizedLegendEntry.Category.init(rawValue: self.category) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["category": self.category])
+            }
+            return cat
+        }
+    }
+    
     init(category: Category, color: UIColor) throws {
         guard let hexStringColor = color.toHex() else {
             throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
-                                              ["Message" : "CategorizedLegendEntry.init() received color that could not converted to a hex String",
-                                               "color" : color.debugDescription])
+                                              ["color": color])
         }
-        self.category = category
+        self.category = category.rawValue
         self.color = hexStringColor
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(NSNumber(value: self.category.rawValue), forKey: CategorizedLegendEntry.Keys.category.rawValue)
+        coder.encode(NSNumber(value: self.category), forKey: CategorizedLegendEntry.Keys.category.rawValue)
         coder.encode(self.color as NSString, forKey: CategorizedLegendEntry.Keys.color.rawValue)
     }
     
     required init?(coder: NSCoder) {
-        
         guard let category = coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue) as? Int16,
               let color = coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue) as String? else {
-            
-            let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() could not decode its properties",
-                                            CategorizedLegendEntry.Keys.category.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
-                                            CategorizedLegendEntry.Keys.color.rawValue : coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
-            
-        }
-        
-        guard let cat = Category.init(rawValue: category) else {
-            let userInfo: [String : Any] = ["Message" : "CategorizedLegendEntry.init() found an Int16 under `category` that could not be converted to a valid value of type Category",
-                                            "category" : category]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
+            let userInfo: [String : Any] = [CategorizedLegendEntry.Keys.category.rawValue:
+                                                coder.decodeObject(of: NSNumber.self, forKey: CategorizedLegendEntry.Keys.category.rawValue).debugDescription,
+                                            CategorizedLegendEntry.Keys.color.rawValue:
+                                                coder.decodeObject(of: NSString.self, forKey: CategorizedLegendEntry.Keys.color.rawValue).debugDescription]
+            let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
             return nil
         }
-        
-        self.category = cat
+        self.category = category
         self.color = color
-        
+    }
+    
+    /**
+     Add debug descriptions of this CategorizedLegendEntry and adds them to an inout dictionary
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that are added  to `userInfo`.
+     */
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        userInfo["\(prefix)color"] = self.color
+        userInfo["\(prefix)category"] = self.category
     }
     
 }
@@ -164,13 +176,6 @@ class CategorizedLegendEntry: NSObject, NSSecureCoding {
 // MARK: - CompletionLegendEntry
 
 class CompletionLegendEntry: NSObject, NSSecureCoding {
-    
-    static var supportsSecureCoding: Bool = true
-    var color: String
-    var min: Float
-    var max: Float
-    var minOperator: SaveFormatter.equalityOperator
-    var maxOperator: SaveFormatter.equalityOperator
     
     enum Keys: String {
         case color = "color"
@@ -180,61 +185,102 @@ class CompletionLegendEntry: NSObject, NSSecureCoding {
         case maxOperator = "maxOperator"
     }
     
+    static var supportsSecureCoding: Bool = true
+    private var color: String
+    private var min: Float
+    private var max: Float
+    private var minOperator: Int16
+    private var maxOperator: Int16
+    
+    var _min: Float { get { return self.min } }
+    var _max: Float { get { return self.max } }
+    
+    var _color: UIColor {
+        get throws {
+            guard let castColor = UIColor(hex: self.color) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["color": self.color])
+            }
+            return castColor
+        }
+    }
+    
+    var _minOperator: SaveFormatter.equalityOperator {
+        get throws {
+            guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["minOperator": self.minOperator])
+            }
+            return minOp
+        }
+    }
+    
+    var _maxOperator: SaveFormatter.equalityOperator {
+        get throws {
+            guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData,
+                                                  ["maxOperator": self.maxOperator])
+            }
+            return maxOp
+        }
+    }
+    
     init(color: UIColor, min: Float, max: Float, minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator) throws {
         guard let hexStringColor = color.toHex() else {
-            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
-                                              ["Message" : "CompletionLegendEntry.init() received UIColor that could not converted to a hex String",
-                                               "color" : color.debugDescription])
+            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, ["color": color.debugDescription])
         }
         self.color = hexStringColor
         self.min = min
         self.max = max
-        self.minOperator = minOperator
-        self.maxOperator = maxOperator
+        self.minOperator = minOperator.rawValue
+        self.maxOperator = maxOperator.rawValue
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(self.color as NSString, forKey: CompletionLegendEntry.Keys.color.rawValue)
         coder.encode(NSNumber(value: self.min), forKey: CompletionLegendEntry.Keys.min.rawValue)
         coder.encode(NSNumber(value: self.max), forKey: CompletionLegendEntry.Keys.max.rawValue)
-        coder.encode(NSNumber(value: SaveFormatter.equalityOperatorToStored(self.minOperator)), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
-        coder.encode(NSNumber(value: SaveFormatter.equalityOperatorToStored(self.maxOperator)), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
+        coder.encode(NSNumber(value: self.minOperator), forKey: CompletionLegendEntry.Keys.minOperator.rawValue)
+        coder.encode(NSNumber(value: self.maxOperator), forKey: CompletionLegendEntry.Keys.maxOperator.rawValue)
     }
     
     required init?(coder: NSCoder) {
-        
         guard let color = coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue) as String?,
               let min = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.min.rawValue) as? Float,
               let max = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.max.rawValue) as? Float,
               let minOp = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue) as? Int16,
               let maxOp = coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue) as? Int16 else {
-            
-            let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not decode its properties",
-                                            CompletionLegendEntry.Keys.color.rawValue : coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue).debugDescription,
-                                            CompletionLegendEntry.Keys.min.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.min.rawValue).debugDescription,
-                                            CompletionLegendEntry.Keys.max.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.max.rawValue).debugDescription,
-                                            CompletionLegendEntry.Keys.minOperator.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue).debugDescription,
-                                            CompletionLegendEntry.Keys.maxOperator.rawValue : coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue).debugDescription]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
-            
-        }
-        
-        guard let minOperatorEnum = SaveFormatter.storedToEqualityOperator(minOp),
-              let maxOperatorEnum = SaveFormatter.storedToEqualityOperator(maxOp) else {
-            let userInfo: [String : Any] = ["Message" : "CompletionLegendEntry.init() could not convert the decoded minOperator and/or maxOperator to values of type SaveFormatter.equalityOperator",
-                                            "minOp" : minOp,
-                                            "maxOp" : maxOp]
-            ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-            return nil
-        }
-        
+                  let userInfo: [String : Any] = [CompletionLegendEntry.Keys.color.rawValue:
+                                                    coder.decodeObject(of: NSString.self, forKey: CompletionLegendEntry.Keys.color.rawValue).debugDescription,
+                                                  CompletionLegendEntry.Keys.min.rawValue:
+                                                    coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.min.rawValue).debugDescription,
+                                                  CompletionLegendEntry.Keys.max.rawValue:
+                                                    coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.max.rawValue).debugDescription,
+                                                  CompletionLegendEntry.Keys.minOperator.rawValue:
+                                                    coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.minOperator.rawValue).debugDescription,
+                                                  CompletionLegendEntry.Keys.maxOperator.rawValue:
+                                                    coder.decodeObject(of: NSNumber.self, forKey: CompletionLegendEntry.Keys.maxOperator.rawValue).debugDescription]
+                  let _ = ErrorManager.recordNonFatal(.transformable_decodingFailed, userInfo)
+                  return nil
+              }
         self.color = color
         self.min = min
         self.max = max
-        self.minOperator = minOperatorEnum
-        self.maxOperator = maxOperatorEnum
-        
+        self.minOperator = minOp
+        self.maxOperator = maxOp
+    }
+    
+    /**
+     Add debug descriptions of this CompletionLegendEntry and adds them to an inout dictionary
+     - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
+     - parameter prefix: String to be prepended to keys that are added  to `userInfo`.
+     */
+    func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
+        userInfo["\(prefix)color"] = self.color
+        userInfo["\(prefix)min"] = self.min
+        userInfo["\(prefix)max"] = self.max
+        userInfo["\(prefix)minOperator"] = self.minOperator
+        userInfo["\(prefix)maxOperator"] = self.maxOperator
     }
     
 }

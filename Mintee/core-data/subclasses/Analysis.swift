@@ -15,21 +15,76 @@ public class Analysis: NSManagedObject {
     
     @NSManaged private var name: String
     @NSManaged private var analysisType: Int16
-    @NSManaged private var tags: NSSet?
+    @NSManaged private var rangeType: Int16
     @NSManaged private var startDate: String?
     @NSManaged private var endDate: String?
     @NSManaged private var dateRange: Int16
     @NSManaged private var order: Int16
     @NSManaged private var legend: AnalysisLegend
+    @NSManaged private var tags: NSSet?
     
     var _name: String { get { return self.name } set { self.name = newValue } }
-    var _analysisType: Int16 { get { return self.analysisType } }
-    var _tags: NSSet? { get { return self.tags } }
-    var _startDate: String? { get { return self.startDate } }
-    var _endDate: String? { get { return self.endDate } }
     var _dateRange: Int16 { get { return self.dateRange } }
     var _order: Int16 { get { return self.order }}
     var _legend: AnalysisLegend { get { return self.legend } }
+    
+    var _analysisType: SaveFormatter.analysisType {
+        get throws {
+            guard let type = SaveFormatter.analysisType.init(rawValue: self.analysisType) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return type
+        }
+    }
+    
+    var _rangeType: SaveFormatter.analysisRangeType {
+        get throws {
+            guard let type = SaveFormatter.analysisRangeType.init(rawValue: self.rangeType) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return type
+        }
+    }
+    
+    var _startDate: Date? {
+        get throws {
+            guard let startDateString = self.startDate else {
+                if (try self._rangeType) == .startEnd {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
+                return nil
+            }
+            guard let formattedDate = SaveFormatter.storedStringToDate(startDateString) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return formattedDate
+        }
+    }
+    
+    var _endDate: Date? {
+        get throws {
+            guard let endDateString = self.endDate else {
+                if (try self._rangeType) == .startEnd {
+                    throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+                }
+                return nil
+            }
+            guard let formattedDate = SaveFormatter.storedStringToDate(endDateString) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return formattedDate
+        }
+    }
+    
+    var _tags: Set<Tag> {
+        get throws {
+            guard let unwrappedSet = self.tags else { return Set() }
+            guard let castedSet = unwrappedSet as? Set<Tag> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.mergeDebugDictionary())
+            }
+            return castedSet
+        }
+    }
     
 }
 
@@ -55,38 +110,42 @@ extension Analysis {
 
 extension Analysis {
     
-    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?,
+    convenience init(entity: NSEntityDescription,
+                     insertInto context: NSManagedObjectContext,
                      name: String,
                      type: SaveFormatter.analysisType,
                      startDate: Date,
                      endDate: Date,
                      legend: AnalysisLegend,
                      order: Int16,
-                     tags: Set<Tag>) throws {
+                     tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.analysisType = type.rawValue
         self.startDate = SaveFormatter.dateToStoredString(startDate)
         self.endDate = SaveFormatter.dateToStoredString(endDate)
         self.legend = legend
         self.order = order
-        try self.associateTags(tags)
+        self.rangeType = SaveFormatter.analysisRangeType.startEnd.rawValue
+        try self.updateTags(tags, context)
     }
     
-    convenience init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?,
+    convenience init(entity: NSEntityDescription,
+                     insertInto context: NSManagedObjectContext,
                      name: String,
                      type: SaveFormatter.analysisType,
                      dateRange: Int16,
                      legend: AnalysisLegend,
                      order: Int16,
-                     tags: Set<Tag>) throws {
+                     tags: Set<String>) throws {
         self.init(entity: entity, insertInto: context)
         self.name = name
-        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.analysisType = type.rawValue
         self.dateRange = dateRange
         self.legend = legend
         self.order = order
-        try self.associateTags(tags)
+        self.rangeType = SaveFormatter.analysisRangeType.dateRange.rawValue
+        try self.updateTags(tags, context)
     }
     
 }
@@ -98,11 +157,20 @@ extension Analysis {
     /**
      Gathers debug descriptions of this Analysis' legend and tags, and adds them to an existing inout Dictionary.
      - parameter userInfo: (inout) [String : Any] Dictionary containing existing debug info.
-     - parameter prefix: String to be prepended to keys that this function adds to `userInfo`.
+     - parameter prefix: String to be prepended to keys added to `userInfo`.
      */
     func mergeDebugDictionary(userInfo: inout [String : Any], prefix: String = "") {
         
-        // Add associated tag names
+        userInfo["\(prefix)name"] = self.name
+        userInfo["\(prefix)analysisType"] = self.analysisType
+        userInfo["\(prefix)rangeType"] = self.rangeType
+        userInfo["\(prefix)startDate"] = self.startDate
+        userInfo["\(prefix)endDate"] = self.endDate
+        userInfo["\(prefix)dateRange"] = self.dateRange
+        userInfo["\(prefix)order"] = self.order
+        
+        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
+        
         if let tagsArray = self.tags?.sortedArray(using: []) as? [Tag] {
             var tagsIndex = 0
             for unwrappedTag in tagsArray {
@@ -111,57 +179,48 @@ extension Analysis {
             }
         }
         
-        // Add AnalysisLegend debug info
-        self.legend.mergeDebugDictionary(userInfo: &userInfo, prefix: "\(prefix)legend.")
-        
+    }
+    
+    /**
+     Gathers debug descriptions of this Analysis' into a dictionary.
+     - parameter prefix: String to be prepended to keys added to `userInfo`.
+     - returns: Dictionary containing debug descriptions of this Analysis and its legend.
+     */
+    func mergeDebugDictionary(prefix: String = "") -> [String: Any] {
+        var userInfo: [String: Any] = [:]
+        self.mergeDebugDictionary(userInfo: &userInfo, prefix: prefix)
+        return userInfo
     }
     
 }
 
-// MARK: - Tag utility functions
+// MARK: - Tag helper functions
 
 extension Analysis {
     
     /**
-     - returns: A set of strings representing the tagNames of this Analysis' tags
-     */
-    func getTagNames() -> Set<String> {
-        if let tags = self.tags as? Set<Tag> {
-            return Set(tags.map({$0._name}))
-        }
-        return Set<String>()
-    }
-    
-    /**
      Updates this Analysis' tags relationship to contain only the Tags passed in.
-     - parameter tags: Set of Tags to be set as this Analysis' tags relationship
+     - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
+     - parameter moc: The MOC to perform updates in.
      */
-    func associateTags(_ tags: Set<Tag>) throws {
-        self.removeUnrelatedTags(newTags: tags)
-        for tag in tags {
-            self.addToTags(tag) // NSSet ignores dupliates
-        }
+    func updateTags(_ newTagNames: Set<String>,_ moc: NSManagedObjectContext) throws {
+        try self.removeUnrelatedTags(newTagNames: newTagNames)
+        try Tag.associateTags(tagNames: newTagNames, self, moc)
     }
     
     /**
      Removes Tags that are no longer to be associated with this Analysis.
-     Tags that were already but no longer to be associated with this Analysis are removed.
-     - parameter newTags: Set of Tags to be set as this Analysis' tags relationship
+     - parameter newTagNames: Set of names of Tags to set as this Analysis' tags.
      */
-    private func removeUnrelatedTags(newTags: Set<Tag>) {
-        if let tags = self.tags {
-            for case let tag as Tag in tags {
-                if !newTags.contains(tag) {
-                    self.removeFromTags(tag)
-                }
-            }
+    private func removeUnrelatedTags(newTagNames: Set<String>) throws {
+        for tag in try self._tags {
+            !newTagNames.contains(tag._name) ? self.removeFromTags(tag) : nil
         }
     }
     
 }
 
-
-// MARK: - Ordering utility functions
+// MARK: - Ordering helper functions
 
 extension Analysis {
     
@@ -182,7 +241,7 @@ extension Analysis {
     
 }
 
-// MARK: - Legend update functions
+// MARK: - Legend helper functions
 
 extension Analysis {
     
@@ -238,10 +297,10 @@ extension Analysis {
 extension Analysis {
     
     /**
-     - parameter analysistype: Value of type `SaveFormatter.analysisType` to assign to this Analysis
+     - parameter type: Value of type `SaveFormatter.analysisType` to assign to this Analysis.
      */
     func updateAnalysisType(_ type: SaveFormatter.analysisType) {
-        self.analysisType = SaveFormatter.analysisTypeToStored(type)
+        self.analysisType = type.rawValue
     }
     
 }
@@ -252,9 +311,10 @@ extension Analysis {
     
     /**
      Deletes this Analysis.
+     - parameter moc: The MOC in which to perform updates.
      */
-    func deleteSelf() {
-        CDCoordinator.moc.delete(self)
+    func deleteSelf(_ moc: NSManagedObjectContext) {
+        moc.delete(self)
     }
     
 }

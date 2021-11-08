@@ -58,42 +58,38 @@ struct TaskTargetSetSection: View {
                                   selectedWeeksOfMonth: tts.selectedWeeksOfMonth,
                                   selectedDaysOfMonth: tts.selectedDaysOfMonth,
                                   moveUp: {
-                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}), idx > 0 {
-                                        taskTargetSetViews.swapAt(idx, idx - 1)
-                                    } else {
-                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.moveUp() in TaskTargetSetSection could not find the first index of tts to start swap from",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
-                                                                     "tts.id" : tts.id])
-                                    }
-                                  }, moveDown: {
-                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}), idx < taskTargetSetViews.count - 1 {
-                                        taskTargetSetViews.swapAt(idx, idx + 1)
-                                    } else {
-                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.moveDown() in TaskTargetSetSection could not find the first index of tts to start swap from",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
-                                                                     "tts.id" : tts.id])
-                                    }
-                                  }, update: { ttsv in
-                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}) {
-                                        self.taskTargetSetViews[idx] = ttsv
-                                    } else {
-                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.update() in TaskTargetSetSection could not find the first index of tts to update",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
-                                                                     "tts.id" : tts.id])
-                                    }
-                                  }, delete: {
-                                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}) {
-                                        self.taskTargetSetViews.remove(at: idx)
-                                    } else {
-                                        ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
-                                                                    ["Message" : "TaskTargetSetView.delete() in TaskTargetSetSection could not find the first index of tts to delete",
-                                                                     "taskTargetSetViews" : taskTargetSetViews,
-                                                                     "tts.id" : tts.id])
-                                    }
-                                  })
+                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}), idx > 0 {
+                        taskTargetSetViews.swapAt(idx, idx - 1)
+                    } else {
+                        let _ = ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                            ["taskTargetSetViews" : taskTargetSetViews,
+                                                             "tts.id" : tts.id])
+                    }
+                }, moveDown: {
+                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}), idx < taskTargetSetViews.count - 1 {
+                        taskTargetSetViews.swapAt(idx, idx + 1)
+                    } else {
+                        let _ = ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                            ["taskTargetSetViews" : taskTargetSetViews,
+                                                             "tts.id" : tts.id])
+                    }
+                }, update: { ttsv in
+                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}) {
+                        self.taskTargetSetViews[idx] = ttsv
+                    } else {
+                        let _ = ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                            ["taskTargetSetViews" : taskTargetSetViews,
+                                                             "tts.id" : tts.id])
+                    }
+                }, delete: {
+                    if let idx = taskTargetSetViews.firstIndex(where: {$0.id == tts.id}) {
+                        self.taskTargetSetViews.remove(at: idx)
+                    } else {
+                        let _ = ErrorManager.recordNonFatal(.viewObject_didNotContainExpectedObject,
+                                                            ["taskTargetSetViews" : taskTargetSetViews,
+                                                             "tts.id" : tts.id])
+                    }
+                })
             }
             
         }

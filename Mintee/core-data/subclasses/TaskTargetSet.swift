@@ -20,42 +20,65 @@ public class TaskTargetSet: NSManagedObject {
     @NSManaged private var minOperator: Int16
     @NSManaged private var pattern: DayPattern
     @NSManaged private var priority: Int16
-    @NSManaged private var instances: NSSet?
     @NSManaged private var task: Task
     
+    @NSManaged private var instances: NSSet?
+    
     var _max: Float { get { return self.max } }
-    var _maxOperator: Int16 { get { return self.maxOperator } }
     var _min: Float { get { return self.min } }
-    var _minOperator: Int16 { get { return self.minOperator } }
     var _pattern: DayPattern { get { return self.pattern } }
     var _priority: Int16 { get { return self.priority } }
-    var _instances: NSSet? { get { return self.instances } }
     var _task: Task { get { return self.task } }
+    
+    var _instances: Set<TaskInstance> {
+        get throws {
+            guard let unwrappedSet = self.instances else { return Set() }
+            guard let castedSet = unwrappedSet as? Set<TaskInstance> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.task.mergeDebugDictionary())
+            }
+            return castedSet
+        }
+    }
+    
+    var _minOperator: SaveFormatter.equalityOperator {
+        get throws {
+            guard let minOp = SaveFormatter.equalityOperator.init(rawValue: self.minOperator) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.task.mergeDebugDictionary())
+            }
+            return minOp
+        }
+    }
+    
+    var _maxOperator: SaveFormatter.equalityOperator {
+        get throws {
+            guard let maxOp = SaveFormatter.equalityOperator.init(rawValue: self.maxOperator) else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, self.task.mergeDebugDictionary())
+            }
+            return maxOp
+        }
+    }
     
     convenience init(entity: NSEntityDescription,
                      insertInto context: NSManagedObjectContext?,
-                     min: Float,
-                     max: Float,
-                     minOperator: SaveFormatter.equalityOperator,
-                     maxOperator: SaveFormatter.equalityOperator,
+                     min: Float, max: Float,
+                     minOperator: SaveFormatter.equalityOperator, maxOperator: SaveFormatter.equalityOperator,
                      priority: Int16,
                      pattern: DayPattern) throws {
-        if let validatedValues = TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max).operators {
+        do {
+            let validatedValues = try TaskTargetSet.validateOperators(minOp: minOperator, maxOp: maxOperator, min: min, max: max)
             self.init(entity: entity, insertInto: context)
-            self.minOperator = SaveFormatter.equalityOperatorToStored(validatedValues.minOp)
-            self.maxOperator = SaveFormatter.equalityOperatorToStored(validatedValues.maxOp)
+            self.minOperator = validatedValues.minOp.rawValue
+            self.maxOperator = validatedValues.maxOp.rawValue
             self.min = validatedValues.min
             self.max = validatedValues.max
             self.priority = priority
             self.pattern = pattern
-        } else {
-            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.init() failed to validate operators",
-                                            "min" : min,
-                                            "max" : max,
-                                            "minOperator" : minOperator,
-                                            "maxOperator" : maxOperator,
-                                            "priority" : priority]
-            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput, pattern.mergeDebugDictionary(userInfo: userInfo))
+        } catch is TaskTargetSet.validateErrorCode {
+            throw ErrorManager.recordNonFatal(.modelObjectInitializer_receivedInvalidInput,
+                                              ["min": min, "max": max,
+                                               "minOperator": minOperator.rawValue, "maxOperator": maxOperator.rawValue])
+        } catch {
+            throw ErrorManager.recordUnexpectedError(error)
         }
     }
     
@@ -79,7 +102,16 @@ extension TaskTargetSet {
     
 }
 
+// MARK: - Validation helper functions
+
 extension TaskTargetSet {
+    
+    enum validateErrorCode: Error {
+        case bothOperators_setToEqual_differentTargetValues
+        case min_greaterThanOrEqualTo_max
+        case min_greaterThan_max
+        case bothOperators_notApplicable
+    }
     
     /**
      Checks provided minOperator, maxOperator, and min/max values to validate against business logic.
@@ -88,53 +120,56 @@ extension TaskTargetSet {
      - parameter maxOp: Value of type SaveFormatter.equalityOperator whose persistent store format should be assigned as TaskTargetSet's maxOperator.
      - parameter min: Float to set TaskTargetSet's min to.
      - parameter max: Float to set TaskTargetSet's max to.
-     - returns: Tuple of optional errorMessage and optional tuple of correct values to set as TaskTargetSet's properties. One and only one of the tuples will be non-nil.
+     - returns: Corrected values to set as TaskTargetSet's properties.
      */
-    static func validateOperators(minOp: SaveFormatter.equalityOperator,
-                                  maxOp: SaveFormatter.equalityOperator,
-                                  min: Float,
-                                  max: Float) -> (errorMessage: String?, operators: (minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator, min: Float, max: Float)?) {
+    static func validateOperators(minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator,
+                                  min: Float, max: Float) throws -> (minOp: SaveFormatter.equalityOperator, maxOp: SaveFormatter.equalityOperator,
+                                                                     min: Float, max: Float) {
         
         if minOp == .eq && maxOp == .eq && min != max {
-            return ("Both operators were set to equal but target values were different", nil)
+            throw validateErrorCode.bothOperators_setToEqual_differentTargetValues as NSError
         }
         
         if minOp == .eq {
-            return (nil, (.eq, .na, min, 0))
+            return (.eq, .na, min, 0)
         }; if maxOp == .eq {
-            return (nil, (.eq, .na, max, 0))
+            return (.eq, .na, max, 0)
         }
         
         switch minOp {
         case .lt:
             if maxOp == .lt || maxOp == .lte {
-                return min >= max ?
-                    ("Min/max were set to (lt, lt/lte) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                if min >= max {
+                    throw validateErrorCode.min_greaterThanOrEqualTo_max as NSError
+                }
+                return (minOp, maxOp, min, max)
             } else {
-                return (nil, (minOp, .na, min, 0))
+                return (minOp, .na, min, 0)
             }
         case .lte:
             switch maxOp {
             case .lt:
-                return min >= max ?
-                    ("Min/max were set to (lte, lt) but min was greater than or equal to max", nil) :
-                    (nil, (minOp, maxOp, min, max))
+                if min >= max {
+                    throw validateErrorCode.min_greaterThanOrEqualTo_max as NSError
+                }
+                return (minOp, maxOp, min, max)
             case .lte:
                 if min == max {
-                    return (nil, (.eq, .na, min, 0))
+                    return (.eq, .na, min, 0)
                 } else {
-                    return min > max ?
-                        ("Min/max were set to (lte, lte) but min was greater than max", nil) :
-                        (nil, (minOp, maxOp, min, max))
+                    if min > max {
+                        throw validateErrorCode.min_greaterThan_max as NSError
+                    }
+                    return (minOp, maxOp, min, max)
                 }
             default:
-                return (nil, (minOp, .na, min, 0))
+                return (minOp, .na, min, 0)
             }
         default:
-            return maxOp == .na ?
-                ("Min and max operators were both N/A", nil) :
-                (nil, (.na, maxOp, 0, max))
+            if maxOp == .na {
+                throw validateErrorCode.bothOperators_notApplicable as NSError
+            }
+            return (.na, maxOp, 0, max)
         }
         
     }
@@ -143,37 +178,37 @@ extension TaskTargetSet {
      Checks this object's DayPattern to determine if it intersects with the provided day/weekday combo
      - parameter day: day of month to check
      - parameter weekday: weekday to check; should have been obtained from a Calendar's weekday component
+     - parameter daysInMonth: the number of days in the month of the date provided.
      - returns: True if parameters matched with this TaskTargetSet's pattern
      */
     func checkDay(day: Int16, weekday: Int16, daysInMonth: Int16) throws -> Bool {
         
-        if daysInMonth < 28 {
-            let userInfo: [String : Any] = ["Message" : "TaskTargetSet.checkDay() received daysInMonth that was less than 28",
-                                            "day" : day,
-                                            "weekday" : weekday,
-                                            "daysInMonth" : daysInMonth,
-                                            "TaskTargetSet" : self.debugDescription]
-            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput,
-                                              self._task.mergeDebugDictionary(userInfo: userInfo))
+        guard let dom = SaveFormatter.dayOfMonth.init(rawValue: day),
+              let dow = SaveFormatter.dayOfWeek.init(rawValue: weekday),
+              let lastWom = SaveFormatter.weekOfMonth.init(rawValue: Int16(ceil(Float(day)/7))) else {
+            var userInfo: [String : Any] = ["day": day, "weekday": weekday, "daysInMonth": daysInMonth,
+                                            "TaskTargetSet": self.debugDescription]
+            self._task.mergeDebugDictionary(userInfo: &userInfo)
+            throw ErrorManager.recordNonFatal(.modelFunction_receivedInvalidInput, userInfo)
         }
         
-        switch pattern.type {
+        switch try pattern._type {
         case .dow:
-            return pattern.daysOfWeek.contains(weekday)
+            return try pattern._daysOfWeek.contains(dow)
         case .wom:
-            if pattern.weeksOfMonth.contains(SaveFormatter.weekOfMonthToStored(.last)) {
-                return pattern.daysOfWeek.contains(weekday) &&
-                    (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ) || day + 7 > daysInMonth)
+            if try pattern._weeksOfMonth.contains(.last) {
+                return try pattern._daysOfWeek.contains(dow) &&
+                    (try pattern._weeksOfMonth.contains(lastWom) || day + 7 > daysInMonth)
             }
-            return pattern.daysOfWeek.contains(weekday) &&
-                (pattern.weeksOfMonth.contains( Int16( ceil( Float(day)/7 )) ))
+            return try pattern._daysOfWeek.contains(dow) &&
+                (try pattern._weeksOfMonth.contains(lastWom))
         case .dom:
             /*
-             Last day of month is represented as 0, so the following conditions are checked
+             The following conditions are checked:
              - The DayPattern's selected days of month are checked for equality to dateCounter's day, OR
-             - The DayPattern's selected days of month contains 0 and dateCounter is the last day of the month
+             - The DayPattern's selected days of month contains `.last` and dateCounter is the last day of the month
              */
-            return pattern.daysOfMonth.contains(day) || ( pattern.daysOfMonth.contains(0) && day == daysInMonth)
+            return try pattern._daysOfMonth.contains(dom) || ( try pattern._daysOfMonth.contains(.last) && day == daysInMonth)
         }
         
     }

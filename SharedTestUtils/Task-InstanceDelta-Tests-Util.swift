@@ -14,14 +14,14 @@ public class Task_InstanceDelta_Tests_Util {
     
     public static func setUp() throws -> Task {
         return try Task(entity: Task.entity(),
-                        insertInto: CDCoordinator.moc,
+                        insertInto: CDCoordinator.mainContext,
                         name: "Task",
                         tags: [],
                         startDate: startDate,
                         endDate: endDate,
-                        targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.moc),
-                                        getWomTargetSet(CDCoordinator.moc),
-                                        getDomTargetSet(CDCoordinator.moc)))
+                        targetSets: Set(arrayLiteral: getDowTargetSet(CDCoordinator.mainContext),
+                                        getWomTargetSet(CDCoordinator.mainContext),
+                                        getDomTargetSet(CDCoordinator.mainContext)))
     }
     
 }

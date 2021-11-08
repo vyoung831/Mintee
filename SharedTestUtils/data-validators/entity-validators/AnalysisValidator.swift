@@ -3,12 +3,11 @@
 //  Mintee_AUT_Function
 //
 //  Business rules NOT checked for by this validator:
-//  ANL-5: An Analysis' order is either:
-//      * `-1` OR
-//      * A unique number greater than or equal to `0`
-//  (validated by MOC_Validator)
-//  ANL-6: An Analysis' name is unique. (validated by MOC_Validator)
-//  ANL-7: An Analysis' legend is non-nil. (defined as non-optional in NSManagedObject subclass)
+//  ANL-1 (validated by getters)
+//  ANL-9 (validated by getters)
+//  ANL-5 (validated by MOC_Validator)
+//  ANL-6 (validated by MOC_Validator)
+//  ANL-7 (defined as non-optional in NSManagedObject subclass)
 //
 //  Created by Vincent Young on 7/4/21.
 //  Copyright © 2021 Vincent Young. All rights reserved.
@@ -20,45 +19,35 @@ import XCTest
 
 class AnalysisValidator {
     
-    static var validators: [(Analysis) -> ()] = [
-        AnalysisValidator.validateAnalysisType,
-        AnalysisValidator.validateAnalysisDateValues,
+    static var validators: [(Analysis) throws -> ()] = [
+        AnalysisValidator.validate_dateRange,
+        AnalysisValidator.validate_startAndEndDates,
         AnalysisValidator.validateLegend
     ]
     
     static func validateAnalyses(_ analyses: Set<Analysis>) {
         for analysis in analyses {
             for validator in AnalysisValidator.validators {
-                validator(analysis)
+                try! validator(analysis)
             }
         }
     }
     
     /**
-     ANL-1: An Analysis' analysisType can only be one of the following values:
-     - `Box`
-     - `Line`
+     ANL-11
      */
-    static var validateAnalysisType: (Analysis) -> () = { analysis in
-        XCTAssert(analysis._analysisType == 0 || analysis._analysisType == 1)
+    static var validate_dateRange: (Analysis) throws -> () = { analysis in
+        if try analysis._rangeType == .dateRange {
+            XCTAssert(try analysis._dateRange > 0)
+        }
     }
     
     /**
-     ANL-2: An Analysis' startDate and endDate are either:
-     - both non-nil OR
-     - both nil
-     ANL-3: If an Analysis' startDate and endDate are both non-nil, then its dateRange is `0`.
-     ANL-4: If an Analysis' startDate and endDate are both nil, then its dateRange is greater than `0`.
-     ANL-8: If an Analysis' startDate and endDate are both non-nil, then its endDate is later than or equal to startDate.
+     ANL-12
      */
-    static var validateAnalysisDateValues: (Analysis) -> () = { analysis in
-        if analysis._startDate == nil && analysis._endDate == nil {
-            XCTAssert(analysis._dateRange > 0) // ANL-4
-        } else if analysis._startDate != nil && analysis._endDate != nil {
-            XCTAssert(analysis._dateRange == 0) // ANL-3
-            XCTAssert(SaveFormatter.storedStringToDate(analysis._startDate!)!.lessThanOrEqualToDate(SaveFormatter.storedStringToDate(analysis._endDate!)!)) // ANL-8
-        } else {
-            XCTFail() // ANL-2
+    static var validate_startAndEndDates: (Analysis) throws -> () = { analysis in
+        if try analysis._rangeType == .startEnd {
+            XCTAssert((try analysis._startDate!).lessThanOrEqualToDate(try analysis._endDate!))
         }
     }
     
@@ -68,7 +57,7 @@ class AnalysisValidator {
 
 extension AnalysisValidator {
     
-    static var validateLegend: (Analysis) -> () = { analysis in
+    static var validateLegend: (Analysis) throws -> () = { analysis in
         AnalysisLegendValidator.validateAnalysisLegend(analysis._legend)
     }
     

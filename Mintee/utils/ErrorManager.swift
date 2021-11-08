@@ -11,16 +11,28 @@ import Firebase
 
 struct ErrorManager {
     
-    // Error message to present if an unexpected interal error was found.
-    static let unexpectedErrorMessage = "Oops! Something went wrong. The cows are hard at work fixing it!"
+    static func recordUnexpectedError(_ error: Error) -> NSError {
+        return ErrorManager.recordNonFatal(.unexpectedError, ["error.localizedDescription": error.localizedDescription])
+    }
+    
+    static func recordUnexpectedError(_ error: NSError) -> NSError {
+        return ErrorManager.recordNonFatal(.unexpectedError, error.userInfo)
+    }
     
     /**
-     Records a non-fatal error to report to Crashlytics
-     - parameter errorCode: Value of type enum ErrorManager.muError to report as NSError code
-     - parameter userInfo: [String:Any] pairs to be reported with error record
+     Records a non-fatal error to report to Crashlytics.
+     - parameter errorCode: Non-fatal error code to report.
      */
-    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal,
-                               _ userInfo: [String:Any]) -> NSError {
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal) -> NSError {
+        return recordNonFatal(errorCode, [:])
+    }
+    
+    /**
+     Records a non-fatal error to report to Crashlytics.
+     - parameter errorCode: Non-fatal error code to report.
+     - parameter userInfo: [String:Any] pairs to be reported with error record.
+     */
+    static func recordNonFatal(_ errorCode: ErrorManager.NonFatal, _ userInfo: [String: Any]) -> NSError {
         
         var domain: String
         if let bundleID = Bundle.main.bundleIdentifier {
@@ -45,14 +57,16 @@ struct ErrorManager {
         // Miscellaneous error codes
         case bundleIdentifierWasNil = 1
         case dateOperationFailed = 2
+        case unexpectedError = 3
+        case unexpectedCase = 4
         
         // UserDefault error codes
         case userDefaults_containedInvalidValue = 100
         case userDefaults_observedInvalidUpdate = 101
         
         // View object error codes
-        case viewObject_unexpectedNilProperty = 200
-        case viewFunction_receivedInvalidParms = 201
+//        case viewObject_unexpectedNilProperty = 200
+        case view_helperFunction_receivedInvalidInput = 201
         case uiCollectionViewController_castDequeuedCellFailed = 202
         case viewObject_didNotContainExpectedObject = 203
         
@@ -62,6 +76,12 @@ struct ErrorManager {
         case modelFunction_receivedInvalidInput = 302
         case modelObjectInitializer_receivedInvalidInput = 303
         case persistentStore_saveFailed = 304
+        case childContextObject_fetchFailed = 305
+        case transformable_decodingFailed = 306
+        case persistentStore_loadFailed = 307
+        
+        // Helper function error codes
+        case helperFunction_receivedInvalidData = 400
     }
     
 }

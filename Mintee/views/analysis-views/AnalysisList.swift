@@ -28,33 +28,29 @@ struct AnalysisList: View {
     
     /**
      Re-assigns `order` to Analyses in the MOC by iterating over the model's previews.
-     - returns: True if update and MOC save were successful.
      */
-    func saveAnalysisOrdering() -> Bool {
+    func saveAnalysisOrdering() {
         
-        for preview in model.sortedPreviews {
-            if preview.order >= 0 {
-                preview.id.setOrder(Int16(preview.order))
-            } else {
-                preview.id.setUnincluded()
-            }
-        }
-        
-        do {
-            try CDCoordinator.moc.save()
-            return true
-        } catch {
-            var userInfo: [String : Any] = ["Message" : "AnalysisList.saveAnalysisOrdering() failed"]
-            for idx in 0 ..< model.sortedPreviews.count {
-                userInfo["preview[\(idx)].order"] = model.sortedPreviews[idx].order
-                userInfo["preview[\(idx)].id"] = model.sortedPreviews[idx].id.debugDescription
-                model.sortedPreviews[idx].id.mergeDebugDictionary(userInfo: &userInfo, prefix: "preview[\(idx)].id.")
-            }
-            ErrorManager.recordNonFatal(.persistentStore_saveFailed, userInfo)
+        // Re-assign Analysis orders and save changes in the child MOC.
+        let childContext = CDCoordinator.getChildContext()
+        childContext.perform {
             
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
+            for preview in model.sortedPreviews {
+                guard let childAnalysis = childContext.childAnalysis(preview.id.objectID) else {
+                    NotificationCenter.default.post(name: .analysisReorderFailed, object: nil); return
+                }
+                if preview.order >= 0 {
+                    childAnalysis.setOrder(Int16(preview.order))
+                } else {
+                    childAnalysis.setUnincluded()
+                }
+            }
+            
+            do {
+                try CDCoordinator.saveAndMergeChanges(childContext)
+            } catch {
+                NotificationCenter.default.post(name: .analysisReorderFailed, object: nil)
+            }
         }
         
     }
@@ -112,9 +108,8 @@ struct AnalysisList: View {
                                     }),
                                 trailing:
                                     Button(action: {
-                                        if self.saveAnalysisOrdering() {
-                                            self.isBeingPresented = false
-                                        }
+                                        self.saveAnalysisOrdering()
+                                        self.isBeingPresented = false
                                     }, label: {
                                         Text("Save")
                                     })
@@ -132,95 +127,47 @@ struct AnalysisListCard: View {
     
     let cardPadding: CGFloat = 15
     let togglePreview: () -> () // Closure for toggling the order of the AnalysisListCardPreview held in AnalysisListModel.
-    var analysis: Analysis
+    @ObservedObject var analysis: Analysis
     
     @State var isChecked: Bool
     @State var isPresentingEditAnalysis: Bool = false
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    /**
-     Using the `Analysis` assigned to this View, converts its AnalysisLegend to an array of CategorizedLegendEntryPreview.
-     - returns: (Optional) Array of CategorizedLegendEntryPreview representing the Analysis' legend.
-     */
-    private func extractCategorizedPreviews() -> [CategorizedLegendEntryPreview]? {
-        
-        var previews: [CategorizedLegendEntryPreview] = []
-        for categorizedEntry in analysis._legend.categorizedEntries {
-            guard let color = UIColor(hex: categorizedEntry.color) else {
-                var userInfo: [String : Any] = ["Message" : "AnalysisListCard.extractCategorizedPreviews() found a CategorizedLegendEntry with `color` that could not be converted to value of type UIColor"]
-                self.analysis.mergeDebugDictionary(userInfo: &userInfo)
-                ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, userInfo)
-                return nil
-            }
-            previews.append(CategorizedLegendEntryPreview(color: Color(color), category: categorizedEntry.category))
+    func getAnalysisProperties() -> (type: SaveFormatter.analysisType, rangeType: SaveFormatter.analysisRangeType)? {
+        do {
+            return (try analysis._analysisType, try analysis._rangeType)
+        } catch {
+            return nil
         }
-        return previews
-        
     }
     
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
             
-            if let analysisName = analysis._name,
-               let analysisType = SaveFormatter.storedToAnalysisType(analysis._analysisType) {
+            if let props = getAnalysisProperties() {
                 
                 HStack {
-                    Text(analysisName)
+                    Text(analysis._name)
                     Spacer()
                     Button("Edit", action: {
                         self.isPresentingEditAnalysis = true
                     })
                     .foregroundColor(.primary)
                     .sheet(isPresented: self.$isPresentingEditAnalysis, content: {
-                        if let legendPreviews = extractCategorizedPreviews() {
-                            if let startString = analysis._startDate,
-                               let endString = analysis._endDate,
-                               let start = SaveFormatter.storedStringToDate(startString),
-                               let end = SaveFormatter.storedStringToDate(endString) {
-                                EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
-                                             analysis: analysis,
-                                             analysisName: analysisName,
-                                             tags: analysis.getTagNames().sorted(),
-                                             analysisType: analysisType,
-                                             rangeType: .startEnd,
-                                             legendType: .categorized,
-                                             legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
-                                             startDate: start,
-                                             endDate: end)
-                            } else {
-                                EditAnalysis(isBeingPresented: self.$isPresentingEditAnalysis,
-                                             analysis: analysis,
-                                             analysisName: analysisName,
-                                             tags: analysis.getTagNames().sorted(),
-                                             analysisType: analysisType,
-                                             rangeType: .dateRange,
-                                             legendType: .categorized,
-                                             legendPreviews: CategorizedLegendEntryPreview.sortedPreviews(legendPreviews),
-                                             dateRangeString: String(analysis._dateRange))
-                            }
-                        } else {
-                            ErrorView()
-                        }
+                        EditAnalysis(analysis: analysis, presented: self.$isPresentingEditAnalysis)
                     })
                 }
                 
-                Text("Type: \(analysisType.stringValue)")
+                Text("Type: \(props.type.stringValue)")
                 
-                if let startString = analysis._startDate,
-                   let endString = analysis._endDate,
-                   let start = SaveFormatter.storedStringToDate(startString),
-                   let end = SaveFormatter.storedStringToDate(endString) {
-                    
-                    // Start/end date analysis
-                    Text("\(Date.toMDYPresent(start)) to \(Date.toMDYPresent(end))")
-                    
+                if props.rangeType == .startEnd {
+                    if let dates = EditAnalysis.getDates(analysis) {
+                        Text("\(Date.toMDYPresent(dates.startDate)) to \(Date.toMDYPresent(dates.endDate))")
+                    }
                 } else {
-                    
-                    // Ranged analysis
                     Text("Last \(analysis._dateRange) days")
-                    
                 }
                 
                 Button(action: {
@@ -379,7 +326,7 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
         let fetchRequest: NSFetchRequest<Analysis> = Analysis.fetchRequest()
         fetchRequest.sortDescriptors = []
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.moc, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CDCoordinator.mainContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         
         do {
@@ -390,10 +337,10 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
                 }
             }
         } catch {
-            ErrorManager.recordNonFatal(.fetchRequest_failed,
-                                        ["Message" : "AnalysisListModel.setUpFetchedResults() failed to call performFetch on fetchedResultsController",
-                                         "fetchRequest" : fetchRequest.debugDescription,
-                                         "error.localizedDescription" : error.localizedDescription])
+            let _ = ErrorManager.recordNonFatal(.fetchRequest_failed,
+                                                ["fetchRequest" : fetchRequest.debugDescription,
+                                                 "error.localizedDescription" : error.localizedDescription])
+            NotificationCenter.default.post(name: .analysisListLoadFailed, object: nil)
             return
         }
     }
@@ -402,23 +349,19 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
         
         switch type {
         case .insert:
-            
             // A new Analysis was inserted into the MOC; insert it into the previews but set it as not included on Analysis homepage.
             if let insertedAnalysis = anObject as? Analysis {
                 sortedPreviews.append(AnalysisListCardPreview(id: insertedAnalysis, order: Int(insertedAnalysis._order)))
                 AnalysisListModel.sortPreviews(&self.sortedPreviews)
             }
             break
-            
         case .delete:
-            
             if let deletedAnalysis = anObject as? Analysis,
                let idx = sortedPreviews.firstIndex(where: { $0.id == deletedAnalysis }) {
                 sortedPreviews.remove(at: idx)
                 AnalysisListModel.sortPreviews(&self.sortedPreviews)
             }
             break
-            
         case .update:
             // Invoked when a change occurs to an attribute of a fetched object that IS NOT included in the NSFetchedResultsController's sort descriptors.
             AnalysisListModel.sortPreviews(&self.sortedPreviews)
@@ -428,7 +371,9 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
             AnalysisListModel.sortPreviews(&self.sortedPreviews)
             break
         @unknown default:
-            fatalError()
+            let _ = ErrorManager.recordNonFatal(.unexpectedCase,
+                                                ["type": type.rawValue])
+            NotificationCenter.default.post(name: .analysisListLoadFailed, object: nil)
         }
         
     }

@@ -13,8 +13,27 @@ import CoreData
 
 class Tag_Tests: XCTestCase {
     
+    var task: Task!
+    var analysis: Analysis!
+    
     override class func setUp() {
         TestContainer.setUpTestContainer()
+    }
+    
+    override func setUpWithError() throws {
+        task = try Task(entity: Task.entity(),
+                        insertInto: CDCoordinator.mainContext,
+                        name: "Task",
+                        tags: Set(),
+                        dates: [Date()])
+        analysis = try Analysis(entity: Analysis.entity(),
+                                insertInto: CDCoordinator.mainContext,
+                                name: "Analysis",
+                                type: .box,
+                                dateRange: 0,
+                                legend: AnalysisLegend(categorizedEntries: Set(), completionEntries: Set([CompletionLegendEntry(color: .blue, min: 0, max: 1, minOperator: .lt, maxOperator: .lt)])),
+                                order: 0,
+                                tags: Set())
     }
     
     override func tearDownWithError() throws {
@@ -23,60 +42,48 @@ class Tag_Tests: XCTestCase {
     
 }
 
-// MARK: - getOrCreateTag tests
+// MARK: - associateTags tests (Task)
 
 extension Tag_Tests {
     
     /**
-     Test that getOrCreateTag creates a new Tag if one doesn't already exist
+     Test that associateTags creates a new Tag if one doesn't already exist
      */
-    func test_getOrCreateTag_newTag() throws {
-        
-        var tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
+    func test_associateTags_newTag() throws {
+        var tagFetch = try CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 0)
         
-        let _ = try Tag.getOrCreateTag(tagName: "Tag")
-        tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
+        try Tag.associateTags(tagNames: Set(["Tag"]), task, CDCoordinator.mainContext)
+        tagFetch = try CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
-        
     }
     
     /**
-     Test that getOrCreateTag doesn't create new Tags when an existing tagName is requested
+     Test that associateTags doesn't create new Tags when an existing tagName is requested
      */
-    func test_getOrCreateTag_reuseExisting() throws {
-        
-        let tag1 = try Tag.getOrCreateTag(tagName: "Tag")
-        var tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
+    func test_associateTags_reuseExisting() throws {
+        try Tag.associateTags(tagNames: Set(["Tag"]), task, CDCoordinator.mainContext)
+        var tagFetch = try CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
         
-        let tag2 = try Tag.getOrCreateTag(tagName: "Tag")
-        tagFetch = try CDCoordinator.moc.fetch(Tag.fetchRequest()) as [Tag]
+        try Tag.associateTags(tagNames: Set(["Tag"]), task, CDCoordinator.mainContext)
+        tagFetch = try CDCoordinator.mainContext.fetch(Tag.fetchRequest()) as [Tag]
         XCTAssert(tagFetch.count == 1)
-        
-        XCTAssert(tag1 == tag2)
-        
     }
     
 }
 
-// MARK: - getTag	 tests
+// MARK: - associateTags tests (Analysis)
 
 extension Tag_Tests {
     
-    func test_getTag_nonExistingTag() throws {
-        
-        let tag = try Tag.getTag(tagName: "Tag")
-        XCTAssert(tag == nil)
-        
+    func test_associateTags_nonExistingTag() throws {
+        XCTAssertThrowsError(try Tag.associateTags(tagNames: Set(["Tag"]), analysis, CDCoordinator.mainContext))
     }
     
-    func test_getTag_existingTag() throws {
-        
-        let _ = try Tag.getOrCreateTag(tagName: "Tag")
-        let tag = try Tag.getTag(tagName: "Tag")
-        XCTAssert(tag != nil)
-        
+    func test_associateTags_existingTag() throws {
+        try Tag.associateTags(tagNames: Set(["Tag"]), task, CDCoordinator.mainContext)
+        try Tag.associateTags(tagNames: Set(["Tag"]), analysis, CDCoordinator.mainContext)
     }
     
 }

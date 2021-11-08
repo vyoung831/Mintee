@@ -19,7 +19,7 @@ struct AddAnalysis: View {
     @State var tags: [String] = [] // TO-DO: Define and enforce a standard for Mintee forms to follow when presenting associated entities for user interaction.
     
     // Date range selection vars
-    @State var rangeType: AnalysisUtils.dateRangeType = .startEnd
+    @State var rangeType: SaveFormatter.analysisRangeType = .startEnd
     @State var startDate: Date = Date()
     @State var endDate: Date = Date()
     @State var dateRangeString: String = ""
@@ -30,84 +30,58 @@ struct AddAnalysis: View {
     
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
-    private func saveAnalysis() -> Bool {
-        
-        if tags.count < 1 {
-            self.errorMessage = "Add at least one Tag for the Analysis to use"
-            return false
-        }
+    private func saveAnalysis(range: Int16 = 0) {
         
         var categorizedLegendEntries = Set<CategorizedLegendEntry>()
-        var tagsToAssociate = Set<Tag>()
-        do {
-            
-            for preview in legendPreviews {
-                categorizedLegendEntries.insert(
-                    try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
-                )
-            }
-            
-            for tagName in self.tags {
-                if let tag = try Tag.getTag(tagName: tagName) {
-                    tagsToAssociate.insert(tag)
-                }
-            }
-            
-        } catch {
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
-        }
-        let legend = AnalysisLegend(categorizedEntries: categorizedLegendEntries, completionEntries: Set())
         
-        do {
-            switch rangeType {
-            case .startEnd:
-                let _ = try Analysis(entity: Analysis.entity(),
-                                     insertInto: CDCoordinator.moc,
-                                     name: analysisName,
-                                     type: self.analysisType,
-                                     startDate: self.startDate,
-                                     endDate: self.endDate,
-                                     legend: legend,
-                                     order: -1,
-                                     tags: tagsToAssociate)
-            case .dateRange:
-                
-                if self.dateRangeString.count < 1 {
-                    self.errorMessage = "Specify a date range"
-                    CDCoordinator.moc.rollback()
-                    return false
+        let childContext = CDCoordinator.getChildContext()
+        childContext.perform {
+            
+            do {
+                for preview in legendPreviews {
+                    categorizedLegendEntries.insert(
+                        try CategorizedLegendEntry(category: preview.category, color: UIColor(preview.color))
+                    )
                 }
-                
-                guard let range = Int16(dateRangeString) else {
-                    self.errorMessage = "Remove invalid input from date range"
-                    CDCoordinator.moc.rollback()
-                    return false
-                }
-                
-                let _ = try Analysis(entity: Analysis.entity(),
-                                     insertInto: CDCoordinator.moc,
-                                     name: analysisName,
-                                     type: self.analysisType,
-                                     dateRange: range,
-                                     legend: legend,
-                                     order: -1,
-                                     tags: tagsToAssociate)
+            } catch {
+                NotificationCenter.default.post(name: .analysisSaveFailed, object: nil)
+                return
             }
-        } catch {
-            self.errorMessage = ErrorManager.unexpectedErrorMessage
-            CDCoordinator.moc.rollback()
-            return false
-        }
-        
-        do {
-            try CDCoordinator.moc.save()
-            return true
-        } catch {
-            self.errorMessage = "Save failed. Please check if another Analysis with this name already exists"
-            CDCoordinator.moc.rollback()
-            return false
+            let legend = AnalysisLegend(categorizedEntries: categorizedLegendEntries, completionEntries: Set())
+            
+            do {
+                switch rangeType {
+                case .startEnd:
+                    let _ = try Analysis(entity: Analysis.entity(),
+                                         insertInto: childContext,
+                                         name: analysisName,
+                                         type: self.analysisType,
+                                         startDate: self.startDate,
+                                         endDate: self.endDate,
+                                         legend: legend,
+                                         order: -1,
+                                         tags: Set(self.tags))
+                case .dateRange:
+                    let _ = try Analysis(entity: Analysis.entity(),
+                                         insertInto: childContext,
+                                         name: analysisName,
+                                         type: self.analysisType,
+                                         dateRange: range,
+                                         legend: legend,
+                                         order: -1,
+                                         tags: Set(self.tags))
+                }
+            } catch {
+                NotificationCenter.default.post(name: .analysisSaveFailed, object: nil)
+                return
+            }
+            
+            do {
+                try CDCoordinator.saveAndMergeChanges(childContext)
+            } catch {
+                NotificationCenter.default.post(name: .analysisSaveFailed, object: nil)
+            }
+            
         }
         
     }
@@ -144,9 +118,9 @@ struct AddAnalysis: View {
                                                                       selection: self.$analysisType)
                     
                     // MARK: - Date range selection
-                    SelectableTypeSection<AnalysisUtils.dateRangeType>(sectionLabel: "Date range",
-                                                                       options: AnalysisUtils.dateRangeType.allCases,
-                                                                       selection: self.$rangeType)
+                    SelectableTypeSection<SaveFormatter.analysisRangeType>(sectionLabel: "Date range",
+                                                                           options: SaveFormatter.analysisRangeType.allCases,
+                                                                           selection: self.$rangeType)
                     
                     if self.rangeType == .startEnd {
                         StartAndEndDateSection(startDate: self.$startDate,
@@ -167,31 +141,47 @@ struct AddAnalysis: View {
                     
                 }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
             })
-            .navigationTitle("Add Analysis")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                
-                leading: Button(action: {
-                    if self.saveAnalysis() {
+                .navigationTitle("Add Analysis")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(
+                    
+                    leading: Button(action: {
+                        
+                        if tags.count < 1 {
+                            self.errorMessage = "Add at least one Tag for the Analysis to use"
+                            return
+                        }
+                        
+                        // Check Date range
+                        switch rangeType {
+                        case .startEnd:
+                            self.saveAnalysis()
+                            break
+                        case .dateRange:
+                            guard let castRange = Int16(dateRangeString) else { self.errorMessage = "Enter a valid date range"; return }
+                            self.saveAnalysis(range: castRange)
+                            break
+                        }
+                        
                         self.isBeingPresented = false
-                    }
-                }, label: {
-                    Text("Save")
-                })
-                .foregroundColor(.accentColor)
-                .accessibility(identifier: "add-analysis-save-button")
-                .disabled(self.analysisName.count < 1),
-                
-                trailing: Button(action: {
-                    self.isBeingPresented = false
-                }, label: {
-                    Text("Cancel")
-                })
-                .foregroundColor(.accentColor)
-                
-            )
-            .background(themeManager.panel)
-            .foregroundColor(themeManager.panelContent)
+                        
+                    }, label: {
+                        Text("Save")
+                    })
+                        .foregroundColor(.accentColor)
+                        .accessibility(identifier: "add-analysis-save-button")
+                        .disabled(self.analysisName.count < 1),
+                    
+                    trailing: Button(action: {
+                        self.isBeingPresented = false
+                    }, label: {
+                        Text("Cancel")
+                    })
+                        .foregroundColor(.accentColor)
+                    
+                )
+                .background(themeManager.panel)
+                .foregroundColor(themeManager.panelContent)
             
         }
         .accentColor(themeManager.accent)
