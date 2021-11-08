@@ -47,21 +47,6 @@ struct TaskTargetSetPopup: View {
     var save: (TaskTargetSetView) -> ()
     
     /**
-     - returns: True if both minValue and maxValue TextFields are empty
-     */
-    func checkEmptyValues() -> Bool {
-        return minValueString.count < 1 && maxValueString.count < 1
-    }
-    
-    func validateMinValue() -> Float? {
-        return Float(minValueString)
-    }
-    
-    func validateMaxValue() -> Float? {
-        return Float(maxValueString)
-    }
-    
-    /**
      Creates and configures a TaskTargetSetView, and appends it to the Binding of type [TaskTargetSetView] provided by the parent View.
      - returns: True if TaskTargetSetView save was successful
      */
@@ -167,24 +152,29 @@ struct TaskTargetSetPopup: View {
             .navigationBarItems(
                 leading: Button(action: {
                     
-                    if checkEmptyValues() { errorMessage = "Fill out at least either lower or upper target bound"; return }
+                    if minValueString.count < 1 && maxValueString.count < 1 {
+                        errorMessage = "Fill out at least either lower or upper target bound"; return
+                    }
                     
                     // Min/Max value input validation
                     var min: Float, max: Float
                     if minValueString.count > 0 {
-                        guard let minu = validateMinValue() else {
+                        guard let minu = Float(minValueString) else {
                             errorMessage = "Remove invalid input from lower target bound"; return
                         }
                         min = minu
                     } else {
                         minOperator = .na; min = 0
                     }
+                    
                     if maxValueString.count > 0 {
-                        guard let maxu = validateMaxValue() else {
+                        guard let maxu = Float(maxValueString) else {
                             errorMessage = "Remove invalid input from upper target bound"; return
                         }
                         max = maxu
-                    } else { maxOperator = .na; max = 0 }
+                    } else {
+                        maxOperator = .na; max = 0
+                    }
                     
                     do {
                         try self.done(min, max)
