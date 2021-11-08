@@ -66,7 +66,6 @@ struct AddTask: View {
                     break
                 }
             } catch {
-                childContext.rollback()
                 NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
                 return
             }

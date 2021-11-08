@@ -15,8 +15,8 @@ import Firebase
 public class Tag: NSManagedObject {
     
     @NSManaged private var name: String
-    @NSManaged private var analyses: NSSet?
     @NSManaged private var tasks: NSSet
+    @NSManaged private var analyses: NSSet?
     
     var _name: String { get { return self.name } }
     
@@ -31,8 +31,9 @@ public class Tag: NSManagedObject {
     
     var _analyses: Set<Analysis> {
         get throws {
-            guard let castSet = self.analyses as? Set<Analysis> else {
-                return Set<Analysis>()
+            guard let unwrappedSet = self.analyses else { return Set<Analysis>() }
+            guard let castSet = unwrappedSet as? Set<Analysis> else {
+                throw ErrorManager.recordNonFatal(.persistentStore_containedInvalidData, ["unwrappedSet.debugDescription": unwrappedSet.debugDescription])
             }
             return castSet
         }
@@ -58,19 +59,19 @@ public class Tag: NSManagedObject {
         for tagName in tagNames {
             let request = NSFetchRequest<Tag>(entityName: "Tag")
             request.predicate = NSPredicate(format: "name == [cd] %@", tagName) // Case and diacritic insensitive predicate
+            var results: [Tag] = []
             do {
-                let results = try moc.fetch(request)
-                guard let first = results.first else {
-                    Tag(tagName: tagName, moc).addToTasks(task)
-                    continue
-                }
-                first.addToTasks(task)
+                results = try moc.fetch(request)
             } catch {
-                moc.rollback()
                 throw ErrorManager.recordNonFatal(.fetchRequest_failed,
                                                   ["request" : request.debugDescription,
                                                    "error.localizedDescription" : error.localizedDescription])
             }
+            guard let first = results.first else {
+                Tag(tagName: tagName, moc).addToTasks(task)
+                continue
+            }
+            first.addToTasks(task)
         }
     }
     
@@ -84,18 +85,18 @@ public class Tag: NSManagedObject {
         for tagName in tagNames {
             let request = NSFetchRequest<Tag>(entityName: "Tag") // TO-DO: Update FetchRequest with more robust way to obtain name of `Tag` entity.
             request.predicate = NSPredicate(format: "name == [cd] %@", tagName) // Case and diacritic insensitive predicate
+            var results: [Tag] = []
             do {
-                let results = try moc.fetch(request)
-                guard let first = results.first else {
-                    throw ErrorManager.recordNonFatal(.fetchRequest_failed)
-                }
-                first.addToAnalyses(analysis)
+                results = try moc.fetch(request)
             } catch {
-                moc.rollback()
                 throw ErrorManager.recordNonFatal(.fetchRequest_failed,
                                                   ["request" : request.debugDescription,
                                                    "error.localizedDescription" : error.localizedDescription])
             }
+            guard let first = results.first else {
+                throw ErrorManager.recordNonFatal(.fetchRequest_failed)
+            }
+            first.addToAnalyses(analysis)
         }
     }
     

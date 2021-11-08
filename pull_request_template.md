@@ -40,6 +40,9 @@ More on transformable security [here](https://www.kairadiagne.com/2020/01/13/nss
         * Includes the custom class in its allowed top-level classes.
     - SceneDelegate is updated to register the custom transformer before initializing the persistent container.  
 
+### Misc.
+- [ ] Code uses `CDCoordinator` to retrieve child MOCs and save and merge changes into the main MOC. No new `rollback` or `save` code is introduced.
+
 ## Failure handling
 
 ### Code health
