@@ -38,10 +38,6 @@ extension Notification.Name {
         return .init(rawValue: "Leko.Mintee.taskDeleteFailed")
     }
     
-    static var editTask_initFailed: Notification.Name {
-        return .init(rawValue: "Leko.Mintee.editTask_initFailed")
-    }
-    
 }
 
 // MARK: - Analysis-related Notifications
@@ -66,10 +62,6 @@ extension Notification.Name {
     
     static var analysisListLoadFailed: Notification.Name {
         return .init(rawValue: "Leko.Mintee.analysisListLoadFailed")
-    }
-    
-    static var editAnalysis_initFailed: Notification.Name {
-        return .init(rawValue: "Leko.Mintee.editAnalysis_initFailed")
     }
     
 }

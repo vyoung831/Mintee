@@ -371,7 +371,7 @@ extension AnalysisListModel: NSFetchedResultsControllerDelegate {
             AnalysisListModel.sortPreviews(&self.sortedPreviews)
             break
         @unknown default:
-            let _ = ErrorManager.recordNonFatal(.unexpectedError,
+            let _ = ErrorManager.recordNonFatal(.unexpectedCase,
                                                 ["type": type.rawValue])
             NotificationCenter.default.post(name: .analysisListLoadFailed, object: nil)
         }

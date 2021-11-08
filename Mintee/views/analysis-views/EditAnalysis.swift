@@ -40,9 +40,7 @@ struct EditAnalysis: View {
         
         self.isBeingPresented = presented
         
-        guard let previews = EditAnalysis.extractCategorizedPreviews(analysis) else {
-            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
-        }
+        guard let previews = EditAnalysis.extractCategorizedPreviews(analysis) else { return }
         
         do {
             let type = try analysis._analysisType
@@ -51,9 +49,7 @@ struct EditAnalysis: View {
             
             switch rangeType {
             case .startEnd:
-                guard let dates = EditAnalysis.getDates(analysis) else {
-                    NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
-                }
+                guard let dates = EditAnalysis.getDates(analysis) else { return }
                 self._startDate = State(initialValue: dates.startDate)
                 self._endDate = State(initialValue: dates.endDate)
                 self._rangeType = State(initialValue: .startEnd)
@@ -70,7 +66,7 @@ struct EditAnalysis: View {
             self.analysis = analysis
             
         } catch {
-            NotificationCenter.default.post(name: .editAnalysis_initFailed, object: nil); return
+            return
         }
         
     }
@@ -116,8 +112,8 @@ struct EditAnalysis: View {
         do {
             guard let start = try analysis._startDate,
                   let end = try analysis._endDate else {
-                return nil
-            }
+                      return nil
+                  }
             return (start, end)
         } catch {
             return nil
@@ -150,117 +146,123 @@ struct EditAnalysis: View {
     var body: some View {
         
         NavigationView {
-            ScrollView(.vertical, showsIndicators: true, content: {
-                VStack(alignment: .leading, spacing: 15, content: {
-                    
-                    // MARK: - Analysis name text field
-                    LabelAndTextFieldSection(label: "Analysis name",
-                                             labelIdentifier: "analysis-name-label",
-                                             placeHolder: "Analysis name",
-                                             textField: self.$analysisName,
-                                             textFieldIdentifier: "analysis-name-text-field")
-                    if (errorMessage.count > 0) {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .accessibility(identifier: "edit-analysis-error-message")
-                    }
-                    
-                    // MARK: - Tags
-                    TagsSection(allowedToAddNewTags: false,
-                                label: "Include Tasks with Tags:",
-                                formType: "analysis",
-                                tags: self.$tags)
-                    
-                    // MARK: - Analysis type
-                    SelectableTypeSection<SaveFormatter.analysisType>(sectionLabel: "Analysis type",
-                                                                      options: SaveFormatter.analysisType.allCases,
-                                                                      selection: self.$analysisType)
-                    
-                    // MARK: - Date range selection
-                    SelectableTypeSection<SaveFormatter.analysisRangeType>(sectionLabel: "Date range",
-                                                                           options: SaveFormatter.analysisRangeType.allCases,
-                                                                           selection: self.$rangeType)
-                    
-                    if self.rangeType == .startEnd {
-                        StartAndEndDateSection(startDate: self.$startDate,
-                                               endDate: self.$endDate)
-                    } else {
-                        DateRangeTextFieldSection(dateRange: self.$dateRangeString)
-                    }
-                    
-                    // MARK: - Legend entries
-                    ForEach(0 ..< legendPreviews.count, id: \.self) { idx in
-                        ColorPicker("\(legendPreviews[idx].getLabel())", selection: $legendPreviews[idx].color)
-                            .frame(maxWidth: .infinity)
-                            .padding(12)
-                            .background(legendPreviews[idx].color)
-                            .border(themeManager.collectionItemBorder, width: 3)
-                            .cornerRadius(5)
-                    }
-                    
-                    // MARK: - Analysis deletion
-                    
-                    Group {
-                        Button(action: {
-                            self.isPresentingConfirmDeletePopup = true
-                        }, label: {
-                            Text("Delete Analysis")
-                                .padding(.all, 10)
-                                .background(Color.red)
-                                .foregroundColor(.white)
-                                .cornerRadius(3)
-                        }).disabled(self.analysis == nil)
-                        
-                        if (deleteErrorMessage.count > 0) {
-                            Text(deleteErrorMessage)
-                                .foregroundColor(.red)
-                        }
-                    }
-                    .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
-                        ConfirmDeletePopup(deleteMessage: self.deleteMessage,
-                                           deleteList: [],
-                                           delete: { self.deleteAnalysis() },
-                                           isBeingPresented: self.$isPresentingConfirmDeletePopup)
+            Group {
+                if self.analysis != nil {
+                    ScrollView(.vertical, showsIndicators: true, content: {
+                        VStack(alignment: .leading, spacing: 15, content: {
+                            
+                            // MARK: - Analysis name text field
+                            LabelAndTextFieldSection(label: "Analysis name",
+                                                     labelIdentifier: "analysis-name-label",
+                                                     placeHolder: "Analysis name",
+                                                     textField: self.$analysisName,
+                                                     textFieldIdentifier: "analysis-name-text-field")
+                            if (errorMessage.count > 0) {
+                                Text(errorMessage)
+                                    .foregroundColor(.red)
+                                    .accessibility(identifier: "edit-analysis-error-message")
+                            }
+                            
+                            // MARK: - Tags
+                            TagsSection(allowedToAddNewTags: false,
+                                        label: "Include Tasks with Tags:",
+                                        formType: "analysis",
+                                        tags: self.$tags)
+                            
+                            // MARK: - Analysis type
+                            SelectableTypeSection<SaveFormatter.analysisType>(sectionLabel: "Analysis type",
+                                                                              options: SaveFormatter.analysisType.allCases,
+                                                                              selection: self.$analysisType)
+                            
+                            // MARK: - Date range selection
+                            SelectableTypeSection<SaveFormatter.analysisRangeType>(sectionLabel: "Date range",
+                                                                                   options: SaveFormatter.analysisRangeType.allCases,
+                                                                                   selection: self.$rangeType)
+                            
+                            if self.rangeType == .startEnd {
+                                StartAndEndDateSection(startDate: self.$startDate,
+                                                       endDate: self.$endDate)
+                            } else {
+                                DateRangeTextFieldSection(dateRange: self.$dateRangeString)
+                            }
+                            
+                            // MARK: - Legend entries
+                            ForEach(0 ..< legendPreviews.count, id: \.self) { idx in
+                                ColorPicker("\(legendPreviews[idx].getLabel())", selection: $legendPreviews[idx].color)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(12)
+                                    .background(legendPreviews[idx].color)
+                                    .border(themeManager.collectionItemBorder, width: 3)
+                                    .cornerRadius(5)
+                            }
+                            
+                            // MARK: - Analysis deletion
+                            
+                            Group {
+                                Button(action: {
+                                    self.isPresentingConfirmDeletePopup = true
+                                }, label: {
+                                    Text("Delete Analysis")
+                                        .padding(.all, 10)
+                                        .background(Color.red)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(3)
+                                }).disabled(self.analysis == nil)
+                                
+                                if (deleteErrorMessage.count > 0) {
+                                    Text(deleteErrorMessage)
+                                        .foregroundColor(.red)
+                                }
+                            }
+                            .sheet(isPresented: self.$isPresentingConfirmDeletePopup, content: {
+                                ConfirmDeletePopup(deleteMessage: self.deleteMessage,
+                                                   deleteList: [],
+                                                   delete: { self.deleteAnalysis() },
+                                                   isBeingPresented: self.$isPresentingConfirmDeletePopup)
+                            })
+                            
+                        }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
                     })
+                } else {
+                    ErrorView()
+                }
+            }
+            .navigationTitle("Edit Analysis")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                leading: Button(action: {
                     
-                }).padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
-            })
-                .navigationTitle("Edit Analysis")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(
-                    leading: Button(action: {
-                        
-                        if tags.count < 1 {
-                            self.errorMessage = "Add at least one Tag for the Analysis to use"
-                            return
-                        }
-                        
-                        switch self.rangeType {
-                        case .startEnd:
-                            self.saveAnalysis(); break
-                        case .dateRange:
-                            guard let rangeCast = Int16(dateRangeString) else { self.errorMessage = "Enter a valid date range"; return }
-                            self.saveAnalysis(range: rangeCast); break
-                        }
-                        self.isBeingPresented.wrappedValue = false
-                        
-                    }, label: {
-                        Text("Save")
-                    })
-                        .foregroundColor(.accentColor)
-                        .accessibility(identifier: "edit-analysis-save-button")
-                        .disabled(self.analysisName.count < 1 || self.analysis == nil),
+                    if tags.count < 1 {
+                        self.errorMessage = "Add at least one Tag for the Analysis to use"
+                        return
+                    }
                     
-                    trailing: Button(action: {
-                        self.isBeingPresented.wrappedValue = false
-                    }, label: {
-                        Text("Cancel")
-                    })
-                        .foregroundColor(.accentColor)
+                    switch self.rangeType {
+                    case .startEnd:
+                        self.saveAnalysis(); break
+                    case .dateRange:
+                        guard let rangeCast = Int16(dateRangeString) else { self.errorMessage = "Enter a valid date range"; return }
+                        self.saveAnalysis(range: rangeCast); break
+                    }
+                    self.isBeingPresented.wrappedValue = false
                     
-                )
-                .background(themeManager.panel)
-                .foregroundColor(themeManager.panelContent)
+                }, label: {
+                    Text("Save")
+                })
+                    .foregroundColor(.accentColor)
+                    .accessibility(identifier: "edit-analysis-save-button")
+                    .disabled(self.analysisName.count < 1 || self.analysis == nil),
+                
+                trailing: Button(action: {
+                    self.isBeingPresented.wrappedValue = false
+                }, label: {
+                    Text("Cancel")
+                })
+                    .foregroundColor(.accentColor)
+                
+            )
+            .background(themeManager.panel)
+            .foregroundColor(themeManager.panelContent)
             
         }
         .accentColor(themeManager.accent)

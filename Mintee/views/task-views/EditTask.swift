@@ -51,24 +51,18 @@ struct EditTask: View {
             type = try task._taskType
             self._tags = State(initialValue: (try task._tags).map{ $0._name })
         } catch {
-            NotificationCenter.default.post(name: .editTask_initFailed, object: nil); return
+            return
         }
         
         switch type {
         case .recurring:
-            guard let recurringProperties = EditTask.getRecurringProperties(task) else {
-                NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
-                return
-            }
+            guard let recurringProperties = EditTask.getRecurringProperties(task) else { return }
             self._startDate = State(initialValue: recurringProperties.startDate)
             self._endDate = State(initialValue: recurringProperties.endDate)
             self._taskTargetSetViews = State(initialValue: recurringProperties.ttsvArray)
             break
         case .specific:
-            guard let instances = EditTask.getSpecificDates(task) else {
-                NotificationCenter.default.post(name: .editTask_initFailed, object: nil)
-                return
-            }
+            guard let instances = EditTask.getSpecificDates(task) else { return }
             self._dates = State(initialValue: instances)
             break
         }
@@ -159,165 +153,171 @@ struct EditTask: View {
         
         NavigationView {
             
-            ScrollView(.vertical, showsIndicators: true, content: {
-                VStack(alignment: .leading, spacing: 15, content: {
-                    
-                    // MARK: - Task name text field
-                    
-                    LabelAndTextFieldSection(label: "Task name",
-                                             labelIdentifier: "task-name-label",
-                                             placeHolder: "Task name",
-                                             textField: self.$taskName,
-                                             textFieldIdentifier: "task-name-text-field")
-                    if (saveErrorMessage.count > 0) {
-                        Text(saveErrorMessage)
-                            .foregroundColor(.red)
-                            .accessibility(identifier: "edit-task-save-error-message")
-                    }
-                    
-                    // MARK: - Tags
-                    
-                    TagsSection(allowedToAddNewTags: true,
-                                label: "Tags",
-                                formType: "task",
-                                tags: self.$tags)
-                    
-                    // MARK: - Task type
-                    
-                    SelectableTypeSection<SaveFormatter.taskType>(sectionLabel: "Task type",
-                                                                  options: SaveFormatter.taskType.allCases,
-                                                                  selection: self.$taskType)
-                    
-                    // MARK: - Dates
-                    
-                    if self.taskType == .recurring {
-                        StartAndEndDateSection(startDate: self.$startDate,
-                                               endDate: self.$endDate)
-                    } else {
-                        SelectDatesSection(dates: self.$dates)
-                    }
-                    
-                    // MARK: - Target sets
-                    
-                    if self.taskType == .recurring {
-                        TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
-                    }
-                    
-                    // MARK: - Task deletion
-                    
-                    Group {
-                        Button(action: {
-                            self.isPresentingConfirmDeletePopupForDeleteTask = true
-                        }, label: {
-                            Text("Delete Task")
-                                .padding(.all, 10)
-                                .background(Color.red)
-                                .foregroundColor(.white)
-                                .cornerRadius(3)
-                        }).disabled(self.task == nil)
-                        
-                        if (deleteErrorMessage.count > 0) {
-                            Text(deleteErrorMessage)
-                                .foregroundColor(.red)
-                        }
-                    }
-                    
-                })
-                    .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
-            })
-                .onTapGesture {
-                    UIUtil.resignFirstResponder()
+            Group {
+                if self.task != nil {
+                    ScrollView(.vertical, showsIndicators: true, content: {
+                        VStack(alignment: .leading, spacing: 15, content: {
+                            
+                            // MARK: - Task name text field
+                            
+                            LabelAndTextFieldSection(label: "Task name",
+                                                     labelIdentifier: "task-name-label",
+                                                     placeHolder: "Task name",
+                                                     textField: self.$taskName,
+                                                     textFieldIdentifier: "task-name-text-field")
+                            if (saveErrorMessage.count > 0) {
+                                Text(saveErrorMessage)
+                                    .foregroundColor(.red)
+                                    .accessibility(identifier: "edit-task-save-error-message")
+                            }
+                            
+                            // MARK: - Tags
+                            
+                            TagsSection(allowedToAddNewTags: true,
+                                        label: "Tags",
+                                        formType: "task",
+                                        tags: self.$tags)
+                            
+                            // MARK: - Task type
+                            
+                            SelectableTypeSection<SaveFormatter.taskType>(sectionLabel: "Task type",
+                                                                          options: SaveFormatter.taskType.allCases,
+                                                                          selection: self.$taskType)
+                            
+                            // MARK: - Dates
+                            
+                            if self.taskType == .recurring {
+                                StartAndEndDateSection(startDate: self.$startDate,
+                                                       endDate: self.$endDate)
+                            } else {
+                                SelectDatesSection(dates: self.$dates)
+                            }
+                            
+                            // MARK: - Target sets
+                            
+                            if self.taskType == .recurring {
+                                TaskTargetSetSection(taskTargetSetViews: self.$taskTargetSetViews)
+                            }
+                            
+                            // MARK: - Task deletion
+                            
+                            Group {
+                                Button(action: {
+                                    self.isPresentingConfirmDeletePopupForDeleteTask = true
+                                }, label: {
+                                    Text("Delete Task")
+                                        .padding(.all, 10)
+                                        .background(Color.red)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(3)
+                                }).disabled(self.task == nil)
+                                
+                                if (deleteErrorMessage.count > 0) {
+                                    Text(deleteErrorMessage)
+                                        .foregroundColor(.red)
+                                }
+                            }
+                            
+                        })
+                            .padding(EdgeInsets(top: 15, leading: 15, bottom: 15, trailing: 15)) // VStack insets
+                    })
+                } else {
+                    ErrorView()
                 }
-                .navigationTitle("Edit Task")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(
-                    leading: Button(action: {
-                        
-                        guard let unwrappedTask = self.task else { return }
+            }
+            .onTapGesture {
+                UIUtil.resignFirstResponder()
+            }
+            .navigationTitle("Edit Task")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                leading: Button(action: {
+                    
+                    guard let unwrappedTask = self.task else { return }
+                    
+                    switch self.taskType {
+                    case .recurring:
+                        if taskTargetSetViews.count < 1 {
+                            self.saveErrorMessage = "Please add one or more target sets"; return
+                        }
+                        break
+                    case .specific:
+                        if self.dates.count < 1 {
+                            self.saveErrorMessage = "Please add one or more dates"; return
+                        }
+                        break
+                    }
+                    
+                    /*
+                     Call Task's getDelta functions to get the instances that would be deleted given the user's updated input (TaskTargetSets and Dates)
+                     If returned count > 0, existing TaskInstances would be deleted, so ConfirmDeletePopup is presented with the closure to call saveTask() if the user confirms deletion
+                     Otherwise, no TaskInstances would be deleted and saveTask is called directly
+                     */
+                    do {
                         
                         switch self.taskType {
                         case .recurring:
-                            if taskTargetSetViews.count < 1 {
-                                self.saveErrorMessage = "Please add one or more target sets"; return
+                            // Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
+                            var dayPatterns: Set<DayPattern> = Set()
+                            let newTaskTargetSets: [TaskTargetSetView] = self.taskType == .recurring ? taskTargetSetViews : []
+                            for tts in newTaskTargetSets {
+                                
+                                // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
+                                let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? [])),
+                                                    wom: Set((tts.selectedWeeksOfMonth ?? [])),
+                                                    dom: Set((tts.selectedDaysOfMonth ?? [])))
+                                
+                                dayPatterns.insert(dp)
                             }
+                            
+                            // Attempt to get the TaskInstances that would be deleted given the new start date, end date, and target sets.
+                            self.datesToDelete = try unwrappedTask.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
                             break
+                            
                         case .specific:
-                            if self.dates.count < 1 {
-                                self.saveErrorMessage = "Please add one or more dates"; return
-                            }
+                            self.datesToDelete = try unwrappedTask.getDeltaInstancesSpecific(dates: Set(self.dates))
                             break
                         }
                         
-                        /*
-                         Call Task's getDelta functions to get the instances that would be deleted given the user's updated input (TaskTargetSets and Dates)
-                         If returned count > 0, existing TaskInstances would be deleted, so ConfirmDeletePopup is presented with the closure to call saveTask() if the user confirms deletion
-                         Otherwise, no TaskInstances would be deleted and saveTask is called directly
-                         */
-                        do {
-                            
-                            switch self.taskType {
-                            case .recurring:
-                                // Creates a Set of DayPatterns to first call Task.getDeltaInstances with.
-                                var dayPatterns: Set<DayPattern> = Set()
-                                let newTaskTargetSets: [TaskTargetSetView] = self.taskType == .recurring ? taskTargetSetViews : []
-                                for tts in newTaskTargetSets {
-                                    
-                                    // TaskTargetSetPopup only sets dows, woms, and doms based on the type, so there's no need to check the TaskTargetSet type again here
-                                    let dp = DayPattern(dow: Set((tts.selectedDaysOfWeek ?? [])),
-                                                        wom: Set((tts.selectedWeeksOfMonth ?? [])),
-                                                        dom: Set((tts.selectedDaysOfMonth ?? [])))
-                                    
-                                    dayPatterns.insert(dp)
-                                }
-                                
-                                // Attempt to get the TaskInstances that would be deleted given the new start date, end date, and target sets.
-                                self.datesToDelete = try unwrappedTask.getDeltaInstancesRecurring(startDate: self.startDate, endDate: self.endDate, dayPatterns: dayPatterns).map{ Date.toMDYPresent($0) }
-                                break
-                                
-                            case .specific:
-                                self.datesToDelete = try unwrappedTask.getDeltaInstancesSpecific(dates: Set(self.dates))
-                                break
-                            }
-                            
-                        } catch {
-                            NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
-                            return
-                        }
-                        
-                        if self.datesToDelete.count > 0 {
-                            self.isPresentingConfirmDeletePopupForSaveTask = true
-                        }
-                        else { self.saveTask() }
-                        
-                    }, label: {
-                        Text("Save")
-                    })
-                        .foregroundColor(.accentColor)
-                        .accessibility(identifier: "edit-task-save-button")
-                        .disabled(self.taskName.count < 1 || self.task == nil)
-                        .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ?
-                               self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
-                                   if self.isPresentingConfirmDeletePopupForSaveTask {
-                                       ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
-                                                          deleteList: self.datesToDelete,
-                                                          delete: self.saveTask,
-                                                          isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask)
-                                   } else {
-                                       ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
-                                                          deleteList: [],
-                                                          delete: self.deleteTask,
-                                                          isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
-                                   }
-                               }),
-                    trailing: Button(action: {
-                        self.isBeingPresented.wrappedValue = false
-                    }, label: {
-                        Text("Cancel")
-                    })
-                        .foregroundColor(.accentColor)
-                )
-                .background(themeManager.panel)
-                .foregroundColor(themeManager.panelContent)
+                    } catch {
+                        NotificationCenter.default.post(name: .taskSaveFailed, object: nil)
+                        return
+                    }
+                    
+                    if self.datesToDelete.count > 0 {
+                        self.isPresentingConfirmDeletePopupForSaveTask = true
+                    }
+                    else { self.saveTask() }
+                    
+                }, label: {
+                    Text("Save")
+                })
+                    .foregroundColor(.accentColor)
+                    .accessibility(identifier: "edit-task-save-button")
+                    .disabled(self.taskName.count < 1 || self.task == nil)
+                    .sheet(isPresented: self.isPresentingConfirmDeletePopupForSaveTask ?
+                           self.$isPresentingConfirmDeletePopupForSaveTask : self.$isPresentingConfirmDeletePopupForDeleteTask, content: {
+                               if self.isPresentingConfirmDeletePopupForSaveTask {
+                                   ConfirmDeletePopup(deleteMessage: self.saveTaskDeleteMessage,
+                                                      deleteList: self.datesToDelete,
+                                                      delete: self.saveTask,
+                                                      isBeingPresented: self.$isPresentingConfirmDeletePopupForSaveTask)
+                               } else {
+                                   ConfirmDeletePopup(deleteMessage: self.deleteTaskDeleteMessage,
+                                                      deleteList: [],
+                                                      delete: self.deleteTask,
+                                                      isBeingPresented: self.$isPresentingConfirmDeletePopupForDeleteTask)
+                               }
+                           }),
+                trailing: Button(action: {
+                    self.isBeingPresented.wrappedValue = false
+                }, label: {
+                    Text("Cancel")
+                })
+                    .foregroundColor(.accentColor)
+            )
+            .background(themeManager.panel)
+            .foregroundColor(themeManager.panelContent)
             
         }
         .accentColor(themeManager.accent)

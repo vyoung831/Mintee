@@ -20,14 +20,12 @@ struct AlertPresenter: ViewModifier {
     let taskSaveFailed_observer = NotificationCenter.default.publisher(for: .taskSaveFailed)
     let taskUpdateFailed_observer = NotificationCenter.default.publisher(for: .taskUpdateFailed)
     let taskDeleteFailed_observer = NotificationCenter.default.publisher(for: .taskDeleteFailed)
-    let editTask_initFailed_observer = NotificationCenter.default.publisher(for: .editTask_initFailed)
     
     let analysisSaveFailed_observer = NotificationCenter.default.publisher(for: .analysisSaveFailed)
     let analysisUpdateFailed_observer = NotificationCenter.default.publisher(for: .analysisUpdateFailed)
     let analysisDeleteFailed_observer = NotificationCenter.default.publisher(for: .analysisDeleteFailed)
     let analysisReorderFailed_observer = NotificationCenter.default.publisher(for: .analysisReorderFailed)
     let analysisListLoadFailed_observer = NotificationCenter.default.publisher(for: .analysisListLoadFailed)
-    let editAnalysis_initFailed_observer = NotificationCenter.default.publisher(for: .editAnalysis_initFailed)
     
     func updateErrorMessage(_ message: String) {
         self.isPresentingAlert = true
@@ -45,13 +43,10 @@ struct AlertPresenter: ViewModifier {
             .onReceive(taskSaveFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when saving the Task. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(taskUpdateFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when updating the Task. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(taskDeleteFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when deleting the Task. We'll fix this as soon as we can. Please try again later.") }
-            .onReceive(editTask_initFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when trying to read the Analysis. We'll fix this as soon as we can. Please try again later.") }
-        
             .onReceive(analysisSaveFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when saving the Analysis. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(analysisUpdateFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when updating the Analysis. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(analysisDeleteFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when deleting the Analysis. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(analysisReorderFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when saving the Analysis reordering. We'll fix this as soon as we can. Please try again later.") }
             .onReceive(analysisListLoadFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when loading Analysis ordering. We'll fix this as soon as we can. Please try again later.") }
-            .onReceive(editAnalysis_initFailed_observer) { _ in updateErrorMessage("We're very sorry. Something went wrong when trying to read the Task. We'll fix this as soon as we can. Please try again later.") }
     }
 }
