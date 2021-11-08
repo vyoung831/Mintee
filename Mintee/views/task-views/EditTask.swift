@@ -43,34 +43,29 @@ struct EditTask: View {
     @ObservedObject var themeManager: ThemeManager = ThemeManager.shared
     
     init(task: Task, presented: Binding<Bool>) {
-        
         self.isBeingPresented = presented
-        
-        var type: SaveFormatter.taskType
         do {
-            type = try task._taskType
+            self._taskType = State(initialValue: try task._taskType)
+            switch taskType {
+            case .recurring:
+                guard let recurringProperties = EditTask.getRecurringProperties(task) else { return }
+                self._startDate = State(initialValue: recurringProperties.startDate)
+                self._endDate = State(initialValue: recurringProperties.endDate)
+                self._taskTargetSetViews = State(initialValue: recurringProperties.ttsvArray)
+                break
+            case .specific:
+                guard let dates = EditTask.getSpecificDates(task) else { return }
+                self._dates = State(initialValue: dates)
+                break
+            }
+            
+            // Since the body View recognizes initialization as failed if `task` is nil, it's assigned only after all other initialization is complete.
             self._tags = State(initialValue: (try task._tags).map{ $0._name })
+            self._taskName = State(initialValue: task._name)
+            self.task = task
         } catch {
             return
         }
-        
-        switch type {
-        case .recurring:
-            guard let recurringProperties = EditTask.getRecurringProperties(task) else { return }
-            self._startDate = State(initialValue: recurringProperties.startDate)
-            self._endDate = State(initialValue: recurringProperties.endDate)
-            self._taskTargetSetViews = State(initialValue: recurringProperties.ttsvArray)
-            break
-        case .specific:
-            guard let instances = EditTask.getSpecificDates(task) else { return }
-            self._dates = State(initialValue: instances)
-            break
-        }
-        
-        self._taskName = State(initialValue: task._name)
-        self._taskType = State(initialValue: type)
-        self.task = task
-        
     }
     
     /**

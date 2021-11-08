@@ -39,32 +39,26 @@ struct EditAnalysis: View {
     init(analysis: Analysis, presented: Binding<Bool>) {
         
         self.isBeingPresented = presented
-        
         guard let previews = EditAnalysis.extractCategorizedPreviews(analysis) else { return }
         
+        // Since the body View recognizes initialization as failed if `analysis` is nil, it's assigned only after all other initialization is complete.
         do {
-            let type = try analysis._analysisType
-            let rangeType = try analysis._rangeType
-            self._tags = State(initialValue: (try analysis._tags).map{$0._name})
-            
+            self._rangeType = State(initialValue: try analysis._rangeType)
             switch rangeType {
             case .startEnd:
                 guard let dates = EditAnalysis.getDates(analysis) else { return }
                 self._startDate = State(initialValue: dates.startDate)
                 self._endDate = State(initialValue: dates.endDate)
-                self._rangeType = State(initialValue: .startEnd)
                 break
             case .dateRange:
                 self._dateRangeString = State(initialValue: String(analysis._dateRange))
-                self._rangeType = State(initialValue: .dateRange)
                 break
             }
-            
+            self._tags = State(initialValue: (try analysis._tags).map{$0._name})
             self._analysisName = State(initialValue: analysis._name)
-            self._analysisType = State(initialValue: type)
+            self._analysisType = State(initialValue: try analysis._analysisType)
             self._legendPreviews = State(initialValue: previews)
             self.analysis = analysis
-            
         } catch {
             return
         }
