@@ -10,8 +10,18 @@ import Foundation
 
 extension Notification.Name {
     
+    static private let mintee_bundleQualifier = "Leko.Mintee."
+    
     static var themeChanged: Notification.Name {
-        return .init(rawValue: "ThemeManager.themeChanged")
+        return .init(rawValue: "\(Notification.Name.mintee_bundleQualifier)themeChanged")
+    }
+    
+    static var reminderSync_partiallyFailed: Notification.Name {
+        return .init(rawValue: "\(Notification.Name.mintee_bundleQualifier)reminderSync_partiallyFailed")
+    }
+    
+    static var reminderSync_saveFailed: Notification.Name {
+        return .init(rawValue: "\(Notification.Name.mintee_bundleQualifier)reminderSync_saveFailed")
     }
     
 }

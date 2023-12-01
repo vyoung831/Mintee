@@ -106,4 +106,13 @@ extension Date {
         return false
     }
     
+    /**
+     Using the current calendar, compares and returns if this Date is before the provided end Date.
+     - parameter endDate: End date to compare against
+     - returns: True if this Date is before endDate (uses time since reference date rounded to the nearest microsecond)
+     */
+    func lessThan(_ endDate: Date) -> Bool {
+        return self.timeIntervalSinceReferenceDate < endDate.timeIntervalSinceReferenceDate
+    }
+    
 }

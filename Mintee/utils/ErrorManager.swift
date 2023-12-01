@@ -45,6 +45,7 @@ struct ErrorManager {
         // Miscellaneous error codes
         case bundleIdentifierWasNil = 1
         case dateOperationFailed = 2
+        case urlCreationFailed = 3
         
         // UserDefault error codes
         case userDefaults_containedInvalidValue = 100
@@ -62,6 +63,10 @@ struct ErrorManager {
         case modelFunction_receivedInvalidInput = 302
         case modelObjectInitializer_receivedInvalidInput = 303
         case persistentStore_saveFailed = 304
+        
+        // EventKit error codes
+        case ek_couldNotFind_usable_ekSource = 400
+        case ek_removeFailed = 401
     }
     
 }

@@ -121,7 +121,7 @@ extension TodayCollectionViewController {
             cell.handleSetButtonPressed = {
                 let scphc =
                     SetCountPopupHostingController(count: instance._completion, done: { [unowned self, instance] in
-                        instance._completion = $0
+                        instance.updateCompletion($0)
                         CDCoordinator.shared.saveContext()
                         self.dismiss(animated: true, completion: nil)
                     }, cancel: { [unowned self] in

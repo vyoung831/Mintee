@@ -43,6 +43,9 @@
     <entity name="TaskInstance" representedClassName="TaskInstance" syncable="YES">
         <attribute name="completion" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="ekEvent" optional="YES" attributeType="String"/>
+        <attribute name="ekReminder" optional="YES" attributeType="String"/>
+        <attribute name="lastModify" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="targetSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskTargetSet" inverseName="instances" inverseEntity="TaskTargetSet"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="instances" inverseEntity="Task"/>
     </entity>

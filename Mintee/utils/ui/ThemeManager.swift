@@ -35,6 +35,7 @@ class ThemeManager: NSObject, ObservableObject {
         case disabledTextFieldText = "disabledTextFieldText"
         case collectionItem = "collectionItem"
         case collectionItemContent = "collectionItemContent"
+        case navIndicator = "navIndicator"
         
         // Placeholder colors (not actually defined in asset catalogs)
         case button = "button"
@@ -64,6 +65,8 @@ class ThemeManager: NSObject, ObservableObject {
     @Published var collectionItem: Color
     @Published var collectionItemContent: Color
     
+    @Published var navIndicator: Color
+    
     // MARK: - Placeholder colors (not actually defined in asset catalogs)
     
     @Published var collectionItemBorder: Color
@@ -72,7 +75,7 @@ class ThemeManager: NSObject, ObservableObject {
     // MARK: - Initializers
     
     /**
-     Initializes ThemeManager with
+     Initializer for shared instance. Initializes ThemeManager with
      - @Published theme set to the String value of the Theme enum that's saved in UserDefaults
      - @Published Colors set by theme
      */
@@ -90,14 +93,18 @@ class ThemeManager: NSObject, ObservableObject {
         self.collectionItem = ThemeManager.getElementColor(.collectionItem, savedTheme)
         self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, savedTheme)
         self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, savedTheme)
+        self.navIndicator = ThemeManager.getElementColor(.navIndicator, savedTheme)
         super.init()
     }
     
     // MARK: - UserDefaults observation
     
+    /**
+     Register ThemeManager as an observer for the "Theme" keypath.
+     */
     private func observeUserDefaults() {
         UserDefaults.standard.addObserver(self,
-                                          forKeyPath: SettingsPresentationView.PresentationOption.theme.rawValue,
+                                          forKeyPath: SettingsView.PresentationOption.theme.rawValue,
                                           options: [NSKeyValueObservingOptions.new,
                                                     NSKeyValueObservingOptions.old],
                                           context: nil)
@@ -111,7 +118,7 @@ class ThemeManager: NSObject, ObservableObject {
                                change: [NSKeyValueChangeKey: Any]?,
                                context: UnsafeMutableRawPointer?) {
         
-        if keyPath == SettingsPresentationView.PresentationOption.theme.rawValue {
+        if keyPath == SettingsView.PresentationOption.theme.rawValue {
             
             guard let unwrappedChanges = change,
                   let newKey = unwrappedChanges[.newKey] as? String,
@@ -135,6 +142,7 @@ class ThemeManager: NSObject, ObservableObject {
             self.collectionItem = ThemeManager.getElementColor(.collectionItem, newTheme)
             self.collectionItemBorder = ThemeManager.getElementColor(.collectionItemBorder, newTheme)
             self.collectionItemContent = ThemeManager.getElementColor(.collectionItemContent, newTheme)
+            self.navIndicator = ThemeManager.getElementColor(.navIndicator, newTheme)
             NotificationCenter.default.post(name: .themeChanged, object: nil)
             
         }
@@ -174,7 +182,7 @@ class ThemeManager: NSObject, ObservableObject {
                 return .accentColor
             case .buttonText, .collectionItem:
                 return Color(UIColor.systemBackground)
-            case .disabledTextField, .disabledButton:
+            case .disabledTextField, .disabledButton, .navIndicator:
                 return Color("theme-system-\(assetKey)")
             default:
                 return .primary
@@ -187,14 +195,15 @@ class ThemeManager: NSObject, ObservableObject {
      - returns: Value currently assigned to key "Theme" in UserDefaults
      */
     static func getUserDefaultsTheme() -> Theme {
-        if let savedTheme = UserDefaults.standard.string(forKey: SettingsPresentationView.PresentationOption.theme.rawValue) {
-            if let theme = ThemeManager.Theme.init(rawValue: savedTheme) {
+        if let savedString_Theme = UserDefaults.standard.string(forKey: SettingsView.PresentationOption.theme.rawValue) {
+            if let theme = ThemeManager.Theme.init(rawValue: savedString_Theme) {
                 return theme
             } else {
+                // There was in invalid String saved under the key "Theme" in user defaults. Report an error and set the "Theme" back to system default.
                 ErrorManager.recordNonFatal(.userDefaults_containedInvalidValue,
                                             ["Message": "ThemeManager.getUserDefaultsTheme() could not convert the saved theme to a value of type ThemeManager.Theme",
-                                             "savedTheme" : savedTheme])
-                UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsPresentationView.PresentationOption.theme.rawValue)
+                                             "savedTheme" : savedString_Theme])
+                UserDefaults.standard.setValue(Theme.system.rawValue, forKey: SettingsView.PresentationOption.theme.rawValue)
                 return .system
             }
         }

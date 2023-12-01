@@ -45,32 +45,36 @@ struct TodayView: View {
             TodayCollectionViewControllerRepresentable(date: self.$date)
                 .accentColor(themeManager.accent)
                 .navigationBarTitle(self.getLabel())
-                .navigationBarItems(trailing: HStack(alignment: .center, spacing: 0, content: {
-                    Button(action: {
-                        self.isPresentingAddTask = true
-                    }, label: {
-                        Image(systemName: "plus.circle")
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .foregroundColor(themeManager.panelContent)
-                            .accessibility(identifier: "add-task-button")
-                    })
-                    .sheet(isPresented: $isPresentingAddTask, content:  {
-                        AddTask(isBeingPresented: self.$isPresentingAddTask)
-                    })
-                    
-                    Button(action: {
-                        self.isPresentingSelectDate = true
-                    }) {
-                        Image(systemName: "calendar")
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .foregroundColor(themeManager.panelContent)
-                    }
-                    .sheet(isPresented: $isPresentingSelectDate, content:  {
-                        SelectDatePopup(isBeingPresented: self.$isPresentingSelectDate, date: self.$date, label: "Select Date")
-                    })
-                })
-                .foregroundColor(themeManager.panelContent)
-                .scaleEffect(1.5)
+                .navigationBarItems(
+                    leading:
+                        SyncIndicator(),
+                    trailing:
+                        HStack(alignment: .center, spacing: 0, content: {
+                            Button(action: {
+                                self.isPresentingAddTask = true
+                            }, label: {
+                                Image(systemName: "plus.circle")
+                                    .frame(width: 30, height: 30, alignment: .center)
+                                    .foregroundColor(themeManager.panelContent)
+                                    .accessibility(identifier: "add-task-button")
+                            })
+                            .sheet(isPresented: $isPresentingAddTask, content:  {
+                                AddTask(isBeingPresented: self.$isPresentingAddTask)
+                            })
+                            
+                            Button(action: {
+                                self.isPresentingSelectDate = true
+                            }) {
+                                Image(systemName: "calendar")
+                                    .frame(width: 30, height: 30, alignment: .center)
+                                    .foregroundColor(themeManager.panelContent)
+                            }
+                            .sheet(isPresented: $isPresentingSelectDate, content:  {
+                                SelectDatePopup(isBeingPresented: self.$isPresentingSelectDate, date: self.$date, label: "Select Date")
+                            })
+                        })
+                        .foregroundColor(themeManager.panelContent)
+                        .scaleEffect(1.5)
                 )
         }
         .accentColor(themeManager.accent)

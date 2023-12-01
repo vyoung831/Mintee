@@ -19,7 +19,14 @@ class CollectionSizer {
     
     static let gridVerticalPadding: CGFloat = 20
     static let cornerRadius: CGFloat = 5
-    static let borderThickness: CGFloat = 3
+    static var borderThickness: CGFloat {
+        switch ThemeManager.getUserDefaultsTheme() {
+        case .system:
+            return 3
+        default:
+            return 0
+        }
+    }
     
     // MARK: - Properties used for sizing comparison
     

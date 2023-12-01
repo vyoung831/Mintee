@@ -208,7 +208,7 @@ extension SaveFormatter {
 extension SaveFormatter {
     
     // Static DateFormatter for converting stored date Strings to Dates
-    static let storedStringToDateFormatter: DateFormatter = {
+    static let storedStringDateFormatter: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         return df
@@ -220,7 +220,7 @@ extension SaveFormatter {
      - returns: String representation of a date in  "yyyy-MM-dd" format
      */
     static func dateToStoredString(_ date: Date) -> String {
-        return storedStringToDateFormatter.string(from: date)
+        return storedStringDateFormatter.string(from: date)
     }
     
     /**
@@ -229,7 +229,7 @@ extension SaveFormatter {
      - returns: (Optional) Date representation of the stored String representing a date
      */
     static func storedStringToDate(_ storedString: String) -> Date? {
-        return storedStringToDateFormatter.date(from: storedString)
+        return storedStringDateFormatter.date(from: storedString)
     }
     
 }
